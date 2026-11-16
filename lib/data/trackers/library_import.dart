@@ -41,7 +41,7 @@ class ImportPlan {
   bool get isEmpty => list.isEmpty && history.isEmpty && resume.isEmpty;
 }
 
-/// Brings what's on Trakt, Simkl and AniList into VyseTV: the watchlist into My
+/// Brings what's on Trakt, Simkl and AniList into Lorewatch: the watchlist into My
 /// List, the newest watches into History, resume points into Continue watching. After that,
 /// titles added to the watchlist there (or taken off it) follow into My List at app start.
 ///
@@ -59,7 +59,7 @@ class LibraryImport {
     TrackerId.anilist => AniListTracker.library(),
   };
 
-  /// Reads [id]'s lists and works out what's new to VyseTV. Changes nothing.
+  /// Reads [id]'s lists and works out what's new to Lorewatch. Changes nothing.
   static Future<ImportPlan> plan(TrackerId id) async {
     final lib = await _pull(id);
     final everything = [...lib.watchlist, ...lib.history, ...lib.resume, ...lib.listed];
@@ -231,7 +231,7 @@ class LibraryImport {
 
   // ── matching titles ──
 
-  /// Fills in the ids VyseTV goes by: AniList ids for anime Simkl only knows by their
+  /// Fills in the ids Lorewatch goes by: AniList ids for anime Simkl only knows by their
   /// MyAnimeList id, TMDB ids for titles that came with only an IMDb or TheTVDB one. False when
   /// a lookup failed.
   static Future<bool> _resolveIds(List<RemoteTitle> titles) async {
@@ -268,7 +268,7 @@ class LibraryImport {
     return complete;
   }
 
-  /// Each title as VyseTV shows it (poster, overview…), with its length in minutes if known.
+  /// Each title as Lorewatch shows it (poster, overview…), with its length in minutes if known.
   static Future<Map<String, ({Media media, int? runtime})>> _media(List<RemoteTitle> titles) async {
     final out = <String, ({Media media, int? runtime})>{};
     final anime = {

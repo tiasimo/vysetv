@@ -126,7 +126,7 @@ String _decrypt(String enc, String seed, int tmdbId) {
 
 /// One of Movy's servers. [name] is Movy's own name for it (its servers are named after cities).
 /// [key] is what the devices in a watch party call it between them: it stays as it was before
-/// the servers went by their real names, so a room with an older VyseTV in it still agrees.
+/// the servers went by their real names, so a room with an older Lorewatch in it still agrees.
 typedef _Shard = ({String shard, String name, String key, String? audio, Map<String, String> extra, bool altTitle, bool germanTitle});
 
 const List<_Shard> _shards = [

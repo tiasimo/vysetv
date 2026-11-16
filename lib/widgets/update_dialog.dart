@@ -49,7 +49,7 @@ class _UpdateDialog extends StatelessWidget {
         final List<Widget> actions;
         switch (stage) {
           case UpdateStage.downloading || UpdateStage.verifying:
-            title = stage == UpdateStage.verifying ? 'Checking the download' : 'Downloading VyseTV ${u?.version ?? ''}';
+            title = stage == UpdateStage.verifying ? 'Checking the download' : 'Downloading Lorewatch ${u?.version ?? ''}';
             final total = up.file?.size ?? 0;
             body = [
               ClipRRect(
@@ -74,13 +74,13 @@ class _UpdateDialog extends StatelessWidget {
             ];
             actions = [if (stage == UpdateStage.downloading) TextButton(onPressed: up.cancel, child: const Text('Cancel'))];
           case UpdateStage.installing:
-            title = Platform.isWindows || Platform.isLinux ? 'Restarting VyseTV' : 'Installing';
+            title = Platform.isWindows || Platform.isLinux ? 'Restarting Lorewatch' : 'Installing';
             body = [
               const Row(
                 children: [
                   SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2.2, color: VyseColors.accent)),
                   SizedBox(width: 14),
-                  Expanded(child: Text('Putting the new version in place. VyseTV closes and opens again by itself.', style: TextStyle(color: VyseColors.textDim, height: 1.45))),
+                  Expanded(child: Text('Putting the new version in place. Lorewatch closes and opens again by itself.', style: TextStyle(color: VyseColors.textDim, height: 1.45))),
                 ],
               ),
             ];
@@ -90,9 +90,9 @@ class _UpdateDialog extends StatelessWidget {
             body = [
               Text(
                 Platform.isAndroid
-                    ? 'Android is asking whether to install the update. Tap Install there. If it asks to allow installs from VyseTV first, allow it and come back.'
+                    ? 'Android is asking whether to install the update. Tap Install there. If it asks to allow installs from Lorewatch first, allow it and come back.'
                     : Platform.isMacOS
-                    ? 'The disk image is open. Close VyseTV, drag the new VyseTV to Applications, then open it again.'
+                    ? 'The disk image is open. Close Lorewatch, drag the new Lorewatch to Applications, then open it again.'
                     : 'The download opened in your browser. Install it from there.',
                 style: const TextStyle(color: VyseColors.textDim, height: 1.5),
               ),
@@ -106,7 +106,7 @@ class _UpdateDialog extends StatelessWidget {
               if (up.newer != null) _primary('Try again', up.update),
             ];
           case UpdateStage.available when u != null:
-            title = 'VyseTV ${u.version} is ready';
+            title = 'Lorewatch ${u.version} is ready';
             body = [
               Text(
                 ['You have ${up.current}', if (u.date.isNotEmpty) 'released ${u.date}', if ((up.file?.size ?? 0) > 0) bytesLabel(up.file!.size)].join('  ·  '),
@@ -143,7 +143,7 @@ class _UpdateDialog extends StatelessWidget {
             title = up.stage == UpdateStage.checking ? 'Checking for updates' : "You're up to date";
             body = [
               Text(
-                up.stage == UpdateStage.checking ? 'One moment.' : 'VyseTV ${up.current} is the newest version.',
+                up.stage == UpdateStage.checking ? 'One moment.' : 'Lorewatch ${up.current} is the newest version.',
                 style: const TextStyle(color: VyseColors.textDim, height: 1.5),
               ),
             ];

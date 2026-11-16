@@ -15,7 +15,7 @@
 	<key>CFBundleName</key>
 	<string>$(PRODUCT_NAME)</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>VyseTV uses the microphone for voice chat in Party rooms.</string>
+	<string>Lorewatch uses the microphone for voice chat in Party rooms.</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -44,6 +44,6 @@
 		<true/>
 	</dict>
 	<key>NSLocalNetworkUsageDescription</key>
-	<string>VyseTV connects to your Plex, Jellyfin and Emby servers on your local network.</string>
+	<string>Lorewatch connects to your Plex, Jellyfin and Emby servers on your local network.</string>
 </dict>
 </plist>

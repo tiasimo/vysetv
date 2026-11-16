@@ -18,7 +18,7 @@ final _rng = Random();
 String getUA() => uaList[_rng.nextInt(uaList.length)];
 const sdkUA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
 
-/// VyseTV's own TMDB key (as in tmdb.dart and subtitles.dart), not the SDK's.
+/// Lorewatch's own TMDB key (as in tmdb.dart and subtitles.dart), not the SDK's.
 const tmdbKey = String.fromEnvironment('TMDB_API_KEY', defaultValue: 'b3556f3b206e16f82df4d1f6fd4545e6');
 
 /// What to look up: a film, or one episode of a show, by TMDB id.

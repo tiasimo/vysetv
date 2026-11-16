@@ -817,8 +817,8 @@ class PlexClient
       final headers = <String, String>{'X-Plex-Token': token};
       if (clientIdentifier != null) {
         headers['X-Plex-Client-Identifier'] = clientIdentifier;
-        headers['X-Plex-Product'] = 'VyseTV';
-        headers['X-Plex-Device-Name'] = sanitizeHeaderValue(identity.deviceName) ?? 'VyseTV';
+        headers['X-Plex-Product'] = 'Lorewatch';
+        headers['X-Plex-Device-Name'] = sanitizeHeaderValue(identity.deviceName) ?? 'Lorewatch';
       }
 
       final response = await client.get('/', headers: headers, timeout: timeout);

@@ -20,7 +20,7 @@ import '../utils/media_server_timeouts.dart';
 import '../utils/active_client_scope.dart';
 import '../utils/future_extensions.dart';
 
-import '../support/sentry_stub.dart'; // VyseTV: no crash tracker
+import '../support/sentry_stub.dart'; // Lorewatch: no crash tracker
 
 import 'plex_auth_service.dart';
 import 'settings_service.dart';

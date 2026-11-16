@@ -245,7 +245,7 @@ class _LiveTvPageState extends State<LiveTvPage> {
           child: EmptyState(
             icon: Icons.dns_outlined,
             title: 'No portals yet',
-            body: 'Add one with its URL and login, import a JSON list, or let VyseTV find some.',
+            body: 'Add one with its URL and login, import a JSON list, or let Lorewatch find some.',
           ),
         )
       else

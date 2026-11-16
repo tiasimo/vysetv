@@ -9,7 +9,7 @@ import '../video_rect_support.dart';
 /// A session that cannot host the plane fails `initialize` outright rather than
 /// degrading, so the user sees the reason instead of a black rectangle.
 ///
-/// VyseTV: on X11, where the plane can't exist, the native side draws mpv into
+/// Lorewatch: on X11, where the plane can't exist, the native side draws mpv into
 /// a Flutter texture instead (linux/runner/mpv/vyse_texture_fallback.h);
 /// [vyseTextureId] says which, and `VyseVideo` shows it.
 class PlayerLinux extends PlayerNative with VideoRectSupport {

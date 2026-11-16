@@ -46,7 +46,7 @@ enum _Tab {
   debrid('Debrid', 'Stream torrents from a debrid service instead of peer to peer. Saved on this device.', Icons.cloud_download_outlined),
   playback('Playback', 'How videos play by default. Saved on this device.', Icons.play_circle_outline_rounded),
   subtitles('Subtitles', 'Default captions for the player. Saved on this device.', Icons.closed_caption_outlined),
-  about('About', 'VyseTV, its version and where to find us.', Icons.info_outline_rounded),
+  about('About', 'Lorewatch, its version and where to find us.', Icons.info_outline_rounded),
   danger('Danger Zone', "Resets that can't be undone.", Icons.warning_amber_rounded);
 
   const _Tab(this.label, this.blurb, this.icon);
@@ -769,7 +769,7 @@ class _ConnectedServices extends StatelessWidget {
       final anime = states[TrackerId.anilist]?.connected ?? false;
       return _Section(
         title: 'Connected services',
-        subtitle: 'What you watch in VyseTV keeps your lists there up to date. Signing in stays on this device.',
+        subtitle: 'What you watch in Lorewatch keeps your lists there up to date. Signing in stays on this device.',
         children: [
           for (final id in TrackerId.values) ...[
             if (states[id] case final s?) ...[
@@ -822,7 +822,7 @@ class _ConnectedServices extends StatelessWidget {
                 _Row(title: 'Sync My List', subtitle: 'Adding here puts it on your Trakt watchlist', trailing: _Toggle(AppSettings.traktList)),
                 _Row(
                   title: 'History removals reach Trakt',
-                  subtitle: 'Removing a title from History here also removes the plays VyseTV sent to Trakt',
+                  subtitle: 'Removing a title from History here also removes the plays Lorewatch sent to Trakt',
                   trailing: _Toggle(AppSettings.traktHistory),
                 ),
               ],
@@ -1089,7 +1089,7 @@ class _Navigation extends StatelessWidget {
         title: 'Navigation',
         subtitle: 'The sections in the navbar, in order: top to bottom on the rail, left to right on a phone. '
             'Drag a row or use the arrows to move it; switch one off to hide it. '
-            'VyseTV opens on the first one showing, and Back returns to it. Profile and settings are always there.',
+            'Lorewatch opens on the first one showing, and Back returns to it. Profile and settings are always there.',
         children: [
           ReorderableListView.builder(
             shrinkWrap: true,
@@ -1296,7 +1296,7 @@ class _PlaybackTab extends StatelessWidget {
         children: [
           _Row(
             title: 'Streaming mode',
-            subtitle: "On: videos play right away from VyseTV's servers. Off: pick a source from your addons first",
+            subtitle: "On: videos play right away from Lorewatch's servers. Off: pick a source from your addons first",
             trailing: _Toggle(AppSettings.streamingMode),
           ),
           _Row(
@@ -1732,7 +1732,7 @@ class _SubtitlesTab extends StatelessWidget {
         children: [
           _Row(
             title: 'Caption style',
-            subtitle: 'Back to how VyseTV draws subtitles out of the box',
+            subtitle: 'Back to how Lorewatch draws subtitles out of the box',
             trailing: _SmallButton(label: 'Reset', icon: Icons.restart_alt_rounded, onTap: _resetCaptionStyle),
           ),
         ],
@@ -2069,7 +2069,7 @@ class _AboutTab extends StatelessWidget {
           final up = Updater.instance;
           final newer = up.newer;
           return _Section(
-            title: 'VyseTV',
+            title: 'Lorewatch',
             children: [
               _Row(
                 title: 'Version',
@@ -2100,7 +2100,7 @@ class _AboutTab extends StatelessWidget {
               ),
               _Row(
                 title: 'Check automatically',
-                subtitle: 'Looks for a new version when VyseTV starts, and tells you',
+                subtitle: 'Looks for a new version when Lorewatch starts, and tells you',
                 trailing: _Toggle(AppSettings.updateAuto),
               ),
               const _Row(title: 'Movies, Music, Manga, Audiobooks and Live TV', subtitle: 'Everything you watch, read and listen to in one place.'),
@@ -2868,7 +2868,7 @@ class _DebridTabState extends State<_DebridTab> {
           if (p != null)
             _Section(
               title: '${p.label} key',
-              subtitle: "Kept in this device's keychain. It never goes to your VyseTV account.",
+              subtitle: "Kept in this device's keychain. It never goes to your Lorewatch account.",
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 18),

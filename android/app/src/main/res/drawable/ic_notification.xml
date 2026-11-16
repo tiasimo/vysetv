@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- VyseTV's helm, one colour, for the status bar -->
+<!-- Lorewatch's eye and book, one colour, for the status bar -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="24dp"
     android:height="24dp"
     android:viewportWidth="512"
     android:viewportHeight="512">
-    <path
-        android:fillColor="#FFFFFFFF"
-        android:fillType="evenOdd"
-        android:pathData="M256,40 L322,78 L370,150 L386,240 L372,322 L334,392 L290,440 L256,472 L222,440 L178,392 L140,322 L126,240 L142,150 L190,78 Z M130,226 L256,262 L382,226 L378,262 L256,308 L134,262 Z" />
+    <group android:translateY="-26">
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:fillType="evenOdd"
+            android:pathData="M96,196 C150,114 362,114 416,196 C362,278 150,278 96,196 Z M128,196 C178,142 334,142 384,196 C334,250 178,250 128,196 Z M206,196 A50,50 0 1,0 306,196 A50,50 0 1,0 206,196 Z M240,170 L284,196 L240,222 Z" />
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:pathData="M250,300 C210,280 154,272 92,282 L92,410 C154,402 210,410 250,430 Z M262,300 C302,280 358,272 420,282 L420,410 C358,402 302,410 262,430 Z" />
+    </group>
 </vector>

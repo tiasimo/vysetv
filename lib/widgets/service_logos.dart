@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-/// Services VyseTV works with, drawn with their own marks (assets/logos, from Plezy).
+/// Services Lorewatch works with, drawn with their own marks (assets/logos, from Plezy).
 enum Service {
   plex('plex_chevron', tile: [Color(0xFF2A2B30), Color(0xFF141518)], mark: [Color(0xFFEBAF00)], pad: .24),
   jellyfin('jellyfin_icon', tile: [Color(0xFF221D33), Color(0xFF0F1220)], mark: [Color(0xFFAA5CC3), Color(0xFF00A4DC)], pad: .2),

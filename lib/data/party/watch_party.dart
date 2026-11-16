@@ -107,7 +107,7 @@ class WatchState {
   bool get isLive => live != null;
 
   /// The host picked a source from their addons (streaming mode off): that exact link, or
-  /// torrent, plays for everyone. Null: each device finds its own copy on VyseTV's servers.
+  /// torrent, plays for everyone. Null: each device finds its own copy on Lorewatch's servers.
   final Map<String, dynamic>? source;
 
   /// The host's film and TV sources, in their order: everyone looks in that order.

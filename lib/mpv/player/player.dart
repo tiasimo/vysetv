@@ -388,7 +388,7 @@ abstract class Player {
   /// Whether the player has been disposed.
   bool get disposed;
 
-  // VyseTV additions (implemented by VyseExtrasMixin, see vyse_extras.dart).
+  // Lorewatch additions (implemented by VyseExtrasMixin, see vyse_extras.dart).
   String get currentSubText;
   Stream<String> get subText;
   (int, int) get currentVideoSize;
@@ -427,10 +427,10 @@ abstract class Player {
       if (useExo) {
         return PlayerAndroid(); // ExoPlayer (opt-in)
       }
-      return PlayerAndroidMpv(hardwareDecoding: hardwareDecoding); // MPV (default); VyseTV: + video rect
+      return PlayerAndroidMpv(hardwareDecoding: hardwareDecoding); // MPV (default); Lorewatch: + video rect
     }
     if (Platform.isMacOS || Platform.isIOS) {
-      return PlayerAppleMpv(); // VyseTV: + video rect (watch-party tiles)
+      return PlayerAppleMpv(); // Lorewatch: + video rect (watch-party tiles)
     }
     if (Platform.isWindows) {
       return PlayerWindows();

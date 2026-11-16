@@ -1,8 +1,8 @@
-// Playing something that isn't a title from VyseTV's catalogue: a film from your own server, a
+// Playing something that isn't a title from Lorewatch's catalogue: a film from your own server, a
 // link you pasted, a file you downloaded.
 //
 // The player gets a stand-in Media (not a TMDB title) and an OutsidePlayback that hands it the
-// stream. None of it reaches VyseTV's history, your trackers or Party: the player keeps those for
+// stream. None of it reaches Lorewatch's history, your trackers or Party: the player keeps those for
 // catalogue titles.
 
 import 'dart:async';

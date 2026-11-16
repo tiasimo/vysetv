@@ -10,7 +10,7 @@ import 'providers/real_debrid_service.dart';
 import 'providers/torbox_service.dart';
 import '../torrent_file_ask.dart';
 
-/// The debrid services VyseTV can stream torrents through, and where each one gives out its key.
+/// The debrid services Lorewatch can stream torrents through, and where each one gives out its key.
 enum DebridProvider {
   realDebrid('real-debrid', 'Real-Debrid', 'https://real-debrid.com/apitoken'),
   torBox('torbox', 'TorBox', 'https://torbox.app/settings'),

@@ -44,7 +44,7 @@ class RemoteTitle {
   /// Episodes watched, keyed the way History keeps them ("S1E2").
   final Set<String> episodes;
 
-  /// VyseTV's key for it (`movie/1`, `tv/2`, `anime/3`), once its id is known.
+  /// Lorewatch's key for it (`movie/1`, `tv/2`, `anime/3`), once its id is known.
   String? get key => switch (kind) {
     MediaKind.anime => anilist == null ? null : 'anime/$anilist',
     MediaKind.movie => tmdb == null ? null : 'movie/$tmdb',

@@ -1,5 +1,5 @@
 name: vyse_tv
-description: "VyseTV - movie and show discovery"
+description: "Lorewatch - movies, shows, anime and more"
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -97,7 +97,7 @@ dev_dependencies:
   flutter_launcher_icons: ^0.14.4
 
 flutter_launcher_icons:
-  image_path: "branding/vysetv_icon.png"
+  image_path: "branding/lorewatch_icon.png"
   android: true
   ios: true
   remove_alpha_ios: true

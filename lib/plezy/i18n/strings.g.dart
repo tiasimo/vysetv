@@ -1,4 +1,4 @@
-// VyseTV stand-in for Plezy's generated slang translations: English only, just the
+// Lorewatch stand-in for Plezy's generated slang translations: English only, just the
 // namespaces lib/plezy uses. Generated from plezy-main/lib/i18n/en.i18n.json.
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps
 
@@ -839,7 +839,7 @@ class _TAuth {
   String get quickConnectWaiting => 'Waiting for approval…';
   String get quickConnectCancel => 'Cancel';
   String get quickConnectExpired => 'Quick Connect expired. Try again.';
-  String get localDataRecoveryRequired => 'VyseTV could not safely recover local sign-in and pending playback data. Please sign in again.';
+  String get localDataRecoveryRequired => 'Lorewatch could not safely recover local sign-in and pending playback data. Please sign in again.';
   String get pinCheckRejected => 'The Plex PIN check was rejected';
 }
 
@@ -901,7 +901,7 @@ class _TAddServer {
 
 const t = _T._();
 
-/// English only (VyseTV stand-in for slang's locale handling).
+/// English only (Lorewatch stand-in for slang's locale handling).
 enum AppLocale {
   en;
 

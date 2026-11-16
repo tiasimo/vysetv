@@ -16,7 +16,7 @@
     <!-- The updater: Android's installer is asked to install the new version (the person confirms) -->
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
     <application
-        android:label="VyseTV"
+        android:label="Lorewatch"
         android:allowBackup="false"
         android:name="${applicationName}"
         android:usesCleartextTraffic="true"

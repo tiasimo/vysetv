@@ -38,7 +38,7 @@ class PartyMutes {
   }
 }
 
-/// What Party does to get your attention while VyseTV is running: sounds for people coming and
+/// What Party does to get your attention while Lorewatch is running: sounds for people coming and
 /// going and for messages; a system notification (and, on Windows, a flashing taskbar button)
 /// for a message when you're not looking at the app; and the unread count as a red badge on the
 /// taskbar button, like Discord. Nothing for muted people, or while you're on Do not disturb.
@@ -114,7 +114,7 @@ class PartyAlerts {
 
   // ── messages ──
 
-  /// Whether VyseTV is the window you're using.
+  /// Whether Lorewatch is the window you're using.
   static Future<bool> _focused() async {
     if (_desktop) {
       try {
@@ -162,7 +162,7 @@ class PartyAlerts {
       await _notes.initialize(
         settings: const InitializationSettings(
           android: AndroidInitializationSettings('ic_notification'),
-          windows: WindowsInitializationSettings(appName: 'VyseTV', appUserModelId: 'Vyse.VyseTV', guid: '6f1d3c2a-8b4e-4f7a-9c5d-2e8b1a7f3d64'),
+          windows: WindowsInitializationSettings(appName: 'Lorewatch', appUserModelId: 'Tiasimo.Lorewatch', guid: '2e8676cf-ffad-478a-8b25-738cb0885d0f'),
           iOS: DarwinInitializationSettings(requestAlertPermission: false, requestBadgePermission: false, requestSoundPermission: false),
           macOS: DarwinInitializationSettings(requestAlertPermission: false, requestBadgePermission: false, requestSoundPermission: false),
           // Linux: without this the plugin refuses to start and there are no notifications at all
@@ -229,7 +229,7 @@ class PartyAlerts {
 
   // ── Windows taskbar ──
 
-  /// The taskbar button flashes until you switch to VyseTV.
+  /// The taskbar button flashes until you switch to Lorewatch.
   static void _flash() {
     if (_windows) _taskbar.invokeMethod<void>('flash').catchError((Object _) {});
   }

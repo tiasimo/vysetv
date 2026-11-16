@@ -5,7 +5,7 @@ import '../../data/trackers/library_import.dart';
 import '../../data/trackers/tracker.dart';
 import '../common.dart';
 
-/// Reads what's on [id] and, once you say so, brings it into VyseTV.
+/// Reads what's on [id] and, once you say so, brings it into Lorewatch.
 Future<void> importFromTracker(BuildContext context, TrackerId id) async {
   final n = await showDialog<int>(context: context, barrierDismissible: false, builder: (_) => _ImportDialog(id: id));
   if (n == null || !context.mounted) return;
@@ -103,7 +103,7 @@ class _ImportDialogState extends State<_ImportDialog> {
               const SizedBox(height: 16),
               const SizedBox(height: 3, child: LinearProgressIndicator(color: VyseColors.accent, backgroundColor: Colors.white10)),
             ] else if (nothing)
-              Text('Everything on $label is already in VyseTV.', style: dim)
+              Text('Everything on $label is already in Lorewatch.', style: dim)
             else if (p != null) ...[
               Text('Found ${p.found} titles on $label. Nothing there changes.', style: dim),
               const SizedBox(height: 8),

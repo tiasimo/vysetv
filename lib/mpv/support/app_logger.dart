@@ -1,4 +1,4 @@
-// VyseTV stand-in for Plezy's `utils/app_logger.dart`, which the copied
+// Lorewatch stand-in for Plezy's `utils/app_logger.dart`, which the copied
 // player imports. Same call shape (`appLogger.d/i/w/e(message, error:,
 // stackTrace:)`), printed through debugPrint so release builds stay quiet.
 

@@ -527,7 +527,7 @@ class _SourcesPageState extends State<SourcesPage> {
                       Row(
                         children: [
                           if (best != null) ...[_Primary(label: 'Play best', onTap: () => _play(best)), const SizedBox(width: 10)],
-                          if (!widget.overlay) _Secondary(label: 'VyseTV servers', onTap: _builtIn),
+                          if (!widget.overlay) _Secondary(label: 'Lorewatch servers', onTap: _builtIn),
                         ],
                       ),
                     ],
@@ -658,7 +658,7 @@ class _SourcesPageState extends State<SourcesPage> {
             text: 'Install a Stremio addon in Settings › Addons and its sources show up here.',
             actions: [
               _Primary(label: 'Add addons', onTap: _openAddons),
-              if (!widget.overlay) _Secondary(label: 'VyseTV servers', onTap: _builtIn),
+              if (!widget.overlay) _Secondary(label: 'Lorewatch servers', onTap: _builtIn),
             ],
           ),
         ),
@@ -685,7 +685,7 @@ class _SourcesPageState extends State<SourcesPage> {
                 : 'Your addons have nothing for this right now.',
             actions: [
               if (_filtered) _Secondary(label: 'Clear filters', onTap: _clear),
-              if (!widget.overlay) _Secondary(label: 'VyseTV servers', onTap: _builtIn),
+              if (!widget.overlay) _Secondary(label: 'Lorewatch servers', onTap: _builtIn),
             ],
           ),
         ),
@@ -702,7 +702,7 @@ class _SourcesPageState extends State<SourcesPage> {
                   child: Center(
                     child: TextButton(
                       onPressed: _builtIn,
-                      child: const Text('Play with VyseTV’s servers instead', style: TextStyle(color: VyseColors.textDim, fontSize: 13)),
+                      child: const Text('Play with Lorewatch’s servers instead', style: TextStyle(color: VyseColors.textDim, fontSize: 13)),
                     ),
                   ),
                 )

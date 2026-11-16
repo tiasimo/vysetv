@@ -1,11 +1,11 @@
-// VyseTV additions to Plezy's player (not upstream).
+// Lorewatch additions to Plezy's player (not upstream).
 //
-// VyseTV's player page reads two things Plezy's streams don't carry: the
+// Lorewatch's player page reads two things Plezy's streams don't carry: the
 // current subtitle line as text (the subtitle sync panel and the optional
 // Flutter subtitle overlay) and the displayed video size. Both come from
 // plain mpv properties observed next to Plezy's own (`sub-text`,
 // `dwidth`/`dheight`). Kept in this one file so upstream merges of Plezy's
-// player only ever touch the three hook lines marked "VyseTV" in
+// player only ever touch the three hook lines marked "Lorewatch" in
 // player_base.dart.
 
 import 'dart:async';

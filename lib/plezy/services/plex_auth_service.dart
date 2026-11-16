@@ -51,7 +51,7 @@ String _redactHost(String host) {
 }
 
 class PlexAuthService {
-  static const String _appName = 'VyseTV';
+  static const String _appName = 'Lorewatch';
   static const String _plexApiBase = 'https://plex.tv/api/v2';
   static const String _clientsApi = 'https://clients.plex.tv/api/v2';
 
@@ -85,7 +85,7 @@ class PlexAuthService {
   /// (created for a single API call) to avoid leaking sockets.
   void dispose() => _http.close();
 
-  /// VyseTV: [clientIdentifier] comes from VyseTV's own keychain store when given, so it can't
+  /// Lorewatch: [clientIdentifier] comes from Lorewatch's own keychain store when given, so it can't
   /// be lost to the two SharedPreferences APIs overwriting each other on desktop.
   static Future<PlexAuthService> create({String? clientIdentifier}) async {
     final http = MediaServerHttpClient(

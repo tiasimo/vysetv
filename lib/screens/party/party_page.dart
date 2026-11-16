@@ -19,7 +19,7 @@ import 'member_list.dart';
 import 'rooms_view.dart';
 import 'party_widgets.dart';
 
-/// Party: one VyseTV-wide hangout. Guests are asked to sign in, new members accept the rules
+/// Party: one Lorewatch-wide hangout. Guests are asked to sign in, new members accept the rules
 /// once, then land here.
 class PartyPage extends StatelessWidget {
   const PartyPage({super.key});
@@ -132,7 +132,7 @@ class _Removed extends StatelessWidget {
         ),
         SizedBox(height: 10),
         Text(
-          "After a report, your access to Party (rooms, voice, messages and friends) was turned off. Everything else in VyseTV works as usual.",
+          "After a report, your access to Party (rooms, voice, messages and friends) was turned off. Everything else in Lorewatch works as usual.",
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 14.5, height: 1.5, color: VyseColors.textDim),
         ),
@@ -158,7 +158,7 @@ class _Guest extends StatelessWidget {
         const Text('Party', style: TextStyle(fontSize: 34, fontWeight: FontWeight.w900, letterSpacing: -1)),
         const SizedBox(height: 10),
         const Text(
-          'Hang out with everyone on VyseTV. Profiles, friends, rooms, voice chat and watch parties, all in one place.',
+          'Hang out with everyone on Lorewatch. Profiles, friends, rooms, voice chat and watch parties, all in one place.',
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 15, height: 1.5, color: VyseColors.textDim),
         ),
@@ -224,7 +224,7 @@ class _RulesState extends State<_Rules> {
           const SizedBox(height: 22),
           const Text('Before you join', style: TextStyle(fontSize: 26, fontWeight: FontWeight.w900, letterSpacing: -.6)),
           const SizedBox(height: 6),
-          const Text('Party is shared by everyone on VyseTV. A few ground rules:', style: TextStyle(fontSize: 14, color: VyseColors.textDim)),
+          const Text('Party is shared by everyone on Lorewatch. A few ground rules:', style: TextStyle(fontSize: 14, color: VyseColors.textDim)),
           const SizedBox(height: 20),
           for (final (icon, title, body) in partyRules)
             Padding(
@@ -391,7 +391,7 @@ class _HomeState extends State<_Home> {
                           ],
                           Flexible(
                             child: Text(
-                              n == null ? 'Your profile and the people of VyseTV.' : '$n online now',
+                              n == null ? 'Your profile and the people of Lorewatch.' : '$n online now',
                               style: TextStyle(fontSize: phone ? 12.5 : 14, color: VyseColors.textDim, fontWeight: FontWeight.w500),
                             ),
                           ),

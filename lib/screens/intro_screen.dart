@@ -1,5 +1,3 @@
-import 'dart:ui' as ui;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -7,9 +5,9 @@ import '../core/theme.dart';
 import '../data/tmdb.dart';
 import 'shell.dart';
 
-/// Boot animation: the helm fades up in the dark, the eyes draw outward like filaments, sputter,
-/// flash on, a light sweep crosses the helm, then the wordmark rises in. Everything sits on one
-/// centred column, and every glow is anchored to the eyes themselves.
+/// Boot animation: the book and eye fade up in the dark, the eye sputters and flashes on,
+/// a light sweep crosses the mark, then the wordmark rises in. Everything sits on one
+/// centred column.
 class IntroScreen extends StatefulWidget {
   const IntroScreen({super.key});
 
@@ -123,7 +121,7 @@ class _IntroScreenState extends State<IntroScreen> with SingleTickerProviderStat
   }
 }
 
-/// Helm artwork with the eyes painted live on top, plus the light sweep.
+/// Lorewatch mark: the unlit book and eye, with the lit version flickering on over it, plus the light sweep.
 class _Helm extends StatelessWidget {
   const _Helm({required this.size, required this.reveal, required this.power, required this.sweep});
   final double size;
@@ -133,7 +131,15 @@ class _Helm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget helm = SvgPicture.asset('assets/brand/vyse_helm.svg', width: size, height: size);
+    final lit = (power.clamp(0.0, 1.0) * reveal).clamp(0.0, 1.0);
+    final flare = (power - 1).clamp(0.0, 1.0);
+    Widget helm = Stack(children: [
+      SvgPicture.asset('assets/brand/lorewatch_mark_unlit.svg', width: size, height: size),
+      Opacity(
+        opacity: lit,
+        child: SvgPicture.asset('assets/brand/lorewatch_mark.svg', width: size, height: size),
+      ),
+    ]);
     if (sweep > 0 && sweep < 1) {
       helm = ShaderMask(
         blendMode: BlendMode.srcATop,
@@ -149,8 +155,19 @@ class _Helm extends StatelessWidget {
     }
     return SizedBox.square(
       dimension: size,
-      child: CustomPaint(
-        foregroundPainter: _EyesPainter(reveal: reveal, power: power),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          boxShadow: [
+            if (lit > .15)
+              BoxShadow(
+                color: const Color(0xFFFF8A1A).withValues(alpha: .10 * lit + .12 * flare),
+                blurRadius: size * .35,
+                spreadRadius: -size * .18,
+                offset: Offset(0, -size * .12),
+              ),
+          ],
+        ),
         child: helm,
       ),
     );
@@ -164,109 +181,12 @@ class _Shift extends GradientTransform {
   Matrix4 transform(Rect bounds, {TextDirection? textDirection}) => Matrix4.translationValues(dx, 0, 0);
 }
 
-/// Eye blades from vyse_mark.svg (512 viewBox). Inner edge first, outer tip last.
-const _leftEye = [Offset(240, 276), Offset(236, 294), Offset(170, 272), Offset(146, 250)];
-const _rightEye = [Offset(272, 276), Offset(276, 294), Offset(342, 272), Offset(366, 250)];
-
-class _EyesPainter extends CustomPainter {
-  _EyesPainter({required this.reveal, required this.power});
-
-  /// 0..1 how far each blade has drawn out from the nose toward its tip.
-  final double reveal;
-
-  /// 0 = dark, ~0.1 = ember, 1 = lit, >1 = flash.
-  final double power;
-
-  static const _ember = Color(0xFF4A1E04);
-  static const _hot = Color(0xFFFFF6DC);
-  static const _amber = Color(0xFFFFB347);
-  static const _orange = Color(0xFFFF6A00);
-
-  Path _blade(List<Offset> pts, double s) {
-    final innerTop = pts[0], innerBottom = pts[1];
-    Offset grow(Offset p) => Offset.lerp(Offset.lerp(innerTop, innerBottom, .5)!, p, reveal)!;
-    return Path()
-      ..moveTo(innerTop.dx * s, innerTop.dy * s)
-      ..lineTo(innerBottom.dx * s, innerBottom.dy * s)
-      ..lineTo(grow(pts[2]).dx * s, grow(pts[2]).dy * s)
-      ..lineTo(grow(pts[3]).dx * s, grow(pts[3]).dy * s)
-      ..close();
-  }
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    if (reveal <= 0) return;
-    final s = size.width / 512;
-    final lit = power.clamp(0.0, 1.0);
-    final flare = (power - 1).clamp(0.0, 1.0);
-    final center = Offset(256 * s, 274 * s);
-
-    // wide amber bloom across the brow, anchored to the eyes
-    if (lit > .15) {
-      // Squash a circular falloff into a soft ellipse so it never shows an edge.
-      canvas.save();
-      canvas.translate(center.dx, center.dy);
-      canvas.scale(1, .32);
-      canvas.drawCircle(
-        Offset.zero,
-        230 * s,
-        Paint()
-          ..shader = ui.Gradient.radial(
-            Offset.zero,
-            230 * s,
-            [
-              const Color(0xFFFF8A1A).withValues(alpha: .22 * lit + .2 * flare),
-              const Color(0xFFFF8A1A).withValues(alpha: .07 * lit),
-              const Color(0x00FF8A1A),
-            ],
-            [0, .45, 1],
-          ),
-      );
-      canvas.restore();
-    }
-
-    for (final eye in [_leftEye, _rightEye]) {
-      final path = _blade(eye, s);
-      final bounds = path.getBounds();
-      final innerIsRight = eye == _leftEye;
-
-      // soft glow halo
-      if (lit > .05) {
-        canvas.drawPath(
-          path,
-          Paint()
-            ..color = const Color(0xFFFF8A1A).withValues(alpha: (.9 * lit + .1 * flare).clamp(0, 1))
-            ..maskFilter = MaskFilter.blur(BlurStyle.normal, (10 + 10 * flare) * s),
-        );
-      }
-
-      // the blade: white-hot at the nose, burning out to orange at the tip
-      final inner = Color.lerp(_ember, _hot, lit)!;
-      final mid = Color.lerp(_ember, _amber, lit)!;
-      final outer = Color.lerp(_ember, _orange, lit)!;
-      canvas.drawPath(
-        path,
-        Paint()
-          ..shader = ui.Gradient.linear(
-            innerIsRight ? bounds.centerRight : bounds.centerLeft,
-            innerIsRight ? bounds.centerLeft : bounds.centerRight,
-            [inner, mid, outer],
-            [0, .4, 1],
-          ),
-      );
-    }
-  }
-
-  @override
-  bool shouldRepaint(_EyesPainter old) => old.reveal != reveal || old.power != power;
-}
-
 class _RisingWordmark extends StatelessWidget {
   const _RisingWordmark({required this.progress, required this.fontSize});
   final double progress;
   final double fontSize;
 
-  static const _letters = ['V', 'y', 's', 'e', 'T', 'V'];
+  static const _letters = ['L', 'o', 'r', 'e', 'w', 'a', 't', 'c', 'h'];
 
   @override
   Widget build(BuildContext context) => Row(mainAxisSize: MainAxisSize.min, children: [

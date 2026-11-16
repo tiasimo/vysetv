@@ -1,9 +1,9 @@
-// VyseTV addition (not upstream Plezy).
+// Lorewatch addition (not upstream Plezy).
 //
 // Plezy's player draws the video on a native surface *behind* the Flutter
 // window, so the video only shows where Flutter leaves pixels transparent.
 // Plezy only plays full screen on a transparent route, so that is enough
-// there. VyseTV also shows video inside screens that paint their own
+// there. Lorewatch also shows video inside screens that paint their own
 // background (watch-party tiles, the room page's theater mode, the shell), so
 // this widget first clears ("punches") the pixels under the video, then lays
 // Plezy's [Video] on top. Controls drawn above it still paint normally.

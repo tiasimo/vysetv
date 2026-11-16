@@ -28,7 +28,7 @@ String buildJellyfinAuthHeader({
   String field(String name, String value) => '$name="${Uri.encodeComponent(value)}"';
 
   final client = _meaningful(clientName);
-  final effectiveClient = client.isEmpty ? 'VyseTV' : client;
+  final effectiveClient = client.isEmpty ? 'Lorewatch' : client;
   final device = _meaningful(deviceName);
   final version = _meaningful(clientVersion);
   final id = _meaningful(deviceId);
@@ -51,9 +51,9 @@ String buildJellyfinAuthHeader({
 /// `Plezy` on every platform makes every install look alike.
 String jellyfinClientName(DeviceIdentity identity) {
   final platform = _meaningful(identity.platform);
-  if (platform.isEmpty) return 'VyseTV';
-  if (identity.isTv && platform.toLowerCase() == 'android') return 'VyseTV Android TV';
-  return 'VyseTV $platform';
+  if (platform.isEmpty) return 'Lorewatch';
+  if (identity.isTv && platform.toLowerCase() == 'android') return 'Lorewatch Android TV';
+  return 'Lorewatch $platform';
 }
 
 /// The `Device` name for the same header: the user-facing device name, else
@@ -67,7 +67,7 @@ String jellyfinDeviceName(DeviceIdentity identity) {
     final name = _meaningful(candidate);
     if (name.isNotEmpty) return name;
   }
-  return 'VyseTV';
+  return 'Lorewatch';
 }
 
 final RegExp _controlCharacters = RegExp(r'[\x00-\x1f\x7f-\x9f]');

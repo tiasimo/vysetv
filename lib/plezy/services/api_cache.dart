@@ -1,6 +1,6 @@
-// VyseTV stand-in for Plezy's drift-backed ApiCache: the same API, kept in memory.
+// Lorewatch stand-in for Plezy's drift-backed ApiCache: the same API, kept in memory.
 // Request caching works for the session (faster revisits, fewer server round trips);
-// offline pinning (Plezy's downloads) is not part of VyseTV, so pin/metadata reads
+// offline pinning (Plezy's downloads) is not part of Lorewatch, so pin/metadata reads
 // keep only what was put this session.
 
 import '../media/ids.dart';

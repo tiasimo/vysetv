@@ -20,8 +20,8 @@ export 'torrent_file_pick.dart' show EpisodeNotInTorrent;
 /// the player a local address (127.0.0.1) to stream from, with seeking. Nothing goes through a
 /// server of ours. Started the first time a torrent plays.
 ///
-/// It never outlives VyseTV and keeps nothing: on Windows the engine is tied to VyseTV's process
-/// (a job object Windows kills with it, however VyseTV ends: closed, crashed or ended in Task
+/// It never outlives Lorewatch and keeps nothing: on Windows the engine is tied to Lorewatch's process
+/// (a job object Windows kills with it, however Lorewatch ends: closed, crashed or ended in Task
 /// Manager); on Android the system takes an app's helper processes with it. What it downloads
 /// lives only in its memory; a torrent is removed when its player closes, and the engine's
 /// folder is wiped when it stops and again before it starts (after a crash).
@@ -67,13 +67,13 @@ class Torrents {
       rethrow;
     }
     _controller = c;
-    // dies with VyseTV, however VyseTV ends
+    // dies with Lorewatch, however Lorewatch ends
     if (Platform.isWindows && c is TorrServerControllerSubprocess && c.pid != null) {
       try {
         await const MethodChannel('vyse/process').invokeMethod<bool>('adopt', c.pid);
       } catch (_) {}
       // and a hidden watcher, for the rare launcher whose own job keeps the one above from
-      // taking: when VyseTV's process is gone, it ends the engine and empties its folder
+      // taking: when Lorewatch's process is gone, it ends the engine and empties its folder
       try {
         final dirPath = dir.path.replaceAll("'", "''");
         final w = await Process.start(
@@ -90,7 +90,7 @@ class Torrents {
                 "Remove-Item -Recurse -Force -ErrorAction SilentlyContinue '$dirPath\\*'",
           ],
         );
-        // (a detached PowerShell quits at once; a normal child outlives VyseTV all the same)
+        // (a detached PowerShell quits at once; a normal child outlives Lorewatch all the same)
         unawaited(w.stdout.drain<void>());
         unawaited(w.stderr.drain<void>());
       } catch (_) {}
@@ -444,7 +444,7 @@ class Torrents {
     }
   }
 
-  /// Stops the engine and wipes its folder (VyseTV closing).
+  /// Stops the engine and wipes its folder (Lorewatch closing).
   static Future<void> shutdown() async {
     final c = _controller;
     _controller = null;

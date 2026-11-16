@@ -33,7 +33,7 @@ Future<List<Segment>> fetchSegments({required int tmdbId, int? season, int? epis
       if (season != null) 'season': '$season',
       if (episode != null) 'episode': '$episode',
     });
-    final r = await http.get(uri, headers: {'User-Agent': 'VyseTV', 'Accept': 'application/json'}).timeout(const Duration(seconds: 8));
+    final r = await http.get(uri, headers: {'User-Agent': 'Lorewatch', 'Accept': 'application/json'}).timeout(const Duration(seconds: 8));
     if (r.statusCode != 200) return const [];
     final data = json.decode(r.body) as Map<String, dynamic>;
     final out = <Segment>[];

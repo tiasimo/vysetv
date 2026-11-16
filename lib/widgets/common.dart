@@ -48,7 +48,7 @@ class _PressableState extends State<Pressable> {
 }
 
 /// Every placeholder button lands here until the real screen exists.
-/// VyseTV's Discord, opened in the browser (About in Settings, and the foot of Home).
+/// Lorewatch's Discord, opened in the browser (About in Settings, and the foot of Home).
 const discordInvite = 'https://discord.gg/dUJTGnUhz2';
 
 Future<void> openDiscord(BuildContext context) async {
@@ -255,7 +255,7 @@ class VyseMark extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-      SvgPicture.asset('assets/brand/vyse_mark.svg', width: size, height: size);
+      SvgPicture.asset('assets/brand/lorewatch_mark.svg', width: size, height: size);
 }
 
 class VyseWordmark extends StatelessWidget {
@@ -265,8 +265,8 @@ class VyseWordmark extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Text.rich(
         TextSpan(children: const [
-          TextSpan(text: 'Vyse'),
-          TextSpan(text: 'TV', style: TextStyle(color: VyseColors.accent)),
+          TextSpan(text: 'Lore'),
+          TextSpan(text: 'watch', style: TextStyle(color: VyseColors.accent)),
         ]),
         maxLines: 1,
         softWrap: false,

@@ -1,4 +1,4 @@
-// VyseTV: refresh-rate matching for Plezy's mpv player, so 23.976 fps film plays on a
+// Lorewatch: refresh-rate matching for Plezy's mpv player, so 23.976 fps film plays on a
 // 23.976/24 Hz-family mode instead of juddering on 60 Hz. The mode choice
 // (findBestRefreshRate) and the Android decoder refresh follow Plezy
 // (edde746/plezy, GPL-3.0: display_mode_service.dart, display_matching.dart).

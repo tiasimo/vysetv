@@ -15,7 +15,7 @@ import 'package:json_annotation/json_annotation.dart';
 import '../media/chapter_marker_classifier.dart';
 import '../media/artist_discography.dart';
 import '../media/ids.dart';
-import '../support/sentry_stub.dart'; // VyseTV: no crash tracker
+import '../support/sentry_stub.dart'; // Lorewatch: no crash tracker
 import '../i18n/strings.g.dart';
 
 import '../media/media_backend.dart';

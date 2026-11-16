@@ -425,7 +425,7 @@ class LibraryTile extends StatelessWidget {
 
 // ───────────────────────── Playing ─────────────────────────
 
-/// Plays [item] from [server] in VyseTV's player: a film or episode as it is, a show from the
+/// Plays [item] from [server] in Lorewatch's player: a film or episode as it is, a show from the
 /// next episode to watch. [fromStart] ignores where you left off.
 Future<void> playFromServer(BuildContext context, MediaServer server, MediaItem item, {bool fromStart = false}) async {
   final nav = Navigator.of(context, rootNavigator: true);

@@ -162,7 +162,7 @@ class _MatchesViewState extends State<MatchesView> {
             for (final e in byLeague.entries) shelf(e.key.name, e.value, e.key.path),
             Padding(
               padding: EdgeInsets.fromLTRB(inset, 4, right, 0),
-              child: const Text('Fixtures and US listings from ESPN. International channels added by VyseTV.',
+              child: const Text('Fixtures and US listings from ESPN. International channels added by Lorewatch.',
                   style: TextStyle(fontSize: 11, color: VyseColors.textFaint)),
             ),
           ],
@@ -309,7 +309,7 @@ class _MatchPageState extends State<MatchPage> {
             SliverPadding(
               padding: EdgeInsets.fromLTRB(inset, 16, right, 0),
               sliver: const SliverToBoxAdapter(
-                child: Text('Pick a channel and VyseTV searches your portals, then reads their TV guides to find the exact feed (beIN Sports 2, AR…).',
+                child: Text('Pick a channel and Lorewatch searches your portals, then reads their TV guides to find the exact feed (beIN Sports 2, AR…).',
                     style: TextStyle(fontSize: 12, color: VyseColors.textFaint)),
               ),
             ),

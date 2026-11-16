@@ -56,7 +56,7 @@ class MusicPlayer extends ChangeNotifier {
       _failStreak = 0;
     });
     if (MusicLog.enabled) {
-      MusicLog.line('──────── VyseTV started, music log on ────────');
+      MusicLog.line('──────── Lorewatch started, music log on ────────');
       // what mpv and ffmpeg say about the address: refusals (403), unknown formats, dead links
       _player.streams.log.listen((l) {
         if (l.level.index <= PlayerLogLevel.warn.index || l.prefix == 'ffmpeg' || l.prefix == 'cplayer' || l.prefix.startsWith('stream')) {

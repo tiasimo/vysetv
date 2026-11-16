@@ -340,7 +340,7 @@ class _SignInState extends State<_SignIn> {
   Widget _chooseView() => Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      _header(title: 'Connect a server', body: 'Watch your own library with VyseTV. Pick what your server runs.'),
+      _header(title: 'Connect a server', body: 'Watch your own library with Lorewatch. Pick what your server runs.'),
       for (final (i, b) in const [MediaBackend.plex, MediaBackend.jellyfin, MediaBackend.emby].indexed)
         Padding(
           padding: const EdgeInsets.only(bottom: 10),
@@ -382,7 +382,7 @@ class _SignInState extends State<_SignIn> {
           leading: const BrandMark(MediaBackend.plex, size: 34),
           back: widget.backend == null,
           title: 'Sign in with Plex',
-          body: 'We opened plex.tv in your browser. Sign in there and press Allow, and VyseTV picks it up by itself.',
+          body: 'We opened plex.tv in your browser. Sign in there and press Allow, and Lorewatch picks it up by itself.',
         ),
         _errorLine(),
         if (_error != null)
@@ -416,7 +416,7 @@ class _SignInState extends State<_SignIn> {
           ]),
         ],
         const SizedBox(height: 16),
-        const _Note(icon: Icons.lock_outline_rounded, text: 'VyseTV never sees your Plex password. Your sign-in stays on this device.'),
+        const _Note(icon: Icons.lock_outline_rounded, text: 'Lorewatch never sees your Plex password. Your sign-in stays on this device.'),
       ],
     );
   }

@@ -1,8 +1,8 @@
-// Playing a title from your own server in VyseTV's player.
+// Playing a title from your own server in Lorewatch's player.
 //
 // The player gets a stand-in Media (not a TMDB title) and a ServerPlayback that hands it the
 // stream, the server's subtitles and skip markers, and the show's seasons and episodes. Progress
-// goes back to the server, never into VyseTV's own history, so Plex / Jellyfin / Emby stay
+// goes back to the server, never into Lorewatch's own history, so Plex / Jellyfin / Emby stay
 // in charge of what you've watched.
 
 import 'dart:async';
@@ -214,7 +214,7 @@ class ServerPlayback implements OutsidePlayback {
     final r => '${r}p',
   };
 
-  /// Plex sidecar subtitles need the token on the link (VyseTV fetches them without headers).
+  /// Plex sidecar subtitles need the token on the link (Lorewatch fetches them without headers).
   static String _withToken(String url, Map<String, String> headers) {
     final token = headers['X-Plex-Token'];
     if (token == null || url.contains('X-Plex-Token')) return url;

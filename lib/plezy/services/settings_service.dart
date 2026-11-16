@@ -1,6 +1,6 @@
-// VyseTV stand-in for Plezy's SettingsService (the real one is ~1,600 lines of
+// Lorewatch stand-in for Plezy's SettingsService (the real one is ~1,600 lines of
 // app preferences). The lifted server layer only reads a handful of them; each
-// answers with Plezy's default. VyseTV can override any via [SettingsService.overrides].
+// answers with Plezy's default. Lorewatch can override any via [SettingsService.overrides].
 
 import '../media/ids.dart';
 import 'base_shared_preferences_service.dart'
@@ -38,7 +38,7 @@ class SettingsService {
   static SettingsService? get instanceOrNull => _instance;
   static Future<SettingsService> getInstance() async => _instance;
 
-  /// VyseTV overrides by preference key.
+  /// Lorewatch overrides by preference key.
   static final Map<String, Object?> overrides = {};
 
   T read<T>(Pref<T> pref) {

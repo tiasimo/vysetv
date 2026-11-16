@@ -1,4 +1,4 @@
-// The updater: is there a newer VyseTV, and if so fetch it, check it, and put it in place.
+// The updater: is there a newer Lorewatch, and if so fetch it, check it, and put it in place.
 //
 // The app asks its update address (and, failing that, the account server) for a small signed file,
 // latest.json, that names the newest version and where each platform's build can be downloaded.
@@ -11,7 +11,7 @@
 //  * Android: the APK for this device's processor is handed to the system installer;
 //  * Windows: the zip is unpacked, the app closes, its files are replaced, and it starts again;
 //  * Linux: the AppImage file is swapped for the new one and started again;
-//  * macOS: the disk image opens, to drag VyseTV to Applications;
+//  * macOS: the disk image opens, to drag Lorewatch to Applications;
 //  * iPhone / iPad: a sideloaded app can't replace itself, so the download link is opened.
 
 import 'dart:async';
@@ -155,8 +155,8 @@ class Updater extends ChangeNotifier {
   String get how {
     if (file == null) return 'Opens the download page';
     if (Platform.isAndroid) return 'Downloads it, then Android asks to install';
-    if (Platform.isWindows) return 'Downloads it, then VyseTV restarts';
-    if (Platform.isLinux) return _appImage == null ? 'Opens the download' : 'Downloads it, then VyseTV restarts';
+    if (Platform.isWindows) return 'Downloads it, then Lorewatch restarts';
+    if (Platform.isLinux) return _appImage == null ? 'Opens the download' : 'Downloads it, then Lorewatch restarts';
     if (Platform.isMacOS) return 'Downloads it and opens the disk image';
     return 'Opens the download';
   }
@@ -173,7 +173,7 @@ class Updater extends ChangeNotifier {
     } catch (_) {}
     _platform = await _platformKey();
     notifyListeners();
-    // quietly, a little after start-up and then a few times a day while VyseTV stays open
+    // quietly, a little after start-up and then a few times a day while Lorewatch stays open
     if (AppSettings.updateAuto.value) {
       Timer(const Duration(seconds: 6), () => unawaited(check()));
     }
@@ -280,7 +280,7 @@ class Updater extends ChangeNotifier {
   /// "Not this one": the automatic check stops offering [version].
   void skip(String version) => AppSettings.updateSkipped.set(version);
 
-  /// The update box has been up since VyseTV started (by itself, or from Settings). It comes up
+  /// The update box has been up since Lorewatch started (by itself, or from Settings). It comes up
   /// by itself once per start at most: after "Later" it waits for the next start.
   bool shownThisRun = false;
 
@@ -337,7 +337,7 @@ class Updater extends ChangeNotifier {
 
   String _name(UpdateInfo u, String url) {
     final ext = Platform.isAndroid ? 'apk' : (Platform.isWindows ? (_setupFile != null ? 'exe' : 'zip') : (Platform.isMacOS ? 'dmg' : (Platform.isLinux ? 'AppImage' : (RegExp(r'\.([A-Za-z0-9]{2,8})$').firstMatch(Uri.parse(url).path)?[1] ?? 'bin'))));
-    return 'VyseTV-${u.version.replaceAll(RegExp(r'[^0-9A-Za-z.]'), '_')}.$ext';
+    return 'Lorewatch-${u.version.replaceAll(RegExp(r'[^0-9A-Za-z.]'), '_')}.$ext';
   }
 
   /// The checked file, or null when it was called off. Each address is tried in turn; one that
@@ -441,8 +441,8 @@ class Updater extends ChangeNotifier {
     throw const _Failed("This device can't install the update by itself.");
   }
 
-  /// The installer does the work: it shows its progress, closes VyseTV if it is still open,
-  /// replaces the files and (asked to with relaunch=1) starts VyseTV again.
+  /// The installer does the work: it shows its progress, closes Lorewatch if it is still open,
+  /// replaces the files and (asked to with relaunch=1) starts Lorewatch again.
   Future<void> _installWithSetup(File setup) async {
     try {
       await Process.start(setup.path, const ['/SILENT', '/SUPPRESSMSGBOXES', '/NORESTART', '/CLOSEAPPLICATIONS', '/relaunch=1'], mode: ProcessStartMode.detached);
@@ -456,7 +456,7 @@ class Updater extends ChangeNotifier {
   /// working from the old file until it closes), then starts.
   Future<void> _installAppImage(File f) async {
     final target = _appImage;
-    if (target == null) throw const _Failed("VyseTV wasn't started from an AppImage, so it can't replace itself.");
+    if (target == null) throw const _Failed("Lorewatch wasn't started from an AppImage, so it can't replace itself.");
     final staged = File('$target.new');
     try {
       await f.copy(staged.path);
@@ -482,8 +482,8 @@ class Updater extends ChangeNotifier {
     await _quit();
   }
 
-  /// The zip is unpacked next to the download; a small script then waits for VyseTV to close,
-  /// copies the new files over the old ones, starts VyseTV and cleans up after itself.
+  /// The zip is unpacked next to the download; a small script then waits for Lorewatch to close,
+  /// copies the new files over the old ones, starts Lorewatch and cleans up after itself.
   Future<void> _installWindows(File zip, UpdateInfo u) async {
     final exe = File(Platform.resolvedExecutable);
     final appDir = exe.parent;
@@ -493,7 +493,7 @@ class Updater extends ChangeNotifier {
       await probe.writeAsString('ok');
       await probe.delete();
     } catch (_) {
-      throw const _Failed("VyseTV's folder can't be written to from here. Unzip the new version over it by hand.");
+      throw const _Failed("Lorewatch's folder can't be written to from here. Unzip the new version over it by hand.");
     }
     final unpack = Directory('${zip.parent.path}\\unpacked-${u.version}');
     if (await unpack.exists()) await unpack.delete(recursive: true);
@@ -523,7 +523,7 @@ class Updater extends ChangeNotifier {
         break;
       }
     }
-    if (fresh == null) throw const _Failed("The update doesn't look like VyseTV, so it wasn't used.");
+    if (fresh == null) throw const _Failed("The update doesn't look like Lorewatch, so it wasn't used.");
     final script = File('${zip.parent.path}\\vyse-update.cmd');
     await script.writeAsString(
       [
@@ -534,7 +534,7 @@ class Updater extends ChangeNotifier {
         'set "DST=${appDir.path}"',
         'set "EXE=${exe.uri.pathSegments.last}"',
         // Windows' own tools by their full path, whatever PATH says (a `find` from elsewhere
-        // would make the wait below end at once, with VyseTV's files still in use)
+        // would make the wait below end at once, with Lorewatch's files still in use)
         r'set "SYS=%SystemRoot%\System32"',
         'set /a TRIES=0',
         ':wait',
@@ -557,7 +557,7 @@ class Updater extends ChangeNotifier {
     await _quit();
   }
 
-  /// Closes VyseTV the way its window's close button does, so everything it runs shuts down.
+  /// Closes Lorewatch the way its window's close button does, so everything it runs shuts down.
   Future<void> _quit() async {
     try {
       await ServicesBinding.instance.exitApplication(AppExitType.required).timeout(const Duration(seconds: 4));

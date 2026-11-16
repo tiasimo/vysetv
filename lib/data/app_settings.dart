@@ -13,7 +13,7 @@ class AppTheme {
 }
 
 const appThemes = [
-  AppTheme('vyse', 'Vyse', 'Amber light, violet haze', Color(0xFFFFA53A), glow: false),
+  AppTheme('vyse', 'Lorewatch', 'Amber light, violet haze', Color(0xFFFFA53A), glow: false),
   AppTheme('crimson', 'Crimson', 'Low red glow, like a cinema', Color(0xFFE5383B)),
   AppTheme('abyss', 'Abyss', 'Deep navy, blue haze', Color(0xFF3B82F6)),
   AppTheme('amber', 'Amber', 'Warm gold undertones', Color(0xFFF59E0B)),
@@ -104,7 +104,7 @@ class AppSettings {
   static final simklScrobble = Setting<bool>('trackers.simkl', true);
   static final simklList = Setting<bool>('trackers.simkl.list', true);
   static final simklHistory = Setting<bool>('trackers.simkl.history', false);
-  // Trakt: the same three (History removals only take off plays VyseTV itself sent)
+  // Trakt: the same three (History removals only take off plays Lorewatch itself sent)
   static final traktScrobble = Setting<bool>('trackers.trakt', true);
   static final traktList = Setting<bool>('trackers.trakt.list', true);
   static final traktHistory = Setting<bool>('trackers.trakt.history', false);
@@ -152,7 +152,7 @@ class AppSettings {
   static final debridProvider = Setting<String>('device.debrid.provider', '');
   static final debridOn = Setting<bool>('device.debrid.on', true);
 
-  // Updates: whether VyseTV looks for a newer version by itself, and a version you said no to.
+  // Updates: whether Lorewatch looks for a newer version by itself, and a version you said no to.
   static final updateAuto = Setting<bool>('device.update.auto', true);
   static final updateSkipped = Setting<String>('device.update.skipped', '');
 

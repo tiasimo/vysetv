@@ -29,7 +29,7 @@ class VoiceBackground {
         androidNotificationOptions: AndroidNotificationOptions(
           channelId: 'vyse_voice',
           channelName: 'Voice chat',
-          channelDescription: 'Keeps Party voice going while VyseTV is in the background',
+          channelDescription: 'Keeps Party voice going while Lorewatch is in the background',
         ),
         iosNotificationOptions: const IOSNotificationOptions(),
         foregroundTaskOptions: ForegroundTaskOptions(eventAction: ForegroundTaskEventAction.nothing(), allowWakeLock: true, allowWifiLock: true),
@@ -41,7 +41,7 @@ class VoiceBackground {
       await FlutterForegroundTask.startService(
         serviceId: 717,
         serviceTypes: [ForegroundServiceTypes.microphone],
-        notificationTitle: 'VyseTV voice',
+        notificationTitle: 'Lorewatch voice',
         notificationText: "You're in a voice call",
         callback: _voiceTask,
       );

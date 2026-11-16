@@ -1,25 +1,14 @@
-<p align="center"><img src="assets/brand/vysetv_mark.png" width="104" alt="VyseTV"></p>
+<p align="center"><img src="branding/lorewatch_icon.png" width="104" alt="Lorewatch"></p>
 
-<h1 align="center">VyseTV</h1>
-
-<p align="center">
-  Everything you watch, in one app.<br>
-  Movies, shows, anime, live TV, music, manga and audiobooks, with watch parties built in.
-</p>
+<h1 align="center">Lorewatch</h1>
 
 <p align="center">
-  <a href="https://vysetv.cc/">Website</a> ·
-  <a href="https://gitlab.com/ayman707-ux/vysetvdownloads/-/releases/permalink/latest">Downloads</a> ·
-  <a href="https://discord.gg/dUJTGnUhz2">Discord</a>
+  Movies, shows, anime, live TV, music, manga and audiobooks in one app.
 </p>
 
-<p align="center">
-  <a href="https://gitlab.com/ayman707-ux/vysetvdownloads/-/releases/permalink/latest"><img alt="Latest version" src="https://img.shields.io/gitlab/v/release/ayman707-ux%2Fvysetvdownloads?label=version&color=ffa53a"></a>
-  <a href="LICENSE"><img alt="Licence: GPL-3.0" src="https://img.shields.io/badge/licence-GPL--3.0-ffa53a"></a>
-  <a href="https://discord.gg/dUJTGnUhz2"><img alt="Discord" src="https://img.shields.io/badge/Discord-join-ffa53a"></a>
-</p>
+> **Lorewatch is a personal fork of [VyseTV](https://gitlab.com/ayman707-ux/vysetv) by Ayman Marwan**, released under the GNU GPL v3 or later like the original. Name, icon and app id have been changed so that it is not confused with the official builds, as the original author asks. Everything below this note is the original VyseTV documentation and still describes how the code works.
 
-<p align="center"><img src="branding/screenshots/home.webp" alt="VyseTV's home screen" width="100%"></p>
+---
 
 This is the source code of VyseTV, a free app for Windows, Android, macOS, Linux and iOS. If you only want to use it, you don't need anything from this page: get the app from [vysetv.cc](https://vysetv.cc/) or the [downloads page](https://gitlab.com/ayman707-ux/vysetvdownloads/-/releases/permalink/latest). The rest of this file is for people who want to know what is inside, build it themselves, or change it.
 

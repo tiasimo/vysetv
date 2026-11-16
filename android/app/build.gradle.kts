@@ -310,7 +310,7 @@ android {
             }
         }
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.vyse.vyse_tv"
+        applicationId = "com.tiasimo.lorewatch"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         // Plezy's mpv-android AAR needs API 25 or newer

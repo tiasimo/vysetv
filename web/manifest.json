@@ -1,11 +1,11 @@
 {
-    "name": "VyseTV",
-    "short_name": "VyseTV",
+    "name": "Lorewatch",
+    "short_name": "Lorewatch",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#07080f",
     "theme_color": "#07080f",
-    "description": "VyseTV - movie and show discovery",
+    "description": "Lorewatch - movies, shows, anime and more",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

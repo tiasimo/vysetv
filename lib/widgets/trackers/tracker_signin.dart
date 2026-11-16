@@ -25,7 +25,7 @@ Future<void> connectTracker(BuildContext context, TrackerId id) async {
   if (!browser && !paste) {
     showToast(
       context,
-      Text('Connect ${id.label} from VyseTV on a computer for now', style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+      Text('Connect ${id.label} from Lorewatch on a computer for now', style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
       icon: Icons.computer_rounded,
     );
     return;
@@ -129,7 +129,7 @@ class _SignInState extends State<_SignIn> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (!_pasting) ...[
-              const Text('Finish signing in in your browser. VyseTV picks it up by itself.', style: dim),
+              const Text('Finish signing in in your browser. Lorewatch picks it up by itself.', style: dim),
               if (_error == null) ...[
                 const SizedBox(height: 16),
                 const SizedBox(height: 3, child: LinearProgressIndicator(color: VyseColors.accent, backgroundColor: Colors.white10)),
@@ -139,7 +139,7 @@ class _SignInState extends State<_SignIn> {
                 TextButton(onPressed: _switchToPaste, child: const Text('Paste a token instead')),
               ],
             ] else ...[
-              const Text('Open AniList, approve VyseTV, then copy the token it shows and paste it here.', style: dim),
+              const Text('Open AniList, approve Lorewatch, then copy the token it shows and paste it here.', style: dim),
               const SizedBox(height: 10),
               Align(
                 alignment: Alignment.centerLeft,
@@ -256,7 +256,7 @@ class _DeviceCodeDialogState extends State<_DeviceCodeDialog> {
             else if (c == null)
               const SizedBox(height: 3, child: LinearProgressIndicator(color: VyseColors.accent, backgroundColor: Colors.white10))
             else ...[
-              Text('Go to ${c.site} and enter this code. VyseTV connects as soon as you approve it.', style: dim),
+              Text('Go to ${c.site} and enter this code. Lorewatch connects as soon as you approve it.', style: dim),
               const SizedBox(height: 16),
               Center(
                 child: SelectableText(

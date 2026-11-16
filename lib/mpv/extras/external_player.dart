@@ -1,8 +1,8 @@
-// VyseTV: hand the stream to another player app. Windows looks for the usual
+// Lorewatch: hand the stream to another player app. Windows looks for the usual
 // players where they install; Android asks the system (Plezy's
 // ExternalPlayerChannel.kt, com.plezy/external_player). The stream URL is
-// whatever VyseTV is playing — for torrents that's VyseTV's own local stream,
-// so VyseTV has to stay open (paused) while the other app plays.
+// whatever Lorewatch is playing — for torrents that's Lorewatch's own local stream,
+// so Lorewatch has to stay open (paused) while the other app plays.
 
 import 'dart:async';
 import 'dart:io';
@@ -44,7 +44,7 @@ class ExternalPlayer {
         if (h['Referer'] != null) '--http-referrer=${h['Referer']}',
       ]));
     }
-    // No entry for a separate mpv: VyseTV's own player is mpv. The player's menu has
+    // No entry for a separate mpv: Lorewatch's own player is mpv. The player's menu has
     // "Copy link" instead (player_page.dart), which works with any app.
     final mpc = first(['$pf\\MPC-HC\\mpc-hc64.exe', '$pf86\\MPC-HC\\mpc-hc.exe', '$pf\\MPC-BE x64\\mpc-be64.exe', '$pf\\MPC-BE\\mpc-be64.exe']);
     if (mpc != null) {

@@ -100,7 +100,7 @@ class _WelcomeState extends State<_Welcome> {
           SliverPadding(
             padding: EdgeInsets.fromLTRB(inset, top, right, 26),
             sliver: const SliverToBoxAdapter(
-              child: SectionHeader(title: 'Your servers', subtitle: 'Plex, Jellyfin and Emby, right inside VyseTV'),
+              child: SectionHeader(title: 'Your servers', subtitle: 'Plex, Jellyfin and Emby, right inside Lorewatch'),
             ),
           ),
           SliverPadding(
@@ -219,7 +219,7 @@ class _Pitch extends StatelessWidget {
             constraints: const BoxConstraints(maxWidth: 560),
             child: const Text(
               'Sign in once and your server lives here: Continue watching, every library, every season. '
-              'It all plays on VyseTV\'s player, and your progress goes back to your server.',
+              'It all plays on Lorewatch\'s player, and your progress goes back to your server.',
               style: TextStyle(fontSize: 14, height: 1.5, color: VyseColors.textDim),
             ),
           ),

@@ -170,7 +170,7 @@ class _AccountFormState extends State<_AccountForm> {
         showToast(
           context,
           Text(
-            _change ? 'Password changed' : (_register ? 'Welcome to VyseTV, @${u.username}' : 'Signed in as @${u.username}'),
+            _change ? 'Password changed' : (_register ? 'Welcome to Lorewatch, @${u.username}' : 'Signed in as @${u.username}'),
             style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
           ),
           icon: Icons.check_circle_rounded,
@@ -482,7 +482,7 @@ class _AccountFormState extends State<_AccountForm> {
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
                   Text(
-                    _reset > 0 ? 'Remembered it?' : (_register ? 'Already have an account?' : 'New to VyseTV?'),
+                    _reset > 0 ? 'Remembered it?' : (_register ? 'Already have an account?' : 'New to Lorewatch?'),
                     style: const TextStyle(fontSize: 13, color: VyseColors.textDim),
                   ),
                   TextButton(

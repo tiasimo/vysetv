@@ -9,7 +9,7 @@
 //  * a torrent: the same file the player was reading, read in full from the torrent engine,
 //    which fetches it peer to peer as it's read.
 //
-// Everything lands in one folder (Downloads/VyseTV on a computer, the app's own folder on a
+// Everything lands in one folder (Downloads/Lorewatch on a computer, the app's own folder on a
 // phone). The list of them is a small JSON file next to the app's other data.
 
 import 'dart:async';
@@ -291,7 +291,7 @@ class Downloads extends ChangeNotifier {
     }
 
     if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
-      final d = await make(getDownloadsDirectory, sub: 'VyseTV');
+      final d = await make(getDownloadsDirectory, sub: 'Lorewatch');
       if (d != null) return d;
     }
     if (Platform.isAndroid) {

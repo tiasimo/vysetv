@@ -17,12 +17,12 @@ import 'tracker_keys.dart';
 /// AUTH V2: the device flow (no secret, no redirect), 7-day access tokens and 180-day refresh
 /// tokens that stay the same. Every request carries client_id, app-name and app-version in the
 /// URL, as Simkl requires. Each user has a daily allowance (500 on a free account) shared by all
-/// their Simkl apps, and an app that keeps going over it is cut off for everyone, so VyseTV only
+/// their Simkl apps, and an app that keeps going over it is cut off for everyone, so Lorewatch only
 /// calls Simkl when you do something, plus one "anything new?" check at app start (at most
 /// every six hours) once you've imported: never on a timer.
 class SimklTracker {
   static const _api = 'https://api.simkl.com';
-  static String get _ua => 'VyseTV/${TrackerKeys.appVersion} (${Platform.operatingSystem})';
+  static String get _ua => 'Lorewatch/${TrackerKeys.appVersion} (${Platform.operatingSystem})';
 
   /// What's left of the user's daily allowance, from the last response (null: not known yet).
   static int? remaining;
@@ -76,7 +76,7 @@ class SimklTracker {
       if (r.statusCode == 200 && j is Map && j['access_token'] is String) {
         // without media:write Simkl silently hands out a read-only token
         if (!'${j['scope'] ?? ''}'.split(' ').contains('media:write')) {
-          throw const TrackerAuthException("Simkl only allowed reading. Connect again and allow VyseTV to update your lists.");
+          throw const TrackerAuthException("Simkl only allowed reading. Connect again and allow Lorewatch to update your lists.");
         }
         final t = _token(j);
         final name = await _userName(t).catchError((Object _) => '');
@@ -122,12 +122,12 @@ class SimklTracker {
     } catch (_) {}
   }
 
-  // ── what VyseTV sends ──
+  // ── what Lorewatch sends ──
 
   /// start / pause / stop. A 409 (already recorded within the hour) counts as done.
   static Future<void> scrobble(String action, MediaRef ref, double progress) async {
     final body = {..._scrobbleBody(ref), 'progress': double.parse(progress.clamp(0, 100).toStringAsFixed(2))};
-    // min_progress only works in the URL: VyseTV's own "finished" point decides, not Simkl's 80%
+    // min_progress only works in the URL: Lorewatch's own "finished" point decides, not Simkl's 80%
     await _send('POST', '/scrobble/$action', body: body, query: const {'min_progress': '95'});
   }
 
@@ -184,7 +184,7 @@ class SimklTracker {
     });
   }
 
-  /// Removed from History in VyseTV (only with that switch on): its watch history on Simkl goes
+  /// Removed from History in Lorewatch (only with that switch on): its watch history on Simkl goes
   /// too.
   static Future<void> historyRemove(MediaRef ref) async {
     final status = await _libraryStatus(ref);
@@ -466,7 +466,7 @@ class SimklTracker {
     if (code == 412) {
       // the app itself is being held back: stop for an hour
       simklGate.blockFor(const Duration(hours: 1));
-      throw const TrackerRetryException('Simkl is refusing VyseTV for now', after: Duration(hours: 1));
+      throw const TrackerRetryException('Simkl is refusing Lorewatch for now', after: Duration(hours: 1));
     }
     if (code >= 500) throw const TrackerRetryException('Simkl is having trouble');
     if (code == 404) throw const TrackerSkipException('Not on Simkl', unmatched: true);

@@ -46,8 +46,8 @@ ManagedHttpClient _createIoClient(String debugLabel, Duration connectTimeout) {
   return ManagedHttpClient(IOClient(httpClient), debugLabel: debugLabel, forceCloseOnDrainTimeout: true);
 }
 
-/// VyseTV: every platform runs on Plezy's tuned dart:io client, Windows too (Plezy uses
-/// WinHTTP there for the system proxy; VyseTV skips the extra win_http dependency).
+/// Lorewatch: every platform runs on Plezy's tuned dart:io client, Windows too (Plezy uses
+/// WinHTTP there for the system proxy; Lorewatch skips the extra win_http dependency).
 ///
 /// The transport bounds only the connect, to [connectTimeout]. Waiting on the server is
 /// left to the caller's deadlines.

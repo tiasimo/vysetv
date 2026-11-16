@@ -1,4 +1,4 @@
-// VyseTV stand-in for Plezy's PlexApiCache (drift tables there; memory here).
+// Lorewatch stand-in for Plezy's PlexApiCache (drift tables there; memory here).
 
 import '../media/ids.dart';
 import '../media/media_backend.dart';

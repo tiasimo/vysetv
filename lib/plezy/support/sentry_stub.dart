@@ -1,5 +1,5 @@
-// VyseTV stand-in for package:sentry_flutter: Plezy reports a couple of events to
-// its own crash tracker; VyseTV has none, so these do nothing.
+// Lorewatch stand-in for package:sentry_flutter: Plezy reports a couple of events to
+// its own crash tracker; Lorewatch has none, so these do nothing.
 
 class Breadcrumb {
   Breadcrumb({this.message, this.category, this.data, this.level});

@@ -166,7 +166,7 @@ class DebridMediaMatcher {
   }
 
   /// [pickMediaFile], unless there is someone to [ask]: then the torrent's files are listed and
-  /// the one they pick is used (VyseTV: a magnet link pasted into Search).
+  /// the one they pick is used (Lorewatch: a magnet link pasted into Search).
   static Future<T?> pickOrAsk<T>(
     AskTorrentFile? ask,
     List<T> files, {

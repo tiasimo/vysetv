@@ -1,11 +1,11 @@
 import '../plezy/media/watch_progress.dart';
 
 /// Who marks a film or episode watched once you're past the server's "watched" point: the
-/// server by itself, or VyseTV by asking.
+/// server by itself, or Lorewatch by asking.
 ///
 /// Plex, Jellyfin and Emby mark a title watched on their own when the reports they receive in
 /// one sitting go from before that point to at or past it. Asking on top counts the watch twice
-/// on Plex (a second Play History row, a view count of 2). So VyseTV only asks when the server
+/// on Plex (a second Play History row, a view count of 2). So Lorewatch only asks when the server
 /// never saw that happen: you resumed already past the point, or no report from before it got
 /// through. This is Plezy's rule (its #1740).
 class WatchedRule {

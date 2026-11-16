@@ -11,7 +11,7 @@ import 'package:pointycastle/export.dart' as pc;
 import '../net.dart';
 import 'common.dart';
 import 'film_sources.dart' show FilmSource;
-/// The film and TV scrapers ported from the Vyla SDK (`src/sources/*.js`) that passed VyseTV's
+/// The film and TV scrapers ported from the Vyla SDK (`src/sources/*.js`) that passed Lorewatch's
 /// checks: each found a stream for a real title, played it through the relay (or straight, for
 /// files) and kept playing after a seek far into it. Each keeps its JS logic: requests, headers,
 /// decoding and extraction. Which failed, and why, is in SOURCES_REPORT.md at the project root.
@@ -1084,7 +1084,7 @@ Future<List<FoundStream>> yastream(FilmQuery q) async {
   ];
 }
 
-/// lookmovie.js (the SDK only runs it with your own TMDB key; VyseTV has one)
+/// lookmovie.js (the SDK only runs it with your own TMDB key; Lorewatch has one)
 Future<List<FoundStream>> lookmovie(FilmQuery q) async {
   const domains = ['https://www.lookmovie2.to', 'https://lookmovie2.to', 'https://lookmovie.foundation'];
   const headersBase = {'User-Agent': sdkUA, 'Accept-Language': 'en-US,en;q=0.9'};
@@ -2077,7 +2077,7 @@ Future<List<FoundStream>> s111477(FilmQuery q) async {
   final ua = getUA();
   final imdb = await resolveImdbId(q.id, tv);
   final targets = [if (imdb.startsWith('tt')) imdb, 'tmdb:${q.id}'];
-  // the JS appends `::tmdb=<key>` when it has one; VyseTV doesn't hand its key to the addon
+  // the JS appends `::tmdb=<key>` when it has one; Lorewatch doesn't hand its key to the addon
   const config = 'https://a.111477.xyz/::sort=file-desc::limit=3';
   final b64 = base64.encode(utf8.encode(config)).replaceAll('+', '-').replaceAll('/', '_').replaceAll(RegExp(r'=+$'), '');
   final addonBase = '$origin/config/$b64';

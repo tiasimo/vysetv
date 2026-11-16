@@ -1,4 +1,4 @@
-/// The list and tracking services VyseTV can keep up to date.
+/// The list and tracking services Lorewatch can keep up to date.
 enum TrackerId {
   anilist('AniList'),
   simkl('Simkl'),
@@ -8,7 +8,7 @@ enum TrackerId {
   final String label;
 }
 
-/// A code to enter on the service's site while VyseTV waits (Simkl, Trakt).
+/// A code to enter on the service's site while Lorewatch waits (Simkl, Trakt).
 class DeviceCode {
   const DeviceCode({required this.deviceCode, required this.userCode, required this.url, required this.expiresAt, required this.interval});
   final String deviceCode;
@@ -35,7 +35,7 @@ class TrackerState {
     this.expiresSoon = false,
   });
 
-  final bool configured; // VyseTV has a client id for it
+  final bool configured; // Lorewatch has a client id for it
   final bool connected;
   final String userName;
   final bool reconnect; // the sign-in stopped working: updates wait until you sign in again

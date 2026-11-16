@@ -211,7 +211,7 @@ class PlayerPage extends StatefulWidget {
   final VoidCallback? onClose;
 
   /// Played from your own Plex, Jellyfin or Emby server: its stream, subtitles and episodes,
-  /// with your progress going back to the server instead of VyseTV's history.
+  /// with your progress going back to the server instead of Lorewatch's history.
   final OutsidePlayback? server;
 
   /// A stream picked from your addons on the sources screen: it plays as it is (no server
@@ -599,7 +599,7 @@ class _PlayerPageState extends State<_PlayerView> {
         unawaited(mpv.setProperty(k, v));
       }
     }
-    // mpv draws the subtitles; VyseTV's subtitle settings become its style
+    // mpv draws the subtitles; Lorewatch's subtitle settings become its style
     unawaited(_applySubtitleStyle());
     for (final setting in _subtitleSettings) {
       setting.addListener(_subtitleStyleChanged);
@@ -945,7 +945,7 @@ class _PlayerPageState extends State<_PlayerView> {
 
   /// Subtitle files are timed from the start of the film; mpv's clock starts at [_offset].
   /// mpv draws subtitles itself: full ASS/SSA styling via libass, and on Android's hardware
-  /// path its own subtitle plane. Set to false to go back to VyseTV's Flutter overlay, which draws
+  /// path its own subtitle plane. Set to false to go back to Lorewatch's Flutter overlay, which draws
   /// plain text from mpv's sub-text.
   static const _mpvSubtitles = true;
 
@@ -953,7 +953,7 @@ class _PlayerPageState extends State<_PlayerView> {
 
   void _subtitleStyleChanged() => unawaited(_applySubtitleStyle());
 
-  /// VyseTV's subtitle settings as mpv's style for plain-text subtitles (SRT, VTT). Styled ASS keeps
+  /// Lorewatch's subtitle settings as mpv's style for plain-text subtitles (SRT, VTT). Styled ASS keeps
   /// its own look (mpv's default sub-ass-override=scale only scales it).
   Future<void> _applySubtitleStyle() async {
     if (!_mpvSubtitles) {
@@ -1135,7 +1135,7 @@ class _PlayerPageState extends State<_PlayerView> {
     }
   }
 
-  /// The address being played, as it is: for a torrent that is VyseTV's own engine on this
+  /// The address being played, as it is: for a torrent that is Lorewatch's own engine on this
   /// device (127.0.0.1). Never offered in a watch party, where the link may be the host's.
   bool get _canCopyLink => !widget.party && _playUrl.isNotEmpty;
 
@@ -1186,7 +1186,7 @@ class _PlayerPageState extends State<_PlayerView> {
           extension: RegExp(r'\.([A-Za-z0-9]{2,4})$').firstMatch(file?.path ?? '')?[1],
         );
       } else if (_linkIsLocal || u == null || !u.scheme.startsWith('http')) {
-        // a manifest VyseTV wrote for this play (some of Movy's servers): nothing to fetch as it is
+        // a manifest Lorewatch wrote for this play (some of Movy's servers): nothing to fetch as it is
         throw const DownloadRefused("This source can't be downloaded. Pick another one from Sources and try again.");
       } else {
         r = DownloadRequest(
@@ -1231,7 +1231,7 @@ class _PlayerPageState extends State<_PlayerView> {
     }
     showToast(
       context,
-      Text(err ?? 'Playing in ${p.name} · VyseTV is paused', style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+      Text(err ?? 'Playing in ${p.name} · Lorewatch is paused', style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
       icon: err == null ? Icons.open_in_new_rounded : Icons.error_outline_rounded,
     );
   }
@@ -3118,7 +3118,7 @@ class _PlayerPageState extends State<_PlayerView> {
       subDelay: _subMemo == null ? 0 : _subOffset,
     );
     _savedAt = DateTime.now();
-    // an anime episode (or film) watched to VyseTV's "finished" point: AniList
+    // an anime episode (or film) watched to Lorewatch's "finished" point: AniList
     // hear about it
     final anime = widget.anime;
     final n = ep?.number ?? (anime?.anime.isMovie == true ? 1 : null);
@@ -3884,13 +3884,13 @@ class _PlayerPageState extends State<_PlayerView> {
           if (_canCopyLink)
             MenuRow(
               title: 'Copy link',
-              detail: _linkIsLocal ? 'Plays on this device only, while VyseTV stays open' : 'The stream address, to paste into another app',
+              detail: _linkIsLocal ? 'Plays on this device only, while Lorewatch stays open' : 'The stream address, to paste into another app',
               onTap: _copyLink,
             ),
           // not in a watch party: another app would be handed the room's link
           if (!widget.party)
             for (final p in _externals)
-              MenuRow(title: 'Open in ${p.name}', detail: 'From where you are · VyseTV pauses', chevron: true, onTap: () => _openExternal(p)),
+              MenuRow(title: 'Open in ${p.name}', detail: 'From where you are · Lorewatch pauses', chevron: true, onTap: () => _openExternal(p)),
         ]),
       ],
     ),

@@ -1,4 +1,4 @@
-// VyseTV stand-ins for the two Plezy app settings the copied player reads
+// Lorewatch stand-ins for the two Plezy app settings the copied player reads
 // (Plezy's `SettingsService.subtitleRenderResolution` and
 // `DevicePerformance.isLowEndHardware`). Set these before creating a Player.
 

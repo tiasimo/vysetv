@@ -329,7 +329,7 @@ abstract class PlayerBase with PlayerStreamControllersMixin, VyseExtrasMixin imp
       await observeProperty(name, format);
     }
     await observeProperty('track-list', trackListFormat);
-    // VyseTV: sub-text and video size (see vyse_extras.dart).
+    // Lorewatch: sub-text and video size (see vyse_extras.dart).
     for (final (name, format) in VyseExtrasMixin.vyseObservations) {
       await observeProperty(name, format);
     }
@@ -364,7 +364,7 @@ abstract class PlayerBase with PlayerStreamControllersMixin, VyseExtrasMixin imp
 
   void handlePropertyChange(String name, dynamic value, {int? sourceId}) {
     if (_disposed) return;
-    if (vyseHandleProperty(name, value)) return; // VyseTV
+    if (vyseHandleProperty(name, value)) return; // Lorewatch
     switch (name) {
       case 'pause':
         final playing = value == false;
@@ -1733,7 +1733,7 @@ abstract class PlayerBase with PlayerStreamControllersMixin, VyseExtrasMixin imp
       );
     }
     await closeStreamControllers();
-    await closeVyseExtras(); // VyseTV
+    await closeVyseExtras(); // Lorewatch
   }
 }
 

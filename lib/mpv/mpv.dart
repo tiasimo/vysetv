@@ -56,9 +56,9 @@ export 'models.dart';
 
 // Video
 export 'video.dart';
-export 'vyse_video.dart'; // VyseTV: Video + hole punch
+export 'vyse_video.dart'; // Lorewatch: Video + hole punch
 
-// VyseTV extras on top of Plezy's player
+// Lorewatch extras on top of Plezy's player
 export 'extras/display_match.dart';
 export 'extras/external_player.dart';
 export 'extras/picture_effects.dart';

@@ -43,7 +43,7 @@ class PlayerNative extends PlayerBase {
   /// ([setVisible] no-ops via [audioOnly]), no subtitle plumbing, no
   /// display-mode handling.
   ///
-  /// VyseTV: [secondary] uses the second audio core
+  /// Lorewatch: [secondary] uses the second audio core
   /// (`com.plezy/mpv_audio_player_2`), so audiobooks keep their own loaded
   /// track next to music's.
   PlayerNative.audio({bool secondary = false})

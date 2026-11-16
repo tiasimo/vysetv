@@ -27,7 +27,7 @@ class LoopbackAuth {
     try {
       server = await HttpServer.bind(InternetAddress.loopbackIPv4, TrackerKeys.loopbackPort);
     } on SocketException {
-      throw const LoopbackException("Couldn't open the sign-in window. Close other VyseTV windows and try again.");
+      throw const LoopbackException("Couldn't open the sign-in window. Close other Lorewatch windows and try again.");
     }
     _server = server;
     final done = _waiting = Completer<Map<String, String>>();
@@ -37,7 +37,7 @@ class LoopbackAuth {
         if (p == '/$path/done' || (p == '/$path' && !fragment) || req.uri.queryParameters.containsKey('error')) {
           final q = req.uri.queryParameters;
           final error = q['error'];
-          await _page(req, error == null ? 'Signed in. You can close this tab and go back to VyseTV.' : "Sign-in didn't finish. You can close this tab.");
+          await _page(req, error == null ? 'Signed in. You can close this tab and go back to Lorewatch.' : "Sign-in didn't finish. You can close this tab.");
           if (!done.isCompleted) {
             error == null ? done.complete(q) : done.completeError(LoopbackException(q['error_description'] ?? error));
           }
@@ -86,13 +86,13 @@ class LoopbackAuth {
         'Finishing sign-in…',
         script: 'var h=location.hash.substring(1);'
             'fetch("$to?"+h).then(function(){document.getElementById("m").textContent='
-            '"Signed in. You can close this tab and go back to VyseTV.";});',
+            '"Signed in. You can close this tab and go back to Lorewatch.";});',
       ));
     await req.response.close();
   }
 
   static String _html(String message, {String script = ''}) =>
-      '<!doctype html><html><head><meta charset="utf-8"><title>VyseTV</title>'
+      '<!doctype html><html><head><meta charset="utf-8"><title>Lorewatch</title>'
       '<meta name="viewport" content="width=device-width,initial-scale=1"></head>'
       '<body style="margin:0;height:100vh;display:flex;align-items:center;justify-content:center;'
       'background:#07080d;color:#e9e9ef;font:16px system-ui,sans-serif">'

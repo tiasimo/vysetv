@@ -1,4 +1,4 @@
-// VyseTV: picture effects for Plezy's mpv player — upscaling shaders and
+// Lorewatch: picture effects for Plezy's mpv player — upscaling shaders and
 // ambient lighting. Shader chains and the ambient-lighting shader generator are
 // from Plezy (edde746/plezy, GPL-3.0: shader_asset_loader.dart,
 // shader_service.dart, ambient_lighting_service.dart). The shader files in

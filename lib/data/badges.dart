@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'net.dart';
 
-/// The gold set (djgenesis/badges): the one template VyseTV uses for the badges under a source.
+/// The gold set (djgenesis/badges): the one template Lorewatch uses for the badges under a source.
 const defaultBadgesUrl = 'https://raw.githubusercontent.com/djgenesis/badges/refs/heads/main/gold_badges_complete.json';
 
 /// One badge from a template: when its pattern matches a stream's text, its image (or its name,

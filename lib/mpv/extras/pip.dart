@@ -1,4 +1,4 @@
-// VyseTV: picture-in-picture for Plezy's player.
+// Lorewatch: picture-in-picture for Plezy's player.
 //
 // Android, iOS and macOS use the system's own picture-in-picture through the
 // `com.plezy/pip` channel (MainActivity.kt on Android, Plezy's MpvPlayerPlugin
@@ -52,7 +52,7 @@ abstract final class Pip {
       final r = await _channel.invokeMapMethod<String, dynamic>('enter', {'width': width, 'height': height});
       if (r?['success'] == true) return null;
       return switch (r?['errorCode']) {
-        'permission_disabled' => 'Picture-in-picture is turned off for VyseTV in Android settings',
+        'permission_disabled' => 'Picture-in-picture is turned off for Lorewatch in Android settings',
         'android_version' => 'Picture-in-picture needs Android 8 or newer',
         'not_supported' => "This device doesn't do picture-in-picture",
         _ => "Couldn't start picture-in-picture",

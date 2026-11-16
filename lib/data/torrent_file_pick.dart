@@ -1,6 +1,6 @@
 // Which file of a torrent to play.
 //
-// A Stremio addon such as Torrentio says which (a file name, or an index). VyseTV's built-in
+// A Stremio addon such as Torrentio says which (a file name, or an index). Lorewatch's built-in
 // source only knows the torrent, so for an episode the file is found by what the names say:
 // the season and episode in the file's name or its folders ("Season 02/05 - Title.mkv"), an
 // episode range ("E01-E04"), or the episode's own title. The scoring is the debrid port's

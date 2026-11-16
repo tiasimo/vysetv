@@ -10,7 +10,7 @@ import 'common.dart';
 import 'scrapers.dart';
 
 /// Where films and shows play from (Settings → Sources): Movy, and the sources ported from the
-/// Vyla SDK that passed VyseTV's checks (a real title found, played through the relay, and a
+/// Vyla SDK that passed Lorewatch's checks (a real title found, played through the relay, and a
 /// seek far into it). They're asked in the order Settings gives; the first to answer plays.
 ///
 /// Each goes by the site's own name.

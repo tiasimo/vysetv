@@ -12,7 +12,7 @@ import 'party_widgets.dart';
 
 const _panel = Color(0xFF0A0B13);
 
-/// Everyone on VyseTV, Discord-style: who's watching something, then online people grouped by
+/// Everyone on Lorewatch, Discord-style: who's watching something, then online people grouped by
 /// role, then online, then offline. Loads 50 at a time as you scroll and refreshes every 30 s.
 class PartyMemberPanel extends StatefulWidget {
   const PartyMemberPanel({super.key, this.topPadding = 0, this.onCount});

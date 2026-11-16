@@ -82,7 +82,7 @@ class PlexAccount extends ServerAccount {
   final PlexAccountConnection conn;
 
   /// Who the account is on plex.tv. Every sign-in gets a new token, so this is how signing in
-  /// to the same account again is recognised. Null on a sign-in from before VyseTV kept it,
+  /// to the same account again is recognised. Null on a sign-in from before Lorewatch kept it,
   /// until the next sign-in asks ([MediaServers._identifyPlex]).
   String? userId;
 
@@ -311,7 +311,7 @@ class MediaServers extends ChangeNotifier {
     }
   }
 
-  /// Sign-ins from before VyseTV kept the Plex user id are asked who they are, so that
+  /// Sign-ins from before Lorewatch kept the Plex user id are asked who they are, so that
   /// [fresh], a sign-in to the same account, takes the old one's place instead of sitting
   /// next to it. One whose token no longer works can't be asked: it counts as the same
   /// account when the name on it is the same.
@@ -430,13 +430,13 @@ String serverError(Object e) {
 
 // ───────────────────────── Signing in ─────────────────────────
 
-/// Plex: you approve VyseTV on plex.tv in your browser, VyseTV waits for it.
+/// Plex: you approve Lorewatch on plex.tv in your browser, Lorewatch waits for it.
 class PlexSignIn {
   PlexSignIn._(this._auth, this._pinId, this.url);
   final PlexAuthService _auth;
   final int _pinId;
 
-  /// Where you sign in and allow VyseTV.
+  /// Where you sign in and allow Lorewatch.
   final String url;
 
   /// What an account is called when plex.tv didn't say who it is.
@@ -448,7 +448,7 @@ class PlexSignIn {
     return PlexSignIn._(auth, (pin['id'] as num).toInt(), auth.getAuthUrl(pin['code'] as String));
   }
 
-  /// Waits (up to 10 minutes) for you to allow VyseTV, then adds the account. Null when it
+  /// Waits (up to 10 minutes) for you to allow Lorewatch, then adds the account. Null when it
   /// was [cancelled] or ran out of time.
   Future<PlexAccount?> wait({bool Function()? cancelled}) async {
     final token = await _auth.pollPinUntilClaimed(_pinId, timeout: const Duration(minutes: 10), shouldCancel: cancelled);

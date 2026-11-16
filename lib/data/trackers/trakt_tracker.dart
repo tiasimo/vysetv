@@ -28,7 +28,7 @@ class TraktLimitException extends TrackerSkipException {
 class TraktTracker {
   static const _api = 'https://api.trakt.tv';
   static const _auth = 'https://auth.trakt.tv';
-  static String get _ua => 'VyseTV/${TrackerKeys.appVersion}';
+  static String get _ua => 'Lorewatch/${TrackerKeys.appVersion}';
 
   static Map<String, String> _headers([String? token]) => {
     'Content-Type': 'application/json',
@@ -44,7 +44,7 @@ class TraktTracker {
   static Future<DeviceCode> deviceCode() async {
     final r = await _post('$_auth/oauth/device/code', {'client_id': TrackerKeys.traktClientId});
     final j = _json(r);
-    if (r.statusCode == 403) throw const TrackerAuthException("Trakt isn't accepting VyseTV's app right now");
+    if (r.statusCode == 403) throw const TrackerAuthException("Trakt isn't accepting Lorewatch's app right now");
     if (r.statusCode != 200 || j is! Map || j['device_code'] is! String) throw TrackerRetryException("Trakt didn't give a code (HTTP ${r.statusCode})");
     return DeviceCode(
       deviceCode: j['device_code'] as String,
@@ -123,7 +123,7 @@ class TraktTracker {
     } catch (_) {}
   }
 
-  // ── what VyseTV sends ──
+  // ── what Lorewatch sends ──
 
   /// start / pause / stop. Returns the history id when Trakt recorded a watch (a stop at 80% or
   /// more); null otherwise, including a 409 (already recorded).
@@ -195,7 +195,7 @@ class TraktTracker {
     if (add && _onlyNotFound(_json(r), 'added')) throw const TrackerSkipException('Not on Trakt', unmatched: true);
   }
 
-  /// Removed from History here (with that switch on): only the plays VyseTV itself recorded on
+  /// Removed from History here (with that switch on): only the plays Lorewatch itself recorded on
   /// Trakt go, never ones from other apps or the website.
   static Future<void> removePlays(String mediaKey) async {
     final ids = await _takePlays(mediaKey);
@@ -203,7 +203,7 @@ class TraktTracker {
     await _send('POST', '/sync/history/remove', body: {'ids': ids});
   }
 
-  // ── plays VyseTV recorded (so History removals can take off exactly those) ──
+  // ── plays Lorewatch recorded (so History removals can take off exactly those) ──
 
   static const _playsKey = 'trackers.trakt.plays';
 
@@ -470,7 +470,7 @@ class TraktTracker {
       case 403:
         // an unknown or unapproved app: nothing will work for a while
         traktGate.blockFor(const Duration(hours: 1));
-        throw const TrackerRetryException("Trakt isn't accepting VyseTV right now", after: Duration(hours: 1));
+        throw const TrackerRetryException("Trakt isn't accepting Lorewatch right now", after: Duration(hours: 1));
       case 404:
         throw const TrackerSkipException('Not on Trakt', unmatched: true);
       case 420:

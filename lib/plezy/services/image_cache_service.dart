@@ -1,5 +1,5 @@
-// VyseTV stand-in for Plezy's artwork cache, which is built on the
-// cached_network_image_ce fork's HTTP hooks. VyseTV uses the regular
+// Lorewatch stand-in for Plezy's artwork cache, which is built on the
+// cached_network_image_ce fork's HTTP hooks. Lorewatch uses the regular
 // cached_network_image; this keeps the one thing the lifted code needs: a cache
 // manager for server artwork and trickplay sheets.
 

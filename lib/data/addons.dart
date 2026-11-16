@@ -56,11 +56,11 @@ class Addon {
   String get base => manifestUrl.replaceFirst(RegExp(r'/manifest\.json$'), '');
   String? get configureUrl => configurable ? '$base/configure' : null;
 
-  /// Part of VyseTV itself, not installed from a link: it can be turned off and moved in the
+  /// Part of Lorewatch itself, not installed from a link: it can be turned off and moved in the
   /// list, but not removed. Its "manifest" is just a name (`builtin:…`).
   bool get builtIn => manifestUrl.startsWith('builtin:');
 
-  /// VyseTV's own torrent source: Knaben, a search engine over the public torrent sites
+  /// Lorewatch's own torrent source: Knaben, a search engine over the public torrent sites
   /// (lib/data/knaben.dart). Films and shows, by title; anime isn't covered.
   static const knaben = Addon(
     manifestUrl: 'builtin:knaben',

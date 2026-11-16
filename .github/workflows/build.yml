@@ -357,7 +357,7 @@ jobs:
       - run: flutter build apk --release --split-per-abi
       - uses: actions/upload-artifact@v4
         with:
-          name: vysetv-android
+          name: lorewatch-android
           path: build/app/outputs/flutter-apk/*.apk
           retention-days: 2 # a private repository has 500 MB for these
 

@@ -1,4 +1,4 @@
-// VyseTV's built-in torrent source: Knaben (knaben.org), a search engine over the public
+// Lorewatch's built-in torrent source: Knaben (knaben.org), a search engine over the public
 // torrent sites. Ported from PlayTorrio (GPL-3.0), lib/services/scraper/sites/knaben.dart:
 // the search, and its rule for what counts as the right title, season and episode.
 //

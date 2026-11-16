@@ -136,7 +136,7 @@ Future<void> main() async {
   if (isDesktopNative) {
     await windowManager.ensureInitialized();
     const options = WindowOptions(
-      title: 'VyseTV',
+      title: 'Lorewatch',
       size: Size(1440, 900),
       minimumSize: Size(400, 640),
       center: true,
@@ -160,7 +160,7 @@ class VyseApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => MaterialApp(
-        title: 'VyseTV',
+        title: 'Lorewatch',
         navigatorKey: rootNavigatorKey,
         debugShowCheckedModeBanner: false,
         theme: buildVyseTheme(),

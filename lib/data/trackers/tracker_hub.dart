@@ -36,7 +36,7 @@ class _Session {
   bool lastPlaying = false;
 }
 
-/// Keeps your lists on other sites up to date with what you watch in VyseTV.
+/// Keeps your lists on other sites up to date with what you watch in Lorewatch.
 ///
 /// Only what you do on this device reaches a service: what the player plays, and the My List and
 /// History changes you make here. Changes arriving from your other devices (through Vyse Sync)
@@ -48,7 +48,7 @@ class TrackerHub {
     for (final id in TrackerId.values) id: TrackerState(configured: _clientId(id).isNotEmpty),
   });
 
-  static const _finishedPct = WatchProgress.finishedAt * 100; // 95: VyseTV's "watched"
+  static const _finishedPct = WatchProgress.finishedAt * 100; // 95: Lorewatch's "watched"
   static const _writeAheadDelay = Duration(hours: 3);
   static final _finished = <String>{}; // "anilistId:episode" already queued this session
   static final _sessions = <Object, _Session>{};
@@ -122,7 +122,7 @@ class TrackerHub {
 
   // ── what the player tells us ──
 
-  /// The player watched [episode] of [anime] to the end (VyseTV's own "finished" point). Queued
+  /// The player watched [episode] of [anime] to the end (Lorewatch's own "finished" point). Queued
   /// for AniList when it's connected, at most once per episode per session.
   static void animeEpisodeFinished(Anime anime, int episode) {
     if (episode <= 0 || !_finished.add('${anime.id}:$episode')) return;
@@ -224,7 +224,7 @@ class TrackerHub {
 
   static Future<void> _scrobbleOne(TrackerId id, String action, _Session s, bool finished) async {
     var pct = s.pct;
-    // Trakt counts anything stopped (or paused) at 80% or more as watched; VyseTV's point is
+    // Trakt counts anything stopped (or paused) at 80% or more as watched; Lorewatch's point is
     // 95%, so short of finished it hears 79.9 at most
     if (id == TrackerId.trakt && !finished && pct >= 80) pct = 79.9;
     if (action != 'start' && pct < 1) return; // under 1% Trakt refuses it, and it means nothing

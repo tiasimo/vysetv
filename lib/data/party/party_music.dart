@@ -10,7 +10,7 @@ import 'watch_party.dart';
 
 /// Listening together in your room, on the watch party's channel: the host's music player reports
 /// what it's doing, and everyone listening follows it with their own copy of the song, on their
-/// own device. Audio never goes through VyseTV.
+/// own device. Audio never goes through Lorewatch.
 ///
 /// Nobody's music starts by surprise: you follow once you open the room ([join]). Pausing without
 /// control just steps you out, and [join] brings you back in sync.

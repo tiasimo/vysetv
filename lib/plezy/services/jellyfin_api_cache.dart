@@ -1,4 +1,4 @@
-// VyseTV stand-in for Plezy's JellyfinApiCache (drift tables there; memory here).
+// Lorewatch stand-in for Plezy's JellyfinApiCache (drift tables there; memory here).
 // Serves Jellyfin and Emby.
 
 import '../media/ids.dart';
