@@ -1,0 +1,72 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+#.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+/build/
+/coverage/
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Android Studio will place build artifacts here
+/android/app/debug
+/android/app/profile
+/android/app/release
+
+# Widget Preview related
+.widget_preview/
+
+# Built apps, the torrent engine's own settings, and local tooling
+/dist/
+/torrserver_data/
+.claude/
+*.bak*
+
+# The torrent engine is unpacked from packages/torrserver_flutter/binaries when the app is built
+packages/torrserver_flutter/android/src/main/jniLibs/
+packages/torrserver_flutter/macos/bin/
+packages/torrserver_flutter/ios/TorrServerKit.xcframework/
+
+# Planning notes, kept on the PC they were written on
+/reports/
+/docs/
+FRONTEND_PROMPT.md
+
+# The website (its own deliverable, with its video files; published to Cloudflare Pages, not part of the app)
+/website/
+/old-site-redirect/
+
+# This build's own server addresses. The copy in the repository is
+# lib/data/server_config.example.dart; the real one never leaves the build machine.
+/lib/data/server_config.dart

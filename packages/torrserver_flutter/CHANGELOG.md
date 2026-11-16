@@ -1,0 +1,60 @@
+# Changelog
+
+## 0.0.8
+
+- Update repository URLs and binary release download mirrors to `https://github.com/aymanisthedude26-png/torrserver_flutter`.
+- Automated binary distribution and SHA-256 checksum verification updated for `v0.0.8`.
+- Improved platform build scripts across Windows, Linux, macOS, Android, and iOS.
+
+## 0.0.7
+
+- Fix macOS Apple Silicon and desktop binary discovery out of the box:
+  - Add `s.resources = ['bin/torrserver']` in macOS podspec to bundle TorrServer directly into `Contents/Resources/torrserver`.
+  - Add search in `/Users/Shared/TorrServer` (official TorrServer macOS installer path) and standard system directories (`/usr/local/bin`, `/opt/homebrew/bin`, `PATH`).
+  - Add automatic on-demand download fallback in `BinaryLocator` fetching the official binary on first launch if not found locally.
+- Add macOS Apple Silicon live launch integration test to CI workflow.
+
+## 0.0.6
+
+- Fix Linux desktop and AppImage out-of-the-box startup by searching bundle `lib/` and `$APPDIR` mount directories in `BinaryLocator`.
+- Add automatic execution permission fallback (`chmod 755` via writable app support cache) for read-only AppImage squashfs filesystems.
+- Add PID tracking (`torrserver.pid`) and graceful shutdown (`GET /shutdown`) of lingering instances to prevent BoltDB (`config.db`) file lock timeouts.
+- Add Live Linux Desktop Integration Test to GitHub CI pipeline (`xvfb-run`).
+
+## 0.0.5
+
+- Fixed iOS in-process engine: replaced fragile FFI dynamic lookup with Swift `MethodChannel` plugin bridge.
+- Converted `TorrServerKit` Go shim to pure Go API for full `gomobile bind` compatibility.
+- Added live iOS Simulator integration test verifying in-process engine startup, healthcheck, and BitTorrent client connectivity in CI.
+- Added iOS App Transport Security (`NSAppTransportSecurity`), local networking keys (`NSLocalNetworkUsageDescription`), and macOS App Sandbox entitlements (`network.client` / `network.server`).
+- Added comprehensive platform permissions setup guide to `README.md`.
+
+## 0.0.4
+
+- Automatic process lifecycle management on app close/exit via Win32 Job Object (`KILL_ON_JOB_CLOSE`), `AppLifecycleListener`, and OS process signal handlers.
+- Startup orphan process detection and cleanup.
+- Strict static analysis formatting fixes (curly braces in all flow control structures) for maximum pub.dev scoring.
+
+## 0.0.3
+
+- Reduce release asset download sizes by ~75% (from ~58 MB to ~15 MB) via `.zip` and `.tar.gz` archive packaging.
+- Fix Android runtime binary discovery by querying `nativeLibraryDir` via MethodChannel and setting `android:extractNativeLibs="true"`.
+- Add 16 KB ELF page-size alignment (`-extldflags=-Wl,-z,max-page-size=16384`) for Android 15+ compliance.
+- Explicit `chmod 755` executable permissions across all platform archive extractors.
+
+## 0.0.2
+
+- Fix Android JVM target compatibility between Java and Kotlin compilation tasks (`JavaVersion.VERSION_1_8` and `jvmTarget = '1.8'`).
+- Enhanced example application with dynamic magnet title parsing and interactive per-file streaming selector.
+
+## 0.0.1
+
+- Initial production release of `torrserver_flutter`.
+- Unified `TorrServerController` supporting Windows, Linux, macOS, Android, and iOS.
+- Process-based subprocess controller with graceful signal shutdown for Windows, Linux, macOS, and Android.
+- In-process static linking via `TorrServerKit.xcframework` and `dart:ffi` for iOS.
+- Automated free port selection utility preventing `Port already in use` startup aborts.
+- Typed REST API client matching TorrServer Swagger specifications.
+- Kotlin ForegroundService for persistent background playback on Android 8.0+.
+- Binary download and SHA-256 verification hooks for CMake, Gradle, and CocoaPods with offline override via `TORRSERVER_FLUTTER_LOCAL_BINARIES`.
+- GPL-3.0 compliance disclosures (`NOTICE.md` and `LICENSE-GPL3`).

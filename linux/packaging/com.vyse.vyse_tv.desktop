@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=VyseTV
+Comment=Films, shows, anime, live TV and music
+Exec=vyse_tv
+Icon=vysetv
+Terminal=false
+Categories=AudioVideo;Video;Player;
+Keywords=movies;shows;anime;tv;streaming;video;
+StartupWMClass=com.vyse.vyse_tv

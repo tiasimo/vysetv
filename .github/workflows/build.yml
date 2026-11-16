@@ -1,0 +1,393 @@
+# Builds VyseTV with Plezy's player on every platform.
+#
+# Flutter stays pinned to 3.47.1: Windows needs Plezy's patched engine
+# (flutter-plezy windows-v3.47.1+2), which only matches that SDK.
+# libmpv comes from Plezy's mpv-build releases, pinned in mpv-build.lock.json
+# (Android/Windows/Linux) and the Xcode projects (MPVKit for iOS/macOS).
+
+name: Build
+
+# What gets built:
+#
+#   * Run by hand ("Run workflow" in the Actions tab): the platform you pick.
+#   * A push to main: the platforms named in the commit message, in square
+#     brackets: [linux] [linux-x64] [linux-arm64] [macos] [ios] [android]
+#     [windows] or [all]. A push that names none builds nothing.
+#
+# On a private repository the macOS and iOS jobs use up build minutes ten times
+# faster than the Linux ones, and Windows twice as fast.
+on:
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: What to build
+        type: choice
+        default: linux
+        options: [all, linux, linux-x64, linux-arm64, macos, ios, android, windows]
+  push:
+    branches: [main]
+
+env:
+  FLUTTER_VERSION: 3.47.1
+
+jobs:
+  # Reads what to build from the "Run workflow" choice or the commit message.
+  plan:
+    name: Choose what to build
+    runs-on: ubuntu-24.04
+    outputs:
+      linux: ${{ steps.pick.outputs.linux }}
+      macos: ${{ steps.pick.outputs.macos }}
+      ios: ${{ steps.pick.outputs.ios }}
+      android: ${{ steps.pick.outputs.android }}
+      windows: ${{ steps.pick.outputs.windows }}
+    steps:
+      - id: pick
+        env:
+          EVENT: ${{ github.event_name }}
+          PLATFORM: ${{ inputs.platform }}
+          MESSAGE: ${{ github.event.head_commit.message }}
+        run: |
+          if [ "$EVENT" = "workflow_dispatch" ]; then
+            pick="$PLATFORM"
+          else
+            pick=$(printf '%s' "$MESSAGE" | grep -oE '\[(all|linux|linux-x64|linux-arm64|macos|ios|android|windows)\]' | tr -d '[]' | tr '\n' ' ' || true)
+          fi
+          echo "Building: ${pick:-nothing}"
+          has() { case " $pick " in *" all "*|*" $1 "*) return 0 ;; esac; return 1; }
+          # Flutter's stable channel has no ARM64 Linux download; the same version
+          # is taken from its source instead (channel master), as Plezy does.
+          x64='{"arch":"x64","runner":"ubuntu-24.04","channel":"stable","triplet":"x86_64-linux-gnu","appimage":"x86_64"}'
+          arm64='{"arch":"arm64","runner":"ubuntu-24.04-arm","channel":"master","triplet":"aarch64-linux-gnu","appimage":"aarch64"}'
+          list=""
+          if has linux || has linux-x64; then list="$x64"; fi
+          if has linux || has linux-arm64; then list="${list:+$list,}$arm64"; fi
+          echo "linux=[$list]" >> "$GITHUB_OUTPUT"
+          for p in macos ios android windows; do
+            if has "$p"; then echo "$p=true" >> "$GITHUB_OUTPUT"; else echo "$p=false" >> "$GITHUB_OUTPUT"; fi
+          done
+
+  # 64-bit Intel/AMD and 64-bit ARM. Flutter has no 32-bit Linux desktop build.
+  linux:
+    name: Linux (${{ matrix.arch }})
+    needs: plan
+    if: ${{ needs.plan.outputs.linux != '[]' }}
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(needs.plan.outputs.linux) }}
+    steps:
+      - uses: actions/checkout@v4
+
+      # The -dev packages build the app; the runtime libraries they pull in are
+      # what bundle-libs.sh copies next to libmpv (it links libass, pipewire, ...).
+      - name: Install Linux dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            clang cmake ninja-build pkg-config zstd libgtk-3-dev liblzma-dev libstdc++-12-dev \
+            libepoxy-dev libegl-dev libgl-dev libwayland-dev wayland-protocols libxkbcommon-dev \
+            libasound2-dev libass-dev libfreetype-dev libfontconfig-dev libfribidi-dev libharfbuzz-dev \
+            libgnutls28-dev libpipewire-0.3-dev libva-dev libvdpau-dev libx11-dev libxext-dev libxrandr-dev \
+            libxss-dev libxpresent-dev libpulse-dev libdbus-1-dev libdrm-dev libgbm-dev liblcms2-dev \
+            libxcursor-dev libxi-dev libevdev-dev libdisplay-info-dev libmujs-dev liblua5.2-dev \
+            libsecret-1-dev libjsoncpp-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev \
+            gstreamer1.0-plugins-base gstreamer1.0-plugins-good desktop-file-utils file
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: ${{ matrix.channel }}
+          cache: true
+
+      - name: Fetch Plezy's libmpv
+        run: python3 scripts/fetch_linux_libmpv.py --dest libmpv-prefix
+
+      # The real server addresses are not in the repository. A build made here gets the
+      # example file: no account server, no update check.
+      - name: Use the example server settings
+        run: cp lib/data/server_config.example.dart lib/data/server_config.dart
+      - run: flutter pub get
+
+      - name: Build
+        env:
+          PKG_CONFIG_PATH: ${{ github.workspace }}/libmpv-prefix/lib/pkgconfig:${{ github.workspace }}/libmpv-prefix/lib/${{ matrix.triplet }}/pkgconfig
+        run: flutter build linux --release
+
+      # libmpv and everything it links travel with the app (Plezy's packaging).
+      - name: Bundle libmpv
+        run: |
+          B=build/linux/${{ matrix.arch }}/release/bundle
+          LIBMPV_DIR=$(dirname "$(find libmpv-prefix -name 'libmpv.so' | head -1)")
+          cp -a "$LIBMPV_DIR"/libmpv.so* "$B/lib/"
+          cp -a libmpv-prefix/lib/libshaderc_shared.so* "$B/lib/" 2>/dev/null || true
+          bash linux/packaging/bundle-libs.sh "$B"
+          cp linux/packaging/vysetv.sh "$B/vysetv.sh"
+          chmod +x "$B/vysetv.sh"
+
+      # A library libmpv links that this machine does not have cannot be bundled,
+      # and the app would then not start on a machine without it either.
+      - name: Check the bundle's libraries resolve
+        run: |
+          B=build/linux/${{ matrix.arch }}/release/bundle
+          missing=$(LD_LIBRARY_PATH="$B/lib" ldd "$B/vyse_tv" "$B"/lib/*.so* 2>/dev/null | grep "not found" | sort -u || true)
+          if [ -n "$missing" ]; then
+            echo "$missing"
+            echo "::warning::Some libraries the bundle needs were not found on the build machine (listed above)."
+          else
+            echo "Every library resolves."
+          fi
+
+      # Say so in the log if the torrent engine did not make it into the bundle
+      # (the app then fetches it the first time a torrent is played).
+      - name: Check the torrent engine
+        run: |
+          if [ -s build/linux/${{ matrix.arch }}/release/bundle/lib/torrserver ]; then
+            echo "Torrent engine bundled."
+          else
+            echo "::warning::The torrent engine is not in the bundle (see packages/torrserver_flutter/linux/CMakeLists.txt)."
+          fi
+
+      # The engine is installed without its executable bit. In the tarball the app
+      # sets it on first use; an AppImage is read-only, so it is set here.
+      - name: Make the torrent engine executable
+        run: |
+          if [ -f build/linux/${{ matrix.arch }}/release/bundle/lib/torrserver ]; then
+            chmod 755 build/linux/${{ matrix.arch }}/release/bundle/lib/torrserver
+          fi
+
+      # One file with everything in it (Plezy's packaging): the bundle above,
+      # libmpv, the torrent engine and every library that can travel.
+      # appimagetool and the runtime it embeds are pinned and checksummed.
+      - name: Build the AppImage
+        env:
+          # no FUSE on the build machine: appimagetool unpacks itself instead of mounting
+          APPIMAGE_EXTRACT_AND_RUN: "1"
+        run: |
+          bash linux/packaging/fetch-appimage-tools.sh ${{ matrix.arch }} "$RUNNER_TEMP/appimage"
+          VERSION=$(sed -n 's/^version: *\([^+ ]*\).*/\1/p' pubspec.yaml | head -1)
+          export VERSION
+          export APPIMAGETOOL="$RUNNER_TEMP/appimage/appimagetool"
+          export RUNTIME_FILE="$RUNNER_TEMP/appimage/runtime"
+          bash linux/packaging/build-appimage.sh build/linux/${{ matrix.arch }}/release/bundle ${{ matrix.arch }} "$GITHUB_WORKSPACE"
+
+      # upload-artifact drops the executable bit, so the bundle travels as a tarball.
+      - name: Pack the bundle
+        run: tar -czf vysetv-linux-${{ matrix.arch }}.tar.gz -C build/linux/${{ matrix.arch }}/release/bundle .
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vysetv-linux-${{ matrix.arch }}
+          path: vysetv-linux-${{ matrix.arch }}.tar.gz
+          retention-days: 2 # a private repository has 500 MB for these
+
+      # (After downloading: chmod +x the .AppImage, then run it.)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vysetv-linux-${{ matrix.arch }}-appimage
+          path: VyseTV-${{ matrix.appimage }}.AppImage
+          retention-days: 2 # a private repository has 500 MB for these
+
+  # macos-26: Plezy's player uses APIs from the Xcode 26 SDK
+  # (CALayer.preferredDynamicRange), the same runner Plezy builds on.
+  # One app that runs on both Intel and Apple silicon Macs (a universal build),
+  # in a disk image you drag to Applications. It is not signed with an Apple
+  # developer certificate: the first time, right-click the app and choose Open.
+  macos:
+    name: macOS (Intel + Apple silicon)
+    needs: plan
+    if: ${{ needs.plan.outputs.macos == 'true' }}
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+      - run: flutter config --enable-swift-package-manager
+      # The pod bundles packages/torrserver_flutter/macos/bin/torrserver. Its own
+      # install script makes that file too, but CocoaPods does not promise to run
+      # it for a plugin, so it is made here first: the two builds in binaries/
+      # joined into one that runs on Intel and Apple silicon Macs.
+      - name: Prepare the torrent engine
+        run: |
+          B=packages/torrserver_flutter/binaries
+          D=packages/torrserver_flutter/macos/bin
+          if [ -f "$B/torrserver-darwin-arm64.tar.gz" ] && [ -f "$B/torrserver-darwin-amd64.tar.gz" ]; then
+            mkdir -p "$D/parts"
+            tar -xzf "$B/torrserver-darwin-arm64.tar.gz" -C "$D/parts"
+            tar -xzf "$B/torrserver-darwin-amd64.tar.gz" -C "$D/parts"
+            lipo -create "$D/parts/torrserver-darwin-arm64" "$D/parts/torrserver-darwin-amd64" -output "$D/torrserver"
+            rm -rf "$D/parts"
+            chmod 755 "$D/torrserver"
+            codesign --force --sign - "$D/torrserver"
+            lipo -info "$D/torrserver"
+          else
+            echo "::warning::No macOS engine archives in $B: the pod's own download is the fallback."
+          fi
+      # The real server addresses are not in the repository. A build made here gets the
+      # example file: no account server, no update check.
+      - name: Use the example server settings
+        run: cp lib/data/server_config.example.dart lib/data/server_config.dart
+      - run: flutter pub get
+      # flutter build passes -skipPackageUpdates, so MPVKit has to be fetched first.
+      - name: Resolve Swift packages (MPVKit)
+        run: |
+          flutter build macos --config-only --release
+          xcodebuild -resolvePackageDependencies -workspace macos/Runner.xcworkspace -scheme Runner
+      - run: flutter build macos --release
+      - name: Check the torrent engine
+        run: |
+          E=$(find build/macos/Build/Products/Release/VyseTV.app -name torrserver -type f -size +1000k | head -1)
+          if [ -n "$E" ]; then
+            echo "Torrent engine bundled: $E"
+            lipo -info "$E"
+          else
+            echo "::warning::The torrent engine is not inside the app (it would be fetched on first use)."
+          fi
+      # The app itself has to hold both kinds of code, or it only starts on one
+      # kind of Mac. Anything inside it built for one kind only is listed.
+      - name: Check it runs on Intel and Apple silicon
+        run: |
+          APP=build/macos/Build/Products/Release/VyseTV.app
+          MAIN="$APP/Contents/MacOS/VyseTV"
+          archs=$(lipo -archs "$MAIN")
+          echo "VyseTV: $archs"
+          case "$archs" in *x86_64*arm64*|*arm64*x86_64*) ;; *) echo "::error::The app is built for '$archs' only, not for both Intel and Apple silicon."; exit 1 ;; esac
+          find "$APP/Contents" -type f \( -name '*.dylib' -o -perm +111 \) | while read -r f; do
+            a=$(lipo -archs "$f" 2>/dev/null) || continue
+            case "$a" in *x86_64*arm64*|*arm64*x86_64*) ;; *) echo "::warning::Built for '$a' only: ${f#"$APP"/}" ;; esac
+          done
+      # upload-artifact breaks the symlinks and executable bits inside an .app,
+      # so it travels inside a disk image (Plezy's packaging).
+      - name: Make the disk image
+        run: |
+          mkdir -p dmg-staging
+          cp -R build/macos/Build/Products/Release/VyseTV.app dmg-staging/
+          ln -s /Applications dmg-staging/Applications
+          hdiutil create -format ULMO -srcfolder dmg-staging -volname "VyseTV" VyseTV-macos.dmg
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vysetv-macos
+          path: VyseTV-macos.dmg
+          retention-days: 2 # a private repository has 500 MB for these
+
+  # iPhone and iPad: an .ipa without a signature, to install with a sideloading
+  # tool that signs it with your own Apple ID.
+  ios:
+    name: iOS (unsigned .ipa, for sideloading)
+    needs: plan
+    if: ${{ needs.plan.outputs.ios == 'true' }}
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+      - run: flutter config --enable-swift-package-manager
+      # The pod links TorrServerKit.xcframework from packages/torrserver_flutter/ios.
+      # Its own install script unpacks it too, but CocoaPods does not promise to run
+      # that for a plugin, so it is unpacked here first. Without the framework the
+      # app still builds, with torrents hidden.
+      - name: Prepare the torrent engine
+        run: |
+          Z=packages/torrserver_flutter/binaries/TorrServerKit.xcframework.zip
+          if [ -f "$Z" ]; then
+            rm -rf packages/torrserver_flutter/ios/TorrServerKit.xcframework
+            unzip -q "$Z" -d packages/torrserver_flutter/ios/
+            ls packages/torrserver_flutter/ios/TorrServerKit.xcframework
+          else
+            echo "::warning::No TorrServerKit.xcframework.zip in the package: this build has no torrent engine."
+          fi
+      # The real server addresses are not in the repository. A build made here gets the
+      # example file: no account server, no update check.
+      - name: Use the example server settings
+        run: cp lib/data/server_config.example.dart lib/data/server_config.dart
+      - run: flutter pub get
+      - name: Resolve Swift packages (MPVKit)
+        run: |
+          flutter build ios --config-only --release --no-codesign
+          xcodebuild -resolvePackageDependencies -workspace ios/Runner.xcworkspace -scheme Runner
+      - run: flutter build ios --release --no-codesign
+      # The engine is tens of megabytes of code; a small plugin binary means it was left out.
+      - name: Check the torrent engine
+        run: |
+          F=build/ios/iphoneos/Runner.app/Frameworks/torrserver_flutter.framework/torrserver_flutter
+          if [ -f "$F" ] && [ "$(stat -f%z "$F")" -gt 20000000 ]; then
+            echo "Torrent engine linked in."
+          else
+            echo "::warning::The torrent engine is not linked into the app: torrents will be hidden on iOS."
+          fi
+      - name: Package an unsigned .ipa
+        run: |
+          mkdir -p Payload
+          cp -R build/ios/iphoneos/Runner.app Payload/
+          zip -qry VyseTV-unsigned.ipa Payload
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vysetv-ios-unsigned
+          path: VyseTV-unsigned.ipa
+          retention-days: 2 # a private repository has 500 MB for these
+
+  android:
+    name: Android
+    needs: plan
+    if: ${{ needs.plan.outputs.android == 'true' }}
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+      # The real server addresses are not in the repository. A build made here gets the
+      # example file: no account server, no update check.
+      - name: Use the example server settings
+        run: cp lib/data/server_config.example.dart lib/data/server_config.dart
+      - run: flutter pub get
+      - run: flutter build apk --release --split-per-abi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vysetv-android
+          path: build/app/outputs/flutter-apk/*.apk
+          retention-days: 2 # a private repository has 500 MB for these
+
+  windows:
+    name: Windows (x64)
+    needs: plan
+    if: ${{ needs.plan.outputs.windows == 'true' }}
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+      # Plezy's DirectComposition engine: without it the video stays hidden
+      # behind the UI (the CMake install step refuses a stock engine).
+      - name: Install Plezy's patched Windows engine
+        shell: pwsh
+        run: |
+          flutter precache --windows
+          ./windows/tool/install-patched-engine.ps1
+      # The real server addresses are not in the repository. A build made here gets the
+      # example file: no account server, no update check.
+      - name: Use the example server settings
+        run: cp lib/data/server_config.example.dart lib/data/server_config.dart
+      - run: flutter pub get
+      - run: flutter build windows --release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vysetv-windows-x64
+          path: build/windows/x64/runner/Release
+          retention-days: 2 # a private repository has 500 MB for these

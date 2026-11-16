@@ -1,0 +1,162 @@
+group 'com.torrserver.torrserver_flutter'
+version '0.0.8'
+
+buildscript {
+    ext.kotlin_version = '1.9.0'
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.2.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+android {
+    namespace 'com.torrserver.torrserver_flutter'
+    compileSdkVersion 34
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    defaultConfig {
+        minSdkVersion 21
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    lintOptions {
+        disable 'InvalidPackage'
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['src/main/jniLibs']
+            assets.srcDirs = ['src/main/assets']
+        }
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation "androidx.core:core-ktx:1.12.0"
+}
+
+import java.security.MessageDigest
+
+// Custom Gradle task to download TorrServer Android NDK binaries per ABI
+task downloadTorrServerBinaries {
+    doLast {
+        def version = "0.0.8"
+        // VyseTV: the release archives ship inside the package (binaries/), so builds never download
+        def localBin = System.getenv("TORRSERVER_FLUTTER_LOCAL_BINARIES") ?: file("../binaries").absolutePath
+        def jniDir = file("src/main/jniLibs")
+        def versionMarker = file("${jniDir}/.version")
+        def abis = ["arm64-v8a": "torrserver-android-arm64",
+                    "x86_64": "torrserver-android-amd64",
+                    "armeabi-v7a": "torrserver-android-arm7",
+                    "x86": "torrserver-android-386"]
+
+        // If version changed, clean out stale binaries
+        if (versionMarker.exists() && versionMarker.text.trim() != version) {
+            println "TorrServer plugin version changed to ${version}. Cleaning stale jniLibs..."
+            jniDir.deleteDir()
+        }
+
+        // Fetch release checksums if downloading remotely
+        def checksumMap = [:]
+        if (localBin == null) {
+            try {
+                def checksumUrl = "https://github.com/aymanisthedude26-png/torrserver_flutter/releases/download/v${version}/checksums.txt"
+                def checksumText = new URL(checksumUrl).text
+                checksumText.eachLine { line ->
+                    def parts = line.trim().split(/\s+/)
+                    if (parts.length >= 2) {
+                        def hash = parts[0].trim()
+                        def filename = parts[1].trim().replaceFirst(/^[\*\/]/, '')
+                        checksumMap[filename] = hash
+                    }
+                }
+            } catch (Exception e) {
+                println "Note: Checksums file fetch deferred: ${e.message}"
+            }
+        }
+
+        abis.each { abi, binName ->
+            def abiFolder = file("${jniDir}/${abi}")
+            abiFolder.mkdirs()
+            def targetFile = file("${abiFolder}/libtorrserver.so")
+            def zipName = "${binName}.zip"
+
+            if (localBin != null && file("${localBin}/${zipName}").exists()) {
+                println "Extracting local TorrServer archive for ${abi} from ${localBin}"
+                copy {
+                    from zipTree(file("${localBin}/${zipName}"))
+                    into abiFolder
+                    rename { "libtorrserver.so" }
+                }
+                targetFile.setExecutable(true, false)
+                targetFile.setReadable(true, false)
+            } else if (localBin != null && file("${localBin}/${binName}").exists()) {
+                println "Copying local TorrServer binary for ${abi} from ${localBin}"
+                targetFile.bytes = file("${localBin}/${binName}").bytes
+                targetFile.setExecutable(true, false)
+                targetFile.setReadable(true, false)
+            } else if (!targetFile.exists()) {
+                println "Downloading compressed TorrServer binary for ${abi} (v${version})..."
+                try {
+                    def url = "https://github.com/aymanisthedude26-png/torrserver_flutter/releases/download/v${version}/${zipName}"
+                    def tempZip = file("${abiFolder}/temp_${zipName}")
+                    new URL(url).withInputStream { i -> tempZip.withOutputStream { it << i } }
+
+                    // Checksum verification before extraction
+                    if (checksumMap.containsKey(zipName)) {
+                        def expectedHash = checksumMap[zipName]
+                        def digest = MessageDigest.getInstance("SHA-256")
+                        tempZip.eachByte(4096) { buffer, length -> digest.update(buffer, 0, length) }
+                        def computedHash = digest.digest().encodeHex().toString()
+                        if (!computedHash.equalsIgnoreCase(expectedHash)) {
+                            tempZip.delete()
+                            throw new GradleException("SHA-256 checksum mismatch for ${zipName}! Expected: ${expectedHash}, got: ${computedHash}")
+                        }
+                        println "Verified SHA-256 for ${zipName}: ${computedHash}"
+                    }
+
+                    copy {
+                        from zipTree(tempZip)
+                        into abiFolder
+                        rename { "libtorrserver.so" }
+                    }
+                    tempZip.delete()
+                    targetFile.setExecutable(true, false)
+                    targetFile.setReadable(true, false)
+                    println "Successfully extracted and set permissions for ${abi}/libtorrserver.so"
+                } catch (Exception e) {
+                    println "Warning: Failed to download TorrServer binary for ${abi}: ${e.message}"
+                }
+            }
+        }
+
+        versionMarker.parentFile.mkdirs()
+        versionMarker.text = version
+    }
+}
+
+preBuild.dependsOn downloadTorrServerBinaries

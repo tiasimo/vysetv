@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- VyseTV's helm, one colour, for the status bar -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="512"
+    android:viewportHeight="512">
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:fillType="evenOdd"
+        android:pathData="M256,40 L322,78 L370,150 L386,240 L372,322 L334,392 L290,440 L256,472 L222,440 L178,392 L140,322 L126,240 L142,150 L190,78 Z M130,226 L256,262 L382,226 L378,262 L256,308 L134,262 Z" />
+</vector>
