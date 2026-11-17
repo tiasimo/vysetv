@@ -21,6 +21,7 @@ import '../core/theme.dart';
 import '../data/app_settings.dart';
 import '../data/playback_prefs.dart';
 import '../data/updater.dart';
+import '../widgets/refract_import_dialog.dart';
 import '../widgets/update_dialog.dart';
 import '../data/debrid/debrid.dart';
 import '../data/subtitle_style.dart';
@@ -680,6 +681,17 @@ class _AccountTab extends StatelessWidget {
         ],
       ),
       // Lorewatch: no accounts (there's no server for them): name and avatar stay on this device.
+      _Section(
+        title: 'Importa',
+        subtitle: 'Porta qui quello che hai segnato in altre app.',
+        children: [
+          _Row(
+            title: 'Da Refract',
+            subtitle: 'Scegli il backup esportato da Refract (il file .zip): film e serie finiscono in La mia lista, ciascuno nel suo stato, e quello che hai già visto nella Cronologia.',
+            trailing: _SmallButton(label: 'Scegli file', onTap: () => importFromRefract(context)),
+          ),
+        ],
+      ),
       const _ConnectedServices(),
     ],
   );

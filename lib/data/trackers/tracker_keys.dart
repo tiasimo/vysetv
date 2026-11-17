@@ -10,7 +10,7 @@ class TrackerKeys {
 
   /// AniList: anilist.co/settings/developer → Create New Application.
   /// Redirect URL: http://127.0.0.1:47853/anilist
-  static const anilistClientId = '56650';
+  static const anilistClientId = '57293'; // Lorewatch's own AniList app
 
   /// Optional second AniList application whose Redirect URL is
   /// https://anilist.co/api/v2/oauth/pin. It lets people paste a token instead of coming back

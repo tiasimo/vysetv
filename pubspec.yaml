@@ -57,6 +57,8 @@ dependencies:
   xml: ^7.0.1
   wakelock_plus: ^1.3.3 # keeps the screen on during playback (media_kit used to)
   http: ^1.6.0
+  archive: ^4.0.0 # Lorewatch: reading a Refract backup (.zip)
+  file_picker: ^10.0.0 # Lorewatch: choosing the Refract backup to import
   cached_network_image: ^4.0.6
   google_fonts: ^9.0.0
   flutter_svg: ^2.3.2
