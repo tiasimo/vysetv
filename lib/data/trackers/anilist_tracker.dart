@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import '../net.dart';
+import '../tmdb.dart' show Media;
 import 'anime_rules.dart';
 import 'media_ref.dart';
 import 'rate_gate.dart';
@@ -71,6 +72,52 @@ class AniListTracker {
         },
       );
     }
+  }
+
+  /// Lorewatch: your AniList manga list (every entry, with its list), as titles for My List.
+  static Future<List<({Media media, String status, DateTime added})>> mangaList() async {
+    final t = await TokenStore.read(TrackerId.anilist);
+    final user = int.tryParse(t?.userId ?? '');
+    if (t == null || user == null) return const [];
+    final out = <({Media media, String status, DateTime added})>[];
+    for (var chunk = 1; chunk <= 20; chunk++) {
+      final d = await _gql(
+        t.access,
+        r'query ($user: Int, $chunk: Int) { MediaListCollection(userId: $user, type: MANGA, chunk: $chunk, perChunk: 500) {'
+        ' hasNextChunk lists { entries { status createdAt media { id title { userPreferred english romaji } '
+        'coverImage { extraLarge large } bannerImage description(asHtml: false) averageScore popularity startDate { year } } } } } }',
+        {'user': user, 'chunk': chunk},
+      );
+      final c = d['MediaListCollection'];
+      if (c is! Map) break;
+      for (final l in (c['lists'] as List? ?? const []).whereType<Map>()) {
+        for (final e in (l['entries'] as List? ?? const []).whereType<Map>()) {
+          final m = e['media'];
+          if (m is! Map || m['id'] is! int) continue;
+          final title = m['title'] is Map ? m['title'] as Map : const {};
+          final cover = m['coverImage'] is Map ? m['coverImage'] as Map : const {};
+          final year = (m['startDate'] is Map ? (m['startDate'] as Map)['year'] : null) as int?;
+          out.add((
+            media: Media(
+              id: m['id'] as int,
+              title: '${title['english'] ?? title['userPreferred'] ?? title['romaji'] ?? '?'}',
+              isTv: false,
+              manga: true,
+              overview: '${m['description'] ?? ''}'.replaceAll(RegExp(r'<[^>]+>'), ''),
+              posterPath: (cover['extraLarge'] ?? cover['large']) as String?,
+              backdropPath: m['bannerImage'] as String?,
+              rating: ((m['averageScore'] as num?) ?? 0) / 10,
+              year: year?.toString(),
+              popularity: ((m['popularity'] as num?) ?? 0).toDouble(),
+            ),
+            status: '${e['status'] ?? 'PLANNING'}',
+            added: DateTime.fromMillisecondsSinceEpoch(((e['createdAt'] as num?) ?? 0).toInt() * 1000),
+          ));
+        }
+      }
+      if (c['hasNextChunk'] != true) break;
+    }
+    return out;
   }
 
   /// Lorewatch: puts AniList anime [mediaId] on list [status] (PLANNING, CURRENT, COMPLETED,

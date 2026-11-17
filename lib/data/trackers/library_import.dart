@@ -1,3 +1,4 @@
+import '../list_status.dart';
 import 'dart:async';
 import 'dart:convert';
 
@@ -52,7 +53,7 @@ class ImportPlan {
 /// replaces what's here when it's newer, so History stays light and Continue watching stays
 /// yours. Nothing is sent back: an import doesn't change anything on the service.
 class LibraryImport {
-  static const historyCap = 100;
+  static const historyCap = 1500; // Lorewatch: every title, so My List shows where each one is
   static const resumeCap = 20;
   static const _followEvery = Duration(hours: 6);
 
@@ -106,6 +107,7 @@ class LibraryImport {
     var n = 0;
     if (list) {
       MyList.setStatuses(p.statuses);
+      if (p.id == TrackerId.anilist) unawaited(ListStatusSync.syncManga());
       final add = [
         for (final t in p.list)
           if (media[t.key] case final m?) SavedTitle(m.media, t.at, p.statuses[t.key] ?? WatchStatus.planning),

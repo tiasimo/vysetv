@@ -21,7 +21,8 @@ enum _Filter {
   all('Tutti'),
   films('Film'),
   series('Serie'),
-  anime('Anime');
+  anime('Anime'),
+  manga('Manga');
 
   const _Filter(this.label);
   final String label;
@@ -59,8 +60,11 @@ String _left(Duration d) {
 void _play(BuildContext context, Media m, WatchEntry? progress) => openPlayer(
   context,
   m,
-  episode: progress?.season != null && progress?.episode != null
-      ? PlayerEpisode(season: progress!.season!, number: progress.episode!, name: progress.episodeName)
+  episode: progress?.episode != null && (progress!.season != null || m.anime)
+      // Lorewatch: an episode already finished goes on with the next one
+      ? (progress.finished
+          ? PlayerEpisode(season: progress.season ?? 0, number: progress.episode! + 1)
+          : PlayerEpisode(season: progress.season ?? 0, number: progress.episode!, name: progress.episodeName))
       : (m.isTv ? const PlayerEpisode(season: 1, number: 1) : null),
 );
 
@@ -104,9 +108,10 @@ class _MyListPageState extends State<MyListPage> {
       if (q.isNotEmpty && !m.title.toLowerCase().contains(q)) return false;
       return switch (_filter) {
         _Filter.all => true,
-        _Filter.films => !m.isTv && !m.anime,
+        _Filter.films => !m.isTv && !m.anime && !m.manga,
         _Filter.series => m.isTv && !m.anime,
         _Filter.anime => m.anime,
+        _Filter.manga => m.manga,
       } && (_status == null || s.status == _status);
     }).toList();
     switch (_sort) {
@@ -150,7 +155,8 @@ class _MyListPageState extends State<MyListPage> {
       builder: (context, _) {
         final all = MyList.items.value;
         // unfinished only: finished titles count as "not started" again here
-        final progress = {for (final e in WatchProgress.entries.value) if (!e.finished) e.media.key: e};
+        // Lorewatch: series and anime show the last episode watched even when it was finished
+        final progress = {for (final e in WatchProgress.entries.value) if (!e.finished || e.episode != null) e.media.key: e};
         final shown = _visible(all, progress);
         _selected.removeWhere((k) => !all.any((s) => s.media.key == k));
 
@@ -166,7 +172,7 @@ class _MyListPageState extends State<MyListPage> {
             SliverToBoxAdapter(
               child: _Header(
                 items: all,
-                inProgress: all.where((s) => progress.containsKey(s.media.key)).length,
+                inProgress: all.where((s) => progress[s.media.key]?.finished == false).length,
                 top: top,
                 side: side,
                 right: right,
@@ -213,9 +219,10 @@ class _MyListPageState extends State<MyListPage> {
                               for (final f in _Filter.values)
                                 f: switch (f) {
                                   _Filter.all => all.length,
-                                  _Filter.films => all.where((s) => !s.media.isTv && !s.media.anime).length,
+                                  _Filter.films => all.where((s) => !s.media.isTv && !s.media.anime && !s.media.manga).length,
                                   _Filter.series => all.where((s) => s.media.isTv && !s.media.anime).length,
                                   _Filter.anime => all.where((s) => s.media.anime).length,
+                                  _Filter.manga => all.where((s) => s.media.manga).length,
                                 },
                             },
                             status: _status,
@@ -350,14 +357,16 @@ class _Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final phone = Layout.isPhone(context);
-    final films = items.where((s) => !s.media.isTv && !s.media.anime).length;
+    final films = items.where((s) => !s.media.isTv && !s.media.anime && !s.media.manga).length;
     final anime = items.where((s) => s.media.anime).length;
+    final manga = items.where((s) => s.media.manga).length;
     final backdrop = items.map((s) => s.media.backdrop('w780')).whereType<String>().firstOrNull;
     final stats = [
-      '${items.length} ${items.length == 1 ? 'title' : 'titles'}',
-      if (films > 0) '$films ${films == 1 ? 'film' : 'films'}',
-      if (items.length - films - anime > 0) '${items.length - films - anime} serie',
+      '${items.length} ${items.length == 1 ? 'titolo' : 'titoli'}',
+      if (films > 0) '$films film',
+      if (items.length - films - anime - manga > 0) '${items.length - films - anime - manga} serie',
       if (anime > 0) '$anime anime',
+      if (manga > 0) '$manga manga',
       if (inProgress > 0) '$inProgress in corso',
     ];
     return Stack(children: [
@@ -880,14 +889,14 @@ class _PosterTile extends StatelessWidget {
                 ),
               // where you are
               if (p != null) ...[
-                if (p.season != null && p.episode != null)
+                if (p.episode != null)
                   Positioned(
                     top: 7,
                     left: 7,
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
                       decoration: BoxDecoration(color: Colors.black.withValues(alpha: .7), borderRadius: BorderRadius.circular(6)),
-                      child: Text(episodeLabel(p.season, p.episode ?? 0), style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w800)),
+                      child: Text(episodeLabel(p.season, p.episode ?? 0), style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w800, color: Colors.white)),
                     ),
                   ),
                 Positioned(left: 0, right: 0, bottom: 0, child: _ProgressLine(fraction: p.fraction)),
@@ -999,7 +1008,7 @@ class _RowTile extends StatelessWidget {
                   if (p != null) ...[
                     const SizedBox(height: 6),
                     Text(
-                      [if (p.season != null && p.episode != null) episodeLabel(p.season, p.episode ?? 0), _left(p.left)].join('  ·  '),
+                      [if (p.episode != null) (p.finished ? 'Visto fino a ${episodeLabel(p.season, p.episode ?? 0)}' : episodeLabel(p.season, p.episode ?? 0)), if (!p.finished) _left(p.left)].join('  ·  '),
                       style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: VyseColors.accent),
                     ),
                   ] else if (!phone && m.overview.isNotEmpty) ...[
@@ -1209,7 +1218,7 @@ class _PickForMeState extends State<_PickForMe> {
                 Text(m.title, textAlign: TextAlign.center, maxLines: 2, style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w900, letterSpacing: -.3)),
                 const SizedBox(height: 4),
                 Text(
-                  [m.kind, if (m.year != null) m.year!, if (m.rating > 0) '★ ${m.rating.toStringAsFixed(1)}', if (p != null) _left(p.left)].join('  ·  '),
+                  [m.kind, if (m.year != null) m.year!, if (m.rating > 0) '★ ${m.rating.toStringAsFixed(1)}', if (p != null && !p.finished) _left(p.left), if (p != null && p.finished && p.episode != null) 'Visto fino a ${episodeLabel(p.season, p.episode ?? 0)}'].join('  ·  '),
                   style: TextStyle(fontSize: 12.5, color: VyseColors.textDim),
                 ),
               ]),

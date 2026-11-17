@@ -28,14 +28,19 @@ class Media {
     this.date = '',
     this.anime = false,
     this.originalLanguage = '',
+    this.manga = false,
   });
+
+  /// Lorewatch: a manga from AniList (key `manga/<AniList id>`), kept in My List next to films,
+  /// series and anime. Opening one searches it in the Manga libraries.
+  final bool manga;
 
   /// TMDB's original language ("ja", "en"…), when it was sent.
   final String originalLanguage;
 
   /// Lorewatch: a Japanese animated series on TMDB, i.e. an anime. Anime have their own section
   /// (from AniList), so they're kept out of TV series.
-  bool get tmdbAnime => !anime && genreIds.contains(16) && originalLanguage == 'ja';
+  bool get tmdbAnime => !anime && !manga && genreIds.contains(16) && originalLanguage == 'ja';
 
   /// [id] is TMDB's, or AniList's when [anime] is set.
   final int id;
@@ -75,14 +80,15 @@ class Media {
       date: date,
       anime: j['anime'] == true,
       originalLanguage: (j['original_language'] as String?) ?? '',
+      manga: j['manga'] == true,
     );
   }
 
-  String get kind => anime ? 'Anime' : (isTv ? 'Series' : 'Movie');
+  String get kind => manga ? 'Manga' : (anime ? 'Anime' : (isTv ? 'Series' : 'Movie'));
 
   /// Stable identity across rows, lists and TMDB URLs, e.g. `tv/1399`.
-  String get key => anime ? 'anime/$id' : '${isTv ? 'tv' : 'movie'}/$id';
-  String get tmdbUrl => anime ? 'https://anilist.co/anime/$id' : 'https://www.themoviedb.org/$key';
+  String get key => manga ? 'manga/$id' : (anime ? 'anime/$id' : '${isTv ? 'tv' : 'movie'}/$id');
+  String get tmdbUrl => manga ? 'https://anilist.co/manga/$id' : (anime ? 'https://anilist.co/anime/$id' : 'https://www.themoviedb.org/$key');
   String? poster([String size = 'w342']) => _image(posterPath, size);
   String? backdrop([String size = 'w1280']) => _image(backdropPath, size);
   static String? _image(String? path, String size) => path == null ? null : (path.startsWith('http') ? path : '$_imageBase/$size$path');
@@ -605,6 +611,7 @@ class MyList {
       'vote_count': s.media.voteCount,
       'date': s.media.date.isNotEmpty ? s.media.date : (s.media.year ?? ''),
       if (s.media.anime) 'anime': true,
+      if (s.media.manga) 'manga': true,
     },
     'a': s.added.millisecondsSinceEpoch,
     if (s.status != WatchStatus.planning) 's': s.status.name,

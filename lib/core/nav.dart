@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import '../data/anilist.dart';
 import '../data/discover.dart';
 import '../data/tmdb.dart';
+import '../data/manga_library.dart' show mangaService;
+import '../services/manga/manga_service.dart' show MangaLibraryChoice;
+import '../screens/manga_details_page.dart';
 import '../screens/details_page.dart';
 import '../screens/discover_page.dart';
 import '../screens/person_page.dart';
@@ -66,6 +69,25 @@ Future<void> openStudio(BuildContext context, Studio s) => Navigator.of(context)
 
 /// Opens the details page for [media]. Pass [heroTag] (the tag on the card's poster) to fly the
 /// poster into place.
-Future<void> openDetails(BuildContext context, Media media, {String? heroTag}) => media.anime
+Future<void> openDetails(BuildContext context, Media media, {String? heroTag}) => media.manga
+    ? openMangaFromList(context, media)
+    : media.anime
     ? openAnime(context, Anime.fromMedia(media), heroTag: heroTag)
     : Navigator.of(context).push(ShellRoute(child: DetailsPage(media: media, heroTag: heroTag)));
+
+/// Lorewatch: a manga from My List (AniList) is looked up by title in the Manga library picked
+/// on the Manga page, and its first match opens.
+Future<void> openMangaFromList(BuildContext context, Media media) async {
+  final messenger = ScaffoldMessenger.maybeOf(context);
+  try {
+    final found = await mangaService.searchManga(media.title);
+    if (!context.mounted) return;
+    if (found.isEmpty) {
+      messenger?.showSnackBar(SnackBar(content: Text('"${media.title}" non è in ${MangaLibraryChoice.current.label}. Prova un\'altra fonte nella pagina Manga.')));
+      return;
+    }
+    await Navigator.of(context).push(ShellRoute(child: MangaDetailsPage(manga: found.first)));
+  } catch (_) {
+    messenger?.showSnackBar(const SnackBar(content: Text('Impossibile cercare il manga ora.')));
+  }
+}

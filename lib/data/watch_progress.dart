@@ -113,7 +113,7 @@ class WatchEntry {
 class WatchProgress {
   static final entries = ValueNotifier<List<WatchEntry>>(const []);
   static const _key = 'watch.progress';
-  static const _max = 500;
+  static const _max = 3000; // Lorewatch: room for a whole AniList / Refract history
 
   /// At or past this, a title counts as finished: it leaves Continue watching, stays in History.
   static const finishedAt = .95;
