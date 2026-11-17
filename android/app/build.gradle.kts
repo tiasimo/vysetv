@@ -350,19 +350,25 @@ android {
     }
 
     // Lorewatch: one fixed key, so every build installs over the one before (and the in-app
-    // updater can replace it). The debug key would be a new one on every CI run.
+    // updater can replace it). The key isn't in the repository: the GitHub workflow writes it
+    // from the LOREWATCH_KEYSTORE secret and points LOREWATCH_KEYSTORE_FILE at it. Without it
+    // (a build on your own PC) the debug key is used.
+    val lorewatchKeystore = System.getenv("LOREWATCH_KEYSTORE_FILE")?.let { file(it) }?.takeIf { it.exists() }
     signingConfigs {
-        create("lorewatch") {
-            storeFile = file("lorewatch-release.jks")
-            storePassword = "lorewatch"
-            keyAlias = "lorewatch"
-            keyPassword = "lorewatch"
+        if (lorewatchKeystore != null) {
+            create("lorewatch") {
+                storeFile = lorewatchKeystore
+                storeType = "PKCS12"
+                storePassword = "lorewatch"
+                keyAlias = "lorewatch"
+                keyPassword = "lorewatch"
+            }
         }
     }
 
     buildTypes {
         release {
-            signingConfig = signingConfigs.getByName("lorewatch")
+            signingConfig = signingConfigs.getByName(if (lorewatchKeystore != null) "lorewatch" else "debug")
         }
     }
 }
