@@ -4,6 +4,7 @@ import 'core/accent.dart';
 import 'data/list_status.dart';
 import 'data/account.dart';
 import 'data/account_sync.dart';
+import 'data/gist_sync.dart';
 import 'data/addons.dart' show Addons;
 import 'data/badges.dart' show Badges;
 import 'data/audiobook_player.dart' show AudiobookPlayer;
@@ -64,11 +65,12 @@ Future<void> main() async {
   await Debrid.initialize();
   await Account.initialize();
   // Lorewatch: the Party (friends, rooms, voice, watch together) is switched off.
-  await AccountSync.initialize([
+  final syncSources = [
     SyncSource(
       kind: 'progress',
       snapshot: WatchProgress.syncSnapshot,
       apply: WatchProgress.syncApply,
+      applyAll: WatchProgress.syncApplyAll,
       changes: WatchProgress.entries,
       timeOf: (d) => (d['u'] as num?)?.toInt(),
     ),
@@ -76,6 +78,7 @@ Future<void> main() async {
       kind: 'mylist',
       snapshot: MyList.syncSnapshot,
       apply: MyList.syncApply,
+      applyAll: MyList.syncApplyAll,
       changes: MyList.items,
       timeOf: (d) => (d['a'] as num?)?.toInt(),
     ),
@@ -101,7 +104,10 @@ Future<void> main() async {
       changes: AudiobookPlayer.syncRevision,
     ),
     ...MusicLibrary.syncSources,
-  ]);
+  ];
+  await AccountSync.initialize(syncSources);
+  // Lorewatch: phone, tablet… in step through a private GitHub Gist
+  await GistSync.initialize(syncSources);
   // Trakt, Simkl, AniList: sign-ins on this device, and updates still waiting to go out
   unawaited(TrackerHub.initialize());
 

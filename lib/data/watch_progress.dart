@@ -240,6 +240,16 @@ class WatchProgress {
     _set(list.take(_max).toList());
   }
 
+  static Future<void> syncApplyAll(Map<String, Map<String, dynamic>?> changes) async {
+    final list = entries.value.where((e) => !changes.containsKey(e.media.key)).toList();
+    for (final d in changes.values) {
+      final w = d == null ? null : _tryParse(d);
+      if (w != null) list.add(w);
+    }
+    list.sort((a, b) => b.updated.compareTo(a.updated));
+    _set(list.take(_max).toList());
+  }
+
   static void _set(List<WatchEntry> list) {
     entries.value = list;
     _prefs?.setString(_key, json.encode([for (final e in list) e.toJson()]));

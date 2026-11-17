@@ -22,6 +22,8 @@ import '../data/app_settings.dart';
 import '../data/playback_prefs.dart';
 import '../data/updater.dart';
 import '../widgets/refract_import_dialog.dart';
+import '../data/gist_sync.dart';
+import 'package:file_picker/file_picker.dart';
 import '../widgets/update_dialog.dart';
 import '../data/debrid/debrid.dart';
 import '../data/subtitle_style.dart';
@@ -43,8 +45,8 @@ enum _Tab {
   account('Profilo', 'Il tuo nome, l\'avatar e AniList.', Icons.person_outline_rounded),
   party('Profilo Party', 'Come ti vedono tutti nel Party.', Icons.public_rounded),
   appearance('Aspetto', 'La luce d\'ambiente dietro ogni pagina, e cosa mostra la barra di navigazione.', Icons.palette_outlined),
-  addons('Addon', 'Addon Stremio per sorgenti e sottotitoli. Sincronizzati con il tuo account.', Icons.extension_outlined),
-  sources('Sorgenti', 'Da dove partono film e serie, e in che ordine. Sincronizzato con il tuo account.', Icons.dns_outlined),
+  addons('Addon', 'Addon Stremio per sorgenti e sottotitoli.', Icons.extension_outlined),
+  sources('Sorgenti', 'Da dove partono film e serie, e in che ordine.', Icons.dns_outlined),
   debrid('Debrid', 'Riproduci i torrent tramite un servizio debrid invece che peer to peer. Salvato su questo dispositivo.', Icons.cloud_download_outlined),
   playback('Riproduzione', 'Come si riproducono i video. Salvato su questo dispositivo.', Icons.play_circle_outline_rounded),
   subtitles('Lingue e sottotitoli', 'Lingue di audio e sottotitoli per film, serie TV e anime, e aspetto dei sottotitoli. Salvato su questo dispositivo.', Icons.closed_caption_outlined),
@@ -680,6 +682,7 @@ class _AccountTab extends StatelessWidget {
           ),
         ],
       ),
+      const _DeviceSync(),
       // Lorewatch: no accounts (there's no server for them): name and avatar stay on this device.
       _Section(
         title: 'Importa',
@@ -2988,5 +2991,190 @@ class _DebridTabState extends State<_DebridTab> {
         ],
       );
     },
+  );
+}
+
+
+/// Lorewatch: phone, tablet… in step through a private Gist on the user's GitHub; and the same
+/// data as a backup file, by hand.
+class _DeviceSync extends StatelessWidget {
+  const _DeviceSync();
+
+  static const _tokenUrl = 'https://github.com/settings/tokens/new?scopes=gist&description=Lorewatch';
+
+  static void _say(BuildContext context, String text) =>
+      ScaffoldMessenger.maybeOf(context)?.showSnackBar(SnackBar(content: Text(text)));
+
+  static String _ago(DateTime? t) {
+    if (t == null) return 'mai';
+    final d = DateTime.now().difference(t);
+    if (d.inMinutes < 1) return 'adesso';
+    if (d.inHours < 1) return '${d.inMinutes} min fa';
+    if (d.inDays < 1) return '${d.inHours} h fa';
+    return '${d.inDays} g fa';
+  }
+
+  static Future<void> _connect(BuildContext context) async {
+    final c = TextEditingController();
+    String? error;
+    var working = false;
+    await showDialog<void>(
+      context: context,
+      builder: (ctx) => StatefulBuilder(
+        builder: (ctx, setState) => AlertDialog(
+          backgroundColor: VyseColors.surface,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          title: const Text('Collega con GitHub', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+          content: SizedBox(
+            width: 420,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '1. Apri GitHub e crea un token (classic) con il solo permesso "gist", scadenza "No expiration".\n'
+                  '2. Copia il token e incollalo qui.\n'
+                  '3. Fai lo stesso sull\'altro dispositivo, con lo stesso token.',
+                  style: TextStyle(fontSize: 13, color: VyseColors.textDim, height: 1.45),
+                ),
+                const SizedBox(height: 12),
+                _SmallButton(
+                  label: 'Apri GitHub',
+                  icon: Icons.open_in_new_rounded,
+                  onTap: () => launchUrl(Uri.parse(_tokenUrl), mode: LaunchMode.externalApplication),
+                ),
+                const SizedBox(height: 14),
+                TextField(
+                  controller: c,
+                  autocorrect: false,
+                  enableSuggestions: false,
+                  decoration: InputDecoration(hintText: 'ghp_…', errorText: error),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(onPressed: working ? null : () => Navigator.pop(ctx), child: const Text('Annulla')),
+            TextButton(
+              onPressed: working
+                  ? null
+                  : () async {
+                      setState(() {
+                        working = true;
+                        error = null;
+                      });
+                      final e = await GistSync.connect(c.text);
+                      if (!ctx.mounted) return;
+                      if (e == null) {
+                        Navigator.pop(ctx);
+                      } else {
+                        setState(() {
+                          working = false;
+                          error = e;
+                        });
+                      }
+                    },
+              child: Text(working ? 'Collego…' : 'Collega'),
+            ),
+          ],
+        ),
+      ),
+    );
+    c.dispose();
+  }
+
+  static Future<void> _disconnect(BuildContext context) async {
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: VyseColors.surface,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: const Text('Scollegare questo dispositivo?', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+        content: Text(
+          'Quello che hai qui resta. Smette solo di allinearsi con gli altri dispositivi.',
+          style: TextStyle(fontSize: 13.5, color: VyseColors.textDim),
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Annulla')),
+          TextButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('Scollega')),
+        ],
+      ),
+    );
+    if (ok == true) await GistSync.disconnect();
+  }
+
+  static Future<void> _export(BuildContext context) async {
+    try {
+      final bytes = await GistSync.exportBackup();
+      final d = DateTime.now();
+      String two(int n) => n.toString().padLeft(2, '0');
+      final path = await FilePicker.platform.saveFile(
+        dialogTitle: 'Salva backup',
+        fileName: 'lorewatch-backup-${d.year}${two(d.month)}${two(d.day)}.json',
+        type: FileType.any,
+        bytes: bytes,
+      );
+      if (path != null && context.mounted) _say(context, 'Backup salvato');
+    } catch (e) {
+      if (context.mounted) _say(context, 'Non riesco a salvare il backup');
+    }
+  }
+
+  static Future<void> _import(BuildContext context) async {
+    final picked = await FilePicker.platform.pickFiles(type: FileType.any, withData: true);
+    final bytes = picked?.files.firstOrNull?.bytes;
+    if (bytes == null) return;
+    final n = await GistSync.importBackup(bytes);
+    if (!context.mounted) return;
+    _say(context, n == null ? 'Questo file non è un backup di Lorewatch' : 'Backup importato');
+  }
+
+  @override
+  Widget build(BuildContext context) => ValueListenableBuilder(
+    valueListenable: GistSync.connected,
+    builder: (context, on, _) => _Section(
+      title: 'Sincronizzazione',
+      subtitle: 'Telefono, tablet e gli altri dispositivi con La mia lista, cronologia, manga letti e impostazioni uguali.',
+      children: [
+        if (!on)
+          _Row(
+            title: 'Tra i tuoi dispositivi',
+            subtitle: 'Tramite un Gist privato sul tuo account GitHub: i dati restano tuoi, senza server.',
+            trailing: _SmallButton(label: 'Collega', primary: true, onTap: () => _connect(context)),
+          )
+        else ...[
+          _Row(
+            title: 'Collegato a GitHub',
+            subtitleWidget: AnimatedBuilder(
+              animation: Listenable.merge([GistSync.status, GistSync.lastSync]),
+              builder: (context, _) => Text(
+                GistSync.status.value == 'Sincronizzazione…'
+                    ? 'Sincronizzazione…'
+                    : '${GistSync.status.value.isEmpty ? 'In attesa' : GistSync.status.value} · ultima volta ${_ago(GistSync.lastSync.value)}',
+                style: TextStyle(fontSize: 13, color: VyseColors.textDim, height: 1.35),
+              ),
+            ),
+            trailing: _SmallButton(label: 'Sincronizza ora', onTap: GistSync.sync),
+          ),
+          _Row(
+            title: 'Scollega',
+            subtitle: 'Questo dispositivo smette di allinearsi.',
+            trailing: _SmallButton(label: 'Scollega', danger: true, onTap: () => _disconnect(context)),
+          ),
+        ],
+        _Row(
+          title: 'Backup',
+          subtitle: 'Salva tutto in un file, o riporta qui un backup salvato su un altro dispositivo.',
+          below: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _SmallButton(label: 'Esporta', onTap: () => _export(context)),
+              const SizedBox(width: 8),
+              _SmallButton(label: 'Importa', onTap: () => _import(context)),
+            ],
+          ),
+        ),
+      ],
+    ),
   );
 }

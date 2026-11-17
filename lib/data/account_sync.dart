@@ -16,7 +16,12 @@ class SyncSource {
     required this.changes,
     this.timeOf,
     this.remoteWinsFirst = false,
+    this.applyAll,
   });
+
+  /// Lorewatch: puts many items on the device at once (null removes), when that's much cheaper
+  /// than one [apply] each.
+  final Future<void> Function(Map<String, Map<String, dynamic>?> items)? applyAll;
 
   /// "progress", "mylist", "settings", …
   final String kind;

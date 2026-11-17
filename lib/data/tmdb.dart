@@ -646,6 +646,16 @@ class MyList {
     _set(list);
   }
 
+  static Future<void> syncApplyAll(Map<String, Map<String, dynamic>?> changes) async {
+    final list = items.value.where((s) => !changes.containsKey(s.media.key)).toList();
+    for (final d in changes.values) {
+      final s = d == null ? null : _fromJson(d);
+      if (s != null) list.add(s);
+    }
+    list.sort((a, b) => b.added.compareTo(a.added));
+    _set(list);
+  }
+
   static bool has(Media m) => saved.value.contains(m.key);
 
   /// The list [m] is on, or null when it isn't in My List.
