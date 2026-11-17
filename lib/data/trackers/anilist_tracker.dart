@@ -75,16 +75,16 @@ class AniListTracker {
   }
 
   /// Lorewatch: your AniList manga list (every entry, with its list), as titles for My List.
-  static Future<List<({Media media, String status, DateTime added})>> mangaList() async {
+  static Future<List<({Media media, String status, DateTime added, int progress})>> mangaList() async {
     final t = await TokenStore.read(TrackerId.anilist);
     final user = int.tryParse(t?.userId ?? '');
     if (t == null || user == null) return const [];
-    final out = <({Media media, String status, DateTime added})>[];
+    final out = <({Media media, String status, DateTime added, int progress})>[];
     for (var chunk = 1; chunk <= 20; chunk++) {
       final d = await _gql(
         t.access,
         r'query ($user: Int, $chunk: Int) { MediaListCollection(userId: $user, type: MANGA, chunk: $chunk, perChunk: 500) {'
-        ' hasNextChunk lists { entries { status createdAt media { id title { userPreferred english romaji } '
+        ' hasNextChunk lists { entries { status progress createdAt media { id title { userPreferred english romaji } '
         'coverImage { extraLarge large } bannerImage description(asHtml: false) averageScore popularity startDate { year } } } } } }',
         {'user': user, 'chunk': chunk},
       );
@@ -112,6 +112,7 @@ class AniListTracker {
             ),
             status: '${e['status'] ?? 'PLANNING'}',
             added: DateTime.fromMillisecondsSinceEpoch(((e['createdAt'] as num?) ?? 0).toInt() * 1000),
+            progress: ((e['progress'] as num?) ?? 0).toInt(),
           ));
         }
       }
@@ -119,6 +120,16 @@ class AniListTracker {
     }
     return out;
   }
+
+  /// Lorewatch: sets how many chapters of AniList manga [mediaId] you've read (and, when it was
+  /// on Planning, moves it to Current).
+  static Future<void> setMangaProgress(TrackerToken t, int mediaId, int chapters, {bool start = false}) => _gql(
+        t.access,
+        start
+            ? r'mutation ($mediaId: Int, $progress: Int) { SaveMediaListEntry(mediaId: $mediaId, progress: $progress, status: CURRENT) { id } }'
+            : r'mutation ($mediaId: Int, $progress: Int) { SaveMediaListEntry(mediaId: $mediaId, progress: $progress) { id } }',
+        {'mediaId': mediaId, 'progress': chapters},
+      );
 
   /// Lorewatch: puts AniList anime [mediaId] on list [status] (PLANNING, CURRENT, COMPLETED,
   /// DROPPED), as chosen in My List.

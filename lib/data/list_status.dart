@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'tmdb.dart';
 import 'trackers/anilist_tracker.dart';
@@ -43,6 +45,7 @@ abstract final class ListStatusSync {
       MyList.addAll([
         for (final e in list) SavedTitle(e.media, e.added.millisecondsSinceEpoch > 0 ? e.added : DateTime.now(), WatchStatus.fromAniList(e.status)),
       ], updateStatus: true);
+      await MangaChapters.setAll({for (final e in list) e.media.id: e.progress});
     } catch (e) {
       debugPrint('[ListStatus] AniList manga: $e');
     }
@@ -76,6 +79,69 @@ abstract final class ListStatusSync {
       } catch (e) {
         debugPrint('[ListStatus] AniList: $e');
       }
+    }
+  }
+}
+
+
+/// Lorewatch: chapters read of each AniList manga (from AniList, and from reading here), and
+/// which manga in the Manga libraries is which AniList one, so reading a chapter here moves
+/// AniList's count too.
+abstract final class MangaChapters {
+  static const _readKey = 'lw.manga.read', _linkKey = 'lw.manga.links';
+
+  /// AniList id -> chapters read. My List shows it on manga ("Cap. 120").
+  static final read = ValueNotifier<Map<int, int>>(const {});
+  static Map<String, int> _links = {}; // library manga id -> AniList id
+
+  static Future<void> load() async {
+    final prefs = await SharedPreferences.getInstance();
+    try {
+      final r = json.decode(prefs.getString(_readKey) ?? '{}') as Map;
+      read.value = {for (final e in r.entries) int.parse('${e.key}'): (e.value as num).toInt()};
+      final l = json.decode(prefs.getString(_linkKey) ?? '{}') as Map;
+      _links = {for (final e in l.entries) '${e.key}': (e.value as num).toInt()};
+    } catch (_) {}
+  }
+
+  static Future<void> _save() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_readKey, json.encode({for (final e in read.value.entries) '${e.key}': e.value}));
+    await prefs.setString(_linkKey, json.encode(_links));
+  }
+
+  static Future<void> setAll(Map<int, int> fromAniList) async {
+    read.value = {...read.value, ...fromAniList};
+    await _save();
+  }
+
+  /// Remembers that library manga [libraryId] is AniList manga [anilistId].
+  static Future<void> link(String libraryId, int anilistId) async {
+    if (_links[libraryId] == anilistId) return;
+    _links[libraryId] = anilistId;
+    await _save();
+  }
+
+  /// Called as you read: chapter [number] of library manga [libraryId], [started] once past its
+  /// first page. When it's an AniList manga and further than before, AniList hears about it.
+  static Future<void> reading(String libraryId, double? number, {required bool started}) async {
+    final id = _links[libraryId];
+    if (id == null || number == null) return;
+    final done = started ? number.floor() : number.floor() - 1;
+    final before = read.value[id] ?? 0;
+    if (done <= before) return;
+    read.value = {...read.value, id: done};
+    await _save();
+    final t = await TokenStore.read(TrackerId.anilist);
+    if (t == null) return;
+    try {
+      final planning = MyList.items.value.where((s) => s.media.manga && s.media.id == id).firstOrNull?.status == WatchStatus.planning;
+      await AniListTracker.setMangaProgress(t, id, done, start: planning);
+      if (planning) {
+        MyList.setStatuses({'manga/$id': WatchStatus.watching});
+      }
+    } catch (e) {
+      debugPrint('[MangaChapters] AniList: $e');
     }
   }
 }

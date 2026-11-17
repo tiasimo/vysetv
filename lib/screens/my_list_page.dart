@@ -57,7 +57,7 @@ String _left(Duration d) {
   return r == 0 ? '${m ~/ 60} h rimanenti' : '${m ~/ 60} h $r min rimanenti';
 }
 
-void _play(BuildContext context, Media m, WatchEntry? progress) => openPlayer(
+void _play(BuildContext context, Media m, WatchEntry? progress) => m.manga ? openDetails(context, m) : openPlayer(
   context,
   m,
   episode: progress?.episode != null && (progress!.season != null || m.anime)
@@ -887,6 +887,17 @@ class _PosterTile extends StatelessWidget {
                     ),
                   ),
                 ),
+              // Lorewatch: chapters read of an AniList manga
+              if (m.manga && (MangaChapters.read.value[m.id] ?? 0) > 0)
+                Positioned(
+                  top: 7,
+                  left: 7,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                    decoration: BoxDecoration(color: Colors.black.withValues(alpha: .7), borderRadius: BorderRadius.circular(6)),
+                    child: Text('Cap. ${MangaChapters.read.value[m.id]}', style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w800, color: Colors.white)),
+                  ),
+                ),
               // where you are
               if (p != null) ...[
                 if (p.episode != null)
@@ -1218,7 +1229,7 @@ class _PickForMeState extends State<_PickForMe> {
                 Text(m.title, textAlign: TextAlign.center, maxLines: 2, style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w900, letterSpacing: -.3)),
                 const SizedBox(height: 4),
                 Text(
-                  [m.kind, if (m.year != null) m.year!, if (m.rating > 0) '★ ${m.rating.toStringAsFixed(1)}', if (p != null && !p.finished) _left(p.left), if (p != null && p.finished && p.episode != null) 'Visto fino a ${episodeLabel(p.season, p.episode ?? 0)}'].join('  ·  '),
+                  [m.kind, if (m.year != null) m.year!, if (m.rating > 0) '★ ${m.rating.toStringAsFixed(1)}', if (p != null && !p.finished) _left(p.left), if (p != null && p.finished && p.episode != null) 'Visto fino a ${episodeLabel(p.season, p.episode ?? 0)}', if (m.manga && (MangaChapters.read.value[m.id] ?? 0) > 0) 'Letti ${MangaChapters.read.value[m.id]} capitoli'].join('  ·  '),
                   style: TextStyle(fontSize: 12.5, color: VyseColors.textDim),
                 ),
               ]),

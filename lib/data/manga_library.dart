@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'list_status.dart' show MangaChapters;
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
@@ -209,6 +211,10 @@ class MangaHistory {
 
   static Future<void> save(Manga m, int chapterIndex, int page, List<MangaChapter> chapters) async {
     await mangaService.saveProgress(m, chapterIndex, page, chapters);
+    // Lorewatch: an AniList manga moves its chapter count on AniList too
+    if (chapterIndex >= 0 && chapterIndex < chapters.length) {
+      unawaited(MangaChapters.reading(m.id, chapters[chapterIndex].number, started: page > 0));
+    }
     (await _rows())[m.id] = {
       'manga': m.toJson(),
       'chapterIndex': chapterIndex,

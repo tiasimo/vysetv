@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../data/anilist.dart';
 import '../data/discover.dart';
 import '../data/tmdb.dart';
+import '../data/list_status.dart' show MangaChapters;
 import '../data/manga_library.dart' show mangaService;
 import '../services/manga/manga_service.dart' show MangaLibraryChoice;
 import '../screens/manga_details_page.dart';
@@ -86,6 +89,7 @@ Future<void> openMangaFromList(BuildContext context, Media media) async {
       messenger?.showSnackBar(SnackBar(content: Text('"${media.title}" non è in ${MangaLibraryChoice.current.label}. Prova un\'altra fonte nella pagina Manga.')));
       return;
     }
+    unawaited(MangaChapters.link(found.first.id, media.id)); // reading it here moves AniList's count
     await Navigator.of(context).push(ShellRoute(child: MangaDetailsPage(manga: found.first)));
   } catch (_) {
     messenger?.showSnackBar(const SnackBar(content: Text('Impossibile cercare il manga ora.')));

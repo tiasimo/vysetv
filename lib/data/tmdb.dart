@@ -84,7 +84,7 @@ class Media {
     );
   }
 
-  String get kind => manga ? 'Manga' : (anime ? 'Anime' : (isTv ? 'Series' : 'Movie'));
+  String get kind => manga ? 'Manga' : (anime ? 'Anime' : (isTv ? 'Serie' : 'Film'));
 
   /// Stable identity across rows, lists and TMDB URLs, e.g. `tv/1399`.
   String get key => manga ? 'manga/$id' : (anime ? 'anime/$id' : '${isTv ? 'tv' : 'movie'}/$id');
