@@ -60,6 +60,7 @@ Future<void> main() async {
   await MusicLibrary.initialize();
   ListStatusSync.start(); // Lorewatch: My List's lists follow what you watch
   await MangaChapters.load();
+  await EpisodeTotals.load();
   // Lorewatch: AniList's episodes, lists and manga into My List and History, a moment after start
   unawaited(Future<void>.delayed(const Duration(seconds: 8), ListStatusSync.syncAniList));
   await Debrid.initialize();

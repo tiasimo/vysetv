@@ -57,6 +57,13 @@ String _left(Duration d) {
   return r == 0 ? '${m ~/ 60} h rimanenti' : '${m ~/ 60} h $r min rimanenti';
 }
 
+/// Lorewatch: "E16/24", or "S2:E5/12" for a season of a show; just "E16" while the total is unknown.
+String _epOf(Media m, WatchEntry p) {
+  final total = EpisodeTotals.of(m, p.season);
+  final ep = p.episode ?? 0;
+  return '${episodeLabel(p.season, ep)}${total != null && total >= ep ? '/$total' : ''}';
+}
+
 void _play(BuildContext context, Media m, WatchEntry? progress) => m.manga ? openDetails(context, m) : openPlayer(
   context,
   m,
@@ -912,7 +919,13 @@ class _PosterTile extends StatelessWidget {
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
                       decoration: BoxDecoration(color: Colors.black.withValues(alpha: .7), borderRadius: BorderRadius.circular(6)),
-                      child: Text(episodeLabel(p.season, p.episode ?? 0), style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w800, color: Colors.white)),
+                      child: ValueListenableBuilder(
+                        valueListenable: EpisodeTotals.revision,
+                        builder: (context, _, _) => Text(
+                          _epOf(m, p),
+                          style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w800, color: Colors.white),
+                        ),
+                      ),
                     ),
                   ),
                 Positioned(left: 0, right: 0, bottom: 0, child: _ProgressLine(fraction: p.fraction)),
@@ -1024,7 +1037,7 @@ class _RowTile extends StatelessWidget {
                   if (p != null) ...[
                     const SizedBox(height: 6),
                     Text(
-                      [if (p.episode != null) (p.finished ? 'Visto fino a ${episodeLabel(p.season, p.episode ?? 0)}' : episodeLabel(p.season, p.episode ?? 0)), if (!p.finished) _left(p.left)].join('  ·  '),
+                      [if (p.episode != null) (p.finished ? 'Visto fino a ${_epOf(m, p)}' : _epOf(m, p)), if (!p.finished) _left(p.left)].join('  ·  '),
                       style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: VyseColors.accent),
                     ),
                   ] else if (!phone && m.overview.isNotEmpty) ...[
@@ -1234,7 +1247,7 @@ class _PickForMeState extends State<_PickForMe> {
                 Text(m.title, textAlign: TextAlign.center, maxLines: 2, style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w900, letterSpacing: -.3)),
                 const SizedBox(height: 4),
                 Text(
-                  [m.kind, if (m.year != null) m.year!, if (m.rating > 0) '★ ${m.rating.toStringAsFixed(1)}', if (p != null && !p.finished) _left(p.left), if (p != null && p.finished && p.episode != null) 'Visto fino a ${episodeLabel(p.season, p.episode ?? 0)}', if (m.manga && (MangaChapters.read.value[m.id] ?? 0) > 0) 'Letti ${MangaChapters.read.value[m.id]} capitoli'].join('  ·  '),
+                  [m.kind, if (m.year != null) m.year!, if (m.rating > 0) '★ ${m.rating.toStringAsFixed(1)}', if (p != null && !p.finished) _left(p.left), if (p != null && p.finished && p.episode != null) 'Visto fino a ${_epOf(m, p)}', if (m.manga && (MangaChapters.read.value[m.id] ?? 0) > 0) 'Letti ${MangaChapters.read.value[m.id]} capitoli'].join('  ·  '),
                   style: TextStyle(fontSize: 12.5, color: VyseColors.textDim),
                 ),
               ]),

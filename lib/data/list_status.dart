@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'anilist.dart';
 import 'tmdb.dart';
 import 'trackers/anilist_tracker.dart';
 import 'trackers/library_import.dart';
@@ -142,6 +143,113 @@ abstract final class MangaChapters {
       }
     } catch (e) {
       debugPrint('[MangaChapters] AniList: $e');
+    }
+  }
+}
+
+/// Lorewatch: how many episodes a show has, for "E16/24" in My List. Anime: AniList's count
+/// (key '0'); TMDB shows: each season's. Kept on the device and looked at again every few days
+/// (shows still airing grow).
+abstract final class EpisodeTotals {
+  static const _key = 'lw.ep.totals';
+  static const _stale = Duration(days: 3);
+
+  /// Bumps when new counts arrive.
+  static final revision = ValueNotifier<int>(0);
+
+  static Map<String, Map<String, int>> _totals = {};
+  static Map<String, int> _fetched = {};
+  static final _queue = <String, Media>{};
+  static final _asked = <String>{};
+  static Timer? _timer;
+  static bool _running = false;
+
+  static Future<void> load() async {
+    try {
+      final p = await SharedPreferences.getInstance();
+      final raw = json.decode(p.getString(_key) ?? '{}') as Map;
+      _totals = {
+        for (final e in ((raw['t'] as Map?) ?? const {}).entries)
+          '${e.key}': {for (final s in (e.value as Map).entries) '${s.key}': (s.value as num).toInt()},
+      };
+      _fetched = {for (final e in ((raw['f'] as Map?) ?? const {}).entries) '${e.key}': (e.value as num).toInt()};
+    } catch (_) {}
+  }
+
+  static Future<void> _save() async {
+    final p = await SharedPreferences.getInstance();
+    await p.setString(_key, json.encode({'t': _totals, 'f': _fetched}));
+  }
+
+  /// Episodes in [m] (that [season], for TMDB shows), or null while unknown (it's then looked up).
+  static int? of(Media m, int? season) {
+    if (!m.isTv && !m.anime) return null;
+    final t = _totals[m.key];
+    final f = _fetched[m.key];
+    if (f == null || DateTime.now().millisecondsSinceEpoch - f > _stale.inMilliseconds) _want(m);
+    if (t == null) return null;
+    final n = m.anime ? t['0'] : t['${season ?? 1}'];
+    return n == null || n <= 0 ? null : n;
+  }
+
+  static void _want(Media m) {
+    if (!_asked.add(m.key)) return; // once per run
+    _queue[m.key] = m;
+    _timer?.cancel();
+    _timer = Timer(const Duration(milliseconds: 400), _run);
+  }
+
+  static Future<void> _run() async {
+    if (_running) return;
+    _running = true;
+    try {
+      while (_queue.isNotEmpty) {
+        final batch = _queue.values.toList();
+        _queue.clear();
+        final now = DateTime.now().millisecondsSinceEpoch;
+        // anime: 50 at a time in one AniList query
+        final anime = batch.where((m) => m.anime).toList();
+        for (var i = 0; i < anime.length; i += 50) {
+          final ids = anime.skip(i).take(50).map((m) => m.id).toList();
+          try {
+            final d = await AniList.query(
+              r'query($ids:[Int]){Page(perPage:50){media(id_in:$ids,type:ANIME){id episodes}}}',
+              {'ids': ids},
+            );
+            for (final x in ((d['Page'] as Map)['media'] as List).cast<Map<String, dynamic>>()) {
+              final n = (x['episodes'] as num?)?.toInt();
+              final key = anime.firstWhere((m) => m.id == x['id']).key;
+              if (n != null) _totals[key] = {'0': n};
+              _fetched[key] = now;
+            }
+          } catch (e) {
+            debugPrint('[EpisodeTotals] AniList: $e');
+          }
+          revision.value++;
+        }
+        // TMDB shows: a few at a time
+        final shows = batch.where((m) => !m.anime).toList();
+        for (var i = 0; i < shows.length; i += 4) {
+          await Future.wait([
+            for (final m in shows.skip(i).take(4))
+              () async {
+                try {
+                  final j = await Tmdb.get('/tv/${m.id}');
+                  final seasons = (j['seasons'] as List? ?? const []).cast<Map<String, dynamic>>();
+                  _totals[m.key] = {
+                    for (final s in seasons)
+                      if ((s['season_number'] as num? ?? 0) > 0) '${s['season_number']}': (s['episode_count'] as num? ?? 0).toInt(),
+                  };
+                  _fetched[m.key] = now;
+                } catch (_) {}
+              }(),
+          ]);
+          revision.value++;
+        }
+        await _save();
+      }
+    } finally {
+      _running = false;
     }
   }
 }
