@@ -910,24 +910,35 @@ class _PosterTile extends StatelessWidget {
                     child: Text('Cap. ${MangaChapters.read.value[m.id]}', style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w800, color: Colors.white)),
                   ),
                 ),
-              // where you are
-              if (p != null) ...[
-                if (p.episode != null)
-                  Positioned(
-                    top: 7,
-                    left: 7,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
-                      decoration: BoxDecoration(color: Colors.black.withValues(alpha: .7), borderRadius: BorderRadius.circular(6)),
-                      child: ValueListenableBuilder(
-                        valueListenable: EpisodeTotals.revision,
-                        builder: (context, _, _) => Text(
-                          _epOf(m, p),
-                          style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w800, color: Colors.white),
-                        ),
-                      ),
-                    ),
+              // where you are, out of how many, and when the next one comes out
+              if (!m.manga && (m.isTv || m.anime))
+                Positioned(
+                  top: 7,
+                  left: 7,
+                  right: 28,
+                  child: AnimatedBuilder(
+                    animation: Listenable.merge([EpisodeTotals.revision, EpisodeTotals.minute]),
+                    builder: (context, _) {
+                      final next = item.status == WatchStatus.completed || item.status == WatchStatus.dropped ? null : EpisodeTotals.next(m);
+                      Widget chip(Widget child) => Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                        decoration: BoxDecoration(color: Colors.black.withValues(alpha: .7), borderRadius: BorderRadius.circular(6)),
+                        child: child,
+                      );
+                      const style = TextStyle(fontSize: 10, fontWeight: FontWeight.w800, color: Colors.white);
+                      return Wrap(spacing: 4, runSpacing: 4, children: [
+                        if (p != null && p.episode != null) chip(Text(_epOf(m, p), style: style)),
+                        if (next != null)
+                          chip(Row(mainAxisSize: MainAxisSize.min, children: [
+                            const Icon(Icons.schedule_rounded, size: 10, color: Colors.white),
+                            const SizedBox(width: 3),
+                            Text(countdownLabel(next.at), style: style),
+                          ])),
+                      ]);
+                    },
                   ),
+                ),
+              if (p != null) ...[
                 Positioned(left: 0, right: 0, bottom: 0, child: _ProgressLine(fraction: p.fraction)),
               ],
               if (selecting) Positioned(top: 7, right: 7, child: _Check(on: selected)),

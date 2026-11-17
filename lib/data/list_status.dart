@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -152,13 +153,17 @@ abstract final class MangaChapters {
 /// (shows still airing grow).
 abstract final class EpisodeTotals {
   static const _key = 'lw.ep.totals';
-  static const _stale = Duration(days: 3);
+  static const _stale = Duration(days: 1);
 
   /// Bumps when new counts arrive.
   static final revision = ValueNotifier<int>(0);
 
+  /// Ticks every minute, for the countdowns.
+  static final minute = _MinuteTicker();
+
   static Map<String, Map<String, int>> _totals = {};
   static Map<String, int> _fetched = {};
+  static Map<String, List<int>> _next = {}; // key -> [airs at (ms), episode, season]
   static final _queue = <String, Media>{};
   static final _asked = <String>{};
   static Timer? _timer;
@@ -173,12 +178,15 @@ abstract final class EpisodeTotals {
           '${e.key}': {for (final s in (e.value as Map).entries) '${s.key}': (s.value as num).toInt()},
       };
       _fetched = {for (final e in ((raw['f'] as Map?) ?? const {}).entries) '${e.key}': (e.value as num).toInt()};
+      _next = {
+        for (final e in ((raw['n'] as Map?) ?? const {}).entries) '${e.key}': [for (final v in e.value as List) (v as num).toInt()],
+      };
     } catch (_) {}
   }
 
   static Future<void> _save() async {
     final p = await SharedPreferences.getInstance();
-    await p.setString(_key, json.encode({'t': _totals, 'f': _fetched}));
+    await p.setString(_key, json.encode({'t': _totals, 'f': _fetched, 'n': _next}));
   }
 
   /// Episodes in [m] (that [season], for TMDB shows), or null while unknown (it's then looked up).
@@ -190,6 +198,17 @@ abstract final class EpisodeTotals {
     if (t == null) return null;
     final n = m.anime ? t['0'] : t['${season ?? 1}'];
     return n == null || n <= 0 ? null : n;
+  }
+
+  /// The next episode of [m] still to come out: when, and which. Null when none is known.
+  static ({DateTime at, int episode, int? season})? next(Media m) {
+    if (!m.isTv && !m.anime) return null;
+    final f = _fetched[m.key];
+    final n = _next[m.key];
+    final now = DateTime.now().millisecondsSinceEpoch;
+    if (f == null || now - f > _stale.inMilliseconds || (n != null && n[0] <= now)) _want(m);
+    if (n == null || n[0] <= now) return null;
+    return (at: DateTime.fromMillisecondsSinceEpoch(n[0]), episode: n[1], season: n.length > 2 && n[2] > 0 ? n[2] : null);
   }
 
   static void _want(Media m) {
@@ -213,13 +232,19 @@ abstract final class EpisodeTotals {
           final ids = anime.skip(i).take(50).map((m) => m.id).toList();
           try {
             final d = await AniList.query(
-              r'query($ids:[Int]){Page(perPage:50){media(id_in:$ids,type:ANIME){id episodes}}}',
+              r'query($ids:[Int]){Page(perPage:50){media(id_in:$ids,type:ANIME){id episodes nextAiringEpisode{episode airingAt}}}}',
               {'ids': ids},
             );
             for (final x in ((d['Page'] as Map)['media'] as List).cast<Map<String, dynamic>>()) {
               final n = (x['episodes'] as num?)?.toInt();
               final key = anime.firstWhere((m) => m.id == x['id']).key;
               if (n != null) _totals[key] = {'0': n};
+              final na = x['nextAiringEpisode'] as Map?;
+              if (na != null && na['airingAt'] is num) {
+                _next[key] = [(na['airingAt'] as num).toInt() * 1000, (na['episode'] as num? ?? 0).toInt(), 0];
+              } else {
+                _next.remove(key);
+              }
               _fetched[key] = now;
             }
           } catch (e) {
@@ -240,6 +265,18 @@ abstract final class EpisodeTotals {
                     for (final s in seasons)
                       if ((s['season_number'] as num? ?? 0) > 0) '${s['season_number']}': (s['episode_count'] as num? ?? 0).toInt(),
                   };
+                  final na = j['next_episode_to_air'] as Map?;
+                  final day = DateTime.tryParse('${na?['air_date'] ?? ''}');
+                  if (na != null && day != null) {
+                    // TMDB knows the day, not the hour: count to the evening (21:00 here)
+                    _next[m.key] = [
+                      DateTime(day.year, day.month, day.day, 21).millisecondsSinceEpoch,
+                      (na['episode_number'] as num? ?? 0).toInt(),
+                      (na['season_number'] as num? ?? 0).toInt(),
+                    ];
+                  } else {
+                    _next.remove(m.key);
+                  }
                   _fetched[m.key] = now;
                 } catch (_) {}
               }(),
@@ -252,4 +289,18 @@ abstract final class EpisodeTotals {
       _running = false;
     }
   }
+}
+
+class _MinuteTicker extends ChangeNotifier {
+  _MinuteTicker() {
+    Timer.periodic(const Duration(minutes: 1), (_) => notifyListeners());
+  }
+}
+
+/// "2g 5h", "5h 20m", "20m".
+String countdownLabel(DateTime at) {
+  final d = at.difference(DateTime.now());
+  if (d.inDays >= 1) return '${d.inDays}g ${d.inHours % 24}h';
+  if (d.inHours >= 1) return '${d.inHours}h ${d.inMinutes % 60}m';
+  return '${math.max(1, d.inMinutes)}m';
 }
