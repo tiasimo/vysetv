@@ -507,10 +507,15 @@ class _StripPage extends StatelessWidget {
 }
 
 
-/// Lorewatch: MangaWorld's image servers want a browser's User-Agent and the site as Referer.
+/// Lorewatch: MangaWorld's and MangaRead's image servers want a browser's User-Agent and the site as Referer.
 Map<String, String>? mangaImageHeaders(String url) => url.contains('mangaworld')
     ? const {
         'User-Agent': 'Mozilla/5.0 (Linux; Android 13) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Mobile Safari/537.36',
         'Referer': 'https://www.mangaworld.mx/',
+      }
+    : url.contains('mangaread')
+    ? const {
+        'User-Agent': 'Mozilla/5.0 (Linux; Android 13) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Mobile Safari/537.36',
+        'Referer': 'https://www.mangaread.org/',
       }
     : null;

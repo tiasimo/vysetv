@@ -8,12 +8,12 @@ import 'tmdb.dart';
 enum MediaType { all, movie, tv }
 
 enum SortBy {
-  popular('Popular'),
-  topRated('Top rated'),
-  newest('Newest'),
-  mostVoted('Most voted'),
+  popular('Popolari'),
+  topRated('Più votati'),
+  newest('Più recenti'),
+  mostVoted('Più recensiti'),
   az('A–Z'),
-  oldest('Oldest');
+  oldest('Più vecchi');
 
   const SortBy(this.label);
   final String label;

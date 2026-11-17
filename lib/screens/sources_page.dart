@@ -1244,11 +1244,11 @@ class _Primary extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.play_arrow_rounded, size: 22, color: Colors.black),
+            Icon(Icons.play_arrow_rounded, size: 22, color: VyseColors.onStrong),
             const SizedBox(width: 6),
             Text(
               label,
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: Colors.black),
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: VyseColors.onStrong),
             ),
           ],
         ),

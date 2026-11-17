@@ -186,8 +186,8 @@ class _AnimePageState extends State<AnimePage> {
               alignment: Alignment.center,
               decoration: BoxDecoration(color: hovered ? VyseColors.strong : VyseColors.pick(0xFFF1F1F5, 0xFF1C1E28), borderRadius: BorderRadius.circular(radius)),
               child: _loading && (_reloading || _items.isEmpty)
-                  ? const SizedBox.square(dimension: 18, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.black))
-                  : Text('Mostra ${_countLabel(_total)}', style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 14)),
+                  ? SizedBox.square(dimension: 18, child: CircularProgressIndicator(strokeWidth: 2, color: VyseColors.onStrong))
+                  : Text('Mostra ${_countLabel(_total)}', style: TextStyle(color: VyseColors.onStrong, fontWeight: FontWeight.w700, fontSize: 14)),
             ),
           ),
         ),
@@ -594,7 +594,7 @@ class AnimeCard extends StatelessWidget {
                       [a.formatLabel, if (a.year != null) '${a.year}', if (a.episodes != null && !a.isMovie) '${a.episodes} ep'].join(' · '),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontSize: 10.5, color: VyseColors.textDim),
+                      style: const TextStyle(fontSize: 10.5, color: Colors.white70),
                     ),
                   ),
                   if (a.score != null) ...[
@@ -617,7 +617,7 @@ class AnimeCard extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                 decoration: BoxDecoration(color: Colors.black.withValues(alpha: .65), borderRadius: BorderRadius.circular(4)),
-                child: Text(badge, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 8.5, fontWeight: FontWeight.w800, letterSpacing: .4)),
+                child: Text(badge, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 8.5, fontWeight: FontWeight.w800, letterSpacing: .4, color: Colors.white)),
               ),
             ),
           ),
@@ -714,8 +714,8 @@ class _SortBar extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(9),
-                        color: on ? const Color(0xFF242842) : VyseColors.ink.withValues(alpha: hovered ? .05 : 0),
-                        boxShadow: on ? [BoxShadow(color: Colors.black.withValues(alpha: .35), blurRadius: 10, offset: const Offset(0, 3))] : null,
+                        color: on ? VyseColors.pick(0xFF242842, 0xFFFFFFFF) : VyseColors.ink.withValues(alpha: hovered ? .05 : 0),
+                        boxShadow: on ? [BoxShadow(color: Colors.black.withValues(alpha: VyseColors.light ? .12 : .35), blurRadius: 10, offset: const Offset(0, 3))] : null,
                       ),
                       child: Row(mainAxisSize: MainAxisSize.min, children: [
                         AnimatedContainer(

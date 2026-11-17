@@ -216,7 +216,8 @@ class OutlineCard extends StatelessWidget {
         ),
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(radius), color: VyseColors.surface),
         clipBehavior: Clip.antiAlias,
-        child: builder(hovered),
+        // Lorewatch: whatever is written over the artwork is white, by day as well
+        child: DefaultTextStyle.merge(style: const TextStyle(color: Colors.white), child: builder(hovered)),
       ),
     ),
   );

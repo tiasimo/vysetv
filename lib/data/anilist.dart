@@ -589,12 +589,12 @@ const animeSources = {
 const animeCountries = {'JP': 'Japan', 'KR': 'South Korea', 'CN': 'China', 'TW': 'Taiwan'};
 
 enum AnimeSort {
-  trending('Trending', ['TRENDING_DESC', 'POPULARITY_DESC']),
-  popular('Popular', ['POPULARITY_DESC']),
-  score('Top rated', ['SCORE_DESC']),
-  favourites('Most favourited', ['FAVOURITES_DESC']),
-  newest('Newest', ['START_DATE_DESC']),
-  added('Recently added', ['ID_DESC']),
+  trending('Di tendenza', ['TRENDING_DESC', 'POPULARITY_DESC']),
+  popular('Popolari', ['POPULARITY_DESC']),
+  score('Più votati', ['SCORE_DESC']),
+  favourites('Più amati', ['FAVOURITES_DESC']),
+  newest('Più recenti', ['START_DATE_DESC']),
+  added('Aggiunti di recente', ['ID_DESC']),
   title('A–Z', ['TITLE_ROMAJI']);
 
   const AnimeSort(this.label, this.keys);

@@ -119,9 +119,9 @@ class _DiscoverPageState extends State<DiscoverPage> {
                           borderRadius: BorderRadius.circular(23),
                         ),
                         child: _c.initialLoading || _c.reloading
-                            ? const SizedBox.square(dimension: 18, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.black))
+                            ? SizedBox.square(dimension: 18, child: CircularProgressIndicator(strokeWidth: 2, color: VyseColors.onStrong))
                             : Text('Mostra ${fmtThousands(_c.total)} titoli',
-                                style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 14)),
+                                style: TextStyle(color: VyseColors.onStrong, fontWeight: FontWeight.w700, fontSize: 14)),
                       ),
                     ),
                   ),
@@ -628,8 +628,8 @@ class _SortBar extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(9),
-                        color: on ? const Color(0xFF242842) : VyseColors.ink.withValues(alpha: hovered ? .05 : 0),
-                        boxShadow: on ? [BoxShadow(color: Colors.black.withValues(alpha: .35), blurRadius: 10, offset: const Offset(0, 3))] : null,
+                        color: on ? VyseColors.pick(0xFF242842, 0xFFFFFFFF) : VyseColors.ink.withValues(alpha: hovered ? .05 : 0),
+                        boxShadow: on ? [BoxShadow(color: Colors.black.withValues(alpha: VyseColors.light ? .12 : .35), blurRadius: 10, offset: const Offset(0, 3))] : null,
                       ),
                       child: Row(mainAxisSize: MainAxisSize.min, children: [
                         AnimatedContainer(
