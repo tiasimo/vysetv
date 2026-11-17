@@ -245,9 +245,9 @@ class _Glow extends StatelessWidget {
         child: Container(
           width: 900,
           height: 520,
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: RadialGradient(
-              colors: [Color(0x26FF8A1A), Color(0x127A5CFF), Color(0x0007080F)],
+              colors: [Color(0x26FF8A1A), Color(0x127A5CFF), VyseColors.pick(0x0007080F, 0x00F4F5FA)],
               stops: [0, .45, 1],
             ),
           ),
@@ -524,7 +524,7 @@ class _SuggestionChip extends StatelessWidget {
             child: Row(mainAxisSize: MainAxisSize.min, children: [
               Text(label,
                   style: TextStyle(
-                      fontSize: 12.5, fontWeight: FontWeight.w600, color: hovered ? VyseColors.text : const Color(0xFFC3C7D4))),
+                      fontSize: 12.5, fontWeight: FontWeight.w600, color: hovered ? VyseColors.text : VyseColors.pick(0xFFC3C7D4, 0xFF454A60))),
               if (onRemove != null) ...[
                 const SizedBox(width: 4),
                 Pressable(
@@ -760,7 +760,7 @@ class _TopResult extends StatelessWidget {
                           style: const TextStyle(color: VyseColors.star, fontWeight: FontWeight.w700, fontSize: 13)),
                       const SizedBox(width: 10),
                       Text([media.year ?? '', media.kind].where((s) => s.isNotEmpty).join('  ·  '),
-                          style: const TextStyle(color: Color(0xFFC3C7D4), fontSize: 13)),
+                          style: TextStyle(color: VyseColors.pick(0xFFC3C7D4, 0xFF454A60), fontSize: 13)),
                     ]),
                     if (!phone) ...[
                       const SizedBox(height: 10),
@@ -769,7 +769,7 @@ class _TopResult extends StatelessWidget {
                         child: Text(media.overview,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(color: Color(0xFFC3C7D4), fontSize: 13.5, height: 1.55)),
+                            style: TextStyle(color: VyseColors.pick(0xFFC3C7D4, 0xFF454A60), fontSize: 13.5, height: 1.55)),
                       ),
                     ],
                     const SizedBox(height: 14),
@@ -821,7 +821,7 @@ class _MiniPill extends StatelessWidget {
   Widget build(BuildContext context) => Pressable(
         onTap: onTap,
         builder: (context, hovered, pressed) {
-          final fg = primary ? Colors.black : VyseColors.text;
+          final fg = primary ? VyseColors.onStrong : VyseColors.text;
           return AnimatedScale(
             scale: pressed ? .94 : 1,
             duration: const Duration(milliseconds: 120),
@@ -832,7 +832,7 @@ class _MiniPill extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 color: primary
-                    ? (hovered ? const Color(0xFFE6E7EE) : Colors.white)
+                    ? (hovered ? VyseColors.pick(0xFFE6E7EE, 0xFF2A2D3B) : VyseColors.strong)
                     : VyseColors.ink.withValues(alpha: hovered ? .2 : .1),
               ),
               child: Row(mainAxisSize: MainAxisSize.min, children: [
@@ -894,7 +894,7 @@ class _PersonTile extends StatelessWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: VyseColors.surfaceHi,
-                border: Border.all(color: hovered ? Colors.white : VyseColors.ink.withValues(alpha: .06), width: hovered ? 2 : 1),
+                border: Border.all(color: hovered ? VyseColors.strong : VyseColors.ink.withValues(alpha: .06), width: hovered ? 2 : 1),
               ),
               clipBehavior: Clip.antiAlias,
               child: person.photo == null
@@ -910,7 +910,7 @@ class _PersonTile extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: hovered ? VyseColors.text : const Color(0xFFDADCE6))),
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: hovered ? VyseColors.text : VyseColors.pick(0xFFDADCE6, 0xFF2A2D3B))),
           const SizedBox(height: 2),
           Text(
             person.knownFor.isNotEmpty ? person.knownFor.first : person.department,

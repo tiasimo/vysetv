@@ -222,7 +222,7 @@ class MetaLine extends StatelessWidget {
         for (var i = 0; i < shown.length; i++) ...[
           if (i > 0) Text('  ·  ', style: TextStyle(fontSize: 13, color: VyseColors.textFaint)),
           shown[i].$2 == null
-              ? Text(shown[i].$1, style: const TextStyle(fontSize: 13, color: Color(0xFFC3C7D4)))
+              ? Text(shown[i].$1, style: TextStyle(fontSize: 13, color: VyseColors.pick(0xFFC3C7D4, 0xFF454A60)))
               : Pressable(
                   onTap: shown[i].$2,
                   builder: (context, hovered, _) => Text(
@@ -432,7 +432,7 @@ class _PlaylistPicker extends StatelessWidget {
   Widget build(BuildContext context) {
     final lists = MusicLibrary.playlists;
     return Dialog(
-      backgroundColor: const Color(0xFF101118),
+      backgroundColor: VyseColors.pick(0xFF101118, 0xFFF2F3F8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: BorderSide(color: VyseColors.stroke)),
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 420, maxHeight: 560),
@@ -573,7 +573,7 @@ class _PlaylistEditorState extends State<_PlaylistEditor> {
 
   @override
   Widget build(BuildContext context) => AlertDialog(
-    backgroundColor: const Color(0xFF101118),
+    backgroundColor: VyseColors.pick(0xFF101118, 0xFFF2F3F8),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: BorderSide(color: VyseColors.stroke)),
     title: Text(widget.existing == null ? 'Nuova playlist' : 'Modifica playlist', style: const TextStyle(fontWeight: FontWeight.w800)),
     content: SizedBox(
@@ -717,7 +717,7 @@ class YtArtistCard extends StatelessWidget {
               duration: const Duration(milliseconds: 180),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color: hovered ? Colors.white : VyseColors.ink.withValues(alpha: .06), width: hovered ? 2 : 1),
+                border: Border.all(color: hovered ? VyseColors.strong : VyseColors.ink.withValues(alpha: .06), width: hovered ? 2 : 1),
               ),
               child: Artwork(url: sizedArt(item.thumb, 400), circle: true),
             ),
@@ -730,7 +730,7 @@ class YtArtistCard extends StatelessWidget {
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w600, color: hovered ? VyseColors.text : const Color(0xFFDADCE6)),
+        style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w600, color: hovered ? VyseColors.text : VyseColors.pick(0xFFDADCE6, 0xFF2A2D3B)),
       ),
       Text(
         item.subtitle.replaceFirst(RegExp(r'^Artist · '), '').isEmpty ? 'Artist' : item.subtitle.replaceFirst(RegExp(r'^Artist · '), ''),

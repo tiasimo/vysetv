@@ -82,7 +82,7 @@ void showToast(BuildContext context, Widget message, {IconData icon = Icons.auto
       // The SnackBar's own text style is dark (made for a light bar); ours is a dark panel.
       Expanded(
         child: DefaultTextStyle.merge(
-          style: const TextStyle(color: Colors.white, fontSize: 13, height: 1.3),
+          style: TextStyle(color: VyseColors.text, fontSize: 13, height: 1.3),
           child: message,
         ),
       ),
@@ -137,7 +137,7 @@ void _toastAbove(OverlayState overlay, Widget message, {required IconData icon, 
       const SizedBox(width: 10),
       Flexible(
         child: DefaultTextStyle.merge(
-          style: const TextStyle(color: Colors.white, fontSize: 13, height: 1.3),
+          style: TextStyle(color: VyseColors.text, fontSize: 13, height: 1.3),
           child: message,
         ),
       ),
@@ -425,7 +425,7 @@ class PillButton extends StatelessWidget {
         onTap: onTap ?? () => comingSoon(context, label),
         builder: (context, hovered, pressed) {
           final a = primary ? accent : null;
-          final fg = a != null ? (a.computeLuminance() > .3 ? Colors.black : Colors.white) : (primary ? Colors.black : VyseColors.text);
+          final fg = a != null ? (a.computeLuminance() > .3 ? Colors.black : Colors.white) : (primary ? VyseColors.onStrong : VyseColors.text);
           return AnimatedScale(
             scale: pressed ? .95 : (hovered ? 1.03 : 1),
             duration: const Duration(milliseconds: 160),
@@ -439,7 +439,7 @@ class PillButton extends StatelessWidget {
                 color: a != null
                     ? (hovered ? Color.lerp(a, Colors.white, .15) : a)
                     : primary
-                    ? (hovered ? Colors.white : const Color(0xFFF1F1F5))
+                    ? (hovered ? VyseColors.strong : VyseColors.pick(0xFFF1F1F5, 0xFF1C1E28))
                     : VyseColors.ink.withValues(alpha: hovered ? .2 : .1),
                 border: primary ? null : Border.all(color: VyseColors.ink.withValues(alpha: .14)),
                 boxShadow: primary && hovered

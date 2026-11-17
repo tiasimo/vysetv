@@ -205,15 +205,15 @@ class _ServerItemPageState extends State<ServerItemPage> {
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
-                      colors: [Color(0x6607080F), Color(0x0007080F), Color(0xCC07080F), VyseColors.bg],
+                      colors: [Color(0x6607080F), VyseColors.pick(0x0007080F, 0x00F4F5FA), Color(0xCC07080F), VyseColors.bg],
                       stops: [0, .25, .78, 1],
                     ),
                   ),
                 ),
                 if (!phone)
-                  const DecoratedBox(
+                  DecoratedBox(
                     decoration: BoxDecoration(
-                      gradient: LinearGradient(colors: [Color(0xE607080F), Color(0x0007080F)], stops: [0, .65]),
+                      gradient: LinearGradient(colors: [VyseColors.pick(0xE607080F, 0xE6F4F5FA), VyseColors.pick(0x0007080F, 0x00F4F5FA)], stops: [0, .65]),
                     ),
                   ),
               ]),

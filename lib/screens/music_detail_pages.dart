@@ -155,7 +155,7 @@ class _MusicCollectionPageState extends State<MusicCollectionPage> {
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
                                       textAlign: phone ? TextAlign.center : TextAlign.start,
-                                      style: TextStyle(fontSize: 13, color: hovered ? VyseColors.text : const Color(0xFFC3C7D4)),
+                                      style: TextStyle(fontSize: 13, color: hovered ? VyseColors.text : VyseColors.pick(0xFFC3C7D4, 0xFF454A60)),
                                     ),
                                   ),
                                   const SizedBox(height: 18),
@@ -292,7 +292,7 @@ class _MusicArtistPageState extends State<MusicArtistPage> {
                                 style: TextStyle(fontSize: phone ? 28 : 46, fontWeight: FontWeight.w800, letterSpacing: -1.4, height: 1.02)),
                             if (a != null && a.fanCount > 0) ...[
                               const SizedBox(height: 8),
-                              Text('${fmtThousands(a.fanCount)} fan', style: const TextStyle(fontSize: 13, color: Color(0xFFC3C7D4))),
+                              Text('${fmtThousands(a.fanCount)} fan', style: TextStyle(fontSize: 13, color: VyseColors.pick(0xFFC3C7D4, 0xFF454A60))),
                             ],
                             if (tracks.isNotEmpty) ...[
                               const SizedBox(height: 16),

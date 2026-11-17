@@ -311,7 +311,7 @@ class _NameBlock extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final d = details;
-    const dim = TextStyle(color: Color(0xFFC3C7D4), fontSize: 13);
+    final dim = TextStyle(color: VyseColors.pick(0xFFC3C7D4, 0xFF454A60), fontSize: 13);
     final bits = <String>[
       if (d != null && d.person.department.isNotEmpty) d.person.department,
       if (d?.age != null) d!.deathday != null ? '${d.birthday!.year} – ${d.deathday!.year} (${d.age})' : '${d.age} anni',
@@ -413,7 +413,7 @@ class _BioState extends State<_Bio> {
       );
     }
     final text = d.biography.isEmpty ? 'Ancora nessuna biografia.' : d.biography;
-    const style = TextStyle(color: Color(0xFFC3C7D4), fontSize: 14, height: 1.65);
+    final style = TextStyle(color: VyseColors.pick(0xFFC3C7D4, 0xFF454A60), fontSize: 14, height: 1.65);
     return FadeSlideIn(
       offset: 10,
       child: ConstrainedBox(
@@ -478,7 +478,7 @@ class _Links extends StatelessWidget {
           icon: Icons.ios_share_rounded,
           onTap: () {
             Clipboard.setData(ClipboardData(text: person.tmdbUrl));
-            showToast(context, const Text('Link copiato negli appunti', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+            showToast(context, Text('Link copiato negli appunti', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
                 icon: Icons.link_rounded);
           },
         ),
@@ -748,9 +748,9 @@ class _RoundButton extends StatelessWidget {
             height: 42,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: hovered ? Colors.white : VyseColors.ink.withValues(alpha: .12),
+              color: hovered ? VyseColors.strong : VyseColors.ink.withValues(alpha: .12),
             ),
-            child: Icon(icon, color: hovered ? Colors.black : Colors.white, size: 24),
+            child: Icon(icon, color: hovered ? VyseColors.onStrong : Colors.white, size: 24),
           ),
         ),
       );
@@ -779,7 +779,7 @@ class _FilmographyState extends State<_Filmography> {
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 980),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        const Text('Filmografia', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, letterSpacing: -.2)),
+        Text('Filmografia', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, letterSpacing: -.2)),
         const SizedBox(height: 12),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
@@ -799,7 +799,7 @@ class _FilmographyState extends State<_Filmography> {
                       padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 7),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(18),
-                        color: on ? Colors.white : VyseColors.ink.withValues(alpha: hovered ? .1 : .04),
+                        color: on ? VyseColors.strong : VyseColors.ink.withValues(alpha: hovered ? .1 : .04),
                       ),
                       child: Text.rich(
                         TextSpan(children: [
@@ -812,7 +812,7 @@ class _FilmographyState extends State<_Filmography> {
                         style: TextStyle(
                           fontSize: 12.5,
                           fontWeight: FontWeight.w600,
-                          color: on ? Colors.black : (hovered ? VyseColors.text : VyseColors.textDim),
+                          color: on ? VyseColors.onStrong : (hovered ? VyseColors.text : VyseColors.textDim),
                         ),
                       ),
                     );

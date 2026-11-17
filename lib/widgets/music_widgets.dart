@@ -494,7 +494,7 @@ class ArtistTile extends StatelessWidget {
                 duration: const Duration(milliseconds: 180),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  border: Border.all(color: hovered ? Colors.white : VyseColors.ink.withValues(alpha: .06), width: hovered ? 2 : 1),
+                  border: Border.all(color: hovered ? VyseColors.strong : VyseColors.ink.withValues(alpha: .06), width: hovered ? 2 : 1),
                 ),
                 child: Artwork(url: artist.pictureUrl, circle: true),
               ),
@@ -507,7 +507,7 @@ class ArtistTile extends StatelessWidget {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w600, color: hovered ? VyseColors.text : const Color(0xFFDADCE6)),
+          style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w600, color: hovered ? VyseColors.text : VyseColors.pick(0xFFDADCE6, 0xFF2A2D3B)),
         ),
         if (artist.fanCount > 0)
           Text(

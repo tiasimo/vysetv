@@ -687,7 +687,7 @@ class _RailItem extends StatelessWidget {
   Widget build(BuildContext context) => Pressable(
         onTap: onTap,
         builder: (context, hovered, pressed) {
-          final color = active || hovered ? VyseColors.text : const Color(0xFF8B90A3);
+          final color = active || hovered ? VyseColors.text : VyseColors.pick(0xFF8B90A3, 0xFF6B7088);
           return SizedBox(
             height: height,
             child: Row(children: [
@@ -931,7 +931,7 @@ class _BottomItem extends StatelessWidget {
               margin: const EdgeInsets.only(bottom: 6),
               decoration: BoxDecoration(color: VyseColors.accent, borderRadius: BorderRadius.circular(2)),
             ),
-            _NavIcon(item: item, active: active, color: active ? VyseColors.text : const Color(0xFF8B90A3), size: 21),
+            _NavIcon(item: item, active: active, color: active ? VyseColors.text : VyseColors.pick(0xFF8B90A3, 0xFF6B7088), size: 21),
             const SizedBox(height: 4),
             Text(item.label,
                 maxLines: 1,
@@ -986,7 +986,7 @@ class _WinButton extends StatelessWidget {
           color: hovered
               ? (danger ? const Color(0xFFE5383B) : VyseColors.ink.withValues(alpha: .08))
               : Colors.transparent,
-          child: Icon(icon, size: 13, color: hovered ? Colors.white : const Color(0xFF8B90A3)),
+          child: Icon(icon, size: 13, color: hovered ? VyseColors.strong : VyseColors.pick(0xFF8B90A3, 0xFF6B7088)),
         ),
       );
 }

@@ -16,7 +16,7 @@ Future<void> showAccountSheet(BuildContext context, {bool register = false, bool
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      backgroundColor: const Color(0xFF0B0D16),
+      backgroundColor: VyseColors.pick(0xFF0B0D16, 0xFFFFFFFF),
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(22))),
       builder: (context) => Padding(
         padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom),
@@ -28,7 +28,7 @@ Future<void> showAccountSheet(BuildContext context, {bool register = false, bool
     context: context,
     barrierColor: Colors.black.withValues(alpha: .65),
     builder: (context) => Dialog(
-      backgroundColor: const Color(0xFF0B0D16),
+      backgroundColor: VyseColors.pick(0xFF0B0D16, 0xFFFFFFFF),
       insetPadding: const EdgeInsets.all(24),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(22),
@@ -536,7 +536,7 @@ class _ModeSwitch extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 13.5,
                           fontWeight: FontWeight.w800,
-                          color: register == v ? Colors.white : (hovered ? VyseColors.text : VyseColors.textDim),
+                          color: register == v ? VyseColors.strong : (hovered ? VyseColors.text : VyseColors.textDim),
                         ),
                       ),
                     ),
@@ -656,14 +656,14 @@ class _Submit extends StatelessWidget {
         alignment: Alignment.center,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(14),
-          color: enabled || busy ? (hovered ? Colors.white : VyseColors.ink.withValues(alpha: .93)) : VyseColors.ink.withValues(alpha: .1),
+          color: enabled || busy ? (hovered ? VyseColors.strong : VyseColors.ink.withValues(alpha: .93)) : VyseColors.ink.withValues(alpha: .1),
           boxShadow: [if (enabled && hovered) BoxShadow(color: VyseColors.ink.withValues(alpha: .2), blurRadius: 18)],
         ),
         child: busy
-            ? const SizedBox.square(dimension: 20, child: CircularProgressIndicator(strokeWidth: 2.4, color: Colors.black))
+            ? SizedBox.square(dimension: 20, child: CircularProgressIndicator(strokeWidth: 2.4, color: VyseColors.onStrong))
             : Text(
                 label,
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w900, color: enabled ? Colors.black : VyseColors.textFaint),
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w900, color: enabled ? VyseColors.onStrong : VyseColors.textFaint),
               ),
       ),
     ),

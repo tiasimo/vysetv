@@ -312,7 +312,7 @@ class ServerWideCard extends StatelessWidget {
                       color: VyseColors.ink.withValues(alpha: .92),
                       boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: .4), blurRadius: 18)],
                     ),
-                    child: const Icon(Icons.play_arrow_rounded, color: Colors.black, size: 32),
+                    child: Icon(Icons.play_arrow_rounded, color: VyseColors.onStrong, size: 32),
                   ),
                 ),
               ),

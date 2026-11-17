@@ -148,7 +148,7 @@ class _MangaDetailsPageState extends State<MangaDetailsPage> {
               TextSpan(text: m.author, style: TextStyle(color: VyseColors.text, fontWeight: FontWeight.w600)),
             for (final (i, x) in meta.indexed) TextSpan(text: i == 0 && (m.author ?? '').isEmpty ? x : '  ·  $x'),
           ]),
-          style: const TextStyle(color: Color(0xFFC3C7D4), fontSize: 14),
+          style: TextStyle(color: VyseColors.pick(0xFFC3C7D4, 0xFF454A60), fontSize: 14),
         ),
         if (synopsis.isNotEmpty) ...[
           const SizedBox(height: 16),
@@ -163,7 +163,7 @@ class _MangaDetailsPageState extends State<MangaDetailsPage> {
                 child: Text(synopsis,
                     maxLines: _synopsisOpen ? null : 4,
                     overflow: _synopsisOpen ? null : TextOverflow.ellipsis,
-                    style: const TextStyle(color: Color(0xFFC3C7D4), fontSize: 14, height: 1.6)),
+                    style: TextStyle(color: VyseColors.pick(0xFFC3C7D4, 0xFF454A60), fontSize: 14, height: 1.6)),
               ),
             ),
           ),
@@ -359,7 +359,7 @@ class _ChapterTile extends StatelessWidget {
         onTap: onTap,
         builder: (hovered) => AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          color: hovered || current ? VyseColors.surfaceHi : const Color(0xFF0D0F18),
+          color: hovered || current ? VyseColors.surfaceHi : VyseColors.pick(0xFF0D0F18, 0xFFF7F8FC),
           child: Row(children: [
             AnimatedContainer(duration: const Duration(milliseconds: 200), width: 3, color: current ? VyseColors.accent : Colors.transparent),
             const SizedBox(width: 13),

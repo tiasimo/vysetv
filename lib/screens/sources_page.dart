@@ -404,7 +404,7 @@ class _SourcesPageState extends State<SourcesPage> {
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
-                      colors: [Color(0x8C000000), Color(0x00000000), Color(0xE607080F), VyseColors.bg],
+                      colors: [Color(0x8C000000), Color(0x00000000), VyseColors.pick(0xE607080F, 0xE6F4F5FA), VyseColors.bg],
                       stops: [0, .32, .82, 1],
                     ),
                   ),
@@ -452,7 +452,7 @@ class _SourcesPageState extends State<SourcesPage> {
           right: 0,
           width: size.width * .66,
           child: ShaderMask(
-            shaderCallback: (r) => const LinearGradient(colors: [Color(0x00FFFFFF), Color(0x99FFFFFF), Color(0xFFFFFFFF)], stops: [0, .35, .7]).createShader(r),
+            shaderCallback: (r) => LinearGradient(colors: [Color(0x00FFFFFF), VyseColors.pick(0x99FFFFFF, 0x99000000), Color(0xFFFFFFFF)], stops: [0, .35, .7]).createShader(r),
             blendMode: BlendMode.dstIn,
             child: ShaderMask(
               shaderCallback: (r) => const LinearGradient(
@@ -1040,7 +1040,7 @@ class _SourceRow extends StatelessWidget {
               padding: EdgeInsets.fromLTRB(phone ? 14 : 18, 14, phone ? 14 : 16, 14),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
-                color: pressed ? const Color(0x1FFFFFFF) : (hovered ? const Color(0x14FFFFFF) : const Color(0x0BFFFFFF)),
+                color: pressed ? VyseColors.pick(0x1FFFFFFF, 0x1F000000) : (hovered ? VyseColors.pick(0x14FFFFFF, 0x14000000) : const Color(0x0BFFFFFF)),
                 border: playing ? Border.all(color: VyseColors.accent.withValues(alpha: .55)) : null,
               ),
               child: phone
@@ -1135,7 +1135,7 @@ class AddonLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final letter = Container(
-      color: const Color(0x1FFFFFFF),
+      color: VyseColors.pick(0x1FFFFFFF, 0x1F000000),
       alignment: Alignment.center,
       child: Text(
         addon.name.isEmpty ? '?' : addon.name.characters.first.toUpperCase(),
@@ -1155,7 +1155,7 @@ class AddonLogo extends StatelessWidget {
                   imageUrl: addon.logo!,
                   fit: BoxFit.cover,
                   memCacheWidth: (size * 3).round(),
-                  placeholder: (_, _) => const ColoredBox(color: Color(0x14FFFFFF)),
+                  placeholder: (_, _) => ColoredBox(color: VyseColors.pick(0x14FFFFFF, 0x14000000)),
                   errorWidget: (_, _, _) => letter,
                 ),
         ),
@@ -1240,7 +1240,7 @@ class _Primary extends StatelessWidget {
         duration: const Duration(milliseconds: 140),
         height: 42,
         padding: const EdgeInsets.fromLTRB(16, 0, 20, 0),
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: hovered ? const Color(0xFFE6E7EE) : Colors.white),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: hovered ? VyseColors.pick(0xFFE6E7EE, 0xFF2A2D3B) : VyseColors.strong),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [

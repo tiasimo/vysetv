@@ -443,7 +443,7 @@ class _PortalCard extends StatelessWidget {
       trailing: edit
           ? Padding(
               padding: const EdgeInsets.all(10),
-              child: Icon(selected ? Icons.check_circle_rounded : Icons.circle_outlined, size: 20, color: selected ? Colors.white : VyseColors.textFaint),
+              child: Icon(selected ? Icons.check_circle_rounded : Icons.circle_outlined, size: 20, color: selected ? VyseColors.strong : VyseColors.textFaint),
             )
           : Row(
               mainAxisSize: MainAxisSize.min,

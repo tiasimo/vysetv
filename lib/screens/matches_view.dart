@@ -253,7 +253,7 @@ class _MatchPageState extends State<MatchPage> {
                     else
                       Text(m.name, style: TextStyle(fontSize: phone ? 26 : 38, fontWeight: FontWeight.w800, letterSpacing: -1.1, height: 1.05)),
                     const SizedBox(height: 18),
-                    Text([when, ?m.venue].join('  ·  '), style: const TextStyle(fontSize: 13, color: Color(0xFFC3C7D4))),
+                    Text([when, ?m.venue].join('  ·  '), style: TextStyle(fontSize: 13, color: VyseColors.pick(0xFFC3C7D4, 0xFF454A60))),
                   ]),
                 ),
               ),

@@ -115,7 +115,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                         height: 46,
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
-                          color: hovered ? Colors.white : const Color(0xFFF1F1F5),
+                          color: hovered ? VyseColors.strong : VyseColors.pick(0xFFF1F1F5, 0xFF1C1E28),
                           borderRadius: BorderRadius.circular(23),
                         ),
                         child: _c.initialLoading || _c.reloading
@@ -232,9 +232,9 @@ class _Haze extends StatelessWidget {
         child: Container(
           width: 640,
           height: 640,
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             shape: BoxShape.circle,
-            gradient: RadialGradient(colors: [Color(0x1FFF8A1A), Color(0x0F7A5CFF), Color(0x0007080F)], stops: [0, .45, 1]),
+            gradient: RadialGradient(colors: [Color(0x1FFF8A1A), Color(0x0F7A5CFF), VyseColors.pick(0x0007080F, 0x00F4F5FA)], stops: [0, .45, 1]),
           ),
         ),
       );
@@ -374,7 +374,7 @@ class _Results extends StatelessWidget {
                   child: LinearProgressIndicator(
                     minHeight: 2,
                     color: VyseColors.accent,
-                    backgroundColor: Color(0x14FFFFFF),
+                    backgroundColor: VyseColors.pick(0x14FFFFFF, 0x14000000),
                   ),
                 ),
               ),
@@ -994,8 +994,8 @@ class _Chip extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
-              color: selected ? Colors.white : VyseColors.ink.withValues(alpha: hovered ? .12 : .05),
-              border: Border.all(color: selected ? Colors.white : VyseColors.ink.withValues(alpha: .06)),
+              color: selected ? VyseColors.strong : VyseColors.ink.withValues(alpha: hovered ? .12 : .05),
+              border: Border.all(color: selected ? VyseColors.strong : VyseColors.ink.withValues(alpha: .06)),
             ),
             child: Row(mainAxisSize: MainAxisSize.min, children: [
               if (icon != null) ...[
@@ -1006,7 +1006,7 @@ class _Chip extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
-                    color: selected ? Colors.black : (hovered ? VyseColors.text : VyseColors.textDim),
+                    color: selected ? VyseColors.onStrong : (hovered ? VyseColors.text : VyseColors.textDim),
                   )),
             ]),
           ),
@@ -1216,7 +1216,7 @@ class _ProviderPickerState extends State<_ProviderPicker> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: on ? Colors.white : VyseColors.ink.withValues(alpha: .06),
+                            color: on ? VyseColors.strong : VyseColors.ink.withValues(alpha: .06),
                             width: on ? 2 : 1,
                           ),
                         ),

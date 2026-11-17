@@ -1657,8 +1657,8 @@ class _GuideLines extends StatelessWidget {
   /// null while it loads; empty when there is none.
   final List<EpgEntry>? guide;
 
-  static final _title = TextStyle(fontSize: 12.5, color: VyseColors.textDim, height: 1.25);
-  static final _time = TextStyle(fontSize: 11, color: VyseColors.textFaint, height: 1.25, fontFeatures: [FontFeature.tabularFigures()]);
+  static TextStyle get _title => TextStyle(fontSize: 12.5, color: VyseColors.textDim, height: 1.25);
+  static TextStyle get _time => TextStyle(fontSize: 11, color: VyseColors.textFaint, height: 1.25, fontFeatures: [FontFeature.tabularFigures()]);
 
   @override
   Widget build(BuildContext context) {

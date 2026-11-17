@@ -210,7 +210,7 @@ class _AvatarPickerState extends State<_AvatarPicker> {
     final phone = Layout.isPhone(context);
     final size = MediaQuery.sizeOf(context);
     return Dialog(
-      backgroundColor: const Color(0xFF0B0D16),
+      backgroundColor: VyseColors.pick(0xFF0B0D16, 0xFFFFFFFF),
       insetPadding: EdgeInsets.all(phone ? 12 : 40),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(18),
@@ -374,7 +374,7 @@ class _ShowCast extends StatelessWidget {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               color: VyseColors.surfaceHi,
-                              border: Border.all(color: hovered ? Colors.white : Colors.transparent, width: 2),
+                              border: Border.all(color: hovered ? VyseColors.strong : Colors.transparent, width: 2),
                             ),
                             child: CachedNetworkImage(
                               imageUrl: c.photo,
@@ -440,7 +440,7 @@ class _SourceSwitch extends StatelessWidget {
                         ),
                         Text(
                           label,
-                          style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.w800, color: source == v ? Colors.white : VyseColors.textDim),
+                          style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.w800, color: source == v ? VyseColors.strong : VyseColors.textDim),
                         ),
                       ],
                     ),
@@ -495,7 +495,7 @@ class _AvatarGroup extends StatelessWidget {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(rounded),
                         color: VyseColors.surfaceHi,
-                        border: Border.all(color: hovered ? Colors.white : Colors.transparent, width: 2),
+                        border: Border.all(color: hovered ? VyseColors.strong : Colors.transparent, width: 2),
                       ),
                       child: CachedNetworkImage(
                         imageUrl: c.photo,

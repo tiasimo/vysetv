@@ -23,6 +23,14 @@ class VyseColors {
   /// What the original dark look drew in translucent white (hover tints, soft boxes, dividers):
   /// black in day mode, so they still show on a light page.
   static Color get ink => light ? Colors.black : Colors.white;
+
+  /// The "strongest" colour: white at night, near-black by day. For selected chips, primary
+  /// buttons and hover fills, with [onStrong] on top.
+  static Color get strong => light ? const Color(0xFF15161F) : Colors.white;
+  static Color get onStrong => light ? Colors.white : Colors.black;
+
+  /// A fixed night colour, and the one to use instead by day.
+  static Color pick(int night, int day) => Color(light ? day : night);
 }
 
 /// Day, night or whatever the system is set to.

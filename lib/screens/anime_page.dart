@@ -184,7 +184,7 @@ class _AnimePageState extends State<AnimePage> {
             child: Container(
               height: 46,
               alignment: Alignment.center,
-              decoration: BoxDecoration(color: hovered ? Colors.white : const Color(0xFFF1F1F5), borderRadius: BorderRadius.circular(radius)),
+              decoration: BoxDecoration(color: hovered ? VyseColors.strong : VyseColors.pick(0xFFF1F1F5, 0xFF1C1E28), borderRadius: BorderRadius.circular(radius)),
               child: _loading && (_reloading || _items.isEmpty)
                   ? const SizedBox.square(dimension: 18, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.black))
                   : Text('Mostra ${_countLabel(_total)}', style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 14)),
@@ -361,7 +361,7 @@ class _AnimePageState extends State<AnimePage> {
                   duration: const Duration(milliseconds: 200),
                   child: ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(2)),
-                    child: LinearProgressIndicator(minHeight: 2, color: VyseColors.accent, backgroundColor: Color(0x14FFFFFF)),
+                    child: LinearProgressIndicator(minHeight: 2, color: VyseColors.accent, backgroundColor: VyseColors.pick(0x14FFFFFF, 0x14000000)),
                   ),
                 ),
                 const SizedBox(height: 10),

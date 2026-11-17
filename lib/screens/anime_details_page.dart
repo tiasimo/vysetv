@@ -479,7 +479,7 @@ class _AnimeMetaLine extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const dim = TextStyle(color: Color(0xFFC3C7D4), fontSize: 13);
+    final dim = TextStyle(color: VyseColors.pick(0xFFC3C7D4, 0xFF454A60), fontSize: 13);
     final a = anime;
     final count = a.isMovie ? null : (a.episodes ?? a.aired);
     final parts = <Widget>[
@@ -518,7 +518,7 @@ class _AnimeMetaLine extends StatelessWidget {
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(4), border: Border.all(color: VyseColors.ink.withValues(alpha: .3))),
             child: Text(
               (animeStatuses[a.status] ?? a.status).toUpperCase(),
-              style: const TextStyle(fontSize: 10.5, fontWeight: FontWeight.w700, color: Color(0xFFC3C7D4)),
+              style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w700, color: VyseColors.pick(0xFFC3C7D4, 0xFF454A60)),
             ),
           ),
       ],
@@ -575,7 +575,7 @@ class _AnimeBody extends StatelessWidget {
             child: Text(
               a.description.isNotEmpty ? a.description : (loaded ? 'Ancora nessuna trama.' : ''),
               textAlign: align,
-              style: TextStyle(color: const Color(0xFFC3C7D4), fontSize: compact ? 13.5 : 14, height: 1.65),
+              style: TextStyle(color: VyseColors.pick(0xFFC3C7D4, 0xFF454A60), fontSize: compact ? 13.5 : 14, height: 1.65),
             ),
           ),
         ),
@@ -702,7 +702,7 @@ class _CharacterTile extends StatelessWidget {
             c.name,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.w600, color: hovered ? VyseColors.text : const Color(0xFFDADCE6)),
+            style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.w600, color: hovered ? VyseColors.text : VyseColors.pick(0xFFDADCE6, 0xFF2A2D3B)),
           ),
           const SizedBox(height: 2),
           Text(
@@ -747,11 +747,11 @@ class _AudioToggle extends StatelessWidget {
           alignment: Alignment.center,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
-            color: on ? Colors.white : VyseColors.ink.withValues(alpha: hovered ? .08 : 0),
+            color: on ? VyseColors.strong : VyseColors.ink.withValues(alpha: hovered ? .08 : 0),
           ),
           child: Text(
             label,
-            style: TextStyle(color: on ? Colors.black : (hovered ? VyseColors.text : VyseColors.textDim), fontWeight: FontWeight.w700, fontSize: 13),
+            style: TextStyle(color: on ? VyseColors.onStrong : (hovered ? VyseColors.text : VyseColors.textDim), fontWeight: FontWeight.w700, fontSize: 13),
           ),
         ),
       );

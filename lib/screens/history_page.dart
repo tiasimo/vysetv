@@ -86,7 +86,7 @@ class _HistoryPageState extends State<HistoryPage> {
     final ok = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF101118),
+        backgroundColor: VyseColors.pick(0xFF101118, 0xFFF2F3F8),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: const Text('Cancellare la cronologia?', style: TextStyle(fontWeight: FontWeight.w800)),
         content: Text(
@@ -291,7 +291,7 @@ class _Toolbar extends StatelessWidget {
                   child: Row(mainAxisSize: MainAxisSize.min, children: [
                     Text(
                       f.label,
-                      style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: f == filter ? Colors.white : VyseColors.textDim),
+                      style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: f == filter ? VyseColors.strong : VyseColors.textDim),
                     ),
                     if (f != _Filter.all) ...[
                       const SizedBox(width: 6),
@@ -532,7 +532,7 @@ class _RowButton extends StatelessWidget {
         child: Icon(
           icon,
           size: size * .5,
-          color: primary ? Colors.black : (danger && hovered ? const Color(0xFFFF8A8C) : VyseColors.text),
+          color: primary ? VyseColors.onStrong : (danger && hovered ? const Color(0xFFFF8A8C) : VyseColors.text),
         ),
       ),
     ),

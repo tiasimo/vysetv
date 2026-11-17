@@ -389,7 +389,7 @@ class _Action extends StatelessWidget {
     tooltip: tooltip ?? label,
     onTap: onTap,
     builder: (context, hovered, pressed) {
-      final fg = primary ? Colors.black : (danger && hovered ? const Color(0xFFFF8A8C) : VyseColors.text);
+      final fg = primary ? VyseColors.onStrong : (danger && hovered ? const Color(0xFFFF8A8C) : VyseColors.text);
       return AnimatedScale(
         scale: pressed ? .96 : 1,
         duration: const Duration(milliseconds: 120),
@@ -400,7 +400,7 @@ class _Action extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(11),
             color: primary
-                ? (hovered ? Colors.white : const Color(0xFFF1F1F5))
+                ? (hovered ? VyseColors.strong : VyseColors.pick(0xFFF1F1F5, 0xFF1C1E28))
                 : danger && hovered
                 ? const Color(0xFFFF4D4F).withValues(alpha: .16)
                 : VyseColors.ink.withValues(alpha: hovered ? .14 : .07),

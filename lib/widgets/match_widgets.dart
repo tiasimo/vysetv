@@ -6,7 +6,7 @@ import '../data/match_finder.dart';
 import '../data/sports_schedule.dart';
 import 'media_rows.dart';
 
-const _tileBg = Color(0xFF0D0F18);
+Color get _tileBg => VyseColors.pick(0xFF0D0F18, 0xFFF7F8FC);
 
 String hhmm(DateTime d) => '${d.hour.toString().padLeft(2, '0')}:${d.minute.toString().padLeft(2, '0')}';
 

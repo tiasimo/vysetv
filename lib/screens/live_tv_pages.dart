@@ -247,7 +247,7 @@ class _MatchGuide extends StatelessWidget {
     }
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
-      decoration: BoxDecoration(color: const Color(0xFF0D0F18), borderRadius: BorderRadius.circular(12)),
+      decoration: BoxDecoration(color: VyseColors.pick(0xFF0D0F18, 0xFFF7F8FC), borderRadius: BorderRadius.circular(12)),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(children: [
           if (m.leagueLogo != null) ...[TeamBadge(url: m.leagueLogo, size: 18), const SizedBox(width: 8)],

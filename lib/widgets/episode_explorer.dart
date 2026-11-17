@@ -456,10 +456,10 @@ class _Preview extends StatelessWidget {
             if (e.aired != null)
               Text(
                 '${e.upcoming ? 'Airs ' : ''}${e.aired!.day} ${_months[e.aired!.month - 1]} ${e.aired!.year}',
-                style: const TextStyle(fontSize: 13, color: Color(0xFFC3C7D4)),
+                style: TextStyle(fontSize: 13, color: VyseColors.pick(0xFFC3C7D4, 0xFF454A60)),
               ),
             if (e.runtime != null && e.runtime! > 0)
-              Text(fmtRuntime(e.runtime!), style: const TextStyle(fontSize: 13, color: Color(0xFFC3C7D4))),
+              Text(fmtRuntime(e.runtime!), style: TextStyle(fontSize: 13, color: VyseColors.pick(0xFFC3C7D4, 0xFF454A60))),
             if (e.rating > 0)
               Row(
                 mainAxisSize: MainAxisSize.min,
@@ -479,7 +479,7 @@ class _Preview extends StatelessWidget {
           e.overview.isEmpty ? 'Ancora nessuna trama.' : e.overview,
           maxLines: compact ? 4 : 5,
           overflow: TextOverflow.ellipsis,
-          style: const TextStyle(fontSize: 13.5, height: 1.6, color: Color(0xFFC3C7D4)),
+          style: TextStyle(fontSize: 13.5, height: 1.6, color: VyseColors.pick(0xFFC3C7D4, 0xFF454A60)),
         ),
         if (show != null && s != null) ...[
           const SizedBox(height: 18),
@@ -530,7 +530,7 @@ class _PlayEpisode extends StatelessWidget {
         height: 42,
         padding: const EdgeInsets.fromLTRB(8, 0, 20, 0),
         decoration: BoxDecoration(
-          color: !enabled ? VyseColors.ink.withValues(alpha: .08) : (hovered ? Colors.white : const Color(0xFFF1F1F5)),
+          color: !enabled ? VyseColors.ink.withValues(alpha: .08) : (hovered ? VyseColors.strong : VyseColors.pick(0xFFF1F1F5, 0xFF1C1E28)),
           borderRadius: BorderRadius.circular(21),
         ),
         child: Row(

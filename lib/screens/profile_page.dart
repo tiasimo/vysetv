@@ -36,7 +36,7 @@ import '../widgets/page_scrollbar.dart';
 import '../widgets/section_chrome.dart';
 import 'avatar_picker.dart';
 
-const _card = Color(0xFF0D0F18);
+Color get _card => VyseColors.pick(0xFF0D0F18, 0xFFF7F8FC);
 const _danger = Color(0xFFF26B6B);
 
 enum _Tab {
@@ -345,7 +345,7 @@ class _SmallButton extends StatelessWidget {
   Widget build(BuildContext context) => Pressable(
     onTap: onTap,
     builder: (context, hovered, pressed) {
-      final fg = primary ? Colors.black : (danger ? _danger : VyseColors.text);
+      final fg = primary ? VyseColors.onStrong : (danger ? _danger : VyseColors.text);
       return AnimatedScale(
         scale: pressed ? .95 : 1,
         duration: const Duration(milliseconds: 120),
@@ -355,7 +355,7 @@ class _SmallButton extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             color: primary
-                ? (hovered ? Colors.white : const Color(0xFFF1F1F5))
+                ? (hovered ? VyseColors.strong : VyseColors.pick(0xFFF1F1F5, 0xFF1C1E28))
                 : danger
                 ? _danger.withValues(alpha: hovered ? .2 : .1)
                 : VyseColors.ink.withValues(alpha: hovered ? .14 : .07),
@@ -436,7 +436,7 @@ class _DangerPill extends StatelessWidget {
       ),
       child: Text(
         'Zona pericolosa',
-        style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: selected ? Colors.black : _danger),
+        style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: selected ? VyseColors.onStrong : _danger),
       ),
     ),
   );

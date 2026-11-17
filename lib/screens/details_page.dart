@@ -533,7 +533,7 @@ class _MetaLine extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const dim = TextStyle(color: Color(0xFFC3C7D4), fontSize: 13);
+    final dim = TextStyle(color: VyseColors.pick(0xFFC3C7D4, 0xFF454A60), fontSize: 13);
     final d = details;
     final parts = <Widget>[
       if (media.year != null) Text(media.year!, style: dim),
@@ -576,7 +576,7 @@ class _MetaLine extends StatelessWidget {
             ),
             child: Text(
               d!.certification!,
-              style: const TextStyle(fontSize: 10.5, fontWeight: FontWeight.w700, color: Color(0xFFC3C7D4)),
+              style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w700, color: VyseColors.pick(0xFFC3C7D4, 0xFF454A60)),
             ),
           ),
       ],
@@ -651,7 +651,7 @@ class _Body extends StatelessWidget {
             child: Text(
               media.overview.isEmpty ? 'Ancora nessuna trama.' : media.overview,
               textAlign: align,
-              style: TextStyle(color: const Color(0xFFC3C7D4), fontSize: compact ? 13.5 : 14, height: 1.65),
+              style: TextStyle(color: VyseColors.pick(0xFFC3C7D4, 0xFF454A60), fontSize: compact ? 13.5 : 14, height: 1.65),
             ),
           ),
         ),
@@ -729,10 +729,10 @@ class _RoundAction extends StatelessWidget {
         height: 38,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: hovered ? Colors.white : VyseColors.ink.withValues(alpha: .06),
+          color: hovered ? VyseColors.strong : VyseColors.ink.withValues(alpha: .06),
           border: Border.all(color: VyseColors.ink.withValues(alpha: hovered ? 0 : .08)),
         ),
-        child: Icon(icon, size: 17, color: hovered ? Colors.black : VyseColors.text),
+        child: Icon(icon, size: 17, color: hovered ? VyseColors.onStrong : VyseColors.text),
       ),
     ),
   );
@@ -749,7 +749,7 @@ class _Pill extends StatelessWidget {
   Widget build(BuildContext context) => Pressable(
     onTap: onTap,
     builder: (context, hovered, pressed) {
-      final fg = primary ? Colors.black : VyseColors.text;
+      final fg = primary ? VyseColors.onStrong : VyseColors.text;
       return AnimatedScale(
         scale: pressed ? .95 : 1,
         duration: const Duration(milliseconds: 120),
@@ -759,7 +759,7 @@ class _Pill extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: primary ? 22 : 14),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            color: primary ? (hovered ? const Color(0xFFE6E7EE) : Colors.white) : VyseColors.ink.withValues(alpha: hovered ? .14 : .06),
+            color: primary ? (hovered ? VyseColors.pick(0xFFE6E7EE, 0xFF2A2D3B) : VyseColors.strong) : VyseColors.ink.withValues(alpha: hovered ? .14 : .06),
             border: primary ? null : Border.all(color: VyseColors.ink.withValues(alpha: hovered ? .22 : .08)),
           ),
           child: Row(
@@ -1027,7 +1027,7 @@ class _CastTile extends StatelessWidget {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.left,
-          style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.w600, color: hovered ? VyseColors.text : const Color(0xFFDADCE6)),
+          style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.w600, color: hovered ? VyseColors.text : VyseColors.pick(0xFFDADCE6, 0xFF2A2D3B)),
         ),
         const SizedBox(height: 2),
         Text(
@@ -1056,7 +1056,7 @@ class _VideoCard extends StatelessWidget {
         duration: const Duration(milliseconds: 180),
         foregroundDecoration: BoxDecoration(
           borderRadius: BorderRadius.circular(7),
-          border: Border.all(color: hovered ? Colors.white : VyseColors.ink.withValues(alpha: .05), width: hovered ? 2 : 1),
+          border: Border.all(color: hovered ? VyseColors.strong : VyseColors.ink.withValues(alpha: .05), width: hovered ? 2 : 1),
         ),
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(7), color: VyseColors.surface),
         clipBehavior: Clip.antiAlias,
@@ -1083,10 +1083,10 @@ class _VideoCard extends StatelessWidget {
                   height: 42,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: hovered ? Colors.white : Colors.black.withValues(alpha: .5),
+                    color: hovered ? VyseColors.strong : Colors.black.withValues(alpha: .5),
                     border: Border.all(color: VyseColors.ink.withValues(alpha: .6)),
                   ),
-                  child: Icon(Icons.play_arrow_rounded, color: hovered ? Colors.black : Colors.white, size: 26),
+                  child: Icon(Icons.play_arrow_rounded, color: hovered ? VyseColors.onStrong : Colors.white, size: 26),
                 ),
               ),
             ),

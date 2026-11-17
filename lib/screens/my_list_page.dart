@@ -433,14 +433,14 @@ class _PickButton extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: compact ? 12 : 16, vertical: compact ? 9 : 11),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(24),
-          color: hovered ? Colors.white : VyseColors.ink.withValues(alpha: .92),
+          color: hovered ? VyseColors.strong : VyseColors.ink.withValues(alpha: .92),
           boxShadow: [if (hovered) BoxShadow(color: VyseColors.ink.withValues(alpha: .25), blurRadius: 18)],
         ),
         child: Row(mainAxisSize: MainAxisSize.min, children: [
-          const Icon(Icons.casino_rounded, size: 18, color: Colors.black),
+          Icon(Icons.casino_rounded, size: 18, color: VyseColors.onStrong),
           if (!compact) ...[
             const SizedBox(width: 8),
-            const Text("Indeciso?", style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.w800, color: Colors.black)),
+            Text("Indeciso?", style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.w800, color: VyseColors.onStrong)),
           ],
         ]),
       ),
@@ -583,7 +583,7 @@ class _Chip extends StatelessWidget {
         border: Border.all(color: selected ? VyseColors.accent.withValues(alpha: .45) : Colors.transparent),
       ),
       child: Row(mainAxisSize: MainAxisSize.min, children: [
-        Text(label, style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w700, color: selected ? Colors.white : VyseColors.textDim)),
+        Text(label, style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w700, color: selected ? VyseColors.strong : VyseColors.textDim)),
         const SizedBox(width: 6),
         Text('$count', style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.w700, color: selected ? VyseColors.accent : VyseColors.textFaint)),
       ]),
@@ -636,7 +636,7 @@ class _ViewToggle extends StatelessWidget {
               borderRadius: BorderRadius.circular(17),
               color: grid == g ? VyseColors.ink.withValues(alpha: .16) : Colors.transparent,
             ),
-            child: Icon(icon, size: 17, color: grid == g ? Colors.white : VyseColors.textDim),
+            child: Icon(icon, size: 17, color: grid == g ? VyseColors.strong : VyseColors.textDim),
           ),
         ),
     ]),
@@ -653,7 +653,7 @@ class _SortMenu extends StatelessWidget {
   Widget build(BuildContext context) => MenuAnchor(
     alignmentOffset: const Offset(0, 6),
     style: MenuStyle(
-      backgroundColor: const WidgetStatePropertyAll(Color(0xF7101118)),
+      backgroundColor: WidgetStatePropertyAll(VyseColors.pick(0xF7101118, 0xF7F2F3F8)),
       surfaceTintColor: const WidgetStatePropertyAll(Colors.transparent),
       padding: const WidgetStatePropertyAll(EdgeInsets.symmetric(vertical: 6)),
       shape: WidgetStatePropertyAll(
@@ -842,7 +842,7 @@ class _PosterTile extends StatelessWidget {
             foregroundDecoration: BoxDecoration(
               borderRadius: BorderRadius.circular(9),
               border: Border.all(
-                color: selected ? VyseColors.accent : (hovered ? Colors.white : VyseColors.ink.withValues(alpha: .05)),
+                color: selected ? VyseColors.accent : (hovered ? VyseColors.strong : VyseColors.ink.withValues(alpha: .05)),
                 width: selected || hovered ? 2 : 1,
               ),
             ),
@@ -920,10 +920,10 @@ class _TileAction extends StatelessWidget {
         height: primary ? 36 : 32,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: primary ? Colors.white : Colors.black.withValues(alpha: .6),
+          color: primary ? VyseColors.strong : Colors.black.withValues(alpha: .6),
           border: primary ? null : Border.all(color: VyseColors.ink.withValues(alpha: .3)),
         ),
-        child: Icon(icon, size: primary ? 22 : 17, color: primary ? Colors.black : Colors.white),
+        child: Icon(icon, size: primary ? 22 : 17, color: primary ? VyseColors.onStrong : Colors.white),
       ),
     ),
   );
@@ -1174,7 +1174,7 @@ class _PickForMeState extends State<_PickForMe> {
           width: phone ? MediaQuery.sizeOf(context).width - 40 : 420,
           padding: const EdgeInsets.fromLTRB(24, 22, 24, 22),
           decoration: BoxDecoration(
-            color: const Color(0xF7101118),
+            color: VyseColors.pick(0xF7101118, 0xF7F2F3F8),
             borderRadius: BorderRadius.circular(24),
             border: Border.all(color: VyseColors.ink.withValues(alpha: .08)),
             boxShadow: [BoxShadow(color: VyseColors.accent.withValues(alpha: _spinning ? .1 : .25), blurRadius: 40)],
@@ -1261,12 +1261,12 @@ class _DialogButton extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(22),
-          color: primary ? (hovered ? Colors.white : VyseColors.ink.withValues(alpha: .92)) : VyseColors.ink.withValues(alpha: hovered ? .14 : .08),
+          color: primary ? (hovered ? VyseColors.strong : VyseColors.ink.withValues(alpha: .92)) : VyseColors.ink.withValues(alpha: hovered ? .14 : .08),
         ),
         child: Row(mainAxisSize: MainAxisSize.min, children: [
-          Icon(icon, size: 18, color: primary ? Colors.black : Colors.white),
+          Icon(icon, size: 18, color: primary ? VyseColors.onStrong : Colors.white),
           const SizedBox(width: 6),
-          Text(label, style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.w800, color: primary ? Colors.black : Colors.white)),
+          Text(label, style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.w800, color: primary ? VyseColors.onStrong : Colors.white)),
         ]),
       ),
     ),

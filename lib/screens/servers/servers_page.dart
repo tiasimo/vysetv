@@ -330,8 +330,8 @@ class _ProviderCard extends StatelessWidget {
                 duration: const Duration(milliseconds: 200),
                 width: 36,
                 height: 36,
-                decoration: BoxDecoration(shape: BoxShape.circle, color: hovered ? Colors.white : VyseColors.ink.withValues(alpha: .08)),
-                child: Icon(Icons.arrow_forward_rounded, size: 19, color: hovered ? Colors.black : VyseColors.textDim),
+                decoration: BoxDecoration(shape: BoxShape.circle, color: hovered ? VyseColors.strong : VyseColors.ink.withValues(alpha: .08)),
+                child: Icon(Icons.arrow_forward_rounded, size: 19, color: hovered ? VyseColors.onStrong : VyseColors.textDim),
               ),
             ]),
             const SizedBox(height: 18),
@@ -783,15 +783,15 @@ class _ServerPill extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(7, 6, 14, 6),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: selected ? Colors.white : VyseColors.ink.withValues(alpha: hovered ? .1 : .05),
-        border: Border.all(color: selected ? Colors.white : VyseColors.ink.withValues(alpha: .08)),
+        color: selected ? VyseColors.strong : VyseColors.ink.withValues(alpha: hovered ? .1 : .05),
+        border: Border.all(color: selected ? VyseColors.strong : VyseColors.ink.withValues(alpha: .08)),
       ),
       child: Row(mainAxisSize: MainAxisSize.min, children: [
         BrandMark(server.backend, size: 22),
         const SizedBox(width: 8),
         Text(
           server.name,
-          style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: selected ? Colors.black : VyseColors.text),
+          style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: selected ? VyseColors.onStrong : VyseColors.text),
         ),
       ]),
     ),
@@ -937,7 +937,7 @@ Future<void> showServerAccounts(BuildContext context) {
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      backgroundColor: const Color(0xFF0B0D16),
+      backgroundColor: VyseColors.pick(0xFF0B0D16, 0xFFFFFFFF),
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(22))),
       builder: (context) => const SingleChildScrollView(child: body),
     );
@@ -946,7 +946,7 @@ Future<void> showServerAccounts(BuildContext context) {
     context: context,
     barrierColor: Colors.black.withValues(alpha: .65),
     builder: (context) => Dialog(
-      backgroundColor: const Color(0xFF0B0D16),
+      backgroundColor: VyseColors.pick(0xFF0B0D16, 0xFFFFFFFF),
       insetPadding: const EdgeInsets.all(24),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22), side: BorderSide(color: VyseColors.stroke)),
       clipBehavior: Clip.antiAlias,
@@ -1037,7 +1037,7 @@ class _AccountCardState extends State<_AccountCard> {
       context: context,
       barrierColor: Colors.black.withValues(alpha: .6),
       builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF0B0D16),
+        backgroundColor: VyseColors.pick(0xFF0B0D16, 0xFFFFFFFF),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18), side: BorderSide(color: VyseColors.stroke)),
         title: Text('Sign out of ${a is PlexAccount ? 'Plex' : (a as JellyfinAccount).conn.serverName}?', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900)),
         content: Text('I tuoi progressi restano sul server. Puoi riaccedere quando vuoi.', style: TextStyle(fontSize: 13.5, color: VyseColors.textDim)),
@@ -1118,7 +1118,7 @@ class _AccountCardState extends State<_AccountCard> {
                                   Positioned(
                                     right: -2,
                                     bottom: -2,
-                                    child: CircleAvatar(radius: 9, backgroundColor: Color(0xFF0B0D16), child: Icon(Icons.lock_rounded, size: 11, color: VyseColors.textDim)),
+                                    child: CircleAvatar(radius: 9, backgroundColor: VyseColors.pick(0xFF0B0D16, 0xFFFFFFFF), child: Icon(Icons.lock_rounded, size: 11, color: VyseColors.textDim)),
                                   ),
                               ]),
                               const SizedBox(height: 6),
@@ -1185,7 +1185,7 @@ Future<String?> _askPin(BuildContext context, String name) {
     context: context,
     barrierColor: Colors.black.withValues(alpha: .6),
     builder: (context) => AlertDialog(
-      backgroundColor: const Color(0xFF0B0D16),
+      backgroundColor: VyseColors.pick(0xFF0B0D16, 0xFFFFFFFF),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18), side: BorderSide(color: VyseColors.stroke)),
       title: Text("PIN di $name", style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900)),
       content: TextField(

@@ -238,7 +238,7 @@ class _ChapterTile extends StatelessWidget {
                 child: Text(title,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.w600, color: current ? VyseColors.text : const Color(0xFFDADCE6))),
+                    style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.w600, color: current ? VyseColors.text : VyseColors.pick(0xFFDADCE6, 0xFF2A2D3B))),
               ),
               Icon(hovered ? Icons.play_arrow_rounded : Icons.headphones_rounded, size: 18, color: hovered ? VyseColors.text : VyseColors.textFaint),
             ]),

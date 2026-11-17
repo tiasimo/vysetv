@@ -7,7 +7,7 @@ import 'common.dart';
 import 'media_rows.dart';
 import 'section_chrome.dart';
 
-const _tileBg = Color(0xFF0D0F18);
+Color get _tileBg => VyseColors.pick(0xFF0D0F18, 0xFFF7F8FC);
 
 /// Hover gradient + caption that slides up, exactly like Discover / Home cards.
 class _HoverCaption extends StatelessWidget {
@@ -91,7 +91,7 @@ class ChannelTile extends StatelessWidget {
             // Logos are drawn for light backgrounds, so they sit on Home's soft studio tile.
             AnimatedContainer(
               duration: const Duration(milliseconds: 200),
-              color: channel.iconUrl == null ? (hovered ? VyseColors.surfaceHi : _tileBg) : (hovered ? Colors.white : const Color(0xFFE6E8EF)),
+              color: channel.iconUrl == null ? (hovered ? VyseColors.surfaceHi : _tileBg) : (hovered ? VyseColors.strong : VyseColors.pick(0xFFE6E8EF, 0xFF2A2D3B)),
               padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 30),
               alignment: Alignment.center,
               child: channel.iconUrl == null

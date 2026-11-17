@@ -27,9 +27,9 @@ class PageGlow extends StatelessWidget {
         child: Container(
           width: 640,
           height: 640,
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             shape: BoxShape.circle,
-            gradient: RadialGradient(colors: [Color(0x1FFF8A1A), Color(0x0F7A5CFF), Color(0x0007080F)], stops: [0, .45, 1]),
+            gradient: RadialGradient(colors: [Color(0x1FFF8A1A), Color(0x0F7A5CFF), VyseColors.pick(0x0007080F, 0x00F4F5FA)], stops: [0, .45, 1]),
           ),
         ),
       );
@@ -247,7 +247,7 @@ class FilterChipPill extends StatelessWidget {
   Widget build(BuildContext context) => Pressable(
         onTap: onTap,
         builder: (context, hovered, pressed) {
-          final fg = selected ? Colors.black : (hovered ? VyseColors.text : VyseColors.textDim);
+          final fg = selected ? VyseColors.onStrong : (hovered ? VyseColors.text : VyseColors.textDim);
           return AnimatedScale(
             scale: pressed ? .94 : 1,
             duration: const Duration(milliseconds: 120),
@@ -257,7 +257,7 @@ class FilterChipPill extends StatelessWidget {
               padding: EdgeInsets.fromLTRB(icon == null ? 14 : 11, 8, 14, 8),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                color: selected ? Colors.white : VyseColors.ink.withValues(alpha: hovered ? .1 : 0),
+                color: selected ? VyseColors.strong : VyseColors.ink.withValues(alpha: hovered ? .1 : 0),
               ),
               child: Row(mainAxisSize: MainAxisSize.min, children: [
                 if (icon != null) ...[Icon(icon, size: 15, color: fg), const SizedBox(width: 6)],

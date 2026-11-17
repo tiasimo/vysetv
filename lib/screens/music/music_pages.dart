@@ -155,7 +155,7 @@ class _YtArtistPageState extends State<YtArtistPage> {
                       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                         if (a.listeners != null) Text(a.listeners!, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800)),
                         if (a.listeners != null) const SizedBox(height: 8),
-                        Text(a.description, maxLines: _about ? null : 4, overflow: _about ? null : TextOverflow.ellipsis, style: const TextStyle(fontSize: 13.5, height: 1.5, color: Color(0xFFC3C7D4))),
+                        Text(a.description, maxLines: _about ? null : 4, overflow: _about ? null : TextOverflow.ellipsis, style: TextStyle(fontSize: 13.5, height: 1.5, color: VyseColors.pick(0xFFC3C7D4, 0xFF454A60))),
                         const SizedBox(height: 6),
                         Text(_about ? 'Mostra meno' : 'Leggi di più', style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w700, color: accentOf(context))),
                       ]),
@@ -516,7 +516,7 @@ class _MyPlaylistPageState extends State<MyPlaylistPage> {
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: const Color(0xFF101118),
+        backgroundColor: VyseColors.pick(0xFF101118, 0xFFF2F3F8),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: Text('Eliminare ${p.name}?', style: const TextStyle(fontWeight: FontWeight.w800)),
         content: Text("Viene rimossa da tutti i dispositivi in cui hai effettuato l'accesso.", style: TextStyle(color: VyseColors.textDim, height: 1.4)),

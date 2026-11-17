@@ -61,9 +61,9 @@ class MangaCard extends StatelessWidget {
                         height: 26,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: h ? Colors.white : Colors.black.withValues(alpha: .72),
+                          color: h ? VyseColors.strong : Colors.black.withValues(alpha: .72),
                         ),
-                        child: Icon(Icons.close_rounded, size: 16, color: h ? Colors.black : Colors.white),
+                        child: Icon(Icons.close_rounded, size: 16, color: h ? VyseColors.onStrong : Colors.white),
                       ),
                     ),
                   ),
@@ -100,7 +100,7 @@ class TagPill extends StatelessWidget {
             borderRadius: BorderRadius.circular(14),
             color: VyseColors.ink.withValues(alpha: hovered && onTap != null ? .12 : .05),
           ),
-          child: Text(label, style: const TextStyle(fontSize: 11.5, fontWeight: FontWeight.w600, color: Color(0xFFC3C7D4))),
+          child: Text(label, style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.w600, color: VyseColors.pick(0xFFC3C7D4, 0xFF454A60))),
         ),
       );
 }

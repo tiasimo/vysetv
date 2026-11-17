@@ -168,7 +168,7 @@ class _Chevron extends StatelessWidget {
         borderRadius: BorderRadius.circular(6),
         color: hovered ? VyseColors.ink.withValues(alpha: .1) : Colors.transparent,
       ),
-      child: Icon(icon, size: 18, color: hovered ? VyseColors.text : const Color(0xFF8B90A3)),
+      child: Icon(icon, size: 18, color: hovered ? VyseColors.text : VyseColors.pick(0xFF8B90A3, 0xFF6B7088)),
     ),
   );
 }
@@ -212,7 +212,7 @@ class OutlineCard extends StatelessWidget {
         duration: const Duration(milliseconds: 180),
         foregroundDecoration: BoxDecoration(
           borderRadius: BorderRadius.circular(radius),
-          border: Border.all(color: hovered ? Colors.white : VyseColors.ink.withValues(alpha: .05), width: hovered ? 2 : 1),
+          border: Border.all(color: hovered ? VyseColors.strong : VyseColors.ink.withValues(alpha: .05), width: hovered ? 2 : 1),
         ),
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(radius), color: VyseColors.surface),
         clipBehavior: Clip.antiAlias,
@@ -465,7 +465,7 @@ class PlatformTile extends StatelessWidget {
       query: DiscoverQuery(providers: {provider.id}),
     ),
     builder: (hovered) => ColoredBox(
-      color: hovered ? VyseColors.surfaceHi : const Color(0xFF0D0F18),
+      color: hovered ? VyseColors.surfaceHi : VyseColors.pick(0xFF0D0F18, 0xFFF7F8FC),
       child: LayoutBuilder(
         builder: (context, c) {
           final logo = (c.maxHeight * .48).clamp(36.0, 58.0);
@@ -579,7 +579,7 @@ class _GenreTileState extends State<_GenreTile> {
       query: DiscoverQuery(genres: {DiscoverGenre.byName(widget.genre.name)?.name ?? widget.genre.name}),
     ),
     builder: (hovered) => ColoredBox(
-      color: const Color(0xFF0D0F18),
+      color: VyseColors.pick(0xFF0D0F18, 0xFFF7F8FC),
       child: LayoutBuilder(
         builder: (context, c) {
           final ph = c.maxHeight * .62;
@@ -684,8 +684,8 @@ class StudioTile extends StatelessWidget {
           builder: (hovered) => AnimatedContainer(
             duration: const Duration(milliseconds: 200),
             color: studio.logo == null
-                ? (hovered ? VyseColors.surfaceHi : const Color(0xFF0D0F18))
-                : (hovered ? Colors.white : const Color(0xFFE6E8EF)),
+                ? (hovered ? VyseColors.surfaceHi : VyseColors.pick(0xFF0D0F18, 0xFFF7F8FC))
+                : (hovered ? VyseColors.strong : VyseColors.pick(0xFFE6E8EF, 0xFF2A2D3B)),
             padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 18),
             alignment: Alignment.center,
             child: studio.logo == null

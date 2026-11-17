@@ -451,7 +451,7 @@ class _SeedPicker extends StatelessWidget {
         child: MenuAnchor(
           alignmentOffset: const Offset(0, 6),
           style: MenuStyle(
-            backgroundColor: const WidgetStatePropertyAll(Color(0xF7101118)),
+            backgroundColor: WidgetStatePropertyAll(VyseColors.pick(0xF7101118, 0xF7F2F3F8)),
             surfaceTintColor: const WidgetStatePropertyAll(Colors.transparent),
             elevation: const WidgetStatePropertyAll(18),
             shadowColor: const WidgetStatePropertyAll(Color(0xCC000000)),
@@ -541,7 +541,7 @@ class _SeedItem extends StatelessWidget {
             media.title,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(fontSize: 13.5, fontWeight: selected ? FontWeight.w800 : FontWeight.w600, color: selected ? Colors.white : const Color(0xFFD5D7E2)),
+            style: TextStyle(fontSize: 13.5, fontWeight: selected ? FontWeight.w800 : FontWeight.w600, color: selected ? VyseColors.strong : const Color(0xFFD5D7E2)),
           ),
           const SizedBox(height: 2),
           Text(
