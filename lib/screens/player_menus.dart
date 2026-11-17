@@ -27,12 +27,12 @@ abstract final class MenuInk {
 }
 
 enum MenuTab {
-  sources('Sources'),
-  quality('Quality'),
+  sources('Sorgenti'),
+  quality('Qualità'),
   audio('Audio'),
-  subtitles('Subtitles'),
-  speed('Speed'),
-  more('More');
+  subtitles('Sottotitoli'),
+  speed('Velocità'),
+  more('Altro');
 
   const MenuTab(this.label);
   final String label;
@@ -692,8 +692,8 @@ class SourcesPane extends StatelessWidget {
             child: MenuRow(
               title: s.name,
               detail: switch (s.state) {
-                SourceState.dead => 'Not working for this one · tap to retry',
-                SourceState.loading => 'Checking…',
+                SourceState.dead => 'Non funziona per questo · tocca per riprovare',
+                SourceState.loading => 'Controllo…',
                 SourceState.ready => s.note,
               },
               value: s.quality,
@@ -711,7 +711,7 @@ class SourcesPane extends StatelessWidget {
         if (onMore != null)
           Rise(
             index: i++,
-            child: _Onward(title: 'Choose another source', detail: 'Your addons’ list, over the video', onTap: onMore!),
+            child: _Onward(title: 'Scegli un\'altra sorgente', detail: 'La lista dei tuoi addon, sopra il video', onTap: onMore!),
           ),
       ],
     );
@@ -794,12 +794,12 @@ class _FilmSourcesPaneState extends State<FilmSourcesPane> {
     var i = 0;
     return MenuScroll(
       children: [
-        MenuCaption(widget.hostOrder ? "IN THE HOST'S ORDER" : 'IN YOUR ORDER'),
+        MenuCaption(widget.hostOrder ? "NELL'ORDINE DELL'HOST" : 'NEL TUO ORDINE'),
         for (var n = 0; n < widget.sources.length; n++) Rise(index: i++, child: _source(n + 1, widget.sources[n])),
         Padding(
           padding: const EdgeInsets.fromLTRB(14, 10, 14, 2),
           child: Text(
-            widget.hostOrder ? 'The host’s Settings → Sources sets this list' : 'Change the order in Settings → Sources',
+            widget.hostOrder ? 'La lista segue Impostazioni → Sorgenti dell\'host' : 'Cambia l\'ordine in Impostazioni → Sorgenti',
             style: const TextStyle(fontSize: 11.5, color: MenuInk.faint),
           ),
         ),
@@ -816,19 +816,19 @@ class _FilmSourcesPaneState extends State<FilmSourcesPane> {
     final unit = s.servers ? 'server' : 'link';
     final best = _best(s.links);
     final detail = now != null
-        ? 'Playing ${now.name}'
+        ? 'In riproduzione: ${now.name}'
         : s.state == SourceState.loading
-        ? 'Looking for links…'
+        ? 'Ricerca dei link…'
         : trying != null
-        ? 'Trying ${trying.name}…'
+        ? 'Provo ${trying.name}…'
         : dead
-        ? 'Nothing for this one · tap to look again'
+        ? 'Niente per questo · tocca per cercare di nuovo'
         : s.state == null || (s.servers && failed == 0)
         ? s.note
         : [
             '${s.links.length} ${s.links.length == 1 ? unit : '${unit}s'}',
-            if (best != null && !s.servers) 'up to $best',
-            if (failed > 0) '$failed didn’t play',
+            if (best != null && !s.servers) 'fino a $best',
+            if (failed > 0) '$failed non partiti',
           ].join(' · ');
     return MenuRow(
       title: s.name,
@@ -900,16 +900,16 @@ class _FilmSourcesPaneState extends State<FilmSourcesPane> {
               children: [
                 const SizedBox.square(dimension: 15, child: CircularProgressIndicator(strokeWidth: 1.8, color: Colors.white)),
                 const SizedBox(width: 12),
-                Expanded(child: Text('Looking for links on ${s.name}…', style: const TextStyle(fontSize: 13, color: MenuInk.body))),
+                Expanded(child: Text('Ricerca dei link su ${s.name}…', style: const TextStyle(fontSize: 13, color: MenuInk.body))),
               ],
             ),
           )
         else if (s.state == SourceState.dead) ...[
           Padding(
             padding: const EdgeInsets.fromLTRB(14, 8, 14, 10),
-            child: Text('${s.name} has nothing for this one', style: const TextStyle(fontSize: 13, color: MenuInk.dim)),
+            child: Text('${s.name} non ha niente per questo', style: const TextStyle(fontSize: 13, color: MenuInk.dim)),
           ),
-          if (s.onOpen != null) _Onward(title: 'Look again', detail: 'Asks ${s.name} once more', onTap: s.onOpen!),
+          if (s.onOpen != null) _Onward(title: 'Cerca di nuovo', detail: 'Chiede di nuovo a ${s.name}', onTap: s.onOpen!),
         ] else
           for (var i = 0; i < s.links.length; i++) Rise(index: i, child: _link(s.links[i])),
       ],
@@ -922,11 +922,11 @@ class _FilmSourcesPaneState extends State<FilmSourcesPane> {
     return MenuRow(
       title: l.name,
       detail: l.current
-          ? 'Playing now'
+          ? 'In riproduzione ora'
           : trying
-          ? 'Checking it plays…'
+          ? 'Controllo che parta…'
           : dead
-          ? 'Didn’t play · tap to try again'
+          ? 'Non è partito · tocca per riprovare'
           : null,
       value: l.quality ?? (l.format == 'HLS' ? 'Auto' : null),
       tags: [
@@ -1025,17 +1025,17 @@ class MenuAudio {
 String audioLabel(String audio) {
   final a = audio.trim();
   final m = RegExp(r'^(.*\S)\s+subs?$', caseSensitive: false).firstMatch(a);
-  return m == null ? a : '${m[1]} subtitles';
+  return m == null ? a : 'Sottotitoli ${m[1]}';
 }
 
 /// The same as a tag on a link: 'Hindi audio', 'English subtitles'.
 String audioTag(String audio) {
   final label = audioLabel(audio);
-  return label.endsWith(' subtitles') ? label : '$label audio';
+  return label.endsWith(' subtitles') ? label : 'Audio $label';
 }
 
 class AudioPane extends StatelessWidget {
-  const AudioPane({super.key, required this.tracks, this.links = const [], this.linksCaption = 'ON ANOTHER LINK', this.elsewhere = const [], this.sound = const []});
+  const AudioPane({super.key, required this.tracks, this.links = const [], this.linksCaption = 'SU UN ALTRO LINK', this.elsewhere = const [], this.sound = const []});
   final List<MenuAudio> tracks;
   final List<MenuAudio> links; // languages on the playing source's other links
   final String linksCaption;
@@ -1047,7 +1047,7 @@ class AudioPane extends StatelessWidget {
     var i = 0;
     return MenuScroll(
       children: [
-        if (tracks.isEmpty) Rise(index: i++, child: const MenuRow(title: 'Loading…')),
+        if (tracks.isEmpty) Rise(index: i++, child: const MenuRow(title: 'Caricamento…')),
         for (final t in tracks)
           Rise(
             index: i++,
@@ -1062,7 +1062,7 @@ class AudioPane extends StatelessWidget {
             ),
         ],
         if (elsewhere.isNotEmpty) ...[
-          const MenuCaption('ON ANOTHER SERVER'),
+          const MenuCaption('SU UN ALTRO SERVER'),
           for (final t in elsewhere)
             Rise(
               index: i++,
@@ -1121,9 +1121,9 @@ class SpeedPane extends StatelessWidget {
                     final saved = (left - real).inMinutes;
                     return Text(
                       [
-                        if (ends != null) 'Ends $ends',
-                        if (saved > 0) '$saved min sooner',
-                        if (saved < 0) '${-saved} min later',
+                        if (ends != null) 'Finisce alle $ends',
+                        if (saved > 0) '$saved min prima',
+                        if (saved < 0) '${-saved} min dopo',
                       ].join('\n'),
                       textAlign: TextAlign.right,
                       style: TextStyle(fontSize: tight ? 12 : 13, height: 1.35, color: MenuInk.dim),
@@ -1199,7 +1199,7 @@ class _SubtitlesPaneState extends State<SubtitlesPane> {
             value: _style,
             height: shortMenus(context) ? 30 : 32,
             fontSize: 12,
-            options: const [(false, 'Tracks'), (true, 'Appearance')],
+            options: const [(false, 'Tracce'), (true, 'Aspetto')],
             onChanged: (v) => setState(() => _style = v),
           ),
         ),
@@ -1228,8 +1228,8 @@ class _SubtitlesPaneState extends State<SubtitlesPane> {
         Rise(
           index: i++,
           child: _Onward(
-            title: 'Sync subtitles',
-            detail: widget.offset == 0 ? 'Line them up with the dialogue' : 'Offset ${widget.offset > 0 ? '+' : ''}${widget.offset}s',
+            title: 'Sincronizza sottotitoli',
+            detail: widget.offset == 0 ? 'Allineali ai dialoghi' : 'Offset ${widget.offset > 0 ? '+' : ''}${widget.offset}s',
             onTap: widget.onSync,
           ),
         ),
@@ -1245,7 +1245,7 @@ class _SubtitlesPaneState extends State<SubtitlesPane> {
         else if (groups.isEmpty)
           const Padding(
             padding: EdgeInsets.all(14),
-            child: Text('No subtitles found for this one', style: TextStyle(fontSize: 12.5, color: MenuInk.dim)),
+            child: Text('Nessun sottotitolo trovato per questo', style: TextStyle(fontSize: 12.5, color: MenuInk.dim)),
           )
         else ...[
           for (final e in real) Rise(index: i++, child: _language(e.key, e.value)),
@@ -1314,11 +1314,11 @@ class _SubtitlesPaneState extends State<SubtitlesPane> {
                 // inside the video, or a file in the torrent
                 if (list[i].provider == 'Built in') const MenuTag('Built in', strong: true),
                 // anime: which of our servers it came from (they're all in the menu at once)
-                if (animeServers.any((s) => s.name == list[i].provider)) MenuTag('From ${list[i].provider}'),
-                if (list[i].translated) const MenuTag('Auto-translated'),
+                if (animeServers.any((s) => s.name == list[i].provider)) MenuTag('Da ${list[i].provider}'),
+                if (list[i].translated) const MenuTag('Tradotti automaticamente'),
                 if (list[i].hearingImpaired) const MenuTag('SDH'),
-                if (_extra(list[i])) const MenuTag('Maybe not this film')
-                else if (_cam(list[i])) const MenuTag('Cam copy timing'),
+                if (_extra(list[i])) const MenuTag('Forse non di questo film')
+                else if (_cam(list[i])) const MenuTag('Tempi di una copia CAM'),
                 MenuTag(list[i].format.toUpperCase()),
               ],
               onTap: () => widget.onTrack(list[i]),
@@ -1394,7 +1394,7 @@ class _SubtitleStyle extends StatelessWidget {
                         padding: EdgeInsets.symmetric(horizontal: size * .26, vertical: size * .05),
                         decoration: BoxDecoration(color: Colors.black.withValues(alpha: back / 100), borderRadius: BorderRadius.circular(size * .14)),
                         child: Text(
-                          'Subtitle preview',
+                          'Anteprima sottotitoli',
                           maxLines: 1,
                           style: TextStyle(
                             fontSize: size * .52,
@@ -1413,7 +1413,7 @@ class _SubtitleStyle extends StatelessWidget {
             ),
           ),
           MenuStepper(
-            title: 'Text size',
+            title: 'Dimensione del testo',
             label: '${size}px',
             changed: size != AppSettings.subtitleSize.fallback,
             onMinus: () => size > captionSizeMin ? AppSettings.subtitleSize.set(size - captionSizeStep) : null,
@@ -1426,7 +1426,7 @@ class _SubtitleStyle extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text('Colour', style: _label),
+                const Text('Colore', style: _label),
                 const SizedBox(height: 8),
                 Wrap(
                   runSpacing: 8,
@@ -1437,34 +1437,34 @@ class _SubtitleStyle extends StatelessWidget {
               ],
             ),
           ),
-          MenuToggle(title: 'Bold', value: bold, onChanged: AppSettings.subtitleBold.set),
-          MenuToggle(title: 'Italic', value: italic, onChanged: AppSettings.subtitleItalic.set),
+          MenuToggle(title: 'Grassetto', value: bold, onChanged: AppSettings.subtitleBold.set),
+          MenuToggle(title: 'Corsivo', value: italic, onChanged: AppSettings.subtitleItalic.set),
           MenuChoice<int>(
-            title: 'Box',
-            detail: 'Behind the text',
+            title: 'Riquadro',
+            detail: 'Dietro al testo',
             value: box,
-            options: [for (final v in captionBoxLevels) (v, v == 0 ? 'None' : '$v%')],
+            options: [for (final v in captionBoxLevels) (v, v == 0 ? 'Nessuno' : '$v%')],
             onChanged: AppSettings.subtitleBackground.set,
           ),
           // the outline only shows without a box, as in Settings
           if (back == 0)
             MenuStepper(
-              title: 'Outline',
-              label: outline == 0 ? 'None' : _tenths(outline),
+              title: 'Contorno',
+              label: outline == 0 ? 'Nessuno' : _tenths(outline),
               changed: outline != AppSettings.subtitleOutline.fallback,
               onMinus: () => outline > 0 ? AppSettings.subtitleOutline.set(outline - 5) : null,
               onPlus: () => outline < 80 ? AppSettings.subtitleOutline.set(outline + 5) : null,
               onReset: () => AppSettings.subtitleOutline.set(AppSettings.subtitleOutline.fallback),
             ),
           MenuChoice<bool>(
-            title: 'Place at',
+            title: 'Posizione',
             value: AppSettings.subtitleTop.value,
-            options: const [(false, 'Bottom'), (true, 'Top')],
+            options: const [(false, 'In basso'), (true, 'In alto')],
             onChanged: AppSettings.subtitleTop.set,
           ),
           MenuStepper(
-            title: 'From the edge',
-            label: lift == 0 ? 'Edge' : '$lift%',
+            title: 'Dal bordo',
+            label: lift == 0 ? 'Bordo' : '$lift%',
             changed: lift != AppSettings.subtitleLift.fallback,
             onMinus: () => lift > 0 ? AppSettings.subtitleLift.set(lift - 1) : null,
             onPlus: () => lift < 45 ? AppSettings.subtitleLift.set(lift + 1) : null,

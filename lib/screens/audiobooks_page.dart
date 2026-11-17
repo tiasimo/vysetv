@@ -31,13 +31,13 @@ class _AudiobooksPageState extends State<AudiobooksPage> {
   static const _shelves = [
     // Lorewatch: free Italian audiobooks (Internet Archive / LibriVox) come first
     ('Audiolibri in italiano', 'it:'),
-    ('Popular right now', 'bestseller'),
+    ('Popolari ora', 'bestseller'),
     ('Fantasy', 'fantasy'),
-    ('Mystery & thriller', 'mystery thriller'),
-    ('Science fiction', 'science fiction'),
-    ('Self-improvement', 'self help'),
-    ('Biography & memoir', 'biography'),
-    ('Classics', 'classic novel'),
+    ('Gialli e thriller', 'mystery thriller'),
+    ('Fantascienza', 'science fiction'),
+    ('Crescita personale', 'self help'),
+    ('Biografie e memorie', 'biography'),
+    ('Classici', 'classic novel'),
   ];
   static final _shelfCache = <String, Future<List<Audiobook>>>{};
 
@@ -96,7 +96,7 @@ class _AudiobooksPageState extends State<AudiobooksPage> {
             SliverPadding(
               padding: EdgeInsets.fromLTRB(inset, top, right, 18),
               sliver: const SliverToBoxAdapter(
-                child: SectionHeader(title: 'Audiobooks', subtitle: 'Thousands of books, read aloud'),
+                child: SectionHeader(title: 'Audiolibri', subtitle: 'Migliaia di libri, letti ad alta voce'),
               ),
             ),
             SliverPadding(
@@ -113,7 +113,7 @@ class _AudiobooksPageState extends State<AudiobooksPage> {
                         future: _results,
                         builder: (context, snap) => VyseSearchField(
                           controller: _text,
-                          hint: 'Titles and authors',
+                          hint: 'Titoli e autori',
                           autofocus: true,
                           busy: _results != null && snap.connectionState == ConnectionState.waiting,
                           onSubmit: _search,
@@ -155,7 +155,7 @@ class _AudiobooksPageState extends State<AudiobooksPage> {
             ? const SizedBox(width: double.infinity)
             : Shelf<BookProgress>(
                 key: ValueKey('recents/${recents.length}/${recents.first.book.uuid}'),
-                title: 'Continue listening',
+                title: 'Continua ad ascoltare',
                 load: () async => recents,
                 itemWidth: w,
                 itemHeight: w,
@@ -204,7 +204,7 @@ class _ResultList extends StatelessWidget {
         future: future,
         builder: (context, snap) {
           if (snap.hasError) {
-            return const EmptyState(icon: Icons.wifi_off_rounded, title: "Couldn't search right now", body: 'Check your connection and try again.');
+            return const EmptyState(icon: Icons.wifi_off_rounded, title: "Impossibile cercare ora", body: 'Controlla la connessione e riprova.');
           }
           final books = snap.data;
           if (books == null) {
@@ -213,10 +213,10 @@ class _ResultList extends StatelessWidget {
             );
           }
           if (books.isEmpty) {
-            return EmptyState(icon: Icons.search_off_rounded, title: 'No audiobooks for "$query"', body: 'Try the author, or fewer words.');
+            return EmptyState(icon: Icons.search_off_rounded, title: 'Nessun audiolibro per "$query"', body: 'Prova con l\'autore, o con meno parole.');
           }
           return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            ShelfHeaderText('${books.length} results'),
+            ShelfHeaderText('${books.length} risultati'),
             _BookGrid(children: [
               for (final (i, b) in books.indexed)
                 FadeSlideIn(

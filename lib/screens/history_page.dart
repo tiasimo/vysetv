@@ -12,12 +12,12 @@ import '../data/trackers/tracker_hub.dart';
 import 'player_page.dart';
 
 enum _Filter {
-  all('All'),
-  movies('Movies'),
-  series('Series'),
+  all('Tutti'),
+  movies('Film'),
+  series('Serie'),
   anime('Anime'),
-  watching('In progress'),
-  finished('Finished');
+  watching('In corso'),
+  finished('Completato');
 
   const _Filter(this.label);
   final String label;
@@ -34,12 +34,12 @@ enum _Filter {
 
 String _ago(DateTime t) {
   final d = DateTime.now().difference(t);
-  if (d.inMinutes < 1) return 'just now';
-  if (d.inHours < 1) return '${d.inMinutes}m ago';
-  if (d.inDays < 1) return '${d.inHours}h ago';
-  if (d.inDays < 7) return '${d.inDays}d ago';
-  if (d.inDays < 60) return '${d.inDays ~/ 7}w ago';
-  return '${d.inDays ~/ 30}mo ago';
+  if (d.inMinutes < 1) return 'adesso';
+  if (d.inHours < 1) return '${d.inMinutes} min fa';
+  if (d.inDays < 1) return '${d.inHours} h fa';
+  if (d.inDays < 7) return '${d.inDays} g fa';
+  if (d.inDays < 60) return '${d.inDays ~/ 7} sett. fa';
+  return '${d.inDays ~/ 30} mesi fa';
 }
 
 /// "Today", "Yesterday", "This week", "This month", "Earlier".
@@ -48,11 +48,11 @@ String _bucket(DateTime t) {
   final today = DateTime(now.year, now.month, now.day);
   final day = DateTime(t.year, t.month, t.day);
   final days = today.difference(day).inDays;
-  if (days <= 0) return 'Today';
-  if (days == 1) return 'Yesterday';
-  if (days < 7) return 'This week';
-  if (days < 31) return 'This month';
-  return 'Earlier';
+  if (days <= 0) return 'Oggi';
+  if (days == 1) return 'Ieri';
+  if (days < 7) return 'Questa settimana';
+  if (days < 31) return 'Questo mese';
+  return 'Prima';
 }
 
 /// Everything played, newest first: progress for what's unfinished, a Finished badge for the
@@ -88,17 +88,17 @@ class _HistoryPageState extends State<HistoryPage> {
       builder: (context) => AlertDialog(
         backgroundColor: const Color(0xFF101118),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text('Clear watch history?', style: TextStyle(fontWeight: FontWeight.w800)),
+        title: const Text('Cancellare la cronologia?', style: TextStyle(fontWeight: FontWeight.w800)),
         content: const Text(
-          'This removes everything here and empties Continue watching. It can\'t be undone.',
+          'Rimuove tutto da qui e svuota Continua a guardare. Non si può annullare.',
           style: TextStyle(color: VyseColors.textDim, height: 1.4),
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Cancel', style: TextStyle(color: VyseColors.text))),
+          TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Annulla', style: TextStyle(color: VyseColors.text))),
           FilledButton(
             style: FilledButton.styleFrom(backgroundColor: const Color(0xFFFF4D4F), foregroundColor: Colors.white),
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('Clear all', style: TextStyle(fontWeight: FontWeight.w800)),
+            child: const Text('Cancella tutto', style: TextStyle(fontWeight: FontWeight.w800)),
           ),
         ],
       ),
@@ -139,15 +139,15 @@ class _HistoryPageState extends State<HistoryPage> {
                       Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
                         Expanded(
                           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                            Text('Watch History', style: TextStyle(fontSize: phone ? 26 : 34, fontWeight: FontWeight.w900, letterSpacing: -.8)),
+                            Text('Cronologia', style: TextStyle(fontSize: phone ? 26 : 34, fontWeight: FontWeight.w900, letterSpacing: -.8)),
                             const SizedBox(height: 6),
                             Text(
                               all.isEmpty
-                                  ? 'What you watch shows up here'
+                                  ? 'Quello che guardi compare qui'
                                   : [
                                       '${all.length} ${all.length == 1 ? 'title' : 'titles'}',
-                                      if (finished > 0) '$finished finished',
-                                      if (all.length - finished > 0) '${all.length - finished} in progress',
+                                      if (finished > 0) '$finished finiti',
+                                      if (all.length - finished > 0) '${all.length - finished} in corso',
                                     ].join('  ·  '),
                               style: TextStyle(fontSize: phone ? 12.5 : 14, color: VyseColors.textDim, fontWeight: FontWeight.w500),
                             ),
@@ -180,7 +180,7 @@ class _HistoryPageState extends State<HistoryPage> {
                   child: Column(children: [
                     Icon(Icons.manage_search_rounded, size: 34, color: VyseColors.textFaint),
                     SizedBox(height: 10),
-                    Text('Nothing here matches', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700)),
+                    Text('Niente corrisponde', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700)),
                   ]),
                 ),
               )
@@ -235,7 +235,7 @@ class _ClearButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Pressable(
-    tooltip: 'Clear watch history',
+    tooltip: 'Cancella la cronologia',
     onTap: onTap,
     builder: (context, hovered, pressed) => AnimatedScale(
       scale: pressed ? .96 : 1,
@@ -252,7 +252,7 @@ class _ClearButton extends StatelessWidget {
           Icon(Icons.delete_sweep_outlined, size: 18, color: hovered ? const Color(0xFFFF8A8C) : VyseColors.text),
           if (!compact) ...[
             const SizedBox(width: 8),
-            Text('Clear all', style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.w800, color: hovered ? const Color(0xFFFFB3B4) : VyseColors.text)),
+            Text('Cancella tutto', style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.w800, color: hovered ? const Color(0xFFFFB3B4) : VyseColors.text)),
           ],
         ]),
       ),
@@ -314,7 +314,7 @@ class _Toolbar extends StatelessWidget {
         cursorColor: VyseColors.accent,
         decoration: InputDecoration(
           isDense: true,
-          hintText: 'Search history',
+          hintText: 'Cerca nella cronologia',
           hintStyle: const TextStyle(fontSize: 13.5, color: VyseColors.textFaint),
           prefixIcon: const Icon(Icons.search_rounded, size: 19, color: VyseColors.textFaint),
           suffixIcon: search.text.isEmpty
@@ -461,7 +461,7 @@ class _HistoryRow extends StatelessWidget {
             SizedBox(width: phone ? 8 : 16),
             _RowButton(
               icon: e.finished ? Icons.replay_rounded : Icons.play_arrow_rounded,
-              tooltip: e.finished ? 'Watch again' : 'Resume',
+              tooltip: e.finished ? 'Guarda di nuovo' : 'Riprendi',
               primary: hovered || phone,
               size: phone ? 36 : 42,
               onTap: () => _play(context),
@@ -469,7 +469,7 @@ class _HistoryRow extends StatelessWidget {
             SizedBox(width: phone ? 6 : 10),
             _RowButton(
               icon: Icons.delete_outline_rounded,
-              tooltip: 'Remove from history',
+              tooltip: 'Rimuovi dalla cronologia',
               size: phone ? 36 : 42,
               danger: true,
               onTap: () {
@@ -498,7 +498,7 @@ class _FinishedBadge extends StatelessWidget {
     child: const Row(mainAxisSize: MainAxisSize.min, children: [
       Icon(Icons.check_circle_rounded, size: 12, color: Color(0xFF3DDC97)),
       SizedBox(width: 4),
-      Text('Finished', style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w800, color: Color(0xFF3DDC97))),
+      Text('Completato', style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w800, color: Color(0xFF3DDC97))),
     ]),
   );
 }
@@ -556,10 +556,10 @@ class _Empty extends StatelessWidget {
         child: const Icon(Icons.history_rounded, size: 40, color: VyseColors.accent),
       ),
       const SizedBox(height: 18),
-      const Text('Nothing watched yet', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+      const Text('Ancora niente di visto', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
       const SizedBox(height: 6),
       const Text(
-        'Start anything and it shows up here, with how far you got.',
+        'Avvia qualcosa e comparirà qui, con il punto a cui sei arrivato.',
         textAlign: TextAlign.center,
         style: TextStyle(fontSize: 13.5, color: VyseColors.textDim),
       ),

@@ -36,11 +36,11 @@ Future<bool> allowDebridInRoom(BuildContext context) async {
         ),
       ),
       actions: [
-        TextButton(autofocus: true, onPressed: () => Navigator.pop(ctx, false), child: const Text('Cancel')),
+        TextButton(autofocus: true, onPressed: () => Navigator.pop(ctx, false), child: const Text('Annulla')),
         FilledButton(
           style: FilledButton.styleFrom(backgroundColor: VyseColors.accent, foregroundColor: Colors.black),
           onPressed: () => Navigator.pop(ctx, true),
-          child: const Text('Allow', style: TextStyle(fontWeight: FontWeight.w800)),
+          child: const Text('Consenti', style: TextStyle(fontWeight: FontWeight.w800)),
         ),
       ],
     ),

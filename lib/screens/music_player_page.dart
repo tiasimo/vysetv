@@ -89,10 +89,10 @@ class _MusicPlayerPageState extends State<MusicPlayerPage> {
   }
 
   Widget _topBar(MusicTrack t) => Row(children: [
-        GlassIconButton(icon: Icons.keyboard_arrow_down_rounded, label: 'Close (Esc)', size: 40, onTap: _close),
+        GlassIconButton(icon: Icons.keyboard_arrow_down_rounded, label: 'Chiudi (Esc)', size: 40, onTap: _close),
         const Spacer(),
         Column(children: [
-          const Text('NOW PLAYING', style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w800, letterSpacing: 1.2, color: VyseColors.textDim)),
+          const Text('IN RIPRODUZIONE', style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w800, letterSpacing: 1.2, color: VyseColors.textDim)),
           const SizedBox(height: 2),
           Text(t.album, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w600)),
         ]),
@@ -103,7 +103,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage> {
         ],
         GlassIconButton(
           icon: Icons.more_horiz_rounded,
-          label: 'More',
+          label: 'Altro',
           size: 40,
           onTap: () {
             final size = MediaQuery.sizeOf(context);
@@ -131,9 +131,9 @@ class _MusicPlayerPageState extends State<MusicPlayerPage> {
         _Transport(player: _p),
         const SizedBox(height: 12),
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          FilterChipPill(label: 'Lyrics', icon: Icons.lyrics_outlined, selected: _view == 1, onTap: () => setState(() => _view = _view == 1 ? 0 : 1)),
+          FilterChipPill(label: 'Testo', icon: Icons.lyrics_outlined, selected: _view == 1, onTap: () => setState(() => _view = _view == 1 ? 0 : 1)),
           const SizedBox(width: 8),
-          FilterChipPill(label: 'Up next', icon: Icons.queue_music_rounded, selected: _view == 2, onTap: () => setState(() => _view = _view == 2 ? 0 : 2)),
+          FilterChipPill(label: 'A seguire', icon: Icons.queue_music_rounded, selected: _view == 2, onTap: () => setState(() => _view = _view == 2 ? 0 : 2)),
         ]),
       ]);
 
@@ -167,9 +167,9 @@ class _MusicPlayerPageState extends State<MusicPlayerPage> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
                 child: Row(children: [
-                  FilterChipPill(label: 'Lyrics', icon: Icons.lyrics_outlined, selected: _panel == 1, onTap: () => setState(() => _panel = 1)),
+                  FilterChipPill(label: 'Testo', icon: Icons.lyrics_outlined, selected: _panel == 1, onTap: () => setState(() => _panel = 1)),
                   const SizedBox(width: 8),
-                  FilterChipPill(label: 'Up next', icon: Icons.queue_music_rounded, selected: _panel == 2, onTap: () => setState(() => _panel = 2)),
+                  FilterChipPill(label: 'A seguire', icon: Icons.queue_music_rounded, selected: _panel == 2, onTap: () => setState(() => _panel = 2)),
                 ]),
               ),
               Expanded(
@@ -267,14 +267,14 @@ class _Info extends StatelessWidget {
         LikeButton(track: track, size: 24),
         const SizedBox(width: 6),
         IconButton(
-          tooltip: 'Add to playlist',
+          tooltip: 'Aggiungi a una playlist',
           iconSize: 22,
           color: VyseColors.textDim,
           onPressed: () => showAddToPlaylist(context, [track]),
           icon: const Icon(Icons.playlist_add_rounded),
         ),
         IconButton(
-          tooltip: 'Start radio from this song',
+          tooltip: 'Avvia una radio da questo brano',
           iconSize: 21,
           color: VyseColors.textDim,
           onPressed: () => MusicPlayer.instance.startRadio(track),
@@ -359,9 +359,9 @@ class _Transport extends StatelessWidget {
           icon: Icon(icon),
         );
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-      side(Icons.shuffle_rounded, 'Shuffle', p.shuffle, p.toggleShuffle),
+      side(Icons.shuffle_rounded, 'Casuale', p.shuffle, p.toggleShuffle),
       const SizedBox(width: 10),
-      IconButton(tooltip: 'Previous', onPressed: p.previous, iconSize: 34, icon: const Icon(Icons.skip_previous_rounded)),
+      IconButton(tooltip: 'Precedente', onPressed: p.previous, iconSize: 34, icon: const Icon(Icons.skip_previous_rounded)),
       const SizedBox(width: 10),
       p.resolving || p.buffering
           ? Container(
@@ -373,11 +373,11 @@ class _Transport extends StatelessWidget {
             )
           : PlayBubble(onTap: p.toggle, size: 66, playing: p.playing),
       const SizedBox(width: 10),
-      IconButton(tooltip: 'Next', onPressed: p.next, iconSize: 34, icon: const Icon(Icons.skip_next_rounded)),
+      IconButton(tooltip: 'Successivo', onPressed: p.next, iconSize: 34, icon: const Icon(Icons.skip_next_rounded)),
       const SizedBox(width: 10),
       side(
         p.repeat == LoopMode.one ? Icons.repeat_one_rounded : Icons.repeat_rounded,
-        switch (p.repeat) { LoopMode.off => 'Repeat', LoopMode.all => 'Repeat all', LoopMode.one => 'Repeat one' },
+        switch (p.repeat) { LoopMode.off => 'Ripeti', LoopMode.all => 'Ripeti tutto', LoopMode.one => 'Ripeti uno' },
         p.repeat != LoopMode.off,
         p.cycleRepeat,
       ),
@@ -466,7 +466,7 @@ class _LyricsViewState extends State<_LyricsView> {
           final d = snap.data;
           final synced = d != null && d.isSynced && d.syncedLines.isNotEmpty;
           if (d == null || (!synced && d.plainLyrics.trim().isEmpty)) {
-            return const EmptyState(icon: Icons.lyrics_outlined, title: 'No lyrics', body: "We couldn't find lyrics for this song.");
+            return const EmptyState(icon: Icons.lyrics_outlined, title: 'Nessun testo', body: "Non abbiamo trovato il testo di questo brano.");
           }
           if (!synced) {
             return SingleChildScrollView(
@@ -532,7 +532,7 @@ class _QueueView extends StatelessWidget {
       builder: (context, _) {
         final up = p.upNext;
         if (up.isEmpty) {
-          return const EmptyState(icon: Icons.queue_music_rounded, title: 'Nothing up next', body: 'Use "Play next" or "Add to queue" on any song.');
+          return const EmptyState(icon: Icons.queue_music_rounded, title: 'Niente a seguire', body: 'Usa "Riproduci dopo" o "Aggiungi alla coda" su qualsiasi brano.');
         }
         return ReorderableListView.builder(
           padding: const EdgeInsets.fromLTRB(8, 4, 8, 40),
@@ -573,10 +573,10 @@ class _QueueView extends StatelessWidget {
                       margin: const EdgeInsets.only(left: 6),
                       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                       decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Colors.white.withValues(alpha: .08)),
-                      child: const Text('Autoplay', style: TextStyle(fontSize: 9.5, fontWeight: FontWeight.w800, color: VyseColors.textFaint)),
+                      child: const Text('Riproduzione automatica', style: TextStyle(fontSize: 9.5, fontWeight: FontWeight.w800, color: VyseColors.textFaint)),
                     ),
                   IconButton(
-                    tooltip: 'Remove',
+                    tooltip: 'Rimuovi',
                     iconSize: 16,
                     color: VyseColors.textFaint,
                     onPressed: () => p.removeAt(p.index + 1 + i),

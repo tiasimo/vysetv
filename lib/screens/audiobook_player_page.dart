@@ -106,7 +106,7 @@ class _AudiobookPlayerPageState extends State<AudiobookPlayerPage> {
                   _sleepChip(),
                   if (phone)
                     FilterChipPill(
-                      label: 'Chapters',
+                      label: 'Capitoli',
                       icon: Icons.list_rounded,
                       selected: _showChapters,
                       onTap: () => setState(() => _showChapters = !_showChapters),
@@ -138,7 +138,7 @@ class _AudiobookPlayerPageState extends State<AudiobookPlayerPage> {
                     padding: EdgeInsets.fromLTRB(phone ? 20 : 40, top + (phone ? 8 : 16), phone ? 20 : 40, phone ? 16 : 28),
                     child: Column(children: [
                       Row(children: [
-                        GlassIconButton(icon: Icons.keyboard_arrow_down_rounded, label: 'Close (Esc)', size: 40, onTap: _close),
+                        GlassIconButton(icon: Icons.keyboard_arrow_down_rounded, label: 'Chiudi (Esc)', size: 40, onTap: _close),
                         const Spacer(),
                         const Text('AUDIOBOOK',
                             style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w800, letterSpacing: 1.2, color: VyseColors.textDim)),
@@ -155,7 +155,7 @@ class _AudiobookPlayerPageState extends State<AudiobookPlayerPage> {
                                         Expanded(child: _Chapters(player: _p)),
                                         const SizedBox(height: 10),
                                         FilterChipPill(
-                                          label: 'Back to player',
+                                          label: 'Torna al player',
                                           icon: Icons.headphones_rounded,
                                           selected: false,
                                           onTap: () => setState(() => _showChapters = false),
@@ -174,7 +174,7 @@ class _AudiobookPlayerPageState extends State<AudiobookPlayerPage> {
                                     child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                                       const Padding(
                                         padding: EdgeInsets.fromLTRB(20, 18, 20, 8),
-                                        child: Text('Chapters', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
+                                        child: Text('Capitoli', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
                                       ),
                                       Expanded(child: _Chapters(player: _p)),
                                     ]),
@@ -196,14 +196,14 @@ class _AudiobookPlayerPageState extends State<AudiobookPlayerPage> {
 
   Widget _transport() => Row(mainAxisAlignment: MainAxisAlignment.center, children: [
         IconButton(
-          tooltip: 'Previous chapter',
+          tooltip: 'Capitolo precedente',
           onPressed: _p.previousChapter,
           iconSize: 26,
           color: VyseColors.textDim,
           icon: const Icon(Icons.skip_previous_rounded),
         ),
         const SizedBox(width: 6),
-        IconButton(tooltip: 'Back 30s (←)', onPressed: () => _p.skip(-30), iconSize: 32, icon: const Icon(Icons.replay_30_rounded)),
+        IconButton(tooltip: 'Indietro 30s (←)', onPressed: () => _p.skip(-30), iconSize: 32, icon: const Icon(Icons.replay_30_rounded)),
         const SizedBox(width: 10),
         _p.loading || _p.buffering
             ? Container(
@@ -215,10 +215,10 @@ class _AudiobookPlayerPageState extends State<AudiobookPlayerPage> {
               )
             : PlayBubble(onTap: _p.toggle, size: 66, playing: _p.playing),
         const SizedBox(width: 10),
-        IconButton(tooltip: 'Forward 30s (→)', onPressed: () => _p.skip(30), iconSize: 32, icon: const Icon(Icons.forward_30_rounded)),
+        IconButton(tooltip: 'Avanti 30s (→)', onPressed: () => _p.skip(30), iconSize: 32, icon: const Icon(Icons.forward_30_rounded)),
         const SizedBox(width: 6),
         IconButton(
-          tooltip: 'Next chapter',
+          tooltip: 'Capitolo successivo',
           onPressed: _p.hasNext ? _p.nextChapter : null,
           iconSize: 26,
           color: VyseColors.textDim,
@@ -227,7 +227,7 @@ class _AudiobookPlayerPageState extends State<AudiobookPlayerPage> {
       ]);
 
   Widget _speedChip() => PopupMenuButton<double>(
-        tooltip: 'Playback speed',
+        tooltip: 'Velocità di riproduzione',
         color: VyseColors.surfaceHi,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: const BorderSide(color: VyseColors.stroke)),
         onSelected: _p.setSpeed,
@@ -247,15 +247,15 @@ class _AudiobookPlayerPageState extends State<AudiobookPlayerPage> {
 
   Widget _sleepChip() {
     String label() {
-      if (_p.sleepAtChapterEnd) return 'End of chapter';
+      if (_p.sleepAtChapterEnd) return 'Fine del capitolo';
       final at = _p.sleepAt;
-      if (at == null) return 'Sleep timer';
+      if (at == null) return 'Timer di spegnimento';
       final left = at.difference(DateTime.now());
       return '${left.inMinutes.clamp(0, 999) + 1} min';
     }
 
     return PopupMenuButton<int>(
-      tooltip: 'Sleep timer',
+      tooltip: 'Timer di spegnimento',
       color: VyseColors.surfaceHi,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: const BorderSide(color: VyseColors.stroke)),
       onSelected: (m) => switch (m) {
@@ -264,9 +264,9 @@ class _AudiobookPlayerPageState extends State<AudiobookPlayerPage> {
         _ => _p.setSleep(Duration(minutes: m)),
       },
       itemBuilder: (_) => [
-        for (final m in const [15, 30, 45, 60]) PopupMenuItem(value: m, height: 38, child: Text('$m minutes')),
-        const PopupMenuItem(value: -1, height: 38, child: Text('End of chapter')),
-        if (_p.sleeping) const PopupMenuItem(value: 0, height: 38, child: Text('Turn off', style: TextStyle(color: VyseColors.accentHot))),
+        for (final m in const [15, 30, 45, 60]) PopupMenuItem(value: m, height: 38, child: Text('$m minuti')),
+        const PopupMenuItem(value: -1, height: 38, child: Text('Fine del capitolo')),
+        if (_p.sleeping) const PopupMenuItem(value: 0, height: 38, child: Text('Disattiva', style: TextStyle(color: VyseColors.accentHot))),
       ],
       child: IgnorePointer(
         child: FilterChipPill(label: label(), icon: Icons.bedtime_outlined, selected: _p.sleeping, onTap: () {}),

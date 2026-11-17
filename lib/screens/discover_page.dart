@@ -16,8 +16,8 @@ import '../widgets/page_scrollbar.dart';
 class DiscoverPage extends StatefulWidget {
   const DiscoverPage({
     super.key,
-    this.title = 'Discover',
-    this.subtitle = 'Movies and TV shows',
+    this.title = 'Scopri',
+    this.subtitle = 'Film e serie TV',
     this.initial = const DiscoverQuery(),
     this.logo,
   });
@@ -66,7 +66,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
     showGeneralDialog<void>(
       context: context,
       barrierDismissible: true,
-      barrierLabel: 'Filters',
+      barrierLabel: 'Filtri',
       barrierColor: Colors.black.withValues(alpha: .45),
       transitionDuration: const Duration(milliseconds: 340),
       transitionBuilder: (_, a, _, child) => SlideTransition(
@@ -88,9 +88,9 @@ class _DiscoverPageState extends State<DiscoverPage> {
                   child: Row(children: [
                     const Icon(Icons.tune_rounded, size: 20, color: VyseColors.accent),
                     const SizedBox(width: 10),
-                    const Expanded(child: Text('Filters', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800))),
+                    const Expanded(child: Text('Filtri', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800))),
                     if (_c.query.activeFilters > 0)
-                      TextButton(onPressed: () => _apply(_c.query.cleared()), child: const Text('Clear all')),
+                      TextButton(onPressed: () => _apply(_c.query.cleared()), child: const Text('Cancella tutto')),
                     IconButton(
                       onPressed: () => Navigator.pop(panel),
                       icon: const Icon(Icons.close_rounded, color: VyseColors.textDim),
@@ -120,7 +120,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                         ),
                         child: _c.initialLoading || _c.reloading
                             ? const SizedBox.square(dimension: 18, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.black))
-                            : Text('Show ${fmtThousands(_c.total)} titles',
+                            : Text('Mostra ${fmtThousands(_c.total)} titoli',
                                 style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 14)),
                       ),
                     ),
@@ -182,7 +182,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                         child: _c.initialLoading || _c.reloading
                             ? const SizedBox.square(
                                 dimension: 18, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.black))
-                            : Text('Show ${fmtThousands(_c.total)} titles',
+                            : Text('Mostra ${fmtThousands(_c.total)} titoli',
                                 style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 14)),
                       ),
                     ),
@@ -281,7 +281,7 @@ class _Header extends StatelessWidget {
               tween: Tween(end: total.toDouble()),
               duration: const Duration(milliseconds: 700),
               curve: Curves.easeOutCubic,
-              builder: (_, v, _) => Text('${fmtThousands(v.round())} titles',
+              builder: (_, v, _) => Text('${fmtThousands(v.round())} titoli',
                   style: const TextStyle(color: VyseColors.textFaint, fontSize: 13, fontFeatures: [FontFeature.tabularFigures()])),
             ),
           ],
@@ -307,7 +307,7 @@ class _BackLink extends StatelessWidget {
           ),
           child: Row(mainAxisSize: MainAxisSize.min, children: [
             Icon(Icons.chevron_left_rounded, size: 20, color: hovered ? VyseColors.text : VyseColors.textDim),
-            Text('Back',
+            Text('Indietro',
                 style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: hovered ? VyseColors.text : VyseColors.textDim)),
           ]),
         ),
@@ -424,16 +424,16 @@ class _Results extends StatelessWidget {
         child: c.error != null
             ? _Message(
                 icon: Icons.wifi_off_rounded,
-                title: "Couldn't reach TMDB",
-                body: 'Check your connection and try again.',
-                action: 'Retry',
+                title: "Impossibile raggiungere TMDB",
+                body: 'Controlla la connessione e riprova.',
+                action: 'Riprova',
                 onAction: c.retry,
               )
             : _Message(
                 icon: Icons.travel_explore_rounded,
-                title: 'Nothing matches these filters',
-                body: 'Try widening the years, lowering the rating, or removing a genre.',
-                action: 'Clear filters',
+                title: 'Nessun risultato con questi filtri',
+                body: 'Prova ad allargare gli anni, abbassare il voto o togliere un genere.',
+                action: 'Azzera i filtri',
                 onAction: () => onApply(c.query.cleared()),
               ),
       );
@@ -464,7 +464,7 @@ class _Results extends StatelessWidget {
     final c = controller;
     if (c.items.isEmpty) return const SizedBox.shrink();
     if (c.error != null) {
-      return Center(child: TextButton(onPressed: c.retry, child: const Text("Couldn't load more · Retry")));
+      return Center(child: TextButton(onPressed: c.retry, child: const Text("Impossibile caricarne altri · Riprova")));
     }
     if (c.loading && !c.reloading) {
       return const Center(
@@ -473,7 +473,7 @@ class _Results extends StatelessWidget {
     }
     if (!c.hasMore) {
       return const Center(
-        child: Text("That's everything", style: TextStyle(color: VyseColors.textFaint, fontSize: 12)),
+        child: Text("Non c'è altro", style: TextStyle(color: VyseColors.textFaint, fontSize: 12)),
       );
     }
     return const SizedBox(height: 22);
@@ -680,7 +680,7 @@ class _FiltersButton extends StatelessWidget {
             child: Row(mainAxisSize: MainAxisSize.min, children: [
               const Icon(Icons.tune_rounded, size: 16),
               const SizedBox(width: 6),
-              const Text('Filters', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+              const Text('Filtri', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
               AnimatedSize(
                 duration: const Duration(milliseconds: 220),
                 child: count == 0
@@ -711,11 +711,11 @@ class _ActiveFilters extends StatelessWidget {
     final pills = <(String, DiscoverQuery)>[
       for (final g in q.genres) (g, q.copyWith(genres: {...q.genres}..remove(g))),
       if (q.hasYears) (_yearLabel(q.yearFrom, q.yearTo), q.copyWith(yearFrom: null, yearTo: null)),
-      if (q.upcoming) ('Incl. upcoming', q.copyWith(upcoming: false)),
+      if (q.upcoming) ('Incl. in uscita', q.copyWith(upcoming: false)),
       if (q.hasRating) (_ratingLabel(q.minRating, q.maxRating), q.copyWith(minRating: 0, maxRating: 10)),
-      if (q.minVotes != null) ('${_short(q.minVotes!)}+ ratings', q.copyWith(minVotes: null)),
+      if (q.minVotes != null) ('${_short(q.minVotes!)}+ voti', q.copyWith(minVotes: null)),
       if (q.language != null) (languageName(q.language), q.copyWith(language: null)),
-      for (final p in q.providers) (_providerNames[p] ?? 'Provider', q.copyWith(providers: {...q.providers}..remove(p))),
+      for (final p in q.providers) (_providerNames[p] ?? 'Servizio', q.copyWith(providers: {...q.providers}..remove(p))),
     ];
 
     return AnimatedSize(
@@ -738,7 +738,7 @@ class _ActiveFilters extends StatelessWidget {
                   onTap: () => onChanged(q.cleared()),
                   builder: (context, hovered, _) => Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-                    child: Text('Clear all',
+                    child: Text('Cancella tutto',
                         style: TextStyle(
                             fontSize: 12, fontWeight: FontWeight.w600, color: hovered ? VyseColors.accent : VyseColors.textDim)),
                   ),
@@ -787,12 +787,12 @@ class _FilterPanel extends StatelessWidget {
   static final _thisYear = DateTime.now().year;
 
   static final _decades = <(String, int?, int?)>[
-    ('This year', _thisYear, _thisYear),
+    ('Quest\'anno', _thisYear, _thisYear),
     ('2020s', 2020, 2029),
     ('2010s', 2010, 2019),
     ('2000s', 2000, 2009),
     ('1990s', 1990, 1999),
-    ('Older', null, 1989),
+    ('Più vecchi', null, 1989),
   ];
 
   @override
@@ -803,7 +803,7 @@ class _FilterPanel extends StatelessWidget {
       Row(children: [
         const Icon(Icons.tune_rounded, size: 16, color: VyseColors.text),
         const SizedBox(width: 8),
-        const Text('Filters', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700)),
+        const Text('Filtri', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700)),
         const Spacer(),
         AnimatedOpacity(
           opacity: q.activeFilters > 0 ? 1 : 0,
@@ -812,16 +812,16 @@ class _FilterPanel extends StatelessWidget {
             ignoring: q.activeFilters == 0,
             child: Pressable(
               onTap: () => onChanged(q.cleared()),
-              builder: (context, hovered, _) => Text('Reset',
+              builder: (context, hovered, _) => Text('Ripristina',
                   style: TextStyle(
                       fontSize: 12, fontWeight: FontWeight.w600, color: hovered ? VyseColors.text : VyseColors.accent)),
             ),
           ),
         ),
       ]),
-      const _Label('Type'),
+      const _Label('Tipo'),
       _Segmented(
-        options: const ['All', 'Movies', 'TV Shows'],
+        options: const ['Tutti', 'Film', 'Serie TV'],
         index: q.type.index,
         onChanged: (i) {
           final type = MediaType.values[i];
@@ -849,7 +849,7 @@ class _FilterPanel extends StatelessWidget {
               },
             ),
       ]),
-      const _Label('Release year'),
+      const _Label('Anno di uscita'),
       Wrap(spacing: 6, runSpacing: 6, children: [
         for (final (label, from, to) in _decades)
           _Chip(
@@ -864,9 +864,9 @@ class _FilterPanel extends StatelessWidget {
       Row(children: [
         Expanded(
           child: _MenuButton<int?>(
-            label: q.yearFrom?.toString() ?? 'From',
+            label: q.yearFrom?.toString() ?? 'Da',
             active: q.yearFrom != null,
-            options: [(null, 'Any'), for (var y = _thisYear + 2; y >= 1920; y--) (y, '$y')],
+            options: [(null, 'Qualsiasi'), for (var y = _thisYear + 2; y >= 1920; y--) (y, '$y')],
             onSelected: (y) => onChanged(q.copyWith(
               yearFrom: y,
               yearTo: y != null && q.yearTo != null && q.yearTo! < y ? y : q.yearTo,
@@ -879,9 +879,9 @@ class _FilterPanel extends StatelessWidget {
         ),
         Expanded(
           child: _MenuButton<int?>(
-            label: q.yearTo?.toString() ?? 'To',
+            label: q.yearTo?.toString() ?? 'A',
             active: q.yearTo != null,
-            options: [(null, 'Any'), for (var y = _thisYear + 2; y >= 1920; y--) (y, '$y')],
+            options: [(null, 'Qualsiasi'), for (var y = _thisYear + 2; y >= 1920; y--) (y, '$y')],
             onSelected: (y) => onChanged(q.copyWith(
               yearTo: y,
               yearFrom: y != null && q.yearFrom != null && q.yearFrom! > y ? y : q.yearFrom,
@@ -892,14 +892,14 @@ class _FilterPanel extends StatelessWidget {
       const SizedBox(height: 12),
       Row(children: [
         const Expanded(
-          child: Text('Include upcoming releases', style: TextStyle(fontSize: 12.5, color: VyseColors.textDim)),
+          child: Text('Includi le prossime uscite', style: TextStyle(fontSize: 12.5, color: VyseColors.textDim)),
         ),
         _Toggle(value: q.upcoming, onChanged: (v) => onChanged(q.copyWith(upcoming: v))),
       ]),
       const _Label('Rating'),
       Wrap(spacing: 6, runSpacing: 6, children: [
         _Chip(
-          label: 'Any score',
+          label: 'Qualsiasi voto',
           icon: Icons.star_rounded,
           selected: !q.hasRating,
           onTap: () => onChanged(q.copyWith(minRating: 0, maxRating: 10)),
@@ -937,21 +937,21 @@ class _FilterPanel extends StatelessWidget {
           ),
         ),
       ),
-      Text(q.hasRating ? _ratingLabel(q.minRating, q.maxRating) : 'Any score',
+      Text(q.hasRating ? _ratingLabel(q.minRating, q.maxRating) : 'Qualsiasi voto',
           style: const TextStyle(fontSize: 11.5, color: VyseColors.textFaint)),
-      const _Label('Number of ratings'),
+      const _Label('Numero di voti'),
       Wrap(spacing: 6, runSpacing: 6, children: [
         for (final (label, v) in const [('Auto', null), ('100+', 100), ('1K+', 1000), ('10K+', 10000)])
           _Chip(label: label, selected: q.minVotes == v, onTap: () => onChanged(q.copyWith(minVotes: v))),
       ]),
-      const _Label('Original language'),
+      const _Label('Lingua originale'),
       _MenuButton<String?>(
         label: languageName(q.language),
         active: q.language != null,
         options: discoverLanguages,
         onSelected: (code) => onChanged(q.copyWith(language: code)),
       ),
-      const _Label('Streaming on'),
+      const _Label('In streaming su'),
       _ProviderPicker(
         selected: q.providers,
         onToggle: (id) {
@@ -1266,6 +1266,6 @@ String _ratingLabel(double min, double max) =>
 
 String _yearLabel(int? from, int? to) {
   if (from != null && to != null) return from == to ? '$from' : '$from – $to';
-  if (from != null) return 'From $from';
-  return 'Before ${to! + 1}';
+  if (from != null) return 'Dal $from';
+  return 'Prima del ${to! + 1}';
 }

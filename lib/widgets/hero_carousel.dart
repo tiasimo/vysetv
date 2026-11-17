@@ -9,7 +9,8 @@ import '../core/nav.dart';
 import '../core/perf.dart';
 import '../core/theme.dart';
 import '../data/tmdb.dart';
-import '../screens/player_page.dart';
+import '../screens/player_page.dart';
+
 import '../data/trackers/tracker_hub.dart';
 import 'common.dart';
 
@@ -666,7 +667,7 @@ class _Actions extends StatelessWidget {
                 final on = saved.contains(media.key);
                 return SquareIconButton(
                   icon: on ? Icons.check_rounded : Icons.add_rounded,
-                  label: on ? 'Remove from My List' : 'Add to My List',
+                  label: on ? 'Rimuovi da La mia lista' : 'Aggiungi a La mia lista',
                   onTap: () => TrackerHub.myListToggle(media),
                 );
               },
@@ -674,7 +675,7 @@ class _Actions extends StatelessWidget {
             const SizedBox(width: 2),
             SquareIconButton(
               icon: Icons.info_outline_rounded,
-              label: 'Details',
+              label: 'Dettagli',
               onTap: () => openDetails(context, media),
             ),
           ],
@@ -716,7 +717,7 @@ class _PlayButton extends StatelessWidget {
             Icon(Icons.play_arrow_rounded, color: Colors.black, size: 20),
             SizedBox(width: 6),
             Text(
-              'Play',
+              'Riproduci',
               style: TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.w600,
@@ -818,10 +819,10 @@ class _KeyHints extends StatelessWidget {
         _Key('←'),
         SizedBox(width: 3),
         _Key('→'),
-        Text('  to browse', style: style),
+        Text('  per sfogliare', style: style),
         SizedBox(width: 16),
         _Key('↓'),
-        Text('  to go back', style: style),
+        Text('  per tornare indietro', style: style),
       ],
     );
   }

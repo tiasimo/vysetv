@@ -29,7 +29,7 @@ Future<void> openGenre(BuildContext context, MusicGenre g) => Navigator.of(conte
         cover: g.pictureUrl,
         load: () async => MusicCollection(
           title: g.name,
-          subtitle: 'Popular right now',
+          subtitle: 'Popolari ora',
           cover: g.pictureUrl,
           tracks: await MusicService.instance.fetchGenreTracks(g.id),
         ),
@@ -149,7 +149,7 @@ class _MusicCollectionPageState extends State<MusicCollectionPage> {
                                     builder: (context, hovered, _) => Text(
                                       [
                                         if (c.subtitle.isNotEmpty) c.subtitle,
-                                        '${c.tracks.length} tracks',
+                                        '${c.tracks.length} brani',
                                         if (total > 0) fmtRuntime((total / 60).round()),
                                       ].join('  ·  '),
                                       maxLines: 2,
@@ -163,12 +163,12 @@ class _MusicCollectionPageState extends State<MusicCollectionPage> {
                                     PillButton(
                                       primary: true,
                                       icon: Icons.play_arrow_rounded,
-                                      label: 'Play',
+                                      label: 'Riproduci',
                                       onTap: () => MusicPlayer.instance.playQueue(c.tracks),
                                     ),
                                     PillButton(
                                       icon: Icons.shuffle_rounded,
-                                      label: 'Shuffle',
+                                      label: 'Casuale',
                                       onTap: () => MusicPlayer.instance.playQueue(c.tracks, shuffled: true),
                                     ),
                                   ]),
@@ -185,9 +185,9 @@ class _MusicCollectionPageState extends State<MusicCollectionPage> {
                   SliverToBoxAdapter(
                     child: EmptyState(
                       icon: Icons.wifi_off_rounded,
-                      title: "Couldn't load this ${widget.kind.toLowerCase()}",
-                      body: 'Check your connection and try again.',
-                      action: ('Retry', () => setState(() { _future = widget.load(); })),
+                      title: "Impossibile caricare questo ${widget.kind.toLowerCase()}",
+                      body: 'Controlla la connessione e riprova.',
+                      action: ('Riprova', () => setState(() { _future = widget.load(); })),
                     ),
                   )
                 else if (c == null)
@@ -292,7 +292,7 @@ class _MusicArtistPageState extends State<MusicArtistPage> {
                                 style: TextStyle(fontSize: phone ? 28 : 46, fontWeight: FontWeight.w800, letterSpacing: -1.4, height: 1.02)),
                             if (a != null && a.fanCount > 0) ...[
                               const SizedBox(height: 8),
-                              Text('${fmtThousands(a.fanCount)} fans', style: const TextStyle(fontSize: 13, color: Color(0xFFC3C7D4))),
+                              Text('${fmtThousands(a.fanCount)} fan', style: const TextStyle(fontSize: 13, color: Color(0xFFC3C7D4))),
                             ],
                             if (tracks.isNotEmpty) ...[
                               const SizedBox(height: 16),
@@ -300,12 +300,12 @@ class _MusicArtistPageState extends State<MusicArtistPage> {
                                 PillButton(
                                   primary: true,
                                   icon: Icons.play_arrow_rounded,
-                                  label: 'Play',
+                                  label: 'Riproduci',
                                   onTap: () => MusicPlayer.instance.playQueue(tracks),
                                 ),
                                 PillButton(
                                   icon: Icons.shuffle_rounded,
-                                  label: 'Shuffle',
+                                  label: 'Casuale',
                                   onTap: () => MusicPlayer.instance.playQueue(tracks, shuffled: true),
                                 ),
                               ]),
@@ -320,16 +320,16 @@ class _MusicArtistPageState extends State<MusicArtistPage> {
                   SliverToBoxAdapter(
                     child: EmptyState(
                       icon: Icons.wifi_off_rounded,
-                      title: "Couldn't load this artist",
-                      body: 'Check your connection and try again.',
-                      action: ('Retry', () => setState(() { _future = MusicService.instance.fetchArtistDetails(widget.id); })),
+                      title: "Impossibile caricare questo artista",
+                      body: 'Controlla la connessione e riprova.',
+                      action: ('Riprova', () => setState(() { _future = MusicService.instance.fetchArtistDetails(widget.id); })),
                     ),
                   )
                 else if (d == null)
                   SliverPadding(padding: EdgeInsets.fromLTRB(inset, 0, right, 0), sliver: const SliverToBoxAdapter(child: _TrackSkeleton()))
                 else ...[
                   if (tracks.isNotEmpty) ...[
-                    const SliverToBoxAdapter(child: ShelfHeader(title: 'Popular')),
+                    const SliverToBoxAdapter(child: ShelfHeader(title: 'Popolari')),
                     SliverPadding(
                       padding: EdgeInsets.fromLTRB(inset - 10, 0, right - 10, 0),
                       sliver: SliverList.builder(
@@ -345,7 +345,7 @@ class _MusicArtistPageState extends State<MusicArtistPage> {
                             alignment: Alignment.centerLeft,
                             child: TextButton(
                               onPressed: () => setState(() => _allTracks = !_allTracks),
-                              child: Text(_allTracks ? 'Show less' : 'Show all ${tracks.length}'),
+                              child: Text(_allTracks ? 'Mostra meno' : 'Mostra tutti i ${tracks.length}'),
                             ),
                           ),
                         ),
@@ -355,7 +355,7 @@ class _MusicArtistPageState extends State<MusicArtistPage> {
                   if (d.albums.isNotEmpty)
                     SliverToBoxAdapter(
                       child: Shelf<MusicAlbum>(
-                        title: 'Discography',
+                        title: 'Discografia',
                         load: () async => d.albums,
                         itemWidth: tileW,
                         itemHeight: tileW + 44,
@@ -366,7 +366,7 @@ class _MusicArtistPageState extends State<MusicArtistPage> {
                   if (d.relatedArtists.isNotEmpty)
                     SliverToBoxAdapter(
                       child: Shelf<MusicArtist>(
-                        title: 'Fans also like',
+                        title: 'Ai fan piacciono anche',
                         load: () async => d.relatedArtists,
                         itemWidth: phone ? 110 : 140,
                         itemHeight: (phone ? 110 : 140) + 44,

@@ -20,10 +20,10 @@ import 'server_widgets.dart';
 typedef _Sort = ({String label, String field, LibrarySortDirection dir});
 
 const _sorts = <_Sort>[
-  (label: 'Recently added', field: 'addedAt', dir: LibrarySortDirection.descending),
-  (label: 'A to Z', field: 'title', dir: LibrarySortDirection.ascending),
-  (label: 'Newest', field: 'originallyAvailableAt', dir: LibrarySortDirection.descending),
-  (label: 'Top rated', field: 'rating', dir: LibrarySortDirection.descending),
+  (label: 'Aggiunti di recente', field: 'addedAt', dir: LibrarySortDirection.descending),
+  (label: 'Dalla A alla Z', field: 'title', dir: LibrarySortDirection.ascending),
+  (label: 'Più recenti', field: 'originallyAvailableAt', dir: LibrarySortDirection.descending),
+  (label: 'Più votati', field: 'rating', dir: LibrarySortDirection.descending),
 ];
 
 /// Everything in one library, a page at a time as you scroll, in the order you pick.
@@ -185,10 +185,10 @@ class _ServerLibraryPageState extends State<ServerLibraryPage> {
               SliverToBoxAdapter(
                 child: EmptyState(
                   icon: Icons.cloud_off_rounded,
-                  title: "Couldn't load ${widget.library.title}",
+                  title: "Impossibile caricare ${widget.library.title}",
                   body: _error!,
                   action: (
-                    'Try again',
+                    'Riprova',
                     () {
                       setState(() => _error = null);
                       _more();
@@ -198,7 +198,7 @@ class _ServerLibraryPageState extends State<ServerLibraryPage> {
               )
             else if (_items.isEmpty && _done)
               const SliverToBoxAdapter(
-                child: EmptyState(icon: Icons.video_library_outlined, title: 'Empty for now', body: 'Nothing in this library yet.'),
+                child: EmptyState(icon: Icons.video_library_outlined, title: 'Vuota per ora', body: 'Ancora niente in questa libreria.'),
               )
             else
               SliverPadding(
@@ -235,7 +235,7 @@ class _ServerLibraryPageState extends State<ServerLibraryPage> {
                       ? const SizedBox.square(dimension: 22, child: CircularProgressIndicator(strokeWidth: 2.2, color: VyseColors.accent))
                       : (_error != null && _items.isNotEmpty
                           ? PillButton(
-                              label: 'Load more',
+                              label: 'Carica altro',
                               icon: Icons.refresh_rounded,
                               onTap: () {
                                 setState(() => _error = null);

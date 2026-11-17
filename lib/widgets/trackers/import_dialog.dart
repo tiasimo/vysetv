@@ -11,7 +11,7 @@ Future<void> importFromTracker(BuildContext context, TrackerId id) async {
   if (n == null || !context.mounted) return;
   showToast(
     context,
-    Text(n == 0 ? 'Nothing new from ${id.label}' : 'Brought in $n from ${id.label}', style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+    Text(n == 0 ? 'Niente di nuovo da ${id.label}' : 'Importati $n da ${id.label}', style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
     icon: Icons.download_done_rounded,
   );
 }
@@ -19,7 +19,7 @@ Future<void> importFromTracker(BuildContext context, TrackerId id) async {
 String _watchlist(TrackerId id) => switch (id) {
   TrackerId.trakt => 'watchlist',
   TrackerId.simkl => 'plan to watch',
-  TrackerId.anilist => 'Planning list',
+  TrackerId.anilist => 'Lista Planning',
 };
 
 class _ImportDialog extends StatefulWidget {
@@ -50,7 +50,7 @@ class _ImportDialogState extends State<_ImportDialog> {
       final p = await LibraryImport.plan(widget.id);
       if (mounted) setState(() => _plan = p);
     } catch (e) {
-      if (mounted) setState(() => _error = "Couldn't read your ${widget.id.label} lists: $e");
+      if (mounted) setState(() => _error = "Impossibile leggere le tue liste di ${widget.id.label}: $e");
     }
   }
 
@@ -65,7 +65,7 @@ class _ImportDialogState extends State<_ImportDialog> {
       final n = await LibraryImport.apply(p, list: _list, watched: _watched);
       if (mounted) Navigator.pop(context, n);
     } catch (e) {
-      if (mounted) setState(() => _error = 'The import stopped part-way: $e');
+      if (mounted) setState(() => _error = 'L\'importazione si è fermata a metà: $e');
     } finally {
       if (mounted) setState(() => _busy = false);
     }
@@ -91,7 +91,7 @@ class _ImportDialogState extends State<_ImportDialog> {
     return AlertDialog(
       backgroundColor: VyseColors.surface,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      title: Text('Import from $label', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+      title: Text('Importa da $label', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
       content: SizedBox(
         width: 400,
         child: Column(
@@ -99,27 +99,27 @@ class _ImportDialogState extends State<_ImportDialog> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (p == null && _error == null) ...[
-              Text('Reading your $label lists…', style: dim),
+              Text('Lettura delle tue liste di $label…', style: dim),
               const SizedBox(height: 16),
               const SizedBox(height: 3, child: LinearProgressIndicator(color: VyseColors.accent, backgroundColor: Colors.white10)),
             ] else if (nothing)
-              Text('Everything on $label is already in Lorewatch.', style: dim)
+              Text('Tutto quello che c\'è su $label è già in Lorewatch.', style: dim)
             else if (p != null) ...[
-              Text('Found ${p.found} titles on $label. Nothing there changes.', style: dim),
+              Text('Trovati ${p.found} titoli su $label. Non cambia niente.', style: dim),
               const SizedBox(height: 8),
               if (p.list.isNotEmpty)
                 _choice(
-                  'My List',
-                  '${p.list.length} from your ${_watchlist(widget.id)}. New ones there keep coming in.',
+                  'La mia lista',
+                  '${p.list.length} dalla tua ${_watchlist(widget.id)}. Quelli nuovi continueranno ad arrivare.',
                   _list,
                   (v) => _list = v,
                 ),
               if (p.history.isNotEmpty || p.resume.isNotEmpty)
                 _choice(
-                  'History and Continue watching',
+                  'Cronologia e Continua a guardare',
                   [
                     if (p.history.isNotEmpty) '${p.history.length} watched${p.history.length == LibraryImport.historyCap ? ' (the newest)' : ''}',
-                    if (p.resume.isNotEmpty) '${p.resume.length} to pick up where you left off',
+                    if (p.resume.isNotEmpty) '${p.resume.length} da riprendere da dove eri rimasto',
                   ].join(', '),
                   _watched,
                   (v) => _watched = v,
@@ -145,14 +145,14 @@ class _ImportDialogState extends State<_ImportDialog> {
                   if (nothing) LibraryImport.apply(p, list: true, watched: false).ignore();
                   Navigator.pop(context);
                 },
-          child: Text(nothing ? 'Close' : 'Cancel'),
+          child: Text(nothing ? 'Chiudi' : 'Annulla'),
         ),
-        if (_error != null && p == null) TextButton(onPressed: _load, child: const Text('Try again')),
+        if (_error != null && p == null) TextButton(onPressed: _load, child: const Text('Riprova')),
         if (p != null && !nothing)
           FilledButton(
             style: FilledButton.styleFrom(backgroundColor: VyseColors.accent, foregroundColor: Colors.black),
             onPressed: _busy || !(_list && p.list.isNotEmpty || _watched && (p.history.isNotEmpty || p.resume.isNotEmpty)) ? null : _import,
-            child: const Text('Import', style: TextStyle(fontWeight: FontWeight.w800)),
+            child: const Text('Importa', style: TextStyle(fontWeight: FontWeight.w800)),
           ),
       ],
     );

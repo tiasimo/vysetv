@@ -79,7 +79,7 @@ Future<void> openPlayer(BuildContext context, Media media, {PlayerEpisode? episo
       a = await AniList.details(media.id);
     } catch (_) {
       if (context.mounted) {
-        showToast(context, const Text("Couldn't reach AniList", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)), icon: Icons.error_outline_rounded);
+        showToast(context, const Text("Impossibile raggiungere AniList", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)), icon: Icons.error_outline_rounded);
       }
       return;
     }
@@ -158,7 +158,7 @@ typedef _Srv = SourceState;
 const _speeds = [.5, .75, 1.0, 1.25, 1.5, 2.0];
 const _moreSpeeds = [.25, 1.75, 2.5, 3.0, 4.0, 8.0]; // Plezy's player goes 0.25x to 8x
 
-String _speedLabel(double s) => s == 1 ? 'Normal' : '${s == s.roundToDouble() ? s.toInt() : s}×';
+String _speedLabel(double s) => s == 1 ? 'Normale' : '${s == s.roundToDouble() ? s.toInt() : s}×';
 
 /// Full-screen player. Fetches sources, plays via Plezy's mpv player (lib/mpv). Shows controls, subtitle sync, episodes.
 /// controls and the settings panel. Esc leaves, S opens settings, C subtitles, F full screen.
@@ -910,7 +910,7 @@ class _PlayerPageState extends State<_PlayerView> {
     if (i == _variant || _sources.isEmpty) return;
     final src = _sources[_source];
     final at = _position.value;
-    _switch(i == null ? 'Picking quality' : 'Switching to ${_variants[i].label}', () => _variant = i);
+    _switch(i == null ? 'Scelta della qualità' : 'Passo a ${_variants[i].label}', () => _variant = i);
     _playUrl = i == null ? src.url : _variants[i].url;
     if (!src.hls) {
       // another file of the same episode: open it where we are
@@ -932,7 +932,7 @@ class _PlayerPageState extends State<_PlayerView> {
   void _pickSource(int i) {
     if (i == _source) return;
     final at = _position.value;
-    _switch('Switching to ${_sources[i].server}', () => _source = i);
+    _switch('Passo a ${_sources[i].server}', () => _source = i);
     _playSource(_sources[i], at: at);
     if (widget.anime != null) _useAnimeExtras(_sources[i], _loadId); // skip times from this stream, subs from all
   }
@@ -946,16 +946,16 @@ class _PlayerPageState extends State<_PlayerView> {
     // ('English sub' says the subtitles, not the sound)
     final said = _films ? _playingLink?.audio : null;
     if (said != null && _audioTracks.length == 1 && audioLabel(said) == said) return said;
-    return 'Track ${t.id}';
+    return 'Traccia ${t.id}';
   }
 
   String _audioInfo(pz.AudioTrack t, {required bool single}) {
     final ch = t.channels;
     return [
       if (t.title != null && t.title!.isNotEmpty && t.title != _audioName(t)) t.title!,
-      switch (ch) { 1 => 'Mono', 2 => 'Stereo', 6 => '5.1', 8 => '7.1', null => null, _ => '$ch channels' },
+      switch (ch) { 1 => 'Mono', 2 => 'Stereo', 6 => '5.1', 8 => '7.1', null => null, _ => '$ch canali' },
       if (t.codec != null && t.codec!.isNotEmpty) t.codec!.toUpperCase(),
-      if (single) 'the only audio on this server',
+      if (single) 'l\'unico audio su questo server',
     ].whereType<String>().join(' · ');
   }
 
@@ -1052,7 +1052,7 @@ class _PlayerPageState extends State<_PlayerView> {
 
   String get _delayLabel {
     final ms = AppSettings.audioDelayMs.value;
-    if (ms == 0) return 'In sync';
+    if (ms == 0) return 'Sincronizzato';
     return '${ms > 0 ? '+' : '−'}${(ms.abs() / 1000).toStringAsFixed(2)} s';
   }
 
@@ -1101,14 +1101,14 @@ class _PlayerPageState extends State<_PlayerView> {
       _upNext = null;
     });
     _player.pause();
-    showToast(context, const Text('Sleep timer: paused', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)), icon: Icons.bedtime_rounded);
+    showToast(context, const Text('Timer di spegnimento: in pausa', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)), icon: Icons.bedtime_rounded);
   }
 
   String get _sleepTitle {
     final at = _sleepAt;
-    if (_sleepMinutes == -1) return 'Pauses when this episode ends';
-    if (at != null) return 'Pauses at ${TimeOfDay.fromDateTime(at).format(context)}';
-    return 'Pause playback after';
+    if (_sleepMinutes == -1) return 'Si ferma alla fine di questo episodio';
+    if (at != null) return 'Si ferma alle ${TimeOfDay.fromDateTime(at).format(context)}';
+    return 'Metti in pausa dopo';
   }
 
   // ── display and other players ──
@@ -1215,7 +1215,7 @@ class _PlayerPageState extends State<_PlayerView> {
         );
       } else if (_linkIsLocal || u == null || !u.scheme.startsWith('http')) {
         // a manifest Lorewatch wrote for this play (some of Movy's servers): nothing to fetch as it is
-        throw const DownloadRefused("This source can't be downloaded. Pick another one from Sources and try again.");
+        throw const DownloadRefused("Questa sorgente non si può scaricare. Scegline un'altra da Sorgenti e riprova.");
       } else {
         r = DownloadRequest(
           title: widget.media.title,
@@ -1235,7 +1235,7 @@ class _PlayerPageState extends State<_PlayerView> {
     } on DownloadRefused catch (e) {
       say(e.message, icon: Icons.error_outline_rounded);
     } catch (_) {
-      say("Couldn't start the download.", icon: Icons.error_outline_rounded);
+      say("Impossibile avviare il download.", icon: Icons.error_outline_rounded);
     }
   }
 
@@ -1243,7 +1243,7 @@ class _PlayerPageState extends State<_PlayerView> {
     if (!_canCopyLink) return;
     await Clipboard.setData(ClipboardData(text: _playUrl));
     if (!mounted) return;
-    showToast(context, const Text('Link copied', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)), icon: Icons.link_rounded);
+    showToast(context, const Text('Link copiato', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)), icon: Icons.link_rounded);
   }
 
   Future<void> _openExternal(pz.ExternalPlayer p) async {
@@ -1259,7 +1259,7 @@ class _PlayerPageState extends State<_PlayerView> {
     }
     showToast(
       context,
-      Text(err ?? 'Playing in ${p.name} · Lorewatch is paused', style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+      Text(err ?? 'In riproduzione su ${p.name} · Lorewatch è in pausa', style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
       icon: err == null ? Icons.open_in_new_rounded : Icons.error_outline_rounded,
     );
   }
@@ -1359,7 +1359,7 @@ class _PlayerPageState extends State<_PlayerView> {
       if (hit == null) {
         setState(() {
           _loadingSources = false;
-          _error = 'No sources found';
+          _error = 'Nessuna sorgente trovata';
         });
       } else {
         await _playLink(hit);
@@ -1383,7 +1383,7 @@ class _PlayerPageState extends State<_PlayerView> {
 
     var l = link();
     if (l == null) {
-      setState(() => _loadNote = "Waiting for the host's stream…");
+      setState(() => _loadNote = "In attesa dello stream dell'host…");
       final until = DateTime.now().add(const Duration(seconds: 25));
       while (l == null && DateTime.now().isBefore(until)) {
         await Future<void>.delayed(const Duration(milliseconds: 500));
@@ -1450,7 +1450,7 @@ class _PlayerPageState extends State<_PlayerView> {
       if (!mounted || id != _loadId || _sharedUrl != url || _player.state.duration > Duration.zero) return;
       _sharedSkip = url;
       _sharedUrl = null;
-      _switch("The host's stream won't play here. Finding another", () {});
+      _switch("Lo stream dell'host non parte qui. Ne cerco un altro", () {});
       _loadAndPlay();
     });
   }
@@ -1555,8 +1555,8 @@ class _PlayerPageState extends State<_PlayerView> {
       if (t == null || !mounted || _torrent != hash) return;
       final speed = t.downloadSpeed >= 1e6 ? '${(t.downloadSpeed / 1e6).toStringAsFixed(1)} MB/s' : '${(t.downloadSpeed / 1e3).round()} KB/s';
       final note = t.fileStats.isEmpty
-          ? (t.activePeers > 0 ? 'Getting the file list from ${t.activePeers} peers…' : 'Finding peers…')
-          : '${t.activePeers} peers · $speed';
+          ? (t.activePeers > 0 ? 'Recupero della lista dei file da ${t.activePeers} peer…' : 'Ricerca di peer…')
+          : '${t.activePeers} peer · $speed';
       if (note != _torrentNote) setState(() => _torrentNote = note);
     });
   }
@@ -1604,7 +1604,7 @@ class _PlayerPageState extends State<_PlayerView> {
       final at = double.tryParse(await get('chapter-list/$i/time'));
       if (at == null) continue;
       final title = (await get('chapter-list/$i/title')).trim();
-      chapters.add(PlayerChapter(Duration(milliseconds: ((at + _offset) * 1000).round()), title.isEmpty ? 'Chapter ${i + 1}' : title));
+      chapters.add(PlayerChapter(Duration(milliseconds: ((at + _offset) * 1000).round()), title.isEmpty ? 'Capitolo ${i + 1}' : title));
     }
     if (!mounted || id != _loadId) return;
     final files = _builtIn.where((t) => !t.url.startsWith('mpv-sid:'));
@@ -1681,7 +1681,7 @@ class _PlayerPageState extends State<_PlayerView> {
     // picked by hand: the next episodes follow this one, not the best
     _bestPicked = false;
     _bestRest = const [];
-    _switch('Switching to ${p.stream.addon.name}', () {});
+    _switch('Passo a ${p.stream.addon.name}', () {});
     _loadAndPlay();
   }
 
@@ -1750,7 +1750,7 @@ class _PlayerPageState extends State<_PlayerView> {
     setState(() {
       _error = null;
       _loadingSources = true;
-      _loadNote = "That one didn't play. Trying the next best…";
+      _loadNote = "Quella non è partita. Provo la migliore successiva…";
     });
     unawaited(_loadPicked(id));
     return true;
@@ -1764,7 +1764,7 @@ class _PlayerPageState extends State<_PlayerView> {
       showToast(
         context,
         Text(
-          "Couldn't find a source for ${ep == null ? widget.media.title : episodeLabel(ep.season, ep.number)}",
+          "Nessuna sorgente trovata per ${ep == null ? widget.media.title : episodeLabel(ep.season, ep.number)}",
           style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
         ),
         icon: Icons.error_outline_rounded,
@@ -1793,7 +1793,7 @@ class _PlayerPageState extends State<_PlayerView> {
       if (_follower) return; // the host sends the next episode's source
       AddonPick? next;
       if (viaNext && _playsBest) {
-        setState(() => _loadNote = 'Finding the best source…');
+        setState(() => _loadNote = 'Ricerca della sorgente migliore…');
         final found = await _findBest(ep, like: pick);
         if (!mounted || id != _loadId) return;
         _loadNote = null;
@@ -1825,7 +1825,7 @@ class _PlayerPageState extends State<_PlayerView> {
       if (!mounted || id != _loadId) return;
       setState(() {
         _loadingSources = false;
-        _error = 'P2P streaming is off. Pick another source.';
+        _error = 'Lo streaming P2P è disattivato. Scegli un\'altra sorgente.';
       });
       return;
     }
@@ -1837,7 +1837,7 @@ class _PlayerPageState extends State<_PlayerView> {
       if (!mounted || id != _loadId) return;
       setState(() {
         _loadingSources = false;
-        _error = 'Not shared with the room. Pick another source.';
+        _error = 'Non condivisa con la stanza. Scegli un\'altra sorgente.';
       });
       return;
     }
@@ -1845,7 +1845,7 @@ class _PlayerPageState extends State<_PlayerView> {
     final StreamSource src;
     if (viaDebrid) {
       final st = pick.stream;
-      setState(() => _loadNote = 'Getting it from ${Debrid.name}…');
+      setState(() => _loadNote = 'Lo prendo da ${Debrid.name}…');
       try {
         final f = await Debrid.resolve(st, season: widget.anime != null ? null : ep?.season, episode: ep?.number, episodeTitle: ep?.name);
         if (!mounted || id != _loadId) return;
@@ -1867,7 +1867,7 @@ class _PlayerPageState extends State<_PlayerView> {
       // peer to peer: our engine fetches it and the player streams it from 127.0.0.1
       final st = pick.stream;
       _watchTorrent(st.infoHash!);
-      setState(() => _torrentNote = 'Finding peers…');
+      setState(() => _torrentNote = 'Ricerca di peer…');
       try {
         // the season and episode are for a source that names no file (the built-in one): the
         // episode's file is then found by name. Anime has no season number here, as with debrid.
@@ -1891,8 +1891,8 @@ class _PlayerPageState extends State<_PlayerView> {
         setState(() {
           _loadingSources = false;
           _error = e is EpisodeNotInTorrent
-              ? "This torrent doesn't have that episode. Try another source."
-              : 'No peers for this torrent right now. Try another source.';
+              ? "Questo torrent non ha quell'episodio. Prova un'altra sorgente."
+              : 'Nessun peer per questo torrent ora. Prova un\'altra sorgente.';
         });
         return;
       }
@@ -1974,7 +1974,7 @@ class _PlayerPageState extends State<_PlayerView> {
       final s = list[i];
       final l = s.links.where((l) => l.state == FilmState.trying).firstOrNull;
       if (s.state == FilmState.trying || l != null) {
-        return 'Trying ${s.isMovy && l != null ? l.name : s.source.name}  ·  ${i + 1} of ${list.length}';
+        return 'Provo ${s.isMovy && l != null ? l.name : s.source.name}  ·  ${i + 1} di ${list.length}';
       }
     }
     return null;
@@ -2010,7 +2010,7 @@ class _PlayerPageState extends State<_PlayerView> {
       setState(() {
         _loadingSources = false;
         _subsLoading = false;
-        _error = 'No sources found';
+        _error = 'Nessuna sorgente trovata';
       });
       return;
     }
@@ -2091,7 +2091,7 @@ class _PlayerPageState extends State<_PlayerView> {
     if (found == null) {
       showToast(
         context,
-        Text("${server.name} doesn't have this one", style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+        Text("${server.name} non ce l'ha", style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
         icon: Icons.error_outline_rounded,
       );
       return;
@@ -2126,11 +2126,11 @@ class _PlayerPageState extends State<_PlayerView> {
     final t = widget.anime!, ep = _ep;
     final n = (ep?.number ?? 1) + 1;
     if (ep == null || (t.episodes != null && n > t.episodes!)) {
-      showToast(context, const Text("That's the latest episode", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)), icon: Icons.check_rounded);
+      showToast(context, const Text("È l'ultimo episodio", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)), icon: Icons.check_rounded);
       return;
     }
     _saveProgress();
-    _switch('Loading E$n', () {
+    _switch('Caricamento E$n', () {
       _ep = PlayerEpisode(season: 0, number: n, name: t.names[n]);
       _upNext = null;
       _episodes = false;
@@ -2179,8 +2179,8 @@ class _PlayerPageState extends State<_PlayerView> {
     if (!mounted || id != _loadId || _wanted != l) return;
     _wanted = null;
     if (src == null) {
-      final what = l.source.scraper == null ? l.name : '${l.name} on ${l.source.name}';
-      showToast(context, Text("$what isn't playing this one", style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)), icon: Icons.error_outline_rounded);
+      final what = l.source.scraper == null ? l.name : '${l.name} su ${l.source.name}';
+      showToast(context, Text("$what non lo riproduce", style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)), icon: Icons.error_outline_rounded);
       return;
     }
     await _playLink(l);
@@ -2259,9 +2259,9 @@ class _PlayerPageState extends State<_PlayerView> {
     final track = listed ??
         sub.SubtitleTrack(
           id: '${r['id'] ?? url}',
-          provider: '${r['provider'] ?? 'Subtitles'}',
+          provider: '${r['provider'] ?? 'Sottotitoli'}',
           lang: '${r['lang'] ?? 'und'}',
-          language: '${r['language'] ?? 'Subtitles'}',
+          language: '${r['language'] ?? 'Sottotitoli'}',
           release: '${r['release'] ?? ''}',
           url: url,
           format: '${r['format'] ?? 'srt'}',
@@ -2318,7 +2318,7 @@ class _PlayerPageState extends State<_PlayerView> {
     }
     try {
       if (track.translated && !_subCache.containsKey(track.url) && mounted) {
-        showToast(context, Text('Translating subtitles to ${track.language}…', style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)), icon: Icons.translate_rounded);
+        showToast(context, Text('Traduzione dei sottotitoli in ${track.language}…', style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)), icon: Icons.translate_rounded);
       }
       final sw = Stopwatch()..start();
       final cached = _subCache.containsKey(track.url);
@@ -2348,7 +2348,7 @@ class _PlayerPageState extends State<_PlayerView> {
       if (mounted && seq == _subSeq) {
         showToast(
           context,
-          Text("Couldn't load ${track.language} subtitles from ${track.provider}. Try another.", style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+          Text("Impossibile caricare i sottotitoli in ${track.language} da ${track.provider}. Provane altri.", style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
           icon: Icons.error_outline_rounded,
         );
       }
@@ -2396,7 +2396,7 @@ class _PlayerPageState extends State<_PlayerView> {
         // mpv may still be loading it with the video: look again before adding a second copy
         if (!retried) {
           _subCheckTimer?.cancel();
-          _subCheckTimer = Timer(const Duration(milliseconds: 1500), () => _checkSubs('look again', retried: true));
+          _subCheckTimer = Timer(const Duration(milliseconds: 1500), () => _checkSubs('cerca di nuovo', retried: true));
           return;
         }
         SubLog.line('  FIX: your subtitle file was not loaded, adding it again');
@@ -2451,7 +2451,7 @@ class _PlayerPageState extends State<_PlayerView> {
     if (!mounted) return;
     showToast(
       context,
-      Text('These subtitles stop at ${clock(end)} of ${clock(total)}. They are probably for another video; try another.', style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+      Text('Questi sottotitoli finiscono a ${clock(end)} di ${clock(total)}. Probabilmente sono di un altro video; provane altri.', style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
       icon: Icons.warning_amber_rounded,
     );
   }
@@ -2715,7 +2715,7 @@ class _PlayerPageState extends State<_PlayerView> {
   void _goTo(EpisodeInfo e, {bool next = false}) {
     if (_follower) return _hostOnly();
     _saveProgress();
-    _switch('Loading ${episodeLabel(e.season, e.number)}', () {
+    _switch('Caricamento ${episodeLabel(e.season, e.number)}', () {
       _ep = e.toPlayer();
       _upNext = null;
       _episodes = false;
@@ -2736,7 +2736,7 @@ class _PlayerPageState extends State<_PlayerView> {
     final next = await store.after(ep).catchError((Object _) => null);
     if (!mounted) return;
     if (next == null || next.upcoming) {
-      showToast(context, const Text("That's the latest episode", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)), icon: Icons.check_rounded);
+      showToast(context, const Text("È l'ultimo episodio", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)), icon: Icons.check_rounded);
     } else {
       _goTo(next, next: true);
     }
@@ -3016,7 +3016,7 @@ class _PlayerPageState extends State<_PlayerView> {
     }
     if (widget.media.isTv && s.season != null && s.episode != null && (s.season != _ep?.season || s.episode != _ep?.number)) {
       _saveProgress();
-      _switch('Loading ${episodeLabel(s.season, s.episode!)}', () {
+      _switch('Caricamento ${episodeLabel(s.season, s.episode!)}', () {
         _ep = PlayerEpisode(season: s.season!, number: s.episode!, name: s.episodeName);
         _upNext = null;
         _episodes = false;
@@ -3043,7 +3043,7 @@ class _PlayerPageState extends State<_PlayerView> {
       if (key(shared) != key(_pick)) {
         _pick = shared;
         _resumeOverride = Duration(milliseconds: (s.now * 1000).round());
-        _switch('Switching source', () {});
+        _switch('Cambio sorgente', () {});
         _loadAndPlay();
         return;
       }
@@ -3203,7 +3203,7 @@ class _PlayerPageState extends State<_PlayerView> {
   }
 
   String _value(_Tab t) => switch (t) {
-    _Tab.sources => _sources.isEmpty ? 'Loading…' : [_nowQuality, _sources[_source].server].where((x) => x.isNotEmpty).join(' · '),
+    _Tab.sources => _sources.isEmpty ? 'Caricamento…' : [_nowQuality, _sources[_source].server].where((x) => x.isNotEmpty).join(' · '),
     _Tab.quality => _variant != null ? _variants[_variant!].label : (_variants.length > 1 ? 'Auto' : _nowQuality),
     _Tab.audio => _audioNow == null ? '' : _audioName(_audioNow!),
     _Tab.subtitles => _subOffset == 0 ? _subtitle : '$_subtitle · ${_subOffset > 0 ? '+' : ''}${_subOffset}s',
@@ -3211,7 +3211,7 @@ class _PlayerPageState extends State<_PlayerView> {
     _Tab.more => [
         if (AppSettings.upscaler.value != 'none') pz.Upscaler.byId(AppSettings.upscaler.value).label,
         if (_zoom != 100) '$_zoom%',
-        if (_sleepMinutes != null) 'Sleep',
+        if (_sleepMinutes != null) 'Timer',
       ].join(' · '),
   };
 
@@ -3349,14 +3349,14 @@ class _PlayerPageState extends State<_PlayerView> {
                       padding: EdgeInsets.fromLTRB(side - 10, top + (phone ? 10 : 18), side - 10, 0),
                       child: Row(children: [
                         if (!widget.embedded || widget.expanded) ...[
-                          _IconBtn(icon: Icons.arrow_back_rounded, tooltip: widget.embedded ? 'Back to the room (Esc)' : 'Back (Esc)', onTap: _back),
+                          _IconBtn(icon: Icons.arrow_back_rounded, tooltip: widget.embedded ? 'Torna alla stanza (Esc)' : 'Indietro (Esc)', onTap: _back),
                           const SizedBox(width: 8),
                         ],
                         if (widget.onMinimize != null)
-                          _IconBtn(icon: Icons.keyboard_arrow_down_rounded, tooltip: 'Minimize: keep watching in a small window (M)', size: 28, onTap: _minimize),
+                          _IconBtn(icon: Icons.keyboard_arrow_down_rounded, tooltip: 'Riduci: continua a guardare in una finestrella (M)', size: 28, onTap: _minimize),
                         const Spacer(),
                         if (widget.party) const _VoiceButtons(),
-                        if (_touch) _IconBtn(icon: Icons.lock_open_rounded, tooltip: 'Lock', onTap: () => _setLocked(true)),
+                        if (_touch) _IconBtn(icon: Icons.lock_open_rounded, tooltip: 'Blocca', onTap: () => _setLocked(true)),
                       ]),
                     ),
                   ),
@@ -3727,7 +3727,7 @@ class _PlayerPageState extends State<_PlayerView> {
       auto: _variants.length > 1 && _hasAuto
           ? MenuQuality(
               label: 'Auto',
-              detail: 'Highest this server has (${_variants.first.label})',
+              detail: 'La massima di questo server (${_variants.first.label})',
               selected: _variant == null,
               onTap: () => _pickQuality(null),
             )
@@ -3735,10 +3735,10 @@ class _PlayerPageState extends State<_PlayerView> {
       only: _variants.length > 1
           ? null
           : MenuQuality(
-              label: _nowQuality.isEmpty ? 'Loading…' : _nowQuality,
+              label: _nowQuality.isEmpty ? 'Caricamento…' : _nowQuality,
               detail: [
                 if (_videoW > 0) '$_videoW×$_videoH',
-                if (_sources.isNotEmpty) 'the only quality on ${_sources[_source].server}',
+                if (_sources.isNotEmpty) 'l\'unica qualità su ${_sources[_source].server}',
               ].join(' · '),
             ),
       items: [
@@ -3764,7 +3764,7 @@ class _PlayerPageState extends State<_PlayerView> {
             current: t.id == _audioNow?.id,
             onTap: () {
               if (t.id == _audioNow?.id) return;
-              _switch('Switching to ${_audioName(t)}', () {});
+              _switch('Passo a ${_audioName(t)}', () {});
               _audioByHand = true;
               _player.selectAudioTrack(t);
             },
@@ -3780,16 +3780,16 @@ class _PlayerPageState extends State<_PlayerView> {
               (_sources.isEmpty || _sources[_source].server != s.name) &&
               s.audio!.toLowerCase() != _playingLink?.audio?.toLowerCase() &&
               _servers.where((x) => x.audio == s.audio && _serverState[x.name] != _Srv.dead).firstOrNull == s)
-            MenuAudio(title: s.audio!, detail: 'Dubbed · switches to ${s.name}', onTap: () => _pickNamed(s.name)),
+            MenuAudio(title: s.audio!, detail: 'Doppiato · passa a ${s.name}', onTap: () => _pickNamed(s.name)),
         // on an anime dub: back to the original
         if (widget.anime != null && _sources.isNotEmpty && _sources[_source].audio != null)
           for (final s in _servers.where((s) => s.audio == null && _serverState[s.name] != _Srv.dead).take(1))
-            MenuAudio(title: 'Japanese', detail: 'Original audio · switches to ${s.name}', onTap: () => _pickNamed(s.name)),
+            MenuAudio(title: 'Japanese', detail: 'Audio originale · passa a ${s.name}', onTap: () => _pickNamed(s.name)),
       ],
       sound: [
         MenuStepper(
-          title: 'Audio sync',
-          detail: 'Fixes lip-sync · + plays the sound later',
+          title: 'Sincronizzazione audio',
+          detail: 'Corregge il labiale · + fa partire l\'audio più tardi',
           label: _delayLabel,
           changed: AppSettings.audioDelayMs.value != 0,
           onMinus: () => _nudgeDelay(-50),
@@ -3797,22 +3797,22 @@ class _PlayerPageState extends State<_PlayerView> {
           onReset: () => AppSettings.audioDelayMs.set(0),
         ),
         MenuChoice<String>(
-          title: 'Channels',
-          detail: 'Stereo folds surround down for headphones and TV speakers',
+          title: 'Canali',
+          detail: 'Lo stereo riduce il surround per cuffie e altoparlanti della TV',
           value: AppSettings.audioChannels.value,
-          options: const [('original', 'Original'), ('surround51', '5.1'), ('stereo', 'Stereo')],
+          options: const [('original', 'Originale'), ('surround51', '5.1'), ('stereo', 'Stereo')],
           onChanged: AppSettings.audioChannels.set,
         ),
         MenuToggle(
-          title: 'Volume levelling',
-          detail: 'Evens out quiet talk and loud action',
+          title: 'Livellamento del volume',
+          detail: 'Uniforma dialoghi bassi e azione rumorosa',
           value: AppSettings.volumeLevelling.value,
           onChanged: AppSettings.volumeLevelling.set,
         ),
         if (!Platform.isIOS)
           MenuToggle(
             title: 'Passthrough',
-            detail: 'Sends Dolby and DTS untouched to a receiver · not with levelling, stereo or other speeds',
+            detail: 'Invia Dolby e DTS intatti al ricevitore · non con livellamento, stereo o altre velocità',
             value: AppSettings.audioPassthrough.value,
             onChanged: AppSettings.audioPassthrough.set,
           ),
@@ -3850,7 +3850,7 @@ class _PlayerPageState extends State<_PlayerView> {
         ('PICTURE', [
           MenuStepper(
             title: 'Zoom',
-            detail: 'Crop the black bars, or shrink the picture',
+            detail: 'Taglia le bande nere, o rimpicciolisci l\'immagine',
             label: '$_zoom%',
             changed: _zoom != 100,
             onMinus: () => _setZoom(_zoom - 5),
@@ -3858,8 +3858,8 @@ class _PlayerPageState extends State<_PlayerView> {
             onReset: () => _setZoom(100),
           ),
           MenuToggle(
-            title: 'Ambient lighting',
-            detail: 'Fills the black bars with a soft glow of the picture',
+            title: 'Illuminazione ambientale',
+            detail: 'Riempie le bande nere con un bagliore morbido dell\'immagine',
             value: AppSettings.ambientLight.value,
             onChanged: AppSettings.ambientLight.set,
           ),
@@ -3869,7 +3869,7 @@ class _PlayerPageState extends State<_PlayerView> {
             MenuRow(title: u.label, detail: u.detail, selected: AppSettings.upscaler.value == u.id, onTap: () => AppSettings.upscaler.set(u.id)),
         ]),
         if (!widget.party)
-          ('SLEEP TIMER', [
+          ('TIMER DI SPEGNIMENTO', [
             MenuChoice<int>(
               title: _sleepTitle,
               value: _sleepMinutes ?? 0,
@@ -3881,14 +3881,14 @@ class _PlayerPageState extends State<_PlayerView> {
           if (Platform.isWindows)
             MenuToggle(
               title: 'HDR',
-              detail: 'Real HDR on an HDR screen · off maps it to SDR',
+              detail: 'HDR vero su schermo HDR · se spento lo converte in SDR',
               value: AppSettings.hdrOutput.value,
               onChanged: AppSettings.hdrOutput.set,
             ),
           if (Platform.isWindows || Platform.isAndroid)
             MenuToggle(
-              title: 'Match refresh rate',
-              detail: Platform.isWindows ? "Switches the screen to the video's frame rate in full screen" : "Switches the screen to the video's frame rate",
+              title: 'Adatta la frequenza di aggiornamento',
+              detail: Platform.isWindows ? "Porta lo schermo al frame rate del video a schermo intero" : "Porta lo schermo al frame rate del video",
               value: AppSettings.matchRefreshRate.value,
               onChanged: (on) {
                 AppSettings.matchRefreshRate.set(on);
@@ -3903,23 +3903,23 @@ class _PlayerPageState extends State<_PlayerView> {
             ),
         ]),
         ('OPEN', [
-          if (_pipOk) MenuRow(title: 'Picture-in-picture', detail: 'Keep watching in a small window', chevron: true, onTap: _enterPip),
+          if (_pipOk) MenuRow(title: 'Picture-in-picture', detail: 'Continua a guardare in una finestrella', chevron: true, onTap: _enterPip),
           if (_canDownload)
             MenuRow(
-              title: 'Download',
-              detail: 'Saves it to this device · see Downloads',
+              title: 'Scarica',
+              detail: 'Lo salva su questo dispositivo · vedi Download',
               onTap: _download,
             ),
           if (_canCopyLink)
             MenuRow(
-              title: 'Copy link',
-              detail: _linkIsLocal ? 'Plays on this device only, while Lorewatch stays open' : 'The stream address, to paste into another app',
+              title: 'Copia link',
+              detail: _linkIsLocal ? 'Si riproduce solo su questo dispositivo, finché Lorewatch resta aperto' : 'L\'indirizzo dello stream, da incollare in un\'altra app',
               onTap: _copyLink,
             ),
           // not in a watch party: another app would be handed the room's link
           if (!widget.party)
             for (final p in _externals)
-              MenuRow(title: 'Open in ${p.name}', detail: 'From where you are · Lorewatch pauses', chevron: true, onTap: () => _openExternal(p)),
+              MenuRow(title: 'Apri in ${p.name}', detail: 'Da dove sei arrivato · Lorewatch va in pausa', chevron: true, onTap: () => _openExternal(p)),
         ]),
       ],
     ),
@@ -4007,7 +4007,7 @@ class _PhoneTransport extends StatelessWidget {
     };
     return Column(mainAxisSize: MainAxisSize.min, children: [
       Row(mainAxisSize: MainAxisSize.min, children: [
-        _IconBtn(icon: back, tooltip: 'Back ${seek}s', size: 30, onTap: () => onSeek(position.value - Duration(seconds: seek))),
+        _IconBtn(icon: back, tooltip: 'Indietro ${seek}s', size: 30, onTap: () => onSeek(position.value - Duration(seconds: seek))),
         const SizedBox(width: 36),
         Pressable(
           onTap: onPause,
@@ -4040,7 +4040,7 @@ class _PhoneTransport extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 36),
-        _IconBtn(icon: fwd, tooltip: 'Forward ${seek}s', size: 30, onTap: () => onSeek(position.value + Duration(seconds: seek))),
+        _IconBtn(icon: fwd, tooltip: 'Avanti ${seek}s', size: 30, onTap: () => onSeek(position.value + Duration(seconds: seek))),
       ]),
       if (note != null) ...[
         const SizedBox(height: 14),
@@ -4142,7 +4142,7 @@ class _UnlockButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Pressable(
-    tooltip: 'Unlock',
+    tooltip: 'Sblocca',
     onTap: onTap,
     builder: (context, _, pressed) => AnimatedScale(
       scale: pressed ? .92 : 1,
@@ -4153,7 +4153,7 @@ class _UnlockButton extends StatelessWidget {
         child: const Row(mainAxisSize: MainAxisSize.min, children: [
           Icon(Icons.lock_rounded, size: 22),
           SizedBox(width: 8),
-          Text('Tap to unlock', style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.w700)),
+          Text('Tocca per sbloccare', style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.w700)),
         ]),
       ),
     ),
@@ -4315,7 +4315,7 @@ class _VoiceButtons extends StatelessWidget {
           else
             _IconBtn(
               icon: Voice.micOn.value && !deaf ? Icons.mic_rounded : Icons.mic_off_rounded,
-              tooltip: Voice.micOn.value && !deaf ? 'Mute' : 'Unmute',
+              tooltip: Voice.micOn.value && !deaf ? 'Muto' : 'Riattiva audio',
               onTap: Voice.toggleMic,
             ),
           _IconBtn(icon: deaf ? Icons.headset_off_rounded : Icons.headset_rounded, tooltip: deaf ? 'Undeafen' : 'Deafen', onTap: Voice.toggleDeafen),
@@ -4371,9 +4371,9 @@ class _MiniPlayerState extends State<_MiniPlayer> {
                   right: 6,
                   child: Row(
                     children: [
-                      _MiniButton(icon: widget.playing ? Icons.pause_rounded : Icons.play_arrow_rounded, tip: widget.playing ? 'Pause' : 'Play', onTap: widget.onTogglePause),
+                      _MiniButton(icon: widget.playing ? Icons.pause_rounded : Icons.play_arrow_rounded, tip: widget.playing ? 'Pausa' : 'Riproduci', onTap: widget.onTogglePause),
                       const SizedBox(width: 4),
-                      _MiniButton(icon: Icons.open_in_full_rounded, tip: 'Back to the full window', onTap: () => widget.onExpand()),
+                      _MiniButton(icon: Icons.open_in_full_rounded, tip: 'Torna alla finestra intera', onTap: () => widget.onExpand()),
                     ],
                   ),
                 ),
@@ -4500,12 +4500,12 @@ class _MiniWindowState extends State<_MiniWindow> {
                 fit: StackFit.expand,
                 children: [
                   const ColoredBox(color: Color(0x73000000)),
-                  Positioned(top: 6, left: 6, child: _MiniButton(icon: Icons.open_in_full_rounded, tip: 'Back to full size', onTap: widget.onRestore)),
-                  Positioned(top: 6, right: 6, child: _MiniButton(icon: Icons.close_rounded, tip: 'Close', onTap: widget.onClose)),
+                  Positioned(top: 6, left: 6, child: _MiniButton(icon: Icons.open_in_full_rounded, tip: 'Torna a dimensione piena', onTap: widget.onRestore)),
+                  Positioned(top: 6, right: 6, child: _MiniButton(icon: Icons.close_rounded, tip: 'Chiudi', onTap: widget.onClose)),
                   Center(
                     child: _MiniButton(
                       icon: widget.playing ? Icons.pause_rounded : Icons.play_arrow_rounded,
-                      tip: widget.playing ? 'Pause' : 'Play',
+                      tip: widget.playing ? 'Pausa' : 'Riproduci',
                       size: 44,
                       onTap: () {
                         widget.onTogglePause();
@@ -4576,7 +4576,7 @@ class _MiniNextState extends State<_MiniNext> with SingleTickerProviderStateMixi
 
   @override
   Widget build(BuildContext context) => Pressable(
-    tooltip: 'Play the next episode',
+    tooltip: 'Riproduci il prossimo episodio',
     onTap: widget.onPlay,
     builder: (context, hovered, _) => Container(
       padding: const EdgeInsets.fromLTRB(6, 5, 10, 5),

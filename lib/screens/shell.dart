@@ -55,19 +55,19 @@ Widget _tabRoot(NavItem item) => switch (item.id) {
       'discover' => const DiscoverPage(),
       'search' => const SearchPage(),
       'movies' => const DiscoverPage(
-          title: 'Movies',
-          subtitle: 'Every film on TMDB',
+          title: 'Film',
+          subtitle: 'Tutti i film su TMDB',
           initial: DiscoverQuery(type: MediaType.movie),
         ),
       'tv' => const DiscoverPage(
-          title: 'TV Shows',
-          subtitle: 'Series from around the world',
+          title: 'Serie TV',
+          subtitle: 'Serie da tutto il mondo',
           initial: DiscoverQuery(type: MediaType.tv),
         ),
       'anime' => const AnimePage(),
       'top' => const DiscoverPage(
-          title: 'Top Rated',
-          subtitle: 'The highest-rated titles of all time',
+          title: 'Più votati',
+          subtitle: 'I titoli più votati di sempre',
           initial: DiscoverQuery(sort: SortBy.topRated),
         ),
       'party' => const PartyPage(),
@@ -141,7 +141,7 @@ class _AppShellState extends State<AppShell> {
     showToast(
       context,
       Text(
-        fresh.length == 1 ? '${fresh.first.name} sent you a friend request' : '${fresh.length} new friend requests',
+        fresh.length == 1 ? '${fresh.first.name} sent you a friend request' : '${fresh.length} nuove richieste di amicizia',
         style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
       ),
       icon: Icons.person_add_alt_1_rounded,
@@ -202,7 +202,7 @@ class _AppShellState extends State<AppShell> {
         return;
       }
       final from = Dms.threads.value.where((t) => t.partner.id == m.sender).firstOrNull?.partner;
-      final who = from?.name ?? 'A friend';
+      final who = from?.name ?? 'Un amico';
       showToast(
         context,
         Text.rich(
@@ -436,7 +436,7 @@ class _VoiceDots extends StatelessWidget {
       if (Voice.state.value != VoiceState.on || people.isEmpty) return const SizedBox.shrink();
       final shown = people.take(6).toList();
       return Pressable(
-        tooltip: 'Open the room',
+        tooltip: 'Apri la stanza',
         onTap: onTap,
         builder: (context, hovered, _) => Container(
           padding: const EdgeInsets.all(4),
@@ -822,7 +822,7 @@ class Avatar extends StatelessWidget {
 // ───────────────────────── Phone: flush bottom bar ─────────────────────────
 
 // Not a section: always the last thing in the bar, whatever the navbar hides.
-const _profileItem = NavItem('profile', 'Profile', Icons.person_outline_rounded, Icons.person_rounded);
+const _profileItem = NavItem('profile', 'Profilo', Icons.person_outline_rounded, Icons.person_rounded);
 
 /// Every tab in one row that scrolls sideways; the selected tab is kept in view.
 class BottomBar extends StatefulWidget {
@@ -1007,7 +1007,7 @@ class _PlaceholderPage extends StatelessWidget {
               const SizedBox(height: 18),
               Text(item.label, style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w800, letterSpacing: -.6)),
               const SizedBox(height: 6),
-              const Text('Coming soon.', style: TextStyle(color: VyseColors.textDim)),
+              const Text('In arrivo.', style: TextStyle(color: VyseColors.textDim)),
             ]),
           ),
         ),

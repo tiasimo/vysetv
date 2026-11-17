@@ -88,7 +88,7 @@ class BackLink extends StatelessWidget {
           ),
           child: Row(mainAxisSize: MainAxisSize.min, children: [
             Icon(Icons.chevron_left_rounded, size: 20, color: hovered ? VyseColors.text : VyseColors.textDim),
-            Text('Back',
+            Text('Indietro',
                 style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: hovered ? VyseColors.text : VyseColors.textDim)),
           ]),
         ),
@@ -218,7 +218,7 @@ class _VyseSearchFieldState extends State<VyseSearchField> {
               curve: Curves.easeOutBack,
               child: Pressable(
                 onTap: _clear,
-                tooltip: 'Clear (Esc)',
+                tooltip: 'Cancella (Esc)',
                 builder: (context, hovered, _) => AnimatedContainer(
                   duration: const Duration(milliseconds: 140),
                   width: 26,

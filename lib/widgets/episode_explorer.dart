@@ -13,7 +13,7 @@ import 'common.dart';
 
 const _still = 'https://image.tmdb.org/t/p/w780';
 const _thumb = 'https://image.tmdb.org/t/p/w300';
-const _months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const _months = ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu', 'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic'];
 
 /// An episode as the explorer shows it (from TMDB, or for anime from AniList's sources).
 class ExplorerEpisode {
@@ -205,7 +205,7 @@ class _EpisodeExplorerState extends State<EpisodeExplorer> with SingleTickerProv
             height: 200,
             child: Center(
               child: Text(
-                _season == null ? 'No episodes listed yet.' : 'No episodes listed for this season yet.',
+                _season == null ? 'Ancora nessun episodio.' : 'Ancora nessun episodio per questa stagione.',
                 style: const TextStyle(color: VyseColors.textDim),
               ),
             ),
@@ -345,7 +345,7 @@ class _SeasonNumber extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                season.number == 0 ? 'Specials' : '${season.episodes} episodes',
+                season.number == 0 ? 'Speciali' : '${season.episodes} episodi',
                 style: const TextStyle(fontSize: 11.5, fontWeight: FontWeight.w700),
               ),
               if (season.year != null)
@@ -476,7 +476,7 @@ class _Preview extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         Text(
-          e.overview.isEmpty ? 'No synopsis yet.' : e.overview,
+          e.overview.isEmpty ? 'Ancora nessuna trama.' : e.overview,
           maxLines: compact ? 4 : 5,
           overflow: TextOverflow.ellipsis,
           style: const TextStyle(fontSize: 13.5, height: 1.6, color: Color(0xFFC3C7D4)),
@@ -484,7 +484,7 @@ class _Preview extends StatelessWidget {
         if (show != null && s != null) ...[
           const SizedBox(height: 18),
           _PlayEpisode(
-            label: e.upcoming ? 'Not out yet' : 'Play E${e.number}',
+            label: e.upcoming ? 'Non ancora uscito' : 'Riproduci E${e.number}',
             enabled: !e.upcoming,
             onTap: () => openPlayer(
               context,
@@ -494,7 +494,7 @@ class _Preview extends StatelessWidget {
           ),
         ] else if (onPlay != null) ...[
           const SizedBox(height: 18),
-          _PlayEpisode(label: e.upcoming ? 'Not out yet' : 'Play E${e.number}', enabled: !e.upcoming, onTap: () => onPlay!(e)),
+          _PlayEpisode(label: e.upcoming ? 'Non ancora uscito' : 'Riproduci E${e.number}', enabled: !e.upcoming, onTap: () => onPlay!(e)),
         ],
       ],
     );
@@ -718,11 +718,11 @@ class _RangeBar extends StatelessWidget {
       Row(
         children: [
           Text(
-            'EPISODES ${start + 1}–${start + size}',
+            'EPISODI ${start + 1}–${start + size}',
             style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w800, letterSpacing: 1.4, color: VyseColors.accent),
           ),
           const SizedBox(width: 8),
-          Text('of $total', style: const TextStyle(fontSize: 11, color: VyseColors.textFaint)),
+          Text('di $total', style: const TextStyle(fontSize: 11, color: VyseColors.textFaint)),
           const Spacer(),
           _JumpBox(controller: goto, total: total, onJump: onJump),
           const SizedBox(width: 6),
@@ -840,7 +840,7 @@ class _JumpBox extends StatelessWidget {
       },
       decoration: InputDecoration(
         isDense: true,
-        hintText: 'Go to #',
+        hintText: 'Vai al n.',
         hintStyle: const TextStyle(fontSize: 12, color: VyseColors.textFaint),
         contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
         filled: true,
@@ -947,7 +947,7 @@ class _HoverCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('Episode ${episode.number}', style: const TextStyle(fontSize: 10, color: VyseColors.textFaint)),
+              Text('Episodio ${episode.number}', style: const TextStyle(fontSize: 10, color: VyseColors.textFaint)),
               Text(
                 episode.name,
                 maxLines: 1,

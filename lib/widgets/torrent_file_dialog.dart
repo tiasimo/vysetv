@@ -45,12 +45,12 @@ Future<int?> askTorrentFile(BuildContext context, List<TorrentFileChoice> files,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(files.length == 1 ? 'Play this file?' : 'Which file?', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+                          Text(files.length == 1 ? 'Riprodurre questo file?' : 'Quale file?', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
                           const SizedBox(height: 4),
                           Text(
                             [
                               if (torrent != null && torrent.isNotEmpty) torrent,
-                              files.length == 1 ? '1 file' : '${files.length} files',
+                              files.length == 1 ? '1 file' : '${files.length} file',
                               ?via,
                             ].join('  ·  '),
                             maxLines: 2,
@@ -61,7 +61,7 @@ Future<int?> askTorrentFile(BuildContext context, List<TorrentFileChoice> files,
                       ),
                     ),
                     IconButton(
-                      tooltip: 'Cancel',
+                      tooltip: 'Annulla',
                       onPressed: () => Navigator.pop(ctx),
                       icon: const Icon(Icons.close_rounded, size: 20, color: VyseColors.textDim),
                     ),

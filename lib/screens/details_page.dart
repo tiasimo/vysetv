@@ -167,7 +167,7 @@ class _DetailsPageState extends State<DetailsPage> {
     final tabs = <(String, Widget)>[
       if (d.seasons.any((s) => s.episodes > 0))
         (
-          'Episodes',
+          'Episodi',
           Padding(
             padding: EdgeInsets.fromLTRB(inset, 6, right, 34),
             child: EpisodeExplorer(show: d.media, seasons: [for (final s in d.seasons) if (s.episodes > 0) s]),
@@ -177,7 +177,7 @@ class _DetailsPageState extends State<DetailsPage> {
         (
           'Cast',
           Shelf<CastMember>(
-            title: 'Starring',
+            title: 'Con',
             load: () async => d.cast,
             maxItems: 16,
             itemWidth: 116,
@@ -188,7 +188,7 @@ class _DetailsPageState extends State<DetailsPage> {
         ),
       if (d.videos.isNotEmpty)
         (
-          'Trailers',
+          'Trailer',
           Shelf<Video>(
             title: count(d.videos.length, 'video'),
             load: () async => d.videos,
@@ -200,9 +200,9 @@ class _DetailsPageState extends State<DetailsPage> {
         ),
       if (d.recommendations.isNotEmpty)
         (
-          'More like this',
+          'Titoli simili',
           Shelf<Media>(
-            title: 'Picked from what fans of this also watch',
+            title: 'Scelti in base a cosa guardano anche i fan di questo titolo',
             load: () async => d.recommendations,
             itemWidth: posterW,
             itemHeight: posterW * 1.5,
@@ -211,7 +211,7 @@ class _DetailsPageState extends State<DetailsPage> {
           ),
         ),
       (
-        'Details',
+        'Dettagli',
         Padding(
           padding: EdgeInsets.fromLTRB(inset, 4, right, 30),
           child: ConstrainedBox(
@@ -595,7 +595,7 @@ class _GenreChip extends StatelessWidget {
     openDiscover(
       context,
       title: g.name,
-      subtitle: isTv ? 'Series' : 'Movies',
+      subtitle: isTv ? 'Serie' : 'Film',
       query: DiscoverQuery(genres: {g.name}, type: isTv ? MediaType.tv : MediaType.movie),
     );
   }
@@ -649,7 +649,7 @@ class _Body extends StatelessWidget {
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 680),
             child: Text(
-              media.overview.isEmpty ? 'No overview yet.' : media.overview,
+              media.overview.isEmpty ? 'Ancora nessuna trama.' : media.overview,
               textAlign: align,
               style: TextStyle(color: const Color(0xFFC3C7D4), fontSize: compact ? 13.5 : 14, height: 1.65),
             ),
@@ -683,7 +683,7 @@ class _Actions extends StatelessWidget {
       children: [
         _Pill(
           icon: Icons.play_arrow_rounded,
-          label: 'Play',
+          label: 'Riproduci',
           primary: true,
           onTap: () {
             // Shows start at episode 1 of the first real season (season 0 is usually specials).
@@ -697,7 +697,7 @@ class _Actions extends StatelessWidget {
           },
         ),
         _SaveButton(media: media),
-        _RoundAction(icon: Icons.thumb_up_alt_outlined, tooltip: 'Rate', onTap: () => comingSoon(context, 'Ratings')),
+        _RoundAction(icon: Icons.thumb_up_alt_outlined, tooltip: 'Vota', onTap: () => comingSoon(context, 'Voti')),
       ],
     );
   }
@@ -706,7 +706,7 @@ class _Actions extends StatelessWidget {
 Future<void> _open(BuildContext context, String url) async {
   final ok = await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
   if (!ok && context.mounted) {
-    showToast(context, const Text("Couldn't open the link", style: TextStyle(fontSize: 13)), icon: Icons.error_outline);
+    showToast(context, const Text("Impossibile aprire il link", style: TextStyle(fontSize: 13)), icon: Icons.error_outline);
   }
 }
 
@@ -821,7 +821,7 @@ class _SaveButton extends StatelessWidget {
                 ),
                 const SizedBox(width: 7),
                 Text(
-                  on ? 'Saved' : 'Save',
+                  on ? 'Salvato' : 'Salva',
                   style: const TextStyle(color: VyseColors.text, fontWeight: FontWeight.w600, fontSize: 13),
                 ),
               ],
@@ -840,7 +840,7 @@ class _BackButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Pressable(
     onTap: onTap,
-    tooltip: 'Back (Esc)',
+    tooltip: 'Indietro (Esc)',
     builder: (context, hovered, _) => AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       padding: const EdgeInsets.fromLTRB(6, 6, 12, 6),
@@ -857,7 +857,7 @@ class _BackButton extends StatelessWidget {
             child: Icon(Icons.chevron_left_rounded, size: 20, color: hovered ? VyseColors.text : VyseColors.textDim),
           ),
           Text(
-            'Back',
+            'Indietro',
             style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: hovered ? VyseColors.text : VyseColors.textDim),
           ),
         ],
@@ -878,19 +878,19 @@ class _FactsPanel extends StatelessWidget {
   List<(String, Widget)> _rows(MediaDetails d) {
     String? join(List<String> l) => l.isEmpty ? null : l.join(', ');
     final text = <(String, String?)>[
-      ('Status', d.status),
-      (media.isTv ? 'First aired' : 'Released', d.released == null ? null : fmtDate(d.released!)),
-      ('Runtime', d.runtime == null ? null : fmtRuntime(d.runtime!, perEpisode: media.isTv)),
-      if (media.isTv) ('Episodes', d.episodeCount?.toString()),
-      (media.isTv ? 'Created by' : 'Director', join(d.directors)),
-      if (!media.isTv) ('Writers', join(d.writers)),
+      ('Stato', d.status),
+      (media.isTv ? 'Prima messa in onda' : 'Released', d.released == null ? null : fmtDate(d.released!)),
+      ('Durata', d.runtime == null ? null : fmtRuntime(d.runtime!, perEpisode: media.isTv)),
+      if (media.isTv) ('Episodi', d.episodeCount?.toString()),
+      (media.isTv ? 'Creato da' : 'Director', join(d.directors)),
+      if (!media.isTv) ('Sceneggiatori', join(d.writers)),
     ];
     final studios = media.isTv ? d.networks : d.studios;
     final tail = <(String, String?)>[
       ('Country', join(d.countries)),
       ('Language', d.language),
       if (d.budget > 0) ('Budget', fmtMoney(d.budget)),
-      if (d.revenue > 0) ('Box office', fmtMoney(d.revenue)),
+      if (d.revenue > 0) ('Incassi', fmtMoney(d.revenue)),
     ];
     Widget plain(String v) => Text(v, maxLines: 2, overflow: TextOverflow.ellipsis, style: _value);
     return [
@@ -899,7 +899,7 @@ class _FactsPanel extends StatelessWidget {
       // Studios / networks are links into their own pages.
       if (studios.isNotEmpty)
         (
-          media.isTv ? 'Network' : 'Studio',
+          media.isTv ? 'Rete' : 'Studio',
           Wrap(
             spacing: 4,
             runSpacing: 2,
@@ -968,7 +968,7 @@ class _StudioLink extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Pressable(
     onTap: () => openStudio(context, studio),
-    tooltip: 'Open ${studio.kind.toLowerCase()}',
+    tooltip: 'Apri ${studio.kind.toLowerCase()}',
     builder: (context, hovered, _) => Text(
       last ? studio.name : '${studio.name},',
       style: _FactsPanel._value.copyWith(
@@ -1156,9 +1156,9 @@ class _LoadError extends StatelessWidget {
       children: [
         const Icon(Icons.wifi_off_rounded, size: 18, color: VyseColors.textFaint),
         const SizedBox(width: 10),
-        const Text("Couldn't load the full details.", style: TextStyle(color: VyseColors.textDim, fontSize: 13)),
+        const Text("Impossibile caricare tutti i dettagli.", style: TextStyle(color: VyseColors.textDim, fontSize: 13)),
         const SizedBox(width: 8),
-        TextButton(onPressed: onRetry, child: const Text('Retry')),
+        TextButton(onPressed: onRetry, child: const Text('Riprova')),
       ],
     ),
   );

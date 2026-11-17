@@ -72,7 +72,7 @@ class _LiveTvPageState extends State<LiveTvPage> {
               SliverPadding(
                 padding: EdgeInsets.fromLTRB(inset, top, right, 18),
                 sliver: const SliverToBoxAdapter(
-                  child: SectionHeader(title: 'Live TV', subtitle: 'Channels, IPTV portals and your M3U playlists'),
+                  child: SectionHeader(title: 'TV in diretta', subtitle: 'Canali, portali IPTV e le tue playlist M3U'),
                 ),
               ),
               SliverPadding(
@@ -82,8 +82,8 @@ class _LiveTvPageState extends State<LiveTvPage> {
                     delay: const Duration(milliseconds: 80),
                     offset: 8,
                     child: Wrap(spacing: 8, runSpacing: 8, children: [
-                      FilterChipPill(label: 'Matches', icon: Icons.sports_soccer_rounded, selected: _tab == 3, onTap: () => _pick(3)),
-                      FilterChipPill(label: 'Channels', icon: Icons.live_tv_rounded, selected: _tab == 0, onTap: () => _pick(0)),
+                      FilterChipPill(label: 'Partite', icon: Icons.sports_soccer_rounded, selected: _tab == 3, onTap: () => _pick(3)),
+                      FilterChipPill(label: 'Canali', icon: Icons.live_tv_rounded, selected: _tab == 0, onTap: () => _pick(0)),
                       FilterChipPill(
                         label: 'Portals${iptv.verified.isEmpty ? '' : ' · ${iptv.verified.length}'}',
                         icon: Icons.dns_rounded,
@@ -144,14 +144,14 @@ class _LiveTvPageState extends State<LiveTvPage> {
             alignment: Alignment.centerLeft,
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 620),
-              child: VyseSearchField(controller: _search, hint: 'Search channels'),
+              child: VyseSearchField(controller: _search, hint: 'Cerca canali'),
             ),
           ),
         ),
       ),
       if (byCategory.isEmpty)
         SliverToBoxAdapter(
-          child: EmptyState(icon: Icons.search_off_rounded, title: 'No channels match "$q"', body: 'Try a shorter name, like "sky" or "espn".'),
+          child: EmptyState(icon: Icons.search_off_rounded, title: 'Nessun canale per "$q"', body: 'Prova un nome più corto, come "sky" o "espn".'),
         ),
       if (iptv.verified.isEmpty)
         SliverPadding(
@@ -159,7 +159,7 @@ class _LiveTvPageState extends State<LiveTvPage> {
           sliver: SliverToBoxAdapter(
             child: StatusLine(
               busy: false,
-              text: 'Channels are found by searching your IPTV portals. Add or find portals in the Portals tab first.',
+              text: 'I canali si trovano cercando nei tuoi portali IPTV. Prima aggiungi o trova dei portali nella scheda Portali.',
               onStop: null,
             ),
           ),
@@ -205,12 +205,12 @@ class _LiveTvPageState extends State<LiveTvPage> {
         padding: EdgeInsets.fromLTRB(inset, 0, right, 14),
         sliver: SliverToBoxAdapter(
           child: Wrap(spacing: 8, runSpacing: 8, crossAxisAlignment: WrapCrossAlignment.center, children: [
-            ToolButton(icon: Icons.add_rounded, label: 'Add portal', onTap: iptv.isAdding ? null : () => _addPortal(context)),
+            ToolButton(icon: Icons.add_rounded, label: 'Aggiungi portale', onTap: iptv.isAdding ? null : () => _addPortal(context)),
             _SourcePicker(),
-            ToolButton(icon: Icons.travel_explore_rounded, label: 'Find portals', onTap: busy ? null : iptv.scrape),
-            ToolButton(icon: Icons.verified_rounded, label: 'Re-verify', onTap: busy || portals.isEmpty ? null : iptv.runVerification),
-            ToolButton(icon: Icons.file_upload_outlined, label: 'Import JSON', onTap: iptv.isImporting ? null : () => _import(context)),
-            if (portals.isNotEmpty) ToolButton(icon: edit ? Icons.check_rounded : Icons.edit_rounded, label: edit ? 'Done' : 'Edit', onTap: iptv.toggleEditMode),
+            ToolButton(icon: Icons.travel_explore_rounded, label: 'Trova portali', onTap: busy ? null : iptv.scrape),
+            ToolButton(icon: Icons.verified_rounded, label: 'Verifica di nuovo', onTap: busy || portals.isEmpty ? null : iptv.runVerification),
+            ToolButton(icon: Icons.file_upload_outlined, label: 'Importa JSON', onTap: iptv.isImporting ? null : () => _import(context)),
+            if (portals.isNotEmpty) ToolButton(icon: edit ? Icons.check_rounded : Icons.edit_rounded, label: edit ? 'Fatto' : 'Modifica', onTap: iptv.toggleEditMode),
           ]),
         ),
       ),
@@ -219,11 +219,11 @@ class _LiveTvPageState extends State<LiveTvPage> {
           padding: EdgeInsets.fromLTRB(inset, 0, right, 14),
           sliver: SliverToBoxAdapter(
             child: Wrap(spacing: 8, runSpacing: 8, children: [
-              ToolButton(icon: Icons.select_all_rounded, label: 'Select all', onTap: iptv.selectAllPortals),
-              ToolButton(icon: Icons.deselect_rounded, label: 'Select none', onTap: iptv.deselectAllPortals),
+              ToolButton(icon: Icons.select_all_rounded, label: 'Seleziona tutto', onTap: iptv.selectAllPortals),
+              ToolButton(icon: Icons.deselect_rounded, label: 'Nessuno', onTap: iptv.deselectAllPortals),
               ToolButton(
                 icon: Icons.delete_outline_rounded,
-                label: 'Delete ${iptv.selected.length}',
+                label: 'Elimina ${iptv.selected.length}',
                 danger: true,
                 onTap: iptv.selected.isEmpty ? null : () => iptv.deletePortalsByKeys({...iptv.selected}),
               ),
@@ -233,7 +233,7 @@ class _LiveTvPageState extends State<LiveTvPage> {
       if (busy || iptv.statusText.isNotEmpty)
         SliverPadding(
           padding: EdgeInsets.fromLTRB(inset, 0, right, 14),
-          sliver: SliverToBoxAdapter(child: StatusLine(text: iptv.statusText.isEmpty ? 'Working…' : iptv.statusText, busy: busy)),
+          sliver: SliverToBoxAdapter(child: StatusLine(text: iptv.statusText.isEmpty ? 'In corso…' : iptv.statusText, busy: busy)),
         ),
       if (iptv.addError != null)
         SliverPadding(
@@ -244,8 +244,8 @@ class _LiveTvPageState extends State<LiveTvPage> {
         const SliverToBoxAdapter(
           child: EmptyState(
             icon: Icons.dns_outlined,
-            title: 'No portals yet',
-            body: 'Add one with its URL and login, import a JSON list, or let Lorewatch find some.',
+            title: 'Ancora nessun portale',
+            body: 'Aggiungine uno con indirizzo e accesso, importa una lista JSON, o lascia che Lorewatch ne trovi qualcuno.',
           ),
         )
       else
@@ -270,7 +270,7 @@ class _LiveTvPageState extends State<LiveTvPage> {
         SliverPadding(
           padding: EdgeInsets.fromLTRB(inset, 16, right, 0),
           sliver: SliverToBoxAdapter(
-            child: Center(child: ToolButton(icon: Icons.expand_more_rounded, label: 'Find more', onTap: busy ? null : iptv.getMore)),
+            child: Center(child: ToolButton(icon: Icons.expand_more_rounded, label: 'Trovane altri', onTap: busy ? null : iptv.getMore)),
           ),
         ),
     ];
@@ -279,19 +279,19 @@ class _LiveTvPageState extends State<LiveTvPage> {
   Future<void> _addPortal(BuildContext context) async {
     final v = await showFieldsDialog(
       context,
-      title: 'Add a portal',
-      message: 'Xtream Codes login from your provider.',
-      confirm: 'Add',
+      title: 'Aggiungi un portale',
+      message: 'Accesso Xtream Codes dal tuo fornitore.',
+      confirm: 'Aggiungi',
       fields: [
-        ('Server URL', 'http://example.com:8080', multiline: false, obscure: false),
-        ('Username', 'username', multiline: false, obscure: false),
+        ('Indirizzo del server', 'http://example.com:8080', multiline: false, obscure: false),
+        ('Nome utente', 'username', multiline: false, obscure: false),
         ('Password', 'password', multiline: false, obscure: true),
       ],
     );
     if (v == null || v[0].isEmpty) return;
     final ok = await iptv.addManual(url: v[0], username: v[1], password: v[2]);
     if (context.mounted) {
-      showToast(context, Text(ok ? 'Portal added' : (iptv.addError ?? "Couldn't verify that portal")),
+      showToast(context, Text(ok ? 'Portale aggiunto' : (iptv.addError ?? "Impossibile verificare il portale")),
           icon: ok ? Icons.check_circle_rounded : Icons.error_outline_rounded);
     }
   }
@@ -299,9 +299,9 @@ class _LiveTvPageState extends State<LiveTvPage> {
   Future<void> _import(BuildContext context) async {
     final v = await showFieldsDialog(
       context,
-      title: 'Import portals',
-      message: 'Paste a JSON export of portals.',
-      confirm: 'Import',
+      title: 'Importa portali',
+      message: 'Incolla un export JSON di portali.',
+      confirm: 'Importa',
       fields: [('JSON', '[{"url": …, "username": …, "password": …}]', multiline: true, obscure: false)],
     );
     if (v == null || v[0].isEmpty) return;
@@ -309,7 +309,7 @@ class _LiveTvPageState extends State<LiveTvPage> {
     if (context.mounted) {
       showToast(
         context,
-        Text(r.error ?? 'Added ${r.added}, skipped ${r.skipped}, failed ${r.failed}'),
+        Text(r.error ?? 'Aggiunti ${r.added}, saltati ${r.skipped}, non riusciti ${r.failed}'),
         icon: r.error == null ? Icons.check_circle_rounded : Icons.error_outline_rounded,
       );
     }
@@ -324,24 +324,24 @@ class _LiveTvPageState extends State<LiveTvPage> {
         padding: EdgeInsets.fromLTRB(inset, 0, right, 14),
         sliver: SliverToBoxAdapter(
           child: Wrap(spacing: 8, runSpacing: 8, children: [
-            ToolButton(icon: Icons.link_rounded, label: 'Add from URL', onTap: iptv.isM3uLoading ? null : () => _addM3u(context, url: true)),
-            ToolButton(icon: Icons.content_paste_rounded, label: 'Paste M3U', onTap: iptv.isM3uLoading ? null : () => _addM3u(context, url: false)),
+            ToolButton(icon: Icons.link_rounded, label: 'Aggiungi da indirizzo', onTap: iptv.isM3uLoading ? null : () => _addM3u(context, url: true)),
+            ToolButton(icon: Icons.content_paste_rounded, label: 'Incolla M3U', onTap: iptv.isM3uLoading ? null : () => _addM3u(context, url: false)),
             if (lists.isNotEmpty)
-              ToolButton(icon: Icons.delete_sweep_outlined, label: 'Delete all', danger: true, onTap: () => _confirmDeleteAll(context)),
+              ToolButton(icon: Icons.delete_sweep_outlined, label: 'Elimina tutto', danger: true, onTap: () => _confirmDeleteAll(context)),
           ]),
         ),
       ),
       if (iptv.isM3uLoading)
         SliverPadding(
           padding: EdgeInsets.fromLTRB(inset, 0, right, 14),
-          sliver: const SliverToBoxAdapter(child: StatusLine(text: 'Loading playlist…')),
+          sliver: const SliverToBoxAdapter(child: StatusLine(text: 'Caricamento della playlist…')),
         ),
       if (lists.isEmpty && !iptv.isM3uLoading)
         const SliverToBoxAdapter(
           child: EmptyState(
             icon: Icons.playlist_add_rounded,
-            title: 'No playlists',
-            body: 'Add an M3U / M3U8 playlist by URL, or paste its contents.',
+            title: 'Nessuna playlist',
+            body: 'Aggiungi una playlist M3U / M3U8 dall\'indirizzo, o incollane il contenuto.',
           ),
         )
       else
@@ -364,13 +364,13 @@ class _LiveTvPageState extends State<LiveTvPage> {
   Future<void> _addM3u(BuildContext context, {required bool url}) async {
     final v = await showFieldsDialog(
       context,
-      title: url ? 'Add playlist' : 'Paste playlist',
-      confirm: 'Add',
+      title: url ? 'Aggiungi playlist' : 'Incolla playlist',
+      confirm: 'Aggiungi',
       fields: [
-        ('Name', 'My channels', multiline: false, obscure: false),
+        ('Name', 'I miei canali', multiline: false, obscure: false),
         url
-            ? ('Playlist URL', 'https://…/playlist.m3u', multiline: false, obscure: false)
-            : ('M3U contents', '#EXTM3U …', multiline: true, obscure: false),
+            ? ('Indirizzo della playlist', 'https://…/playlist.m3u', multiline: false, obscure: false)
+            : ('Contenuto M3U', '#EXTM3U …', multiline: true, obscure: false),
       ],
     );
     if (v == null || v[1].isEmpty) return;
@@ -383,11 +383,11 @@ class _LiveTvPageState extends State<LiveTvPage> {
       context: context,
       builder: (ctx) => AlertDialog(
         backgroundColor: VyseColors.surfaceHi,
-        title: const Text('Delete all playlists?'),
-        content: const Text('This removes every saved M3U playlist from this device.'),
+        title: const Text('Eliminare tutte le playlist?'),
+        content: const Text('Rimuove ogni playlist M3U salvata da questo dispositivo.'),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Cancel')),
-          TextButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('Delete', style: TextStyle(color: Color(0xFFFF7A7C)))),
+          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Annulla')),
+          TextButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('Elimina', style: TextStyle(color: Color(0xFFFF7A7C)))),
         ],
       ),
     );
@@ -398,7 +398,7 @@ class _LiveTvPageState extends State<LiveTvPage> {
 class _SourcePicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) => PopupMenuButton<CatalogSource>(
-        tooltip: 'Where to look for portals',
+        tooltip: 'Dove cercare i portali',
         color: VyseColors.surfaceHi,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: const BorderSide(color: VyseColors.stroke)),
         onSelected: iptv.setScrapeSource,
@@ -410,7 +410,7 @@ class _SourcePicker extends StatelessWidget {
               child: Text(_label(s.name), style: TextStyle(color: s == iptv.scrapeSource ? VyseColors.accent : VyseColors.text)),
             ),
         ],
-        child: IgnorePointer(child: ToolButton(icon: Icons.tune_rounded, label: 'Source: ${_label(iptv.scrapeSource.name)}', onTap: () {})),
+        child: IgnorePointer(child: ToolButton(icon: Icons.tune_rounded, label: 'Fonte: ${_label(iptv.scrapeSource.name)}', onTap: () {})),
       );
 
   /// camelCase enum name → "Camel case".
@@ -435,8 +435,8 @@ class _PortalCard extends StatelessWidget {
       lines: [
         portal.portal.url,
         [
-          if (portal.expiry.isNotEmpty) 'Expires ${portal.expiry}',
-          if (portal.maxConnections.isNotEmpty) '${portal.activeConnections}/${portal.maxConnections} connections',
+          if (portal.expiry.isNotEmpty) 'Scade ${portal.expiry}',
+          if (portal.maxConnections.isNotEmpty) '${portal.activeConnections}/${portal.maxConnections} connessioni',
         ].join('  ·  '),
       ],
       onTap: () => edit ? iptv.toggleSelect(portal.key) : Navigator.of(context).push(ShellRoute(child: PortalBrowserPage(portal: portal))),
@@ -450,7 +450,7 @@ class _PortalCard extends StatelessWidget {
               children: [
                 // the login in one line, to paste into another app or send to someone
                 IconButton(
-                  tooltip: 'Copy login (url:username:password)',
+                  tooltip: 'Copia accesso (url:utente:password)',
                   visualDensity: VisualDensity.compact,
                   onPressed: () {
                     final p = portal.portal;
@@ -458,14 +458,14 @@ class _PortalCard extends StatelessWidget {
                     Clipboard.setData(ClipboardData(text: '$url:$username:$password'));
                     showToast(
                       context,
-                      const Text('Portal login copied', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+                      const Text('Accesso del portale copiato', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
                       icon: Icons.copy_rounded,
                     );
                   },
                   icon: const Icon(Icons.copy_rounded, size: 18, color: VyseColors.textFaint),
                 ),
                 IconButton(
-                  tooltip: fav ? 'Unfavorite' : 'Favorite',
+                  tooltip: fav ? 'Togli dai preferiti' : 'Preferito',
                   visualDensity: VisualDensity.compact,
                   onPressed: () => iptv.toggleFavoritePortal(portal.key),
                   icon: Icon(fav ? Icons.star_rounded : Icons.star_border_rounded, size: 20, color: fav ? VyseColors.star : VyseColors.textFaint),
@@ -483,10 +483,10 @@ class _PlaylistCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) => InfoTile(
         title: playlist.name,
-        lines: [playlist.sourceUrl ?? 'Pasted playlist', '${fmtThousands(playlist.channels.length)} channels'],
+        lines: [playlist.sourceUrl ?? 'Playlist incollata', '${fmtThousands(playlist.channels.length)} channels'],
         onTap: () => Navigator.of(context).push(ShellRoute(child: M3uPlaylistPage(playlist: playlist))),
         trailing: IconButton(
-          tooltip: 'Delete',
+          tooltip: 'Elimina',
           onPressed: () => iptv.deleteM3uPlaylist(playlist.id),
           icon: const Icon(Icons.delete_outline_rounded, size: 19, color: VyseColors.textFaint),
         ),

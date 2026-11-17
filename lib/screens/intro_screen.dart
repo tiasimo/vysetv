@@ -107,7 +107,7 @@ class _IntroScreenState extends State<IntroScreen> with SingleTickerProviderStat
                       opacity: _tagline.value,
                       child: Transform.translate(
                         offset: Offset(0, 6 * (1 - _tagline.value)),
-                        child: const _SpacedText('FIND YOUR NEXT OBSESSION', spacing: 3.2),
+                        child: const _SpacedText('TROVA LA TUA PROSSIMA OSSESSIONE', spacing: 3.2),
                       ),
                     ),
                   ]),

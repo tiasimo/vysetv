@@ -184,9 +184,9 @@ class _RowError extends StatelessWidget {
       children: [
         const Icon(Icons.wifi_off_rounded, size: 18, color: VyseColors.textFaint),
         const SizedBox(width: 10),
-        const Text("Couldn't load this row.", style: TextStyle(color: VyseColors.textDim, fontSize: 13)),
+        const Text("Impossibile caricare questa riga.", style: TextStyle(color: VyseColors.textDim, fontSize: 13)),
         const SizedBox(width: 8),
-        TextButton(onPressed: onRetry, child: const Text('Retry')),
+        TextButton(onPressed: onRetry, child: const Text('Riprova')),
       ],
     ),
   );
@@ -461,7 +461,7 @@ class PlatformTile extends StatelessWidget {
     onTap: () => openDiscover(
       context,
       title: provider.name,
-      subtitle: 'Streaming now in the US',
+      subtitle: 'In streaming ora negli USA',
       query: DiscoverQuery(providers: {provider.id}),
     ),
     builder: (hovered) => ColoredBox(
@@ -527,7 +527,7 @@ class GenreGrid extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const ShelfHeader(title: 'Explore genres'),
+          const ShelfHeader(title: 'Esplora i generi'),
           Padding(
             padding: EdgeInsets.fromLTRB(inset, 4, ff == FormFactor.phone ? 16 : 40, 0),
             child: LayoutBuilder(

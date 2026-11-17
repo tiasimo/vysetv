@@ -357,9 +357,9 @@ class MediaServers extends ChangeNotifier {
         try {
           best = await server.findBestWorkingConnection(clientIdentifier: clientId).first.timeout(const Duration(seconds: 30));
         } on StateError {
-          throw const MediaServerUrlException("Couldn't reach this server. Is it on?");
+          throw const MediaServerUrlException("Impossibile raggiungere questo server. È acceso?");
         } on TimeoutException {
-          throw const MediaServerUrlException("Couldn't reach this server. Is it on?");
+          throw const MediaServerUrlException("Impossibile raggiungere questo server. È acceso?");
         }
         final config = await PlexConfig.create(
           baseUrl: best.uri,
@@ -419,11 +419,11 @@ class MediaServers extends ChangeNotifier {
 /// A readable reason for a failed sign-in or request.
 String serverError(Object e) {
   if (e is MediaServerException) return e.display ?? e.message;
-  if (e is TimeoutException) return 'The server took too long to answer';
+  if (e is TimeoutException) return 'Il server ha impiegato troppo a rispondere';
   if (e is StateError) return e.message;
   final s = e.toString();
   if (s.contains('SocketException') || s.contains('Connection refused') || s.contains('host lookup')) {
-    return "Couldn't reach the server";
+    return "Impossibile raggiungere il server";
   }
   return s.replaceFirst(RegExp(r'^[A-Za-z]*(Exception|Error): ?'), '');
 }
@@ -509,7 +509,7 @@ class JellyfinSignIn {
   /// Finds the server at [address] ("192.168.1.20", "jellyfin.example.com"…).
   Future<JellyfinServerInfo> find(String address) async {
     final input = JellyfinEndpointDiscovery.buildUserInputCandidates([address.trim()], dialect: dialect);
-    if (input.probeBaseUrls.isEmpty) throw const MediaServerUrlException("That doesn't look like a server address");
+    if (input.probeBaseUrls.isEmpty) throw const MediaServerUrlException("Non sembra l'indirizzo di un server");
     final auth = await _auth();
     final endpoint = await auth.raceEndpoints(
       input.probeBaseUrls,

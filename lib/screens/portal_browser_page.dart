@@ -359,18 +359,18 @@ class _PortalBrowserPageState extends State<PortalBrowserPage> {
     return '${fmtThousands(n)} ${n == 1 ? one : _noun}';
   }
 
-  String get _title => _portal.name.isEmpty ? 'Portal' : _portal.name;
+  String get _title => _portal.name.isEmpty ? 'Portale' : _portal.name;
 
   String _meta(bool ready) => [
-        if (_portal.expiry.isNotEmpty) 'Expires ${_portal.expiry}',
+        if (_portal.expiry.isNotEmpty) 'Scade ${_portal.expiry}',
         if (ready) _counted(_data.browserAllStreams.length),
       ].join('  ·  ');
 
   String _categoryTitle() {
-    if (_favorites) return 'Favorites';
+    if (_favorites) return 'Preferiti';
     final id = _data.browserSelectedCategoryId;
-    if (_isAll(id)) return 'All $_noun';
-    return _catNames[id] ?? 'All $_noun';
+    if (_isAll(id)) return 'Tutti: $_noun';
+    return _catNames[id] ?? 'Tutti: $_noun';
   }
 
   /// The open category (or the favorites), narrowed by the search box.
@@ -437,8 +437,8 @@ class _PortalBrowserPageState extends State<PortalBrowserPage> {
     ];
     if (_catAz) portal.sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
     return [
-      if (_live && hit('Favorites')) (id: _favId, name: 'Favorites', count: _favCount, icon: Icons.star_rounded),
-      if (hit('All $_noun')) (id: '', name: 'All $_noun', count: _data.browserAllStreams.length, icon: null),
+      if (_live && hit('Preferiti')) (id: _favId, name: 'Preferiti', count: _favCount, icon: Icons.star_rounded),
+      if (hit('Tutti: $_noun')) (id: '', name: 'Tutti: $_noun', count: _data.browserAllStreams.length, icon: null),
       for (final c in portal) (id: c.id, name: c.name, count: _counts[c.id] ?? 0, icon: null),
     ];
   }
@@ -565,7 +565,7 @@ class _PortalBrowserPageState extends State<PortalBrowserPage> {
             const SizedBox(width: 6),
             _IconTool(
               icon: fav ? Icons.star_rounded : Icons.star_border_rounded,
-              tooltip: fav ? 'Unfavorite portal' : 'Favorite portal',
+              tooltip: fav ? 'Togli il portale dai preferiti' : 'Portale preferito',
               active: fav,
               touch: touch,
               onTap: () => _data.toggleFavoritePortal(_portal.key),
@@ -648,7 +648,7 @@ class _PortalBrowserPageState extends State<PortalBrowserPage> {
         const SizedBox(width: 8),
         _IconTool(
           icon: fav ? Icons.star_rounded : Icons.star_border_rounded,
-          tooltip: fav ? 'Unfavorite portal' : 'Favorite portal',
+          tooltip: fav ? 'Togli il portale dai preferiti' : 'Portale preferito',
           active: fav,
           touch: touch,
           onTap: () => _data.toggleFavoritePortal(_portal.key),
@@ -665,7 +665,7 @@ class _PortalBrowserPageState extends State<PortalBrowserPage> {
     final searching = _catSearch || _catText.text.isNotEmpty;
     final field = _PaneSearch(
       controller: _catText,
-      hint: 'Search categories',
+      hint: 'Cerca categorie',
       touch: touch,
       autofocus: compact,
       onClose: compact
@@ -687,16 +687,16 @@ class _PortalBrowserPageState extends State<PortalBrowserPage> {
             Row(children: [
               Expanded(
                 child: _PaneTitle(
-                  title: 'Categories',
-                  meta: !ready ? '' : (shown == 1 ? '1 category' : '${fmtThousands(shown)} categories'),
+                  title: 'Categorie',
+                  meta: !ready ? '' : (shown == 1 ? '1 categoria' : '${fmtThousands(shown)} categorie'),
                   inline: compact,
                 ),
               ),
               if (compact)
-                _IconTool(icon: Icons.search_rounded, tooltip: 'Search categories', touch: touch, onTap: () => setState(() => _catSearch = true)),
+                _IconTool(icon: Icons.search_rounded, tooltip: 'Cerca categorie', touch: touch, onTap: () => setState(() => _catSearch = true)),
               _IconTool(
                 icon: Icons.sort_by_alpha_rounded,
-                tooltip: _catAz ? 'Back to portal order' : 'Sort A to Z',
+                tooltip: _catAz ? 'Torna all\'ordine del portale' : 'Ordina dalla A alla Z',
                 active: _catAz,
                 touch: touch,
                 onTap: () => setState(() => _catAz = !_catAz),
@@ -727,7 +727,7 @@ class _PortalBrowserPageState extends State<PortalBrowserPage> {
       return const [
         SliverFillRemaining(
           hasScrollBody: false,
-          child: _PaneNote(icon: Icons.search_off_rounded, title: 'No category matches', body: 'Try a shorter name.'),
+          child: _PaneNote(icon: Icons.search_off_rounded, title: 'Nessuna categoria corrisponde', body: 'Prova un nome più corto.'),
         ),
       ];
     }
@@ -760,7 +760,7 @@ class _PortalBrowserPageState extends State<PortalBrowserPage> {
     final searching = _listSearch || _text.text.isNotEmpty;
     final field = _PaneSearch(
       controller: _text,
-      hint: _favorites || !_isAll(_data.browserSelectedCategoryId) ? 'Search in $title' : 'Search all $_noun',
+      hint: _favorites || !_isAll(_data.browserSelectedCategoryId) ? 'Cerca in $title' : 'Cerca in tutti: $_noun',
       touch: touch,
       autofocus: compact,
       onClose: compact
@@ -786,11 +786,11 @@ class _PortalBrowserPageState extends State<PortalBrowserPage> {
               else
                 Row(children: [
                   if (back) ...[
-                    _IconTool(icon: Icons.arrow_back_rounded, tooltip: 'Back to categories', touch: touch, onTap: _backToCategories),
+                    _IconTool(icon: Icons.arrow_back_rounded, tooltip: 'Torna alle categorie', touch: touch, onTap: _backToCategories),
                     const SizedBox(width: 4),
                   ],
-                  Expanded(child: _PaneTitle(title: title, meta: ready ? _counted(list.length) : 'Loading', inline: compact)),
-                  if (compact) _IconTool(icon: Icons.search_rounded, tooltip: 'Search', touch: touch, onTap: () => setState(() => _listSearch = true)),
+                  Expanded(child: _PaneTitle(title: title, meta: ready ? _counted(list.length) : 'Caricamento', inline: compact)),
+                  if (compact) _IconTool(icon: Icons.search_rounded, tooltip: 'Cerca', touch: touch, onTap: () => setState(() => _listSearch = true)),
                   _listMenu(touch: touch, ready: ready),
                 ]),
               if (!compact) ...[
@@ -803,10 +803,10 @@ class _PortalBrowserPageState extends State<PortalBrowserPage> {
                   padding: EdgeInsets.only(left: back ? 8 : 0),
                   child: Wrap(spacing: 10, runSpacing: 6, crossAxisAlignment: WrapCrossAlignment.center, children: [
                     if (_alive.working > 0)
-                      _Chip(label: 'Working only · ${_alive.working}', selected: _workingOnly, onTap: () => setState(() => _workingOnly = !_workingOnly)),
+                      _Chip(label: 'Solo funzionanti · ${_alive.working}', selected: _workingOnly, onTap: () => setState(() => _workingOnly = !_workingOnly)),
                     if (_alive.running)
                       Text(
-                        'Checked ${_alive.done} of ${_alive.total}',
+                        'Controllati ${_alive.done} di ${_alive.total}',
                         style: const TextStyle(fontSize: 12, color: VyseColors.textFaint, fontFeatures: [FontFeature.tabularFigures()]),
                       ),
                   ]),
@@ -834,7 +834,7 @@ class _PortalBrowserPageState extends State<PortalBrowserPage> {
           ]),
         );
     return PopupMenuButton<Object>(
-      tooltip: 'Sort and tools',
+      tooltip: 'Ordina e strumenti',
       // On the root navigator: a menu on this tab's would count as a page over the browser,
       // and the player in the pane stops when it's covered.
       useRootNavigator: true,
@@ -850,14 +850,14 @@ class _PortalBrowserPageState extends State<PortalBrowserPage> {
         }
       },
       itemBuilder: (context) => [
-        item(_Sort.portal, 'Portal order', on: _sort == _Sort.portal),
-        item(_Sort.az, 'A to Z', on: _sort == _Sort.az),
-        item(_Sort.za, 'Z to A', on: _sort == _Sort.za),
+        item(_Sort.portal, 'Ordine del portale', on: _sort == _Sort.portal),
+        item(_Sort.az, 'Dalla A alla Z', on: _sort == _Sort.az),
+        item(_Sort.za, 'Dalla Z alla A', on: _sort == _Sort.za),
         if (_live && ready && _data.browserAllStreams.isNotEmpty) ...[
           const PopupMenuDivider(height: 8),
           _alive.running
-              ? item('check', 'Stop checking', icon: Icons.stop_rounded)
-              : item('check', 'Check which work', icon: Icons.wifi_tethering_rounded),
+              ? item('check', 'Ferma il controllo', icon: Icons.stop_rounded)
+              : item('check', 'Controlla quali funzionano', icon: Icons.wifi_tethering_rounded),
         ],
       ],
       child: IgnorePointer(
@@ -936,17 +936,17 @@ class _PortalBrowserPageState extends State<PortalBrowserPage> {
 
   Widget _emptyNote() {
     if (_favorites && _text.text.trim().isEmpty) {
-      return const _PaneNote(icon: Icons.star_border_rounded, title: 'No favorites yet', body: 'Star a channel to keep it here.');
+      return const _PaneNote(icon: Icons.star_border_rounded, title: 'Ancora nessun preferito', body: 'Metti una stella a un canale per tenerlo qui.');
     }
     if (_data.browserAllStreams.isEmpty) {
       return _PaneNote(
         icon: Icons.travel_explore_rounded,
-        title: 'Nothing in this section',
-        body: 'This portal has no $_noun, or it did not answer.',
-        action: ('Try again', () => _open(_section)),
+        title: 'Niente in questa sezione',
+        body: 'Questo portale non ha $_noun, o non ha risposto.',
+        action: ('Riprova', () => _open(_section)),
       );
     }
-    return const _PaneNote(icon: Icons.search_off_rounded, title: 'Nothing matches', body: 'Try another category, or clear the search.');
+    return const _PaneNote(icon: Icons.search_off_rounded, title: 'Nessun risultato', body: 'Prova un\'altra categoria, o cancella la ricerca.');
   }
 
   // ───────────────────────── The picture ─────────────────────────
@@ -965,8 +965,8 @@ class _PortalBrowserPageState extends State<PortalBrowserPage> {
     if (s == null) {
       return _PaneNote(
         icon: Icons.live_tv_rounded,
-        title: 'Pick a channel',
-        body: 'It plays here. ${touch ? 'Double-tap' : 'Double-click'} the picture for full screen.',
+        title: 'Scegli un canale',
+        body: 'It plays here. ${touch ? 'Double-tap' : 'Doppio clic'} the picture for full screen.',
       );
     }
     return LayoutBuilder(
@@ -1085,7 +1085,7 @@ class _SectionTabs extends StatelessWidget {
   final bool touch;
   final bool expand;
 
-  static const _items = [(IptvSection.live, 'Live'), (IptvSection.vod, 'Movies'), (IptvSection.series, 'Series')];
+  static const _items = [(IptvSection.live, 'In diretta'), (IptvSection.vod, 'Film'), (IptvSection.series, 'Serie')];
 
   @override
   Widget build(BuildContext context) {
@@ -1316,7 +1316,7 @@ class _PaneSearchState extends State<_PaneSearch> {
           ),
           if (hasText || widget.onClose != null)
             Pressable(
-              tooltip: hasText ? 'Clear' : 'Close search',
+              tooltip: hasText ? 'Cancella' : 'Chiudi la ricerca',
               onTap: _clearOrClose,
               builder: (context, hovered, _) => SizedBox(
                 width: h - 6,
@@ -1422,7 +1422,7 @@ class _StarButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final d = touch ? 44.0 : 34.0;
     return Pressable(
-      tooltip: on ? 'Remove from favorites' : 'Add to favorites',
+      tooltip: on ? 'Rimuovi dai preferiti' : 'Aggiungi ai preferiti',
       onTap: onTap,
       builder: (context, hovered, _) => SizedBox(
         width: d,
@@ -1642,7 +1642,7 @@ class _ChannelRowState extends State<_ChannelRow> {
             ),
           ),
           _StarButton(on: widget.favorite, touch: widget.touch, onTap: widget.onFavorite),
-          if (widget.onInfo != null) _IconTool(icon: Icons.info_outline_rounded, tooltip: 'Guide and details', touch: widget.touch, onTap: widget.onInfo!),
+          if (widget.onInfo != null) _IconTool(icon: Icons.info_outline_rounded, tooltip: 'Guida e dettagli', touch: widget.touch, onTap: widget.onInfo!),
         ]),
       ),
     );
@@ -1677,7 +1677,7 @@ class _GuideLines extends StatelessWidget {
     if (now == null) {
       return Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
         Text(
-          next == null ? 'No guide' : 'Next  ${guideTime(next.start)}  ${next.title}',
+          next == null ? 'Nessuna guida' : 'Dopo  ${guideTime(next.start)}  ${next.title}',
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: _title.copyWith(color: next == null ? VyseColors.textFaint : VyseColors.textDim),
@@ -1687,7 +1687,7 @@ class _GuideLines extends StatelessWidget {
       ]);
     }
     return Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
-      Text(now.title.isEmpty ? 'Untitled' : now.title, maxLines: 1, overflow: TextOverflow.ellipsis, style: _title),
+      Text(now.title.isEmpty ? 'Senza titolo' : now.title, maxLines: 1, overflow: TextOverflow.ellipsis, style: _title),
       const SizedBox(height: 4),
       LayoutBuilder(builder: (context, box) {
         // Measured, so it can't overflow: a narrow row drops the next title first, then the
@@ -1714,7 +1714,7 @@ class _GuideLines extends StatelessWidget {
             flex: 7,
             child: Text.rich(
               TextSpan(children: [
-                const TextSpan(text: 'Next  '),
+                const TextSpan(text: 'Dopo  '),
                 TextSpan(text: next.title, style: const TextStyle(color: VyseColors.textDim)),
               ]),
               maxLines: 1,
@@ -1784,9 +1784,9 @@ class _ChannelDetailsState extends State<_ChannelDetails> {
 
   static String _left(Duration d) {
     final m = d.inMinutes;
-    if (m < 1) return 'ending now';
-    if (m < 60) return '$m min left';
-    return '${m ~/ 60} h ${m % 60} min left';
+    if (m < 1) return 'in chiusura';
+    if (m < 60) return '$m min rimanenti';
+    return '${m ~/ 60} h ${m % 60} min rimanenti';
   }
 
   @override
@@ -1824,7 +1824,7 @@ class _ChannelDetailsState extends State<_ChannelDetails> {
         ]),
         if (widget.onWatch != null) ...[
           const SizedBox(height: 16),
-          _AccentButton(icon: Icons.play_arrow_rounded, label: 'Watch', onTap: widget.onWatch!),
+          _AccentButton(icon: Icons.play_arrow_rounded, label: 'Guarda', onTap: widget.onWatch!),
         ],
         const SizedBox(height: 20),
         ValueListenableBuilder<List<EpgEntry>?>(
@@ -1840,14 +1840,14 @@ class _ChannelDetailsState extends State<_ChannelDetails> {
 
   Widget _schedule(BuildContext context, List<EpgEntry>? guide) {
     const quiet = TextStyle(fontSize: 13, color: VyseColors.textFaint);
-    if (guide == null) return const Text('Loading the guide', style: quiet);
+    if (guide == null) return const Text('Caricamento della guida', style: quiet);
     final t = DateTime.now();
     final now = NowNext.of(guide, t).now;
     final later = [
       for (final e in guide)
         if (e.start.isAfter(t)) e,
     ].take(6).toList();
-    if (now == null && later.isEmpty) return const Text('No guide for this channel', style: quiet);
+    if (now == null && later.isEmpty) return const Text('Nessuna guida per questo canale', style: quiet);
     const label = TextStyle(fontSize: 11, fontWeight: FontWeight.w800, letterSpacing: 1, color: VyseColors.textFaint);
     const time = TextStyle(fontSize: 12.5, color: VyseColors.textDim, fontFeatures: [FontFeature.tabularFigures()]);
     return Column(
@@ -1855,9 +1855,9 @@ class _ChannelDetailsState extends State<_ChannelDetails> {
       mainAxisSize: MainAxisSize.min,
       children: [
         if (now != null) ...[
-          Text('ON NOW', style: label.copyWith(color: accentOf(context))),
+          Text('IN ONDA ORA', style: label.copyWith(color: accentOf(context))),
           const SizedBox(height: 6),
-          Text(now.title.isEmpty ? 'Untitled' : now.title, style: const TextStyle(fontSize: 15.5, fontWeight: FontWeight.w700, height: 1.25)),
+          Text(now.title.isEmpty ? 'Senza titolo' : now.title, style: const TextStyle(fontSize: 15.5, fontWeight: FontWeight.w700, height: 1.25)),
           const SizedBox(height: 4),
           Text('${guideTime(now.start)} – ${guideTime(now.stop)}  ·  ${_left(now.stop.difference(t))}', style: time),
           const SizedBox(height: 10),
@@ -1869,7 +1869,7 @@ class _ChannelDetailsState extends State<_ChannelDetails> {
           const SizedBox(height: 22),
         ],
         if (later.isNotEmpty) ...[
-          const Text('UP NEXT', style: label),
+          const Text('A SEGUIRE', style: label),
           const SizedBox(height: 8),
           for (final e in later)
             Padding(
@@ -1878,7 +1878,7 @@ class _ChannelDetailsState extends State<_ChannelDetails> {
                 ConstrainedBox(constraints: const BoxConstraints(minWidth: 50), child: Text(guideTime(e.start), style: time)),
                 const SizedBox(width: 6),
                 Expanded(
-                  child: Text(e.title.isEmpty ? 'Untitled' : e.title, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 13.5)),
+                  child: Text(e.title.isEmpty ? 'Senza titolo' : e.title, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 13.5)),
                 ),
               ]),
             ),
@@ -1950,7 +1950,7 @@ class _NowNextStripState extends State<_NowNextStrip> {
                 if (next != null) ...[
                   const SizedBox(height: 6),
                   Text(
-                    'Next  ${guideTime(next.start)}  ${next.title}',
+                    'Dopo  ${guideTime(next.start)}  ${next.title}',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(fontSize: 12, color: VyseColors.textDim),

@@ -114,7 +114,7 @@ class _AccountFormState extends State<_AccountForm> {
     }
     if (!RegExp(r'^[a-z0-9_.]{3,20}$').hasMatch(v)) {
       setState(() {
-        _usernameNote = v.length < 3 ? 'At least 3 characters' : 'Letters, numbers, _ and . only (max 20)';
+        _usernameNote = v.length < 3 ? 'Almeno 3 caratteri' : 'Solo lettere, numeri, _ e . (massimo 20)';
         _usernameOk = false;
         _checking = false;
       });
@@ -128,10 +128,10 @@ class _AccountFormState extends State<_AccountForm> {
         _checking = false;
         _usernameOk = problem == null || problem == 'unknown';
         _usernameNote = switch (problem) {
-          null => '@$v is yours to take',
-          'unknown' => "Couldn't check @$v right now",
-          'reserved' => "That one isn't available",
-          _ => '@$v is taken',
+          null => '@$v è libero',
+          'unknown' => "Impossibile controllare @$v ora",
+          'reserved' => "Non è disponibile",
+          _ => '@$v è già preso',
         };
       });
     });
@@ -170,7 +170,7 @@ class _AccountFormState extends State<_AccountForm> {
         showToast(
           context,
           Text(
-            _change ? 'Password changed' : (_register ? 'Welcome to Lorewatch, @${u.username}' : 'Signed in as @${u.username}'),
+            _change ? 'Password cambiata' : (_register ? 'Benvenuto in Lorewatch, @${u.username}' : 'Accesso eseguito come @${u.username}'),
             style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
           ),
           icon: Icons.check_circle_rounded,
@@ -230,7 +230,7 @@ class _AccountFormState extends State<_AccountForm> {
         showToast(
           context,
           Text(
-            u == null ? 'Password changed' : 'Password changed · signed in as @${u.username}',
+            u == null ? 'Password cambiata' : 'Password cambiata · accesso come @${u.username}',
             style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
           ),
           icon: Icons.check_circle_rounded,
@@ -292,24 +292,24 @@ class _AccountFormState extends State<_AccountForm> {
                     AnimatedSwitcher(
                       duration: const Duration(milliseconds: 200),
                       child: Text(
-                        _reset > 0 ? 'Reset your password' : (_change ? 'Change password' : (_register ? 'Create your account' : 'Welcome back')),
+                        _reset > 0 ? 'Reimposta la password' : (_change ? 'Cambia password' : (_register ? 'Crea il tuo account' : 'Bentornato')),
                         key: ValueKey('$_register$_reset'),
                         style: const TextStyle(fontSize: 21, fontWeight: FontWeight.w900, letterSpacing: -.4),
                       ),
                     ),
                     const SizedBox(height: 2),
                     Text(switch (_reset) {
-                      1 => "We'll email you a 6-digit code.",
-                      2 => 'If that account exists, a code is on its way to its email.',
-                      _ when _change => 'Your other devices will be signed out.',
-                      _ => _register ? 'Your list, history and profile on every device.' : 'Sign in to pick up where you left off.',
+                      1 => "Ti invieremo via email un codice di 6 cifre.",
+                      2 => 'Se l\'account esiste, è in arrivo un codice alla sua email.',
+                      _ when _change => 'Gli altri tuoi dispositivi verranno disconnessi.',
+                      _ => _register ? 'La tua lista, la cronologia e il profilo su ogni dispositivo.' : 'Accedi per riprendere da dove eri rimasto.',
                     }, style: const TextStyle(fontSize: 12.5, color: VyseColors.textDim)),
                   ],
                 ),
               ),
               if (!phone)
                 IconButton(
-                  tooltip: 'Close',
+                  tooltip: 'Chiudi',
                   onPressed: () => Navigator.of(context).pop(),
                   icon: const Icon(Icons.close_rounded, color: VyseColors.textDim),
                 ),
@@ -327,8 +327,8 @@ class _AccountFormState extends State<_AccountForm> {
                 if (_reset == 2) ...[
                   _Field(
                     controller: _code,
-                    label: 'Code',
-                    hint: '6 digits from the email',
+                    label: 'Codice',
+                    hint: 'Le 6 cifre dell\'email',
                     icon: Icons.pin_outlined,
                     keyboard: TextInputType.number,
                     autofocus: true,
@@ -340,7 +340,7 @@ class _AccountFormState extends State<_AccountForm> {
                     child: TextButton(
                       onPressed: _resendIn > 0 ? null : _resend,
                       child: Text(
-                        _resendIn > 0 ? (_resent ? 'New code sent · resend in ${_resendIn}s' : 'Resend code in ${_resendIn}s') : 'Resend code',
+                        _resendIn > 0 ? (_resent ? 'Nuovo codice inviato · rinvia tra ${_resendIn}s' : 'Rinvia il codice tra ${_resendIn}s') : 'Rinvia il codice',
                         style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w700, color: _resendIn > 0 ? VyseColors.textFaint : VyseColors.accent),
                       ),
                     ),
@@ -348,20 +348,20 @@ class _AccountFormState extends State<_AccountForm> {
                 ] else if (_change)
                   _Field(
                     controller: _current,
-                    label: 'Current password',
-                    hint: 'Your password now',
+                    label: 'Password attuale',
+                    hint: 'La tua password',
                     icon: Icons.lock_outline_rounded,
                     obscure: !_showPassword,
                     autofocus: true,
                     onSubmit: _submit,
                   )
                 else if (_register) ...[
-                  _Field(controller: _name, label: 'Display name', hint: 'What friends see', icon: Icons.badge_outlined, onSubmit: _submit),
+                  _Field(controller: _name, label: 'Nome visualizzato', hint: 'Quello che vedono gli amici', icon: Icons.badge_outlined, onSubmit: _submit),
                   const SizedBox(height: 12),
                   _Field(
                     controller: _username,
-                    label: 'Username',
-                    hint: 'Pick something unique',
+                    label: 'Nome utente',
+                    hint: 'Scegli qualcosa di unico',
                     icon: Icons.alternate_email_rounded,
                     onSubmit: _submit,
                     lowercase: true,
@@ -392,8 +392,8 @@ class _AccountFormState extends State<_AccountForm> {
                 ] else
                   _Field(
                     controller: _identity,
-                    label: 'Email or username',
-                    hint: 'Your email or username',
+                    label: 'Email o nome utente',
+                    hint: 'La tua email o nome utente',
                     icon: Icons.person_outline_rounded,
                     keyboard: TextInputType.emailAddress,
                     autofocus: !phone || _reset == 1,
@@ -403,13 +403,13 @@ class _AccountFormState extends State<_AccountForm> {
                   if (_reset == 0) const SizedBox(height: 12),
                   _Field(
                     controller: _password,
-                    label: _reset == 2 || _change ? 'New password' : 'Password',
-                    hint: _register || _reset == 2 || _change ? 'At least 8 characters' : 'Your password',
+                    label: _reset == 2 || _change ? 'Nuova password' : 'Password',
+                    hint: _register || _reset == 2 || _change ? 'Almeno 8 caratteri' : 'La tua password',
                     icon: Icons.lock_outline_rounded,
                     obscure: !_showPassword,
                     onSubmit: _submit,
                     trailing: IconButton(
-                      tooltip: _showPassword ? 'Hide password' : 'Show password',
+                      tooltip: _showPassword ? 'Nascondi password' : 'Mostra password',
                       onPressed: () => setState(() => _showPassword = !_showPassword),
                       icon: Icon(_showPassword ? Icons.visibility_off_outlined : Icons.visibility_outlined, size: 19, color: VyseColors.textDim),
                     ),
@@ -417,7 +417,7 @@ class _AccountFormState extends State<_AccountForm> {
                   if ((_register || _reset == 2 || _change) && _password.text.isNotEmpty && _password.text.length < 8)
                     const Padding(
                       padding: EdgeInsets.fromLTRB(4, 6, 4, 0),
-                      child: Text('At least 8 characters', style: TextStyle(fontSize: 12, color: VyseColors.textDim)),
+                      child: Text('Almeno 8 caratteri', style: TextStyle(fontSize: 12, color: VyseColors.textDim)),
                     ),
                   if (!_register && _reset == 0)
                     Align(
@@ -425,7 +425,7 @@ class _AccountFormState extends State<_AccountForm> {
                       child: TextButton(
                         onPressed: _startReset,
                         child: Text(
-                          _change ? 'Forgot your current password?' : 'Forgot password?',
+                          _change ? 'Hai dimenticato la password attuale?' : 'Password dimenticata?',
                           style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w700, color: VyseColors.textDim),
                         ),
                       ),
@@ -465,10 +465,10 @@ class _AccountFormState extends State<_AccountForm> {
             listenable: Listenable.merge([_identity, _email, _password, _code, _current]),
             builder: (context, _) => _Submit(
               label: switch (_reset) {
-                1 => 'Send code',
-                2 => 'Set new password',
-                _ when _change => 'Change password',
-                _ => _register ? 'Create account' : 'Sign in',
+                1 => 'Invia codice',
+                2 => 'Imposta nuova password',
+                _ when _change => 'Cambia password',
+                _ => _register ? 'Crea account' : 'Accedi',
               },
               busy: _busy,
               enabled: _canSubmit,
@@ -482,13 +482,13 @@ class _AccountFormState extends State<_AccountForm> {
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
                   Text(
-                    _reset > 0 ? 'Remembered it?' : (_register ? 'Already have an account?' : 'New to Lorewatch?'),
+                    _reset > 0 ? 'Te la sei ricordata?' : (_register ? 'Hai già un account?' : 'Nuovo su Lorewatch?'),
                     style: const TextStyle(fontSize: 13, color: VyseColors.textDim),
                   ),
                   TextButton(
                     onPressed: () => _switch(_reset > 0 ? false : !_register),
                     child: Text(
-                      _reset > 0 ? (widget.changePassword ? 'Back' : 'Back to sign in') : (_register ? 'Sign in' : 'Create one'),
+                      _reset > 0 ? (widget.changePassword ? 'Indietro' : 'Torna all\'accesso') : (_register ? 'Accedi' : 'Creane uno'),
                       style: const TextStyle(fontWeight: FontWeight.w800, color: VyseColors.accent),
                     ),
                   ),
@@ -526,7 +526,7 @@ class _ModeSwitch extends StatelessWidget {
           ),
           Row(
             children: [
-              for (final (v, label) in const [(false, 'Sign in'), (true, 'Create account')])
+              for (final (v, label) in const [(false, 'Accedi'), (true, 'Crea account')])
                 Expanded(
                   child: Pressable(
                     onTap: () => onChanged(v),

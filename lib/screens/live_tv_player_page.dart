@@ -104,7 +104,7 @@ class _LiveTvPlayerPageState extends State<LiveTvPlayerPage> {
     setState(() => _sharing = true);
     final nav = Navigator.of(context);
     final item = _item;
-    showToast(context, const Text('Freeing the channel for your room. This can take up to a minute.', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)), icon: Icons.groups_rounded);
+    showToast(context, const Text('Libero il canale per la tua stanza. Può richiedere fino a un minuto.', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)), icon: Icons.groups_rounded);
     try {
       await _player.stop();
       await Future<void>.delayed(const Duration(milliseconds: 1500));
@@ -114,7 +114,7 @@ class _LiveTvPlayerPageState extends State<LiveTvPlayerPage> {
         logo: item.logo,
         onUploading: () {
           if (!mounted) return;
-          showToast(context, const Text("Our server couldn't open this channel. Sending it from your device instead.", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)), icon: Icons.upload_rounded);
+          showToast(context, const Text("Il nostro server non è riuscito ad aprire il canale. Lo invio dal tuo dispositivo.", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)), icon: Icons.upload_rounded);
         },
       );
     } on LiveShareError catch (e) {
@@ -256,7 +256,7 @@ class _LiveTvPlayerPageState extends State<LiveTvPlayerPage> {
                         ),
                       ),
                       child: Row(children: [
-                        GlassIconButton(icon: Icons.arrow_back_rounded, label: 'Back (Esc)', size: 40, onTap: _back),
+                        GlassIconButton(icon: Icons.arrow_back_rounded, label: 'Indietro (Esc)', size: 40, onTap: _back),
                         const SizedBox(width: 14),
                         if (_item.logo != null && _item.logo!.isNotEmpty) ...[
                           SizedBox(width: 44, height: 32, child: NetImage(url: _item.logo, fit: BoxFit.contain, fallback: Icons.live_tv_rounded)),
@@ -276,13 +276,13 @@ class _LiveTvPlayerPageState extends State<LiveTvPlayerPage> {
                           const SizedBox(width: 10),
                           _sharing
                               ? const SizedBox.square(dimension: 40, child: Padding(padding: EdgeInsets.all(10), child: CircularProgressIndicator(strokeWidth: 2.2, color: Colors.white)))
-                              : GlassIconButton(icon: Icons.groups_rounded, label: 'Watch with my room', size: 40, onTap: _share),
+                              : GlassIconButton(icon: Icons.groups_rounded, label: 'Guarda con la mia stanza', size: 40, onTap: _share),
                         ],
                         if (widget.items.length > 1) ...[
                           const SizedBox(width: 10),
                           GlassIconButton(
                             icon: Icons.list_rounded,
-                            label: 'Channels (C)',
+                            label: 'Canali (C)',
                             size: 40,
                             onTap: () => setState(() => _list = !_list),
                           ),
@@ -310,18 +310,18 @@ class _LiveTvPlayerPageState extends State<LiveTvPlayerPage> {
                         const SizedBox(height: 6),
                         Row(children: [
                           if (widget.items.length > 1)
-                            IconButton(tooltip: 'Previous channel (↑)', onPressed: () => _zap(-1), icon: const Icon(Icons.skip_previous_rounded)),
+                            IconButton(tooltip: 'Canale precedente (↑)', onPressed: () => _zap(-1), icon: const Icon(Icons.skip_previous_rounded)),
                           IconButton(
-                            tooltip: _playing ? 'Pause' : 'Play',
+                            tooltip: _playing ? 'Pausa' : 'Riproduci',
                             iconSize: 34,
                             onPressed: _toggle,
                             icon: Icon(_playing ? Icons.pause_rounded : Icons.play_arrow_rounded),
                           ),
                           if (widget.items.length > 1)
-                            IconButton(tooltip: 'Next channel (↓)', onPressed: () => _zap(1), icon: const Icon(Icons.skip_next_rounded)),
+                            IconButton(tooltip: 'Canale successivo (↓)', onPressed: () => _zap(1), icon: const Icon(Icons.skip_next_rounded)),
                           const SizedBox(width: 8),
                           IconButton(
-                            tooltip: 'Mute (M)',
+                            tooltip: 'Muto (M)',
                             onPressed: _mute,
                             icon: Icon(_volume == 0 ? Icons.volume_off_rounded : Icons.volume_up_rounded),
                           ),
@@ -342,7 +342,7 @@ class _LiveTvPlayerPageState extends State<LiveTvPlayerPage> {
                           const Spacer(),
                           if (isDesktopNative)
                             IconButton(
-                              tooltip: 'Full screen (F)',
+                              tooltip: 'Schermo intero (F)',
                               onPressed: _toggleFullscreen,
                               icon: Icon(_fullscreen ? Icons.fullscreen_exit_rounded : Icons.fullscreen_rounded),
                             ),
@@ -382,13 +382,13 @@ class _LiveTvPlayerPageState extends State<LiveTvPlayerPage> {
         child: Column(mainAxisSize: MainAxisSize.min, children: [
           const Icon(Icons.signal_wifi_connected_no_internet_4_rounded, size: 32, color: VyseColors.accentHot),
           const SizedBox(height: 10),
-          const Text("This stream isn't playing", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
+          const Text("Questo stream non parte", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
           const SizedBox(height: 4),
-          const Text('The source may be offline or busy.', style: TextStyle(fontSize: 12.5, color: VyseColors.textDim)),
+          const Text('La sorgente potrebbe essere offline o occupata.', style: TextStyle(fontSize: 12.5, color: VyseColors.textDim)),
           const SizedBox(height: 14),
           Row(mainAxisSize: MainAxisSize.min, children: [
-            TextButton(onPressed: _open, child: const Text('Retry')),
-            if (widget.items.length > 1) TextButton(onPressed: () => _zap(1), child: const Text('Next channel')),
+            TextButton(onPressed: _open, child: const Text('Riprova')),
+            if (widget.items.length > 1) TextButton(onPressed: () => _zap(1), child: const Text('Canale successivo')),
           ]),
         ]),
       );
@@ -445,7 +445,7 @@ class _LiveBadge extends StatelessWidget {
         child: const Row(mainAxisSize: MainAxisSize.min, children: [
           Icon(Icons.circle, size: 7, color: Colors.white),
           SizedBox(width: 5),
-          Text('LIVE', style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w900, letterSpacing: .6, color: Colors.white)),
+          Text('IN DIRETTA', style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w900, letterSpacing: .6, color: Colors.white)),
         ]),
       );
 }
@@ -490,7 +490,7 @@ class _EpgStrip extends StatelessWidget {
               ),
               if (next != null) ...[
                 const SizedBox(height: 6),
-                Text('Next  ${hm(next.start)}  ${next.title}',
+                Text('Dopo  ${hm(next.start)}  ${next.title}',
                     maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12, color: VyseColors.textDim)),
               ],
             ]),

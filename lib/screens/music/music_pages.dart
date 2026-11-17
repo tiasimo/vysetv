@@ -79,7 +79,7 @@ class _YtArtistPageState extends State<YtArtistPage> {
             child: MusicHero(
               round: true,
               art: Artwork(url: art, circle: true),
-              kind: 'Artist',
+              kind: 'Artista',
               title: a?.name ?? widget.name ?? '',
               lines: [
                 if (a != null) MetaLine(parts: [(a.subscribers ?? '', null), (a.listeners ?? '', null)]),
@@ -87,8 +87,8 @@ class _YtArtistPageState extends State<YtArtistPage> {
               actions: a == null
                   ? const []
                   : [
-                      PillButton(accent: accentOf(context), primary: true, icon: Icons.play_arrow_rounded, label: 'Play', onTap: () => MusicPlayer.instance.playQueue(ytTracks(a.songs))),
-                      PillButton(icon: Icons.shuffle_rounded, label: 'Shuffle', onTap: () => _shuffle(a)),
+                      PillButton(accent: accentOf(context), primary: true, icon: Icons.play_arrow_rounded, label: 'Riproduci', onTap: () => MusicPlayer.instance.playQueue(ytTracks(a.songs))),
+                      PillButton(icon: Icons.shuffle_rounded, label: 'Casuale', onTap: () => _shuffle(a)),
                       if (a.songs.isNotEmpty) PillButton(icon: Icons.sensors_rounded, label: 'Radio', onTap: () => MusicPlayer.instance.startRadio(ytTrack(a.songs.first))),
                       ListenableBuilder(
                         listenable: MusicLibrary.changes,
@@ -96,7 +96,7 @@ class _YtArtistPageState extends State<YtArtistPage> {
                           final on = MusicLibrary.follows(a.id);
                           return PillButton(
                             icon: on ? Icons.how_to_reg_rounded : Icons.person_add_alt_1_rounded,
-                            label: on ? 'Following' : 'Follow',
+                            label: on ? 'Segui già' : 'Segui',
                             onTap: () => MusicLibrary.toggleArtist(a.id, a.name, subtitle: a.subscribers ?? '', thumb: a.thumb),
                           );
                         },
@@ -108,16 +108,16 @@ class _YtArtistPageState extends State<YtArtistPage> {
             SliverToBoxAdapter(
               child: EmptyState(
                 icon: Icons.wifi_off_rounded,
-                title: "Couldn't load this artist",
-                body: 'Check your connection and try again.',
-                action: ('Retry', () => setState(() => _future = YtMusic.instance.artist(widget.id))),
+                title: "Impossibile caricare questo artista",
+                body: 'Controlla la connessione e riprova.',
+                action: ('Riprova', () => setState(() => _future = YtMusic.instance.artist(widget.id))),
               ),
             )
           else if (a == null)
             const SliverToBoxAdapter(child: RowsSkeleton(rows: 6))
           else ...[
             if (a.songs.isNotEmpty) ...[
-              const SliverToBoxAdapter(child: ShelfHeader(title: 'Popular')),
+              const SliverToBoxAdapter(child: ShelfHeader(title: 'Popolari')),
               SliverPadding(
                 padding: EdgeInsets.fromLTRB(Layout.inset(context) - 10, 0, pageRight(context) - 10, 0),
                 sliver: SliverList.builder(
@@ -130,8 +130,8 @@ class _YtArtistPageState extends State<YtArtistPage> {
                   padding: EdgeInsets.fromLTRB(Layout.inset(context), 6, pageRight(context), 24),
                   child: Wrap(spacing: 10, children: [
                     if (a.songs.length > 5)
-                      _TextLink(label: _allSongs ? 'Show less' : 'Show more', onTap: () => setState(() => _allSongs = !_allSongs)),
-                    if (a.allSongsId != null) _TextLink(label: 'All songs', onTap: () => openYtPlaylist(context, a.allSongsId!, title: '${a.name}: all songs', art: a.thumb)),
+                      _TextLink(label: _allSongs ? 'Mostra meno' : 'Mostra altro', onTap: () => setState(() => _allSongs = !_allSongs)),
+                    if (a.allSongsId != null) _TextLink(label: 'Tutti i brani', onTap: () => openYtPlaylist(context, a.allSongsId!, title: '${a.name}: tutti i brani', art: a.thumb)),
                   ]),
                 ),
               ),
@@ -139,7 +139,7 @@ class _YtArtistPageState extends State<YtArtistPage> {
             ..._releasesSlivers(a),
             for (final s in a.shelves.where((s) => !_isRelease(s.title))) SliverToBoxAdapter(child: YtShelfView(shelf: s)),
             if (a.description.isNotEmpty) ...[
-              const SliverToBoxAdapter(child: ShelfHeader(title: 'About')),
+              const SliverToBoxAdapter(child: ShelfHeader(title: 'Informazioni')),
               SliverToBoxAdapter(
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(Layout.inset(context), 0, pageRight(context), 20),
@@ -157,7 +157,7 @@ class _YtArtistPageState extends State<YtArtistPage> {
                         if (a.listeners != null) const SizedBox(height: 8),
                         Text(a.description, maxLines: _about ? null : 4, overflow: _about ? null : TextOverflow.ellipsis, style: const TextStyle(fontSize: 13.5, height: 1.5, color: Color(0xFFC3C7D4))),
                         const SizedBox(height: 6),
-                        Text(_about ? 'Show less' : 'Read more', style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w700, color: accentOf(context))),
+                        Text(_about ? 'Mostra meno' : 'Leggi di più', style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w700, color: accentOf(context))),
                       ]),
                     ),
                   ),
@@ -185,13 +185,13 @@ class _YtArtistPageState extends State<YtArtistPage> {
     return [
       SliverToBoxAdapter(
         child: ShelfHeader(
-          title: 'Releases',
+          title: 'Uscite',
           titleWidget: Row(children: [
-            const Text('Releases', style: TextStyle(fontSize: 19, fontWeight: FontWeight.w800, letterSpacing: -.4)),
+            const Text('Uscite', style: TextStyle(fontSize: 19, fontWeight: FontWeight.w800, letterSpacing: -.4)),
             const SizedBox(width: 18),
             MusicChips<String>(
               value: _releases,
-              options: [('all', 'All'), if (albums.isNotEmpty) ('albums', 'Albums'), if (singles.isNotEmpty) ('singles', 'Singles & EPs')],
+              options: [('all', 'Tutti'), if (albums.isNotEmpty) ('albums', 'Albums'), if (singles.isNotEmpty) ('singles', 'Singoli ed EP')],
               onChanged: (v) => setState(() => _releases = v),
             ),
           ]),
@@ -292,21 +292,21 @@ class _YtAlbumPageState extends State<YtAlbumPage> {
               actions: a == null
                   ? const []
                   : [
-                      PillButton(accent: accentOf(context), primary: true, icon: Icons.play_arrow_rounded, label: 'Play', onTap: () => MusicPlayer.instance.playQueue(tracks)),
-                      PillButton(icon: Icons.shuffle_rounded, label: 'Shuffle', onTap: () => MusicPlayer.instance.playQueue(tracks, shuffled: true)),
+                      PillButton(accent: accentOf(context), primary: true, icon: Icons.play_arrow_rounded, label: 'Riproduci', onTap: () => MusicPlayer.instance.playQueue(tracks)),
+                      PillButton(icon: Icons.shuffle_rounded, label: 'Casuale', onTap: () => MusicPlayer.instance.playQueue(tracks, shuffled: true)),
                       ListenableBuilder(
                         listenable: MusicLibrary.changes,
                         builder: (context, _) {
                           final on = MusicLibrary.hasAlbum(a.id);
                           return RoundAction(
                             icon: on ? Icons.library_add_check_rounded : Icons.library_add_rounded,
-                            tooltip: on ? 'Remove from your library' : 'Save to your library',
+                            tooltip: on ? 'Rimuovi dalla tua libreria' : 'Salva nella tua libreria',
                             on: on,
                             onTap: () => MusicLibrary.toggleAlbum(a.id, a.title, subtitle: [a.type, a.artists.map((r) => r.name).join(', '), ?a.year].join(' · '), thumb: a.thumb),
                           );
                         },
                       ),
-                      RoundAction(icon: Icons.playlist_add_rounded, tooltip: 'Add all to a playlist', onTap: () => showAddToPlaylist(context, tracks)),
+                      RoundAction(icon: Icons.playlist_add_rounded, tooltip: 'Aggiungi tutto a una playlist', onTap: () => showAddToPlaylist(context, tracks)),
                     ],
             ),
           ),
@@ -314,9 +314,9 @@ class _YtAlbumPageState extends State<YtAlbumPage> {
             SliverToBoxAdapter(
               child: EmptyState(
                 icon: Icons.wifi_off_rounded,
-                title: "Couldn't load this album",
-                body: 'Check your connection and try again.',
-                action: ('Retry', () => setState(() => _future = YtMusic.instance.album(widget.id))),
+                title: "Impossibile caricare questo album",
+                body: 'Controlla la connessione e riprova.',
+                action: ('Riprova', () => setState(() => _future = YtMusic.instance.album(widget.id))),
               ),
             )
           else if (a == null)
@@ -398,8 +398,8 @@ class _YtPlaylistPageState extends State<YtPlaylistPage> {
               actions: p == null
                   ? const []
                   : [
-                      PillButton(accent: accentOf(context), primary: true, icon: Icons.play_arrow_rounded, label: 'Play', onTap: () => MusicPlayer.instance.playQueue(tracks)),
-                      PillButton(icon: Icons.shuffle_rounded, label: 'Shuffle', onTap: () => MusicPlayer.instance.playQueue(tracks, shuffled: true)),
+                      PillButton(accent: accentOf(context), primary: true, icon: Icons.play_arrow_rounded, label: 'Riproduci', onTap: () => MusicPlayer.instance.playQueue(tracks)),
+                      PillButton(icon: Icons.shuffle_rounded, label: 'Casuale', onTap: () => MusicPlayer.instance.playQueue(tracks, shuffled: true)),
                       if (!widget.id.startsWith('RD'))
                         ListenableBuilder(
                           listenable: MusicLibrary.changes,
@@ -407,7 +407,7 @@ class _YtPlaylistPageState extends State<YtPlaylistPage> {
                             final on = MusicLibrary.hasSavedPlaylist(p.id);
                             return RoundAction(
                               icon: on ? Icons.library_add_check_rounded : Icons.library_add_rounded,
-                              tooltip: on ? 'Remove from your library' : 'Save to your library',
+                              tooltip: on ? 'Rimuovi dalla tua libreria' : 'Salva nella tua libreria',
                               on: on,
                               onTap: () => MusicLibrary.toggleSavedPlaylist(p.id, p.title, subtitle: p.author.isNotEmpty ? p.author : songCount(tracks.length), thumb: p.thumb),
                             );
@@ -415,10 +415,10 @@ class _YtPlaylistPageState extends State<YtPlaylistPage> {
                         ),
                       RoundAction(
                         icon: Icons.copy_all_rounded,
-                        tooltip: 'Copy into a playlist of yours',
+                        tooltip: 'Copia in una tua playlist',
                         onTap: () async {
                           final id = MusicLibrary.createPlaylist(p.title, description: p.description, tracks: tracks);
-                          showToast(context, Text('Copied to your playlists: ${p.title}', maxLines: 1, overflow: TextOverflow.ellipsis), icon: Icons.playlist_add_check_rounded);
+                          showToast(context, Text('Copiata nelle tue playlist: ${p.title}', maxLines: 1, overflow: TextOverflow.ellipsis), icon: Icons.playlist_add_check_rounded);
                           await openMyPlaylist(context, id);
                         },
                       ),
@@ -429,9 +429,9 @@ class _YtPlaylistPageState extends State<YtPlaylistPage> {
             SliverToBoxAdapter(
               child: EmptyState(
                 icon: Icons.wifi_off_rounded,
-                title: "Couldn't load this playlist",
-                body: 'Check your connection and try again.',
-                action: ('Retry', () => setState(() => _future = _load())),
+                title: "Impossibile caricare questa playlist",
+                body: 'Controlla la connessione e riprova.',
+                action: ('Riprova', () => setState(() => _future = _load())),
               ),
             )
           else if (p == null)
@@ -464,7 +464,7 @@ List<Widget> _trackSlivers(BuildContext context, List<MusicTrack> tracks, TextEd
 }
 
 class _FilterBox extends StatelessWidget {
-  const _FilterBox({required this.controller, required this.onChanged, this.hint = 'Filter'});
+  const _FilterBox({required this.controller, required this.onChanged, this.hint = 'Filtra'});
   final TextEditingController controller;
   final VoidCallback onChanged;
   final String hint;
@@ -518,14 +518,14 @@ class _MyPlaylistPageState extends State<MyPlaylistPage> {
       builder: (ctx) => AlertDialog(
         backgroundColor: const Color(0xFF101118),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text('Delete ${p.name}?', style: const TextStyle(fontWeight: FontWeight.w800)),
-        content: const Text("It's removed from every device you're signed in on.", style: TextStyle(color: VyseColors.textDim, height: 1.4)),
+        title: Text('Eliminare ${p.name}?', style: const TextStyle(fontWeight: FontWeight.w800)),
+        content: const Text("Viene rimossa da tutti i dispositivi in cui hai effettuato l'accesso.", style: TextStyle(color: VyseColors.textDim, height: 1.4)),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Cancel', style: TextStyle(color: VyseColors.text))),
+          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Annulla', style: TextStyle(color: VyseColors.text))),
           FilledButton(
             style: FilledButton.styleFrom(backgroundColor: const Color(0xFFFF4D4F), foregroundColor: Colors.white),
             onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('Delete', style: TextStyle(fontWeight: FontWeight.w800)),
+            child: const Text('Elimina', style: TextStyle(fontWeight: FontWeight.w800)),
           ),
         ],
       ),
@@ -554,7 +554,7 @@ class _MyPlaylistPageState extends State<MyPlaylistPage> {
           SliverToBoxAdapter(
             child: MusicHero(
               art: PlaylistArt(covers: p.covers, cover: p.cover, radius: 0),
-              kind: mine ? (p.public ? 'Public playlist' : 'Private playlist') : 'Playlist',
+              kind: mine ? (p.public ? 'Playlist pubblica' : 'Playlist privata') : 'Playlist',
               title: p.name,
               lines: [
                 MetaLine(parts: [
@@ -566,18 +566,18 @@ class _MyPlaylistPageState extends State<MyPlaylistPage> {
                   Text(p.description, maxLines: 3, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12.5, color: VyseColors.textDim)),
               ],
               actions: [
-                PillButton(accent: accentOf(context), primary: true, icon: Icons.play_arrow_rounded, label: 'Play', onTap: p.tracks.isEmpty ? null : () => MusicPlayer.instance.playQueue(p.tracks)),
-                PillButton(icon: Icons.shuffle_rounded, label: 'Shuffle', onTap: p.tracks.isEmpty ? null : () => MusicPlayer.instance.playQueue(p.tracks, shuffled: true)),
+                PillButton(accent: accentOf(context), primary: true, icon: Icons.play_arrow_rounded, label: 'Riproduci', onTap: p.tracks.isEmpty ? null : () => MusicPlayer.instance.playQueue(p.tracks)),
+                PillButton(icon: Icons.shuffle_rounded, label: 'Casuale', onTap: p.tracks.isEmpty ? null : () => MusicPlayer.instance.playQueue(p.tracks, shuffled: true)),
                 if (mine) ...[
-                  RoundAction(icon: Icons.edit_rounded, tooltip: 'Edit', onTap: () => showPlaylistEditor(context, existing: p)),
-                  RoundAction(icon: Icons.delete_outline_rounded, tooltip: 'Delete', onTap: () => _delete(p)),
+                  RoundAction(icon: Icons.edit_rounded, tooltip: 'Modifica', onTap: () => showPlaylistEditor(context, existing: p)),
+                  RoundAction(icon: Icons.delete_outline_rounded, tooltip: 'Elimina', onTap: () => _delete(p)),
                 ] else
                   RoundAction(
                     icon: Icons.copy_all_rounded,
-                    tooltip: 'Keep a copy',
+                    tooltip: 'Tieni una copia',
                     onTap: () {
                       final id = MusicLibrary.createPlaylist(p.name, description: p.description, tracks: p.tracks);
-                      showToast(context, Text('Copied to your playlists: ${p.name}', maxLines: 1, overflow: TextOverflow.ellipsis), icon: Icons.playlist_add_check_rounded);
+                      showToast(context, Text('Copiata nelle tue playlist: ${p.name}', maxLines: 1, overflow: TextOverflow.ellipsis), icon: Icons.playlist_add_check_rounded);
                       openMyPlaylist(context, id);
                     },
                   ),
@@ -588,8 +588,8 @@ class _MyPlaylistPageState extends State<MyPlaylistPage> {
             const SliverToBoxAdapter(
               child: EmptyState(
                 icon: Icons.playlist_add_rounded,
-                title: 'Nothing here yet',
-                body: 'Add songs from any song’s menu, or from an album or playlist.',
+                title: 'Ancora niente qui',
+                body: 'Aggiungi brani dal menu di qualsiasi brano, o da un album o una playlist.',
               ),
             )
           else ...[
@@ -627,7 +627,7 @@ class _MyPlaylistPageState extends State<MyPlaylistPage> {
   );
 
   static List<Widget> _gone(BuildContext context, ScrollController _) => const [
-    SliverToBoxAdapter(child: EmptyState(icon: Icons.playlist_remove_rounded, title: 'This playlist is gone', body: 'It was deleted, maybe on another device.')),
+    SliverToBoxAdapter(child: EmptyState(icon: Icons.playlist_remove_rounded, title: 'Questa playlist non esiste più', body: 'È stata eliminata, forse su un altro dispositivo.')),
   ];
 }
 
@@ -683,17 +683,17 @@ class _LikedSongsPageState extends State<LikedSongsPage> {
             child: MusicHero(
               art: const LikedArt(radius: 0),
               kind: 'Playlist',
-              title: widget.owner == null ? 'Liked songs' : '${widget.owner}’s liked songs',
+              title: widget.owner == null ? 'Brani preferiti' : 'I brani preferiti di ${widget.owner}',
               lines: [
                 MetaLine(parts: [(songCount(tracks.length), null), if (secs > 0) (totalTime(secs), null)]),
               ],
               actions: [
-                PillButton(accent: accentOf(context), primary: true, icon: Icons.play_arrow_rounded, label: 'Play', onTap: tracks.isEmpty ? null : () => MusicPlayer.instance.playQueue(tracks)),
-                PillButton(icon: Icons.shuffle_rounded, label: 'Shuffle', onTap: tracks.isEmpty ? null : () => MusicPlayer.instance.playQueue(tracks, shuffled: true)),
+                PillButton(accent: accentOf(context), primary: true, icon: Icons.play_arrow_rounded, label: 'Riproduci', onTap: tracks.isEmpty ? null : () => MusicPlayer.instance.playQueue(tracks)),
+                PillButton(icon: Icons.shuffle_rounded, label: 'Casuale', onTap: tracks.isEmpty ? null : () => MusicPlayer.instance.playQueue(tracks, shuffled: true)),
                 if (widget.others != null)
                   RoundAction(
                     icon: Icons.copy_all_rounded,
-                    tooltip: 'Keep them as a playlist',
+                    tooltip: 'Tienili come playlist',
                     onTap: () {
                       final id = MusicLibrary.createPlaylist('${widget.owner ?? 'Their'}’s likes', tracks: tracks);
                       openMyPlaylist(context, id);
@@ -704,7 +704,7 @@ class _LikedSongsPageState extends State<LikedSongsPage> {
           ),
           if (tracks.isEmpty)
             const SliverToBoxAdapter(
-              child: EmptyState(icon: Icons.favorite_border_rounded, title: 'No liked songs yet', body: 'Tap the heart on any song and it lands here, on every device.'),
+              child: EmptyState(icon: Icons.favorite_border_rounded, title: 'Ancora nessun brano preferito', body: 'Tocca il cuore su qualsiasi brano e finisce qui, su tutti i dispositivi.'),
             )
           else
             ..._trackSlivers(context, tracks, _filter, () => setState(() {})),
@@ -760,9 +760,9 @@ class _MusicLibraryPageState extends State<MusicLibraryPage> {
             padding: EdgeInsets.fromLTRB(inset, 0, right, 16),
             sliver: SliverToBoxAdapter(
               child: MusicTitle(
-                title: 'Library',
-                subtitle: 'What you liked, saved, made and follow. Synced with your account.',
-                trailing: PillButton(icon: Icons.add_rounded, label: 'New playlist', onTap: () async {
+                title: 'Libreria',
+                subtitle: 'Quello che ti piace, salvi, crei e segui. Sincronizzato con il tuo account.',
+                trailing: PillButton(icon: Icons.add_rounded, label: 'Nuova playlist', onTap: () async {
                   final id = await showPlaylistEditor(context);
                   if (id != null && context.mounted) openMyPlaylist(context, id);
                 }),
@@ -776,15 +776,15 @@ class _MusicLibraryPageState extends State<MusicLibraryPage> {
                 MusicChips<_Lib>(
                   value: _tab,
                   options: [
-                    (_Lib.playlists, 'Playlists ${mine.length + saved.length + 1}'),
-                    (_Lib.songs, 'Songs ${likes.length}'),
-                    (_Lib.albums, 'Albums ${albums.length}'),
-                    (_Lib.artists, 'Artists ${artists.length}'),
+                    (_Lib.playlists, 'Playlist ${mine.length + saved.length + 1}'),
+                    (_Lib.songs, 'Brani ${likes.length}'),
+                    (_Lib.albums, 'Album ${albums.length}'),
+                    (_Lib.artists, 'Artisti ${artists.length}'),
                   ],
                   onChanged: (v) => setState(() => _tab = v),
                 ),
-                _FilterBox(controller: _filter, onChanged: () => setState(() {}), hint: 'Filter library'),
-                MusicChips<bool>(value: _az, options: const [(false, 'Recently added'), (true, 'A–Z')], onChanged: (v) => setState(() => _az = v)),
+                _FilterBox(controller: _filter, onChanged: () => setState(() {}), hint: 'Filtra la libreria'),
+                MusicChips<bool>(value: _az, options: const [(false, 'Aggiunti di recente'), (true, 'A–Z')], onChanged: (v) => setState(() => _az = v)),
               ]),
             ),
           ),
@@ -793,7 +793,7 @@ class _MusicLibraryPageState extends State<MusicLibraryPage> {
               var list = [for (final l in likes) if (_match('${l.track.title} ${l.track.artist} ${l.track.album}')) l.track];
               if (_az) list = [...list]..sort((a, b) => a.title.toLowerCase().compareTo(b.title.toLowerCase()));
               if (list.isEmpty) {
-                return [const SliverToBoxAdapter(child: EmptyState(icon: Icons.favorite_border_rounded, title: 'No liked songs', body: 'Tap the heart on a song to keep it here.'))];
+                return [const SliverToBoxAdapter(child: EmptyState(icon: Icons.favorite_border_rounded, title: 'Nessun brano preferito', body: 'Tocca il cuore su un brano per tenerlo qui.'))];
               }
               return [
                 SliverPadding(
@@ -812,15 +812,15 @@ class _MusicLibraryPageState extends State<MusicLibraryPage> {
                 onTap: () => openYtAlbum(context, a.id, title: a.title, art: a.thumb),
                 onPlay: () => playYtItem(context, YtItem(kind: YtKind.album, id: a.id, title: a.title)),
               ),
-              'No saved albums',
-              'Open an album and tap the save button.',
+              'Nessun album salvato',
+              'Apri un album e tocca il pulsante Salva.',
             ),
             _Lib.artists => _grid(
               [for (final a in _sorted(artists)) if (_match(a.title)) a],
               Layout.isPhone(context) ? 120 : 150,
               (a) => YtArtistCard(item: YtItem(kind: YtKind.artist, id: a.id, title: a.title, thumb: a.thumb, subtitle: a.subtitle)),
-              'Not following anyone yet',
-              'Follow artists from their page and they show up here.',
+              'Non segui ancora nessuno',
+              'Segui gli artisti dalla loro pagina e compariranno qui.',
             ),
             _Lib.playlists => _grid(
               [
@@ -888,7 +888,7 @@ class _LikedTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) => _ArtTile(
     art: const LikedArt(radius: 0),
-    title: 'Liked songs',
+    title: 'Brani preferiti',
     subtitle: songCount(count),
     onTap: () => openLikedSongs(context),
     onPlay: count == 0 ? null : () => MusicPlayer.instance.playQueue([for (final l in MusicLibrary.likes) l.track]),
@@ -956,7 +956,7 @@ class LikedSongsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) => _ArtTile(
     art: const LikedArt(radius: 0),
-    title: owner == null ? 'Liked songs' : 'Their liked songs',
+    title: owner == null ? 'Brani preferiti' : 'I loro brani preferiti',
     subtitle: songCount(likes.length),
     onTap: () => openLikedSongs(context, of: owner == null ? null : likes, owner: owner),
     onPlay: likes.isEmpty ? null : () => MusicPlayer.instance.playQueue([for (final l in likes) l.track]),
@@ -988,12 +988,12 @@ class _MusicBrowsePageState extends State<MusicBrowsePage> {
       slivers: (context, _) => [
         SliverPadding(
           padding: EdgeInsets.fromLTRB(inset, 0, right, 16),
-          sliver: const SliverToBoxAdapter(child: MusicTitle(title: 'Browse', subtitle: 'Charts, moods and genres, and what just came out')),
+          sliver: const SliverToBoxAdapter(child: MusicTitle(title: 'Sfoglia', subtitle: 'Classifiche, generi e stati d\'animo, e le ultime uscite')),
         ),
         SliverPadding(
           padding: EdgeInsets.fromLTRB(inset, 0, right, 20),
           sliver: SliverToBoxAdapter(
-            child: MusicChips<int>(value: _tab, options: const [(0, 'Moods & genres'), (1, 'Charts'), (2, 'New releases')], onChanged: (v) => setState(() => _tab = v)),
+            child: MusicChips<int>(value: _tab, options: const [(0, 'Generi e stati d\'animo'), (1, 'Classifiche'), (2, 'Nuove uscite')], onChanged: (v) => setState(() => _tab = v)),
           ),
         ),
         if (_tab == 0)
@@ -1001,7 +1001,7 @@ class _MusicBrowsePageState extends State<MusicBrowsePage> {
             child: FutureBuilder<List<(String, List<YtMood>)>>(
               future: _moods,
               builder: (context, snap) {
-                if (snap.hasError) return const EmptyState(icon: Icons.wifi_off_rounded, title: "Couldn't load moods", body: 'Check your connection and try again.');
+                if (snap.hasError) return const EmptyState(icon: Icons.wifi_off_rounded, title: "Impossibile caricare gli stati d'animo", body: 'Controlla la connessione e riprova.');
                 final groups = snap.data;
                 if (groups == null) return const RowsSkeleton(rows: 5);
                 return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -1021,7 +1021,7 @@ class _MusicBrowsePageState extends State<MusicBrowsePage> {
             child: FutureBuilder<List<YtShelf>>(
               future: _tab == 1 ? _charts : _new,
               builder: (context, snap) {
-                if (snap.hasError) return const EmptyState(icon: Icons.wifi_off_rounded, title: "Couldn't load this", body: 'Check your connection and try again.');
+                if (snap.hasError) return const EmptyState(icon: Icons.wifi_off_rounded, title: "Impossibile caricarlo", body: 'Controlla la connessione e riprova.');
                 final shelves = snap.data;
                 if (shelves == null) return const RowsSkeleton(rows: 5);
                 return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [for (final s in shelves) YtShelfView(shelf: s)]);
@@ -1077,13 +1077,13 @@ class MoodPage extends StatelessWidget {
     slivers: (context, _) => [
       SliverPadding(
         padding: EdgeInsets.fromLTRB(Layout.inset(context), 0, pageRight(context), 12),
-        sliver: SliverToBoxAdapter(child: MusicTitle(title: mood.title, subtitle: 'Playlists and songs for it')),
+        sliver: SliverToBoxAdapter(child: MusicTitle(title: mood.title, subtitle: 'Playlist e brani adatti')),
       ),
       SliverToBoxAdapter(
         child: FutureBuilder<List<YtShelf>>(
           future: YtMusic.instance.shelvesPage(mood.browseId, params: mood.params),
           builder: (context, snap) {
-            if (snap.hasError) return const EmptyState(icon: Icons.wifi_off_rounded, title: "Couldn't load this", body: 'Check your connection and try again.');
+            if (snap.hasError) return const EmptyState(icon: Icons.wifi_off_rounded, title: "Impossibile caricarlo", body: 'Controlla la connessione e riprova.');
             final shelves = snap.data;
             if (shelves == null) return const RowsSkeleton(rows: 5);
             return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [for (final s in shelves) YtShelfView(shelf: s)]);
@@ -1104,10 +1104,10 @@ class MusicHistoryPage extends StatelessWidget {
     final today = DateTime(now.year, now.month, now.day);
     final that = DateTime(d.year, d.month, d.day);
     final days = today.difference(that).inDays;
-    if (days == 0) return 'Today';
-    if (days == 1) return 'Yesterday';
-    if (days < 7) return 'This week';
-    return 'Earlier';
+    if (days == 0) return 'Oggi';
+    if (days == 1) return 'Ieri';
+    if (days < 7) return 'Questa settimana';
+    return 'Prima';
   }
 
   @override
@@ -1126,14 +1126,14 @@ class MusicHistoryPage extends StatelessWidget {
             padding: EdgeInsets.fromLTRB(Layout.inset(context), 0, pageRight(context), 8),
             sliver: SliverToBoxAdapter(
               child: MusicTitle(
-                title: 'History',
-                subtitle: 'What you played on this device',
-                trailing: list.isEmpty ? null : PillButton(icon: Icons.delete_sweep_rounded, label: 'Clear', onTap: MusicLibrary.clearHistory),
+                title: 'Cronologia',
+                subtitle: 'Quello che hai ascoltato su questo dispositivo',
+                trailing: list.isEmpty ? null : PillButton(icon: Icons.delete_sweep_rounded, label: 'Cancella', onTap: MusicLibrary.clearHistory),
               ),
             ),
           ),
           if (list.isEmpty)
-            const SliverToBoxAdapter(child: EmptyState(icon: Icons.history_rounded, title: 'Nothing played yet', body: 'Songs you play show up here.'))
+            const SliverToBoxAdapter(child: EmptyState(icon: Icons.history_rounded, title: 'Ancora niente ascoltato', body: 'I brani che ascolti compaiono qui.'))
           else
             for (final e in groups.entries) ...[
               SliverToBoxAdapter(child: ShelfHeader(title: e.key)),

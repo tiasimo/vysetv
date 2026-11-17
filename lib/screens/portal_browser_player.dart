@@ -182,7 +182,7 @@ class _BrowserLivePlayerState extends State<BrowserLivePlayer> {
     final nav = Navigator.of(context); // the tab: the room opens here, beside the rail
     final item = widget.item;
     const style = TextStyle(fontSize: 13, fontWeight: FontWeight.w600);
-    showToast(context, const Text('Freeing the channel for your room. This can take up to a minute.', style: style), icon: Icons.groups_rounded);
+    showToast(context, const Text('Libero il canale per la tua stanza. Può richiedere fino a un minuto.', style: style), icon: Icons.groups_rounded);
     try {
       await _player.stop();
       await Future<void>.delayed(const Duration(milliseconds: 1500));
@@ -192,7 +192,7 @@ class _BrowserLivePlayerState extends State<BrowserLivePlayer> {
         logo: item.logo,
         onUploading: () {
           if (!mounted) return;
-          showToast(context, const Text("Our server couldn't open this channel. Sending it from your device instead.", style: style), icon: Icons.upload_rounded);
+          showToast(context, const Text("Il nostro server non è riuscito ad aprire il canale. Lo invio dal tuo dispositivo.", style: style), icon: Icons.upload_rounded);
         },
       );
     } on LiveShareError catch (e) {
@@ -291,7 +291,7 @@ class _BrowserLivePlayerState extends State<BrowserLivePlayer> {
                     if (_buffering && _error == null && !_stopped)
                       Center(child: SizedBox.square(dimension: full ? 36 : 28, child: CircularProgressIndicator(strokeWidth: 2.4, color: accent))),
                     if (_error != null && !_stopped) Center(child: _errorCard()),
-                    if (_stopped) Center(child: _sharing ? const SizedBox.shrink() : _button(Icons.play_arrow_rounded, 'Play', _open, size: full ? 64 : 52)),
+                    if (_stopped) Center(child: _sharing ? const SizedBox.shrink() : _button(Icons.play_arrow_rounded, 'Riproduci', _open, size: full ? 64 : 52)),
                     IgnorePointer(
                       ignoring: !_chrome,
                       child: AnimatedOpacity(
@@ -327,7 +327,7 @@ class _BrowserLivePlayerState extends State<BrowserLivePlayer> {
       ),
       child: Row(
         children: [
-          GlassIconButton(icon: Icons.arrow_back_rounded, label: 'Back to the list (Esc)', size: 40, onTap: widget.onExpand),
+          GlassIconButton(icon: Icons.arrow_back_rounded, label: 'Torna alla lista (Esc)', size: 40, onTap: widget.onExpand),
           const SizedBox(width: 14),
           if (item.logo != null && item.logo!.isNotEmpty) ...[
             SizedBox(
@@ -368,20 +368,20 @@ class _BrowserLivePlayerState extends State<BrowserLivePlayer> {
           Row(
             children: [
               if (stepping && (full || roomy)) ...[
-                _button(Icons.skip_previous_rounded, 'Previous channel (↑)', () => _step(-1)),
+                _button(Icons.skip_previous_rounded, 'Canale precedente (↑)', () => _step(-1)),
                 const SizedBox(width: 6),
               ],
               _button(
                 _stopped || !_playing ? Icons.play_arrow_rounded : Icons.pause_rounded,
-                _stopped || !_playing ? 'Play (Space)' : 'Pause (Space)',
+                _stopped || !_playing ? 'Riproduci (Spazio)' : 'Pausa (Spazio)',
                 _toggle,
               ),
               if (stepping) ...[
                 const SizedBox(width: 6),
-                _button(Icons.skip_next_rounded, 'Next channel (↓)', () => _step(1)),
+                _button(Icons.skip_next_rounded, 'Canale successivo (↓)', () => _step(1)),
               ],
               const SizedBox(width: 6),
-              _button(_volume == 0 ? Icons.volume_off_rounded : Icons.volume_up_rounded, 'Mute (M)', _mute),
+              _button(_volume == 0 ? Icons.volume_off_rounded : Icons.volume_up_rounded, 'Muto (M)', _mute),
               if (roomy && !_touch)
                 SizedBox(
                   width: full ? 130 : 96,
@@ -412,13 +412,13 @@ class _BrowserLivePlayerState extends State<BrowserLivePlayer> {
                             dimension: 36,
                             child: Padding(padding: EdgeInsets.all(9), child: CircularProgressIndicator(strokeWidth: 2.2, color: Colors.white)),
                           )
-                        : _button(Icons.groups_rounded, 'Watch with my room', _share),
+                        : _button(Icons.groups_rounded, 'Guarda con la mia stanza', _share),
                   );
                 },
               ),
               _button(
                 full ? Icons.fullscreen_exit_rounded : Icons.fullscreen_rounded,
-                full ? 'Back to the list (Esc)' : 'Full screen (F)',
+                full ? 'Torna alla lista (Esc)' : 'Schermo intero (F)',
                 widget.onExpand,
               ),
             ],
@@ -443,15 +443,15 @@ class _BrowserLivePlayerState extends State<BrowserLivePlayer> {
             children: [
               Icon(Icons.signal_wifi_connected_no_internet_4_rounded, size: 28, color: accentHotOf(context)),
               const SizedBox(height: 8),
-              const Text("This stream isn't playing", style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700)),
+              const Text("Questo stream non parte", style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700)),
               const SizedBox(height: 3),
-              const Text('The source may be offline or busy.', style: TextStyle(fontSize: 12.5, color: VyseColors.textDim)),
+              const Text('La sorgente potrebbe essere offline o occupata.', style: TextStyle(fontSize: 12.5, color: VyseColors.textDim)),
               const SizedBox(height: 8),
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  TextButton(onPressed: _open, child: Text('Retry', style: TextStyle(color: accentOf(context)))),
-                  if (widget.onStep != null) TextButton(onPressed: () => _step(1), child: Text('Next channel', style: TextStyle(color: accentOf(context)))),
+                  TextButton(onPressed: _open, child: Text('Riprova', style: TextStyle(color: accentOf(context)))),
+                  if (widget.onStep != null) TextButton(onPressed: () => _step(1), child: Text('Canale successivo', style: TextStyle(color: accentOf(context)))),
                 ],
               ),
             ],
@@ -471,7 +471,7 @@ class _LiveBadge extends StatelessWidget {
         child: const Row(mainAxisSize: MainAxisSize.min, children: [
           Icon(Icons.circle, size: 7, color: Colors.white),
           SizedBox(width: 5),
-          Text('LIVE', style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w900, letterSpacing: .6, color: Colors.white)),
+          Text('IN DIRETTA', style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w900, letterSpacing: .6, color: Colors.white)),
         ]),
       );
 }

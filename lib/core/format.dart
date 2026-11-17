@@ -1,4 +1,4 @@
-const _months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const _months = ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu', 'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic'];
 
 /// Oct 9, 2026
 String fmtDate(DateTime d) => '${_months[d.month - 1]} ${d.day}, ${d.year}';

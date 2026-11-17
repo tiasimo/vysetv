@@ -123,12 +123,12 @@ class _MusicPageState extends State<MusicPage> {
               padding: EdgeInsets.fromLTRB(inset, top, right, 18),
               sliver: SliverToBoxAdapter(
                 child: MusicTitle(
-                  title: 'Music',
-                  subtitle: 'Every song on YouTube Music. Likes and playlists follow you everywhere.',
+                  title: 'Musica',
+                  subtitle: 'Tutti i brani di YouTube Music. Mi piace e playlist ti seguono ovunque.',
                   trailing: Row(mainAxisSize: MainAxisSize.min, children: [
-                    RoundAction(icon: Icons.library_music_rounded, tooltip: 'Your library', onTap: () => openMusicLibrary(context)),
+                    RoundAction(icon: Icons.library_music_rounded, tooltip: 'La tua libreria', onTap: () => openMusicLibrary(context)),
                     const SizedBox(width: 8),
-                    RoundAction(icon: Icons.history_rounded, tooltip: 'History', onTap: () => openMusicHistory(context)),
+                    RoundAction(icon: Icons.history_rounded, tooltip: 'Cronologia', onTap: () => openMusicHistory(context)),
                   ]),
                 ),
               ),
@@ -143,7 +143,7 @@ class _MusicPageState extends State<MusicPage> {
                     child: FadeSlideIn(
                       delay: const Duration(milliseconds: 90),
                       offset: 10,
-                      child: VyseSearchField(controller: _text, hint: 'Search artists, songs, albums and playlists', onSubmit: _pick),
+                      child: VyseSearchField(controller: _text, hint: 'Cerca artisti, brani, album e playlist', onSubmit: _pick),
                     ),
                   ),
                 ),
@@ -209,7 +209,7 @@ class _HomeState extends State<_Home> {
           const _QuickTiles(),
           const _Recent(),
           if (h != null && h.moods.isNotEmpty) ...[
-            const ShelfHeader(title: 'Moods'),
+            const ShelfHeader(title: 'Stati d\'animo'),
             SizedBox(
               height: 40,
               child: ListView.separated(
@@ -218,7 +218,7 @@ class _HomeState extends State<_Home> {
                 itemCount: h.moods.length + 1,
                 separatorBuilder: (_, _) => const SizedBox(width: 8),
                 itemBuilder: (context, i) => i == h.moods.length
-                    ? _Chip(label: 'All moods & genres', icon: Icons.grid_view_rounded, onTap: () => openMusicBrowse(context))
+                    ? _Chip(label: 'Tutti i generi e stati d\'animo', icon: Icons.grid_view_rounded, onTap: () => openMusicBrowse(context))
                     : _Chip(label: h.moods[i].title, onTap: () => openMood(context, h.moods[i])),
               ),
             ),
@@ -228,9 +228,9 @@ class _HomeState extends State<_Home> {
           if (snap.hasError)
             EmptyState(
               icon: Icons.wifi_off_rounded,
-              title: "Couldn't reach YouTube Music",
-              body: 'Your library still works. Check your connection and try again.',
-              action: ('Retry', () => setState(() => _home = YtMusic.instance.home())),
+              title: "Impossibile raggiungere YouTube Music",
+              body: 'La tua libreria funziona comunque. Controlla la connessione e riprova.',
+              action: ('Riprova', () => setState(() => _home = YtMusic.instance.home())),
             )
           else if (h == null)
             const RowsSkeleton(rows: 4)
@@ -320,7 +320,7 @@ class _MadeForYouState extends State<_MadeForYou> with SingleTickerProviderState
     if (picks.isNotEmpty) {
       await p.playQueue(ytTracks(picks), shuffled: true);
     } else if (mounted) {
-      showToast(context, const Text('Nothing to pick from yet'), icon: Icons.info_outline_rounded);
+      showToast(context, const Text('Ancora niente da scegliere'), icon: Icons.info_outline_rounded);
     }
   }
 
@@ -347,7 +347,7 @@ class _MadeForYouState extends State<_MadeForYou> with SingleTickerProviderState
       Padding(
         padding: EdgeInsets.fromLTRB(Layout.inset(context), 0, pageRight(context), 8),
         child: Row(children: [
-          Expanded(child: Text('Made for you', style: TextStyle(fontSize: phone ? 26 : 34, fontWeight: FontWeight.w800, letterSpacing: -1.1))),
+          Expanded(child: Text('Fatti per te', style: TextStyle(fontSize: phone ? 26 : 34, fontWeight: FontWeight.w800, letterSpacing: -1.1))),
           if (!phone && picks.isNotEmpty) ...[
             _Arrow(icon: Icons.chevron_left_rounded, onTap: () => _go(_pos.value - 1)),
             const SizedBox(width: 8),
@@ -402,8 +402,8 @@ class _MadeForYouState extends State<_MadeForYou> with SingleTickerProviderState
         opacity: fade.clamp(0.0, 1.0),
         child: _DeckCard(
           dim: math.min(ad, 3) * .14,
-          title: card?.title ?? 'Surprise me',
-          subtitle: card == null ? 'Pick something for me' : (card.subtitle.isNotEmpty ? card.subtitle : card.artistNames),
+          title: card?.title ?? 'Sorprendimi',
+          subtitle: card == null ? 'Scegli qualcosa per me' : (card.subtitle.isNotEmpty ? card.subtitle : card.artistNames),
           art: card != null ? sizedArt(card.thumb, 600) : (picks.isEmpty ? null : sizedArt(picks[math.min(half, picks.length - 1)].thumb, 600)),
           surprise: card == null,
           onTap: ad > .5 ? () => _go(i.toDouble()) : (card != null ? () => openYtItem(context, card) : _surprise),
@@ -518,10 +518,10 @@ class _QuickTiles extends StatelessWidget {
     builder: (context, _) {
       final saved = MusicLibrary.playlists.length + MusicLibrary.albums.length + MusicLibrary.artists.length + MusicLibrary.savedPlaylists.length;
       final tiles = [
-        (Icons.library_music_rounded, 'Library', '$saved saved', () => openMusicLibrary(context)),
-        (Icons.explore_rounded, 'Browse', 'Charts, moods, new releases', () => openMusicBrowse(context)),
-        (Icons.history_rounded, 'History', '${MusicLibrary.plays} plays', () => openMusicHistory(context)),
-        (Icons.favorite_rounded, 'Liked songs', songCount(MusicLibrary.likes.length), () => openLikedSongs(context)),
+        (Icons.library_music_rounded, 'Libreria', '$saved salvati', () => openMusicLibrary(context)),
+        (Icons.explore_rounded, 'Sfoglia', 'Classifiche, stati d\'animo, nuove uscite', () => openMusicBrowse(context)),
+        (Icons.history_rounded, 'Cronologia', '${MusicLibrary.plays} ascolti', () => openMusicHistory(context)),
+        (Icons.favorite_rounded, 'Brani preferiti', songCount(MusicLibrary.likes.length), () => openLikedSongs(context)),
       ];
       final phone = Layout.isPhone(context);
       return Padding(
@@ -584,7 +584,7 @@ class _Recent extends StatelessWidget {
       if (list.isEmpty) return const SizedBox.shrink();
       final tracks = [for (final h in list.take(16)) h.track];
       return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        const ShelfHeader(title: 'Recently played'),
+        const ShelfHeader(title: 'Ascoltati di recente'),
         Padding(
           padding: EdgeInsets.fromLTRB(Layout.inset(context) - 8, 0, pageRight(context) - 8, 26),
           child: LayoutBuilder(builder: (context, c) {
@@ -673,7 +673,7 @@ class _Yours extends StatelessWidget {
         if (lists.isNotEmpty || likes.isNotEmpty)
           Shelf<Object>(
             key: ValueKey('yours/${lists.length}/${likes.length}'),
-            title: 'Your playlists',
+            title: 'Le tue playlist',
             load: () async => [likes, ...lists],
             maxItems: 40,
             itemWidth: w,
@@ -683,7 +683,7 @@ class _Yours extends StatelessWidget {
         if (artists.isNotEmpty)
           Shelf<SavedRef>(
             key: ValueKey('artists/${artists.length}'),
-            title: 'Artists you follow',
+            title: 'Artisti che segui',
             load: () async => artists,
             maxItems: 40,
             itemWidth: aw,
@@ -719,7 +719,7 @@ class _ResultsState extends State<_Results> {
         padding: EdgeInsets.fromLTRB(inset, 0, right, 18),
         child: MusicChips<YtKind?>(
           value: _kind,
-          options: const [(null, 'All'), (YtKind.song, 'Songs'), (YtKind.album, 'Albums'), (YtKind.artist, 'Artists'), (YtKind.playlist, 'Playlists'), (YtKind.video, 'Videos')],
+          options: const [(null, 'Tutti'), (YtKind.song, 'Brani'), (YtKind.album, 'Albums'), (YtKind.artist, 'Artists'), (YtKind.playlist, 'Playlist'), (YtKind.video, 'Videos')],
           onChanged: (k) => setState(() => _kind = k),
         ),
       ),
@@ -727,7 +727,7 @@ class _ResultsState extends State<_Results> {
     ]);
   }
 
-  Widget _error() => const EmptyState(icon: Icons.wifi_off_rounded, title: "Couldn't search right now", body: 'Check your connection and try again.');
+  Widget _error() => const EmptyState(icon: Icons.wifi_off_rounded, title: "Impossibile cercare ora", body: 'Controlla la connessione e riprova.');
 
   Widget _everything() => FutureBuilder<YtSearch>(
     future: _all,
@@ -736,7 +736,7 @@ class _ResultsState extends State<_Results> {
       final d = snap.data;
       if (d == null) return const RowsSkeleton(rows: 6);
       if (d.top == null && d.shelves.isEmpty) {
-        return EmptyState(icon: Icons.search_off_rounded, title: 'No results for "${widget.query}"', body: 'Check the spelling, or try fewer words.');
+        return EmptyState(icon: Icons.search_off_rounded, title: 'Nessun risultato per "${widget.query}"', body: 'Controlla l\'ortografia, o prova con meno parole.');
       }
       final inset = Layout.inset(context);
       final right = pageRight(context);
@@ -784,7 +784,7 @@ class _ResultsState extends State<_Results> {
       if (snap.hasError) return _error();
       final items = snap.data;
       if (items == null) return const RowsSkeleton(rows: 8);
-      if (items.isEmpty) return EmptyState(icon: Icons.search_off_rounded, title: 'Nothing like "${widget.query}"', body: 'Try All, or other words.');
+      if (items.isEmpty) return EmptyState(icon: Icons.search_off_rounded, title: 'Niente di simile a "${widget.query}"', body: 'Prova Tutti, o altre parole.');
       final inset = Layout.inset(context);
       final right = pageRight(context);
       if (kind == YtKind.song || kind == YtKind.video) {
@@ -841,7 +841,7 @@ class _TopResult extends StatelessWidget {
               decoration: BoxDecoration(borderRadius: BorderRadius.circular(99), color: Colors.white.withValues(alpha: .1)),
               child: Text(
                 switch (i.kind) {
-                  YtKind.artist => 'Artist',
+                  YtKind.artist => 'Artista',
                   YtKind.album => i.albumType ?? 'Album',
                   YtKind.playlist => 'Playlist',
                   YtKind.video => 'Video',

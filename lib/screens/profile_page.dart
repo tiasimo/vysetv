@@ -39,16 +39,16 @@ const _card = Color(0xFF0D0F18);
 const _danger = Color(0xFFF26B6B);
 
 enum _Tab {
-  account('Account', 'Your profile, sign-in and sync.', Icons.person_outline_rounded),
-  party('Party profile', 'How everyone in Party sees you.', Icons.public_rounded),
-  appearance('Appearance', 'The ambient light behind every page, and what the navbar shows.', Icons.palette_outlined),
-  addons('Addons', 'Stremio addons for sources and subtitles. Synced with your account.', Icons.extension_outlined),
-  sources('Sources', 'Where films and shows play from, and in what order. Synced with your account.', Icons.dns_outlined),
-  debrid('Debrid', 'Stream torrents from a debrid service instead of peer to peer. Saved on this device.', Icons.cloud_download_outlined),
-  playback('Playback', 'How videos play by default. Saved on this device.', Icons.play_circle_outline_rounded),
-  subtitles('Subtitles', 'Default captions for the player. Saved on this device.', Icons.closed_caption_outlined),
-  about('About', 'Lorewatch, its version and where to find us.', Icons.info_outline_rounded),
-  danger('Danger Zone', "Resets that can't be undone.", Icons.warning_amber_rounded);
+  account('Account', 'Il tuo profilo, l\'accesso e la sincronizzazione.', Icons.person_outline_rounded),
+  party('Profilo Party', 'Come ti vedono tutti nel Party.', Icons.public_rounded),
+  appearance('Aspetto', 'La luce d\'ambiente dietro ogni pagina, e cosa mostra la barra di navigazione.', Icons.palette_outlined),
+  addons('Addon', 'Addon Stremio per sorgenti e sottotitoli. Sincronizzati con il tuo account.', Icons.extension_outlined),
+  sources('Sorgenti', 'Da dove partono film e serie, e in che ordine. Sincronizzato con il tuo account.', Icons.dns_outlined),
+  debrid('Debrid', 'Riproduci i torrent tramite un servizio debrid invece che peer to peer. Salvato su questo dispositivo.', Icons.cloud_download_outlined),
+  playback('Riproduzione', 'Come si riproducono i video. Salvato su questo dispositivo.', Icons.play_circle_outline_rounded),
+  subtitles('Lingue e sottotitoli', 'Lingue di audio e sottotitoli per film, serie TV e anime, e aspetto dei sottotitoli. Salvato su questo dispositivo.', Icons.closed_caption_outlined),
+  about('Informazioni', 'Lorewatch e la sua versione.', Icons.info_outline_rounded),
+  danger('Zona pericolosa', "Azzeramenti che non si possono annullare.", Icons.warning_amber_rounded);
 
   const _Tab(this.label, this.blurb, this.icon);
   final String label;
@@ -153,7 +153,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 child: ListView(
                                   scrollDirection: Axis.horizontal,
                                   children: [
-                                    for (final t in _Tab.values)
+                                    for (final t in _Tab.values.where((t) => t != _Tab.party))
                                       Padding(
                                         padding: const EdgeInsets.only(right: 6),
                                         child: t == _Tab.danger
@@ -172,7 +172,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   SizedBox(
                                     width: 220,
                                     child: Column(
-                                      children: [for (final t in _Tab.values) _SideItem(tab: t, selected: _tab == t, onTap: () => _pick(t))],
+                                      children: [for (final t in _Tab.values.where((t) => t != _Tab.party)) _SideItem(tab: t, selected: _tab == t, onTap: () => _pick(t))],
                                     ),
                                   ),
                                   const SizedBox(width: 40),
@@ -205,7 +205,7 @@ class _Header extends StatelessWidget {
     final phone = Layout.isPhone(context);
     final size = phone ? 84.0 : 116.0;
     final avatar = Pressable(
-      tooltip: 'Change avatar',
+      tooltip: 'Cambia avatar',
       onTap: () => showAvatarPicker(context),
       builder: (context, hovered, _) => Stack(
         clipBehavior: Clip.none,
@@ -249,9 +249,9 @@ class _Header extends StatelessWidget {
               style: TextStyle(fontSize: phone ? 28 : 40, fontWeight: FontWeight.w800, letterSpacing: -1.2, height: 1.05),
             ),
             const SizedBox(height: 8),
-            Text(u == null ? 'Local profile  ·  not signed in' : '@${u.username}', style: const TextStyle(fontSize: 14, color: VyseColors.textDim)),
+            Text(u == null ? 'Profilo locale  ·  accesso non eseguito' : '@${u.username}', style: const TextStyle(fontSize: 14, color: VyseColors.textDim)),
             const SizedBox(height: 3),
-            Text(u == null ? 'Sign in to use your profile on every device' : u.email, style: const TextStyle(fontSize: 12.5, color: VyseColors.textFaint)),
+            Text(u == null ? 'Accedi per usare il tuo profilo su ogni dispositivo' : u.email, style: const TextStyle(fontSize: 12.5, color: VyseColors.textFaint)),
           ],
         );
       },
@@ -264,10 +264,10 @@ class _Header extends StatelessWidget {
         runSpacing: 8,
         children: [
           if (u == null) ...[
-            _SmallButton(label: 'Create account', onTap: () => showAccountSheet(context, register: true)),
-            _SmallButton(label: 'Sign in', onTap: () => showAccountSheet(context), primary: true),
+            _SmallButton(label: 'Crea account', onTap: () => showAccountSheet(context, register: true)),
+            _SmallButton(label: 'Accedi', onTap: () => showAccountSheet(context), primary: true),
           ] else
-            _SmallButton(label: 'Sign out', icon: Icons.logout_rounded, onTap: Account.signOut),
+            _SmallButton(label: 'Esci', icon: Icons.logout_rounded, onTap: Account.signOut),
         ],
       ),
     );
@@ -437,7 +437,7 @@ class _DangerPill extends StatelessWidget {
         color: selected ? _danger : _danger.withValues(alpha: hovered ? .14 : 0),
       ),
       child: Text(
-        'Danger Zone',
+        'Zona pericolosa',
         style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: selected ? Colors.black : _danger),
       ),
     ),
@@ -630,7 +630,7 @@ class _AccountTab extends StatelessWidget {
       builder: (ctx) => AlertDialog(
         backgroundColor: VyseColors.surface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: const Text('Display name', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+        title: const Text('Nome visualizzato', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
         content: SizedBox(
           width: 360,
           child: TextField(
@@ -638,12 +638,12 @@ class _AccountTab extends StatelessWidget {
             autofocus: true,
             maxLength: 24,
             onSubmitted: (v) => Navigator.pop(ctx, v),
-            decoration: const InputDecoration(hintText: 'Your name'),
+            decoration: const InputDecoration(hintText: 'Il tuo nome'),
           ),
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),
-          TextButton(onPressed: () => Navigator.pop(ctx, c.text), child: const Text('Save')),
+          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Annulla')),
+          TextButton(onPressed: () => Navigator.pop(ctx, c.text), child: const Text('Salva')),
         ],
       ),
     );
@@ -655,19 +655,19 @@ class _AccountTab extends StatelessWidget {
   Widget build(BuildContext context) => Column(
     children: [
       _Section(
-        title: 'Profile',
+        title: 'Profilo',
         children: [
           ValueListenableBuilder(
             valueListenable: AppSettings.avatarLabel,
             builder: (context, label, _) => _Row(
               title: 'Avatar',
-              subtitle: label ?? 'Default',
+              subtitle: label ?? 'Predefinito',
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const ProfileAvatar(size: 44),
                   const SizedBox(width: 12),
-                  _SmallButton(label: 'Change avatar', onTap: () => showAvatarPicker(context)),
+                  _SmallButton(label: 'Cambia avatar', onTap: () => showAvatarPicker(context)),
                 ],
               ),
             ),
@@ -675,9 +675,9 @@ class _AccountTab extends StatelessWidget {
           ValueListenableBuilder(
             valueListenable: AppSettings.displayName,
             builder: (context, name, _) => _Row(
-              title: 'Display name',
+              title: 'Nome visualizzato',
               subtitle: name,
-              trailing: _SmallButton(label: 'Rename', onTap: () => _rename(context)),
+              trailing: _SmallButton(label: 'Rinomina', onTap: () => _rename(context)),
             ),
           ),
         ],
@@ -687,19 +687,19 @@ class _AccountTab extends StatelessWidget {
         builder: (context, u, _) => _Section(
           title: 'Account',
           subtitle: u == null
-              ? 'Sign in to keep My List, history and reading progress on all your devices.'
-              : 'Your profile follows this account to every device.',
+              ? 'Accedi per avere La mia lista, la cronologia e i progressi di lettura su tutti i tuoi dispositivi.'
+              : 'Il tuo profilo segue questo account su ogni dispositivo.',
           children: [
             if (u == null)
               _Row(
-                title: 'Not signed in',
-                subtitle: 'Everything is saved on this device for now.',
+                title: 'Accesso non eseguito',
+                subtitle: 'Per ora tutto è salvato su questo dispositivo.',
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    _SmallButton(label: 'Create account', onTap: () => showAccountSheet(context, register: true)),
+                    _SmallButton(label: 'Crea account', onTap: () => showAccountSheet(context, register: true)),
                     const SizedBox(width: 8),
-                    _SmallButton(label: 'Sign in', primary: true, onTap: () => showAccountSheet(context)),
+                    _SmallButton(label: 'Accedi', primary: true, onTap: () => showAccountSheet(context)),
                   ],
                 ),
               )
@@ -712,7 +712,7 @@ class _AccountTab extends StatelessWidget {
                       Text(s.isEmpty ? u.email : '${u.email}  ·  $s', style: const TextStyle(fontSize: 12.5, color: VyseColors.textDim)),
                 ),
                 subtitle: u.email,
-                trailing: _SmallButton(label: 'Sign out', icon: Icons.logout_rounded, onTap: Account.signOut),
+                trailing: _SmallButton(label: 'Esci', icon: Icons.logout_rounded, onTap: Account.signOut),
               ),
           ],
         ),
@@ -723,11 +723,11 @@ class _AccountTab extends StatelessWidget {
           title: 'Password',
           children: [
             _Row(
-              title: 'Change password',
-              subtitle: u == null ? 'Sign in to change your password.' : 'Your other devices get signed out when you change it.',
+              title: 'Cambia password',
+              subtitle: u == null ? 'Accedi per cambiare la password.' : 'Gli altri tuoi dispositivi verranno disconnessi quando la cambi.',
               trailing: u == null
-                  ? _SmallButton(label: 'Sign in', onTap: () => showAccountSheet(context))
-                  : _SmallButton(label: 'Change', onTap: () => showAccountSheet(context, changePassword: true)),
+                  ? _SmallButton(label: 'Accedi', onTap: () => showAccountSheet(context))
+                  : _SmallButton(label: 'Cambia', onTap: () => showAccountSheet(context, changePassword: true)),
             ),
           ],
         ),
@@ -744,22 +744,22 @@ class _ConnectedServices extends StatelessWidget {
 
   static String _ago(DateTime t) {
     final d = DateTime.now().difference(t);
-    if (d.inMinutes < 1) return 'just now';
-    if (d.inHours < 1) return '${d.inMinutes} min ago';
-    if (d.inDays < 1) return '${d.inHours} h ago';
-    return '${d.inDays} d ago';
+    if (d.inMinutes < 1) return 'adesso';
+    if (d.inHours < 1) return '${d.inMinutes} min fa';
+    if (d.inDays < 1) return '${d.inHours} h fa';
+    return '${d.inDays} g fa';
   }
 
   static String _status(TrackerState s) {
-    if (!s.configured) return 'Not set up yet';
-    if (!s.connected) return 'Not connected';
+    if (!s.configured) return 'Non ancora configurato';
+    if (!s.connected) return 'Non collegato';
     if (s.reconnect) return 'Sign in again to keep it updated${s.pending > 0 ? ' · ${s.pending} waiting' : ''}';
     return [
-      s.userName.isEmpty ? 'Connected' : 'Connected as ${s.userName}',
-      if (s.expiresSoon) 'sign-in ends soon',
-      if (s.pending > 0) '${s.pending} waiting' else if (s.lastSync != null) 'updated ${_ago(s.lastSync!)}',
+      s.userName.isEmpty ? 'Collegato' : 'Collegato come ${s.userName}',
+      if (s.expiresSoon) 'l\'accesso scade presto',
+      if (s.pending > 0) '${s.pending} in attesa' else if (s.lastSync != null) 'aggiornato ${_ago(s.lastSync!)}',
       if (s.note != null && s.pending > 0) s.note!,
-      if (s.unmatched > 0) '${s.unmatched} not found there',
+      if (s.unmatched > 0) '${s.unmatched} non trovati lì',
     ].join(' · ');
   }
 
@@ -769,8 +769,8 @@ class _ConnectedServices extends StatelessWidget {
     builder: (context, states, _) {
       final anime = states[TrackerId.anilist]?.connected ?? false;
       return _Section(
-        title: 'Connected services',
-        subtitle: 'What you watch in Lorewatch keeps your lists there up to date. Signing in stays on this device.',
+        title: 'Servizi collegati',
+        subtitle: 'Quello che guardi in Lorewatch tiene aggiornate le tue liste. L\'accesso resta su questo dispositivo.',
         children: [
           for (final id in TrackerId.values) ...[
             if (states[id] case final s?) ...[
@@ -785,45 +785,45 @@ class _ConnectedServices extends StatelessWidget {
                 trailing: !s.configured
                     ? null
                     : !s.connected
-                    ? _SmallButton(label: 'Connect', onTap: () => connectTracker(context, id))
+                    ? _SmallButton(label: 'Collega', onTap: () => connectTracker(context, id))
                     : Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           if (s.reconnect || s.expiresSoon) ...[
-                            _SmallButton(label: 'Reconnect', primary: true, onTap: () => connectTracker(context, id)),
+                            _SmallButton(label: 'Ricollega', primary: true, onTap: () => connectTracker(context, id)),
                             const SizedBox(width: 8),
                           ],
-                          _SmallButton(label: 'Disconnect', onTap: () => TrackerHub.disconnect(id)),
+                          _SmallButton(label: 'Scollega', onTap: () => TrackerHub.disconnect(id)),
                         ],
                       ),
               ),
               if (s.connected && !s.reconnect)
                 _Row(
-                  title: 'Import from ${id.label}',
-                  subtitle: 'Your watchlist into My List, what you watched into History',
-                  trailing: _SmallButton(label: 'Import', onTap: () => importFromTracker(context, id)),
+                  title: 'Importa da ${id.label}',
+                  subtitle: 'La tua watchlist in La mia lista, quello che hai visto nella Cronologia',
+                  trailing: _SmallButton(label: 'Importa', onTap: () => importFromTracker(context, id)),
                 ),
               if (s.connected && id == TrackerId.anilist)
                 _Row(
-                  title: 'Update ${id.label} progress',
-                  subtitle: 'Anime episodes you finish here count there',
+                  title: 'Aggiorna i progressi su ${id.label}',
+                  subtitle: 'Gli episodi di anime che finisci qui contano anche lì',
                   trailing: _Toggle(AppSettings.trackAniList),
                 ),
               if (s.connected && id == TrackerId.simkl) ...[
-                _Row(title: 'Scrobble what I watch', subtitle: 'Films, shows and anime, as you play them', trailing: _Toggle(AppSettings.simklScrobble)),
-                _Row(title: 'Sync My List', subtitle: 'Adding here puts it on your Simkl plan to watch', trailing: _Toggle(AppSettings.simklList)),
+                _Row(title: 'Registra quello che guardo', subtitle: 'Film, serie e anime, mentre li guardi', trailing: _Toggle(AppSettings.simklScrobble)),
+                _Row(title: 'Sincronizza La mia lista', subtitle: 'Aggiungere qui lo mette tra i Plan to watch di Simkl', trailing: _Toggle(AppSettings.simklList)),
                 _Row(
-                  title: 'History removals reach Simkl',
-                  subtitle: 'Removing a title from History here also clears its watch history on Simkl',
+                  title: 'Le rimozioni dalla cronologia arrivano a Simkl',
+                  subtitle: 'Togliere un titolo dalla Cronologia qui cancella anche la sua cronologia su Simkl',
                   trailing: _Toggle(AppSettings.simklHistory),
                 ),
               ],
               if (s.connected && id == TrackerId.trakt) ...[
-                _Row(title: 'Scrobble what I watch', subtitle: 'Films, shows and anime, as you play them', trailing: _Toggle(AppSettings.traktScrobble)),
-                _Row(title: 'Sync My List', subtitle: 'Adding here puts it on your Trakt watchlist', trailing: _Toggle(AppSettings.traktList)),
+                _Row(title: 'Registra quello che guardo', subtitle: 'Film, serie e anime, mentre li guardi', trailing: _Toggle(AppSettings.traktScrobble)),
+                _Row(title: 'Sincronizza La mia lista', subtitle: 'Aggiungere qui lo mette nella tua watchlist di Trakt', trailing: _Toggle(AppSettings.traktList)),
                 _Row(
-                  title: 'History removals reach Trakt',
-                  subtitle: 'Removing a title from History here also removes the plays Lorewatch sent to Trakt',
+                  title: 'Le rimozioni dalla cronologia arrivano a Trakt',
+                  subtitle: 'Togliere un titolo dalla Cronologia qui rimuove anche le visioni che Lorewatch ha inviato a Trakt',
                   trailing: _Toggle(AppSettings.traktHistory),
                 ),
               ],
@@ -831,8 +831,8 @@ class _ConnectedServices extends StatelessWidget {
           ],
           if (anime)
             _Row(
-              title: 'Count rewatches',
-              subtitle: 'Finishing episode 1 of something you completed starts a rewatch there',
+              title: 'Conta le riviste',
+              subtitle: 'Finire l\'episodio 1 di qualcosa che hai completato fa partire una nuova visione',
               trailing: _Toggle(AppSettings.trackRewatches),
             ),
         ],
@@ -850,13 +850,13 @@ class _PartyTab extends StatelessWidget {
     builder: (context, u, _) {
       if (u == null) {
         return _Section(
-          title: 'Your Party profile',
-          subtitle: 'Bio, banner, privacy and status belong to your account.',
+          title: 'Il tuo profilo Party',
+          subtitle: 'Bio, banner, privacy e stato appartengono al tuo account.',
           children: [
             _Row(
-              title: 'Not signed in',
-              subtitle: 'Sign in to set up how others see you.',
-              trailing: _SmallButton(label: 'Sign in', primary: true, onTap: () => showAccountSheet(context)),
+              title: 'Accesso non eseguito',
+              subtitle: 'Accedi per scegliere come ti vedono gli altri.',
+              trailing: _SmallButton(label: 'Accedi', primary: true, onTap: () => showAccountSheet(context)),
             ),
           ],
         );
@@ -880,39 +880,39 @@ class _PartyTab extends StatelessWidget {
           ),
           const SizedBox(height: 34),
           _Section(
-            title: 'Look',
+            title: 'Aspetto',
             children: [
               ValueListenableBuilder(
                 valueListenable: AppSettings.avatarLabel,
                 builder: (context, label, _) => _Row(
                   title: 'Avatar',
-                  subtitle: label ?? 'Default',
-                  trailing: _SmallButton(label: 'Change', onTap: () => showAvatarPicker(context)),
+                  subtitle: label ?? 'Predefinito',
+                  trailing: _SmallButton(label: 'Cambia', onTap: () => showAvatarPicker(context)),
                 ),
               ),
               _Row(
                 title: 'Banner',
-                subtitle: u.bannerUrl.isEmpty ? 'None yet. A colour from your username shows instead.' : 'Shown across the top of your profile.',
-                trailing: _SmallButton(label: u.bannerUrl.isEmpty ? 'Add' : 'Change', onTap: () => showBannerDialog(context)),
+                subtitle: u.bannerUrl.isEmpty ? 'Ancora nessuno. Al suo posto c\'è un colore dal tuo nome utente.' : 'Mostrato in cima al tuo profilo.',
+                trailing: _SmallButton(label: u.bannerUrl.isEmpty ? 'Aggiungi' : 'Cambia', onTap: () => showBannerDialog(context)),
               ),
               _Row(
                 title: 'Bio',
-                subtitle: u.bio.isEmpty ? 'A few words about you.' : u.bio,
+                subtitle: u.bio.isEmpty ? 'Qualche parola su di te.' : u.bio,
                 trailing: _SmallButton(
-                  label: 'Edit',
+                  label: 'Modifica',
                   onTap: () async {
-                    final v = await showTextEditDialog(context, title: 'Bio', initial: u.bio, maxLength: 190, maxLines: 4, hint: 'Movies, shows, vibes…');
+                    final v = await showTextEditDialog(context, title: 'Bio', initial: u.bio, maxLength: 190, maxLines: 4, hint: 'Film, serie, atmosfere…');
                     if (v != null && v != u.bio && context.mounted) await saveProfile(context, {'bio': v});
                   },
                 ),
               ),
               _Row(
-                title: 'Status line',
-                subtitle: u.customStatus.isEmpty ? 'Shows under your name, e.g. "rewatching Dark".' : u.customStatus,
+                title: 'Stato',
+                subtitle: u.customStatus.isEmpty ? 'Compare sotto il tuo nome, es. "rivedo Dark".' : u.customStatus,
                 trailing: _SmallButton(
-                  label: 'Edit',
+                  label: 'Modifica',
                   onTap: () async {
-                    final v = await showTextEditDialog(context, title: 'Status line', initial: u.customStatus, maxLength: 80, hint: 'What are you up to?');
+                    final v = await showTextEditDialog(context, title: 'Stato', initial: u.customStatus, maxLength: 80, hint: 'Cosa stai facendo?');
                     if (v != null && v != u.customStatus && context.mounted) await saveProfile(context, {'customStatus': v});
                   },
                 ),
@@ -923,90 +923,90 @@ class _PartyTab extends StatelessWidget {
             title: 'Privacy',
             children: [
               _Row(
-                title: 'Profile',
+                title: 'Profilo',
                 subtitle: u.private
-                    ? "Private. Nobody can add you or message you, and only friends see your bio, banner, status line and what you watch. You can still add people, and once you're friends it works both ways."
-                    : 'Public. Anyone can add you and see your profile and what you watch. Friends can message you.',
+                    ? "Privato. Nessuno può aggiungerti o scriverti, e solo gli amici vedono bio, banner, stato e cosa guardi. Puoi comunque aggiungere persone, e una volta amici vale in entrambi i sensi."
+                    : 'Pubblico. Chiunque può aggiungerti e vedere il tuo profilo e cosa guardi. Gli amici possono scriverti.',
                 below: _Choice<bool>(
                   value: u.private,
                   options: const [false, true],
-                  label: (v) => v ? 'Private' : 'Public',
+                  label: (v) => v ? 'Privato' : 'Pubblico',
                   onChanged: (v) => saveProfile(context, {'visibility': v ? 'private' : 'public'}),
                 ),
               ),
               _Row(
-                title: 'Online list',
+                title: 'Lista online',
                 subtitle: u.onlineListHidden
-                    ? "Hidden. You never appear in Party's online list, but your profile still shows when you're online. To look offline everywhere, set Status to Invisible."
+                    ? "Nascosto. Non compari mai nella lista online del Party, ma il profilo mostra comunque quando sei online. Per sembrare offline ovunque, imposta lo stato su Invisibile."
                     : u.private
-                    ? "Shown. You appear in Party's online list with your name and avatar; your status line and what you watch stay with friends."
-                    : "Shown. You appear in Party's online list, with what you're watching.",
+                    ? "Visibile. Compari nella lista online del Party con nome e avatar; stato e cosa guardi restano agli amici."
+                    : "Visibile. Compari nella lista online del Party, con quello che stai guardando.",
                 below: _Choice<bool>(
                   value: u.onlineListHidden,
                   options: const [false, true],
-                  label: (v) => v ? 'Hide' : 'Show',
+                  label: (v) => v ? 'Nascondi' : 'Mostra',
                   onChanged: (v) => saveProfile(context, {'onlineList': v ? 'hide' : 'show'}),
                 ),
               ),
               _Row(
-                title: 'Who can message me',
-                subtitle: 'Messages disappear 24 hours after they are sent.',
+                title: 'Chi può scrivermi',
+                subtitle: 'I messaggi spariscono 24 ore dopo l\'invio.',
                 below: _Choice<bool>(
                   value: u.dmsOff,
                   options: const [false, true],
-                  label: (v) => v ? 'Nobody' : 'Friends',
+                  label: (v) => v ? 'Nessuno' : 'Amici',
                   onChanged: (v) => saveProfile(context, {'dmPolicy': v ? 'nobody' : 'friends'}),
                 ),
               ),
               _Row(
-                title: "Show what I'm watching",
+                title: "Mostra cosa sto guardando",
                 subtitle: u.private
-                    ? 'Only your friends see the title you have playing while your profile is private.'
-                    : 'Your profile and the online list show the title you have playing.',
+                    ? 'Solo gli amici vedono il titolo in riproduzione finché il profilo è privato.'
+                    : 'Il profilo e la lista online mostrano il titolo in riproduzione.',
                 trailing: _Switch(value: !u.hideActivity, onChanged: (v) => saveProfile(context, {'hideActivity': !v})),
               ),
               _Row(
-                title: 'Show my library',
+                title: 'Mostra la mia libreria',
                 subtitle: u.private
-                    ? 'Friends can open your My List, liked songs, public playlists and the artists you follow from your profile.'
-                    : 'People can open your My List, liked songs, public playlists and the artists you follow from your profile.',
+                    ? 'Gli amici possono aprire dal tuo profilo La mia lista, i brani preferiti, le playlist pubbliche e gli artisti che segui.'
+                    : 'Chiunque può aprire dal tuo profilo La mia lista, i brani preferiti, le playlist pubbliche e gli artisti che segui.',
                 trailing: _Toggle(AppSettings.partyLibrary),
               ),
               _Row(
-                title: 'Music autoplay',
-                subtitle: 'When your queue runs out, keep playing songs like the last one.',
+                title: 'Riproduzione automatica musica',
+                subtitle: 'Quando la coda finisce, continua con brani simili all\'ultimo.',
                 trailing: _Toggle(AppSettings.musicAutoplay),
               ),
               ValueListenableBuilder<FriendLists>(
                 valueListenable: Friends.lists,
                 builder: (context, l, _) => _Row(
-                  title: 'Blocked people',
+                  title: 'Persone bloccate',
                   subtitle: l.blocked.isEmpty
-                      ? "Nobody. Blocked people can't add you, message you or see your profile."
-                      : '${l.blocked.length} blocked. They can\'t add you, message you or see your profile.',
-                  trailing: _SmallButton(label: 'Manage', onTap: () => showBlockedDialog(context)),
+                      ? "Nessuno. Le persone bloccate non possono aggiungerti, scriverti o vedere il tuo profilo."
+                      : '${l.blocked.length} bloccati. Non possono aggiungerti, scriverti o vedere il tuo profilo.',
+                  trailing: _SmallButton(label: 'Gestisci', onTap: () => showBlockedDialog(context)),
                 ),
               ),
               _Row(
-                title: 'Party rules',
+                title: 'Regole del Party',
                 subtitle: switch (u.termsAt) {
-                  final d? => 'You accepted these on ${d.day} ${const ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][d.month - 1]} ${d.year}.',
-                  null => 'What everyone in Party agrees to.',
+                  final d? => 'You accepted these on ${d.day} ${const ['Jan', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu', 'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dec'][d.month - 1]} ${d.year}.',
+                  null => 'Quello che tutti nel Party accettano.',
                 },
-                trailing: _SmallButton(label: 'Read', onTap: () => showPartyRules(context)),
+                trailing: _SmallButton(label: 'Leggi', onTap: () => showPartyRules(context)),
               ),
             ],
           ),
           _Section(
-            title: 'Status',
+            title: 'Stato',
             children: [
               _Row(
-                title: 'Show me as',
+                title: 'Mostrami come',
                 subtitle: switch (u.statusMode) {
-                  'idle' => 'Idle: you look away from keyboard.',
-                  'dnd' => 'Do not disturb: no message pop-ups.',
-                  'invisible' => 'Invisible: you appear offline but can use everything.',
-                  _ => 'Online: everyone sees when you are around.',
+                  'idle' => 'Inattivo: sembri lontano dalla tastiera.',
+                  'dnd' => 'Non disturbare: nessun popup di messaggi.',
+                  'invisible' => 'Invisibile: sembri offline ma puoi usare tutto.',
+                  _ => 'Online: tutti vedono quando ci sei.',
                 },
                 below: SingleChildScrollView(
                   scrollDirection: Axis.horizontal, // four options don't fit a phone's width
@@ -1014,9 +1014,9 @@ class _PartyTab extends StatelessWidget {
                     value: u.statusMode,
                     options: const ['online', 'idle', 'dnd', 'invisible'],
                     label: (v) => switch (v) {
-                      'idle' => 'Idle',
-                      'dnd' => 'Do not disturb',
-                      'invisible' => 'Invisible',
+                      'idle' => 'Inattivo',
+                      'dnd' => 'Non disturbare',
+                      'invisible' => 'Invisibile',
                       _ => 'Online',
                     },
                     onChanged: (v) => saveProfile(context, {'statusMode': v}),
@@ -1087,10 +1087,10 @@ class _Navigation extends StatelessWidget {
       }
 
       return _Section(
-        title: 'Navigation',
-        subtitle: 'The sections in the navbar, in order: top to bottom on the rail, left to right on a phone. '
-            'Drag a row or use the arrows to move it; switch one off to hide it. '
-            'Lorewatch opens on the first one showing, and Back returns to it. Profile and settings are always there.',
+        title: 'Navigazione',
+        subtitle: 'Le sezioni della barra di navigazione, in ordine: dall\'alto in basso sulla barra laterale, da sinistra a destra sul telefono. '
+            'Trascina una riga o usa le frecce per spostarla; spegnine una per nasconderla. '
+            'Lorewatch si apre sulla prima visibile, e Indietro ci riporta lì. Profilo e impostazioni ci sono sempre.',
         children: [
           ReorderableListView.builder(
             shrinkWrap: true,
@@ -1126,9 +1126,9 @@ class _Navigation extends StatelessWidget {
             },
           ),
           _Row(
-            title: 'Default order',
-            subtitle: 'Home first and every section showing',
-            trailing: _SmallButton(label: 'Reset', icon: Icons.restart_alt_rounded, onTap: NavLayout.reset),
+            title: 'Ordine predefinito',
+            subtitle: 'Prima la Home e tutte le sezioni visibili',
+            trailing: _SmallButton(label: 'Ripristina', icon: Icons.restart_alt_rounded, onTap: NavLayout.reset),
           ),
         ],
       );
@@ -1193,18 +1193,18 @@ class _NavRow extends StatelessWidget {
       crossAxisAlignment: WrapCrossAlignment.center,
       children: [
         Text(item.label, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: on ? VyseColors.text : VyseColors.textDim)),
-        if (first) const _Kind('Opens first', Icons.flag_rounded),
-        if (!on) const _Kind('Hidden', Icons.visibility_off_outlined),
+        if (first) const _Kind('Si apre per prima', Icons.flag_rounded),
+        if (!on) const _Kind('Nascosta', Icons.visibility_off_outlined),
       ],
     );
     final controls = Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        _IconAction(icon: Icons.arrow_upward_rounded, tooltip: 'Move up', onTap: index == 0 ? null : () => onMove(-1)),
-        _IconAction(icon: Icons.arrow_downward_rounded, tooltip: 'Move down', onTap: index == count - 1 ? null : () => onMove(1)),
+        _IconAction(icon: Icons.arrow_upward_rounded, tooltip: 'Sposta su', onTap: index == 0 ? null : () => onMove(-1)),
+        _IconAction(icon: Icons.arrow_downward_rounded, tooltip: 'Sposta giù', onTap: index == count - 1 ? null : () => onMove(1)),
         const SizedBox(width: 8),
         Tooltip(
-          message: locked ? 'At least one section stays on' : (on ? 'Hide this section' : 'Show this section'),
+          message: locked ? 'Almeno una sezione resta attiva' : (on ? 'Nascondi questa sezione' : 'Mostra questa sezione'),
           child: _Switch(value: on, color: accent, thumb: onAccentOf(context), onChanged: (v) => NavLayout.setOn(item, v)),
         ),
       ],
@@ -1296,28 +1296,28 @@ class _PlaybackTab extends StatelessWidget {
         title: 'Player',
         children: [
           _Row(
-            title: 'Streaming mode',
-            subtitle: "On: videos play right away from Lorewatch's servers. Off: pick a source from your addons first",
+            title: 'Modalità streaming',
+            subtitle: "Attiva: i video partono subito dai server integrati. Disattiva: scegli prima una sorgente dai tuoi addon",
             trailing: _Toggle(AppSettings.streamingMode),
           ),
           _Row(
-            title: 'Autoplay the best source',
-            subtitle: 'With streaming mode off: the Next episode button plays the best match from your addons. '
-                'Nothing starts by itself, and opening a title still shows its sources first. '
-                'What counts as best is yours to set: the Autoplay order below',
+            title: 'Riproduci automaticamente la sorgente migliore',
+            subtitle: 'Con la modalità streaming disattivata: il pulsante Prossimo episodio riproduce la sorgente migliore dei tuoi addon. '
+                'Niente parte da solo, e aprire un titolo mostra comunque prima le sorgenti. '
+                'Cosa conta come migliore lo decidi tu: l\'ordine qui sotto',
             trailing: _Toggle(AppSettings.autoplayBest),
           ),
           _Row(
-            title: 'P2P streaming',
-            subtitle: 'Play torrent sources. You connect directly to other people, who can see your IP address',
+            title: 'Streaming P2P',
+            subtitle: 'Riproduci sorgenti torrent. Ti colleghi direttamente ad altre persone, che possono vedere il tuo indirizzo IP',
             trailing: _Toggle(AppSettings.p2pStreaming),
           ),
-          _Row(title: 'Auto next episode', subtitle: 'Play the next episode when one ends', trailing: _Toggle(AppSettings.autoNext)),
+          _Row(title: 'Episodio successivo automatico', subtitle: 'Riproduci il prossimo episodio quando uno finisce', trailing: _Toggle(AppSettings.autoNext)),
           ValueListenableBuilder(
             valueListenable: AppSettings.seekSeconds,
             builder: (context, s, _) => _Row(
-              title: 'Seek amount',
-              subtitle: '${s}s per skip (← → in the player)',
+              title: 'Salto',
+              subtitle: '${s}s per salto (← → nel player)',
               below: _Segmented<int>(setting: AppSettings.seekSeconds, options: const [5, 10, 15, 30], label: (v) => '${v}s'),
             ),
           ),
@@ -1354,10 +1354,10 @@ class _AutoplayOrder extends StatelessWidget {
       }
 
       return _Section(
-        title: 'Autoplay order',
-        subtitle: 'What "Autoplay the best source" goes for, from the top down: the first step your addons have a source for plays, '
-            "and if that one doesn't play, the next one down does. Leave a box on Any to take whatever it is. "
-            'Dolby Digital also takes Dolby Digital+, and DTS takes DTS-HD.',
+        title: 'Ordine della riproduzione automatica',
+        subtitle: 'Cosa cerca "Riproduci automaticamente la sorgente migliore", dall\'alto in basso: parte il primo passo per cui i tuoi addon hanno una sorgente, '
+            "e se quella non parte, tocca al successivo. Lascia un campo su Qualsiasi per prendere quello che c'è. "
+            'Dolby Digital include anche Dolby Digital+, e DTS include DTS-HD.',
         children: [
           if (steps.isNotEmpty)
             ReorderableListView.builder(
@@ -1389,26 +1389,26 @@ class _AutoplayOrder extends StatelessWidget {
               ),
             ),
           _Row(
-            title: steps.isEmpty ? 'No steps yet' : 'Another step',
-            subtitle: steps.isEmpty ? 'Autoplay decides by itself: 4K first, then the best sound' : 'It goes at the bottom: set it, then move it to where it belongs',
-            trailing: _SmallButton(label: 'Add a step', icon: Icons.add_rounded, primary: steps.isEmpty, onTap: () => AutoplayOrder.save([...steps, const AutoplayStep()])),
+            title: steps.isEmpty ? 'Ancora nessun passo' : 'Un altro passo',
+            subtitle: steps.isEmpty ? 'La riproduzione automatica decide da sola: prima il 4K, poi l\'audio migliore' : 'Va in fondo: impostalo, poi spostalo dove deve stare',
+            trailing: _SmallButton(label: 'Aggiungi un passo', icon: Icons.add_rounded, primary: steps.isEmpty, onTap: () => AutoplayOrder.save([...steps, const AutoplayStep()])),
           ),
           if (steps.isEmpty)
             _Row(
-              title: 'Start from an example',
-              subtitle: '4K, then 1080p with Atmos 7.1, then with Dolby Digital 7.1, then with 5.1, then any 1080p',
-              trailing: _SmallButton(label: 'Use it', icon: Icons.auto_awesome_rounded, onTap: () => AutoplayOrder.save(_example)),
+              title: 'Parti da un esempio',
+              subtitle: '4K, poi 1080p con Atmos 7.1, poi con Dolby Digital 7.1, poi con 5.1, poi qualsiasi 1080p',
+              trailing: _SmallButton(label: 'Usalo', icon: Icons.auto_awesome_rounded, onTap: () => AutoplayOrder.save(_example)),
             )
           else ...[
             _Row(
-              title: 'When no step has a source',
-              subtitle: 'On: play the best of what there is. Off: open the sources list to pick from',
+              title: 'Quando nessun passo ha una sorgente',
+              subtitle: 'Attivo: riproduci la migliore disponibile. Disattivo: apri la lista delle sorgenti',
               trailing: _Toggle(AppSettings.autoplayRest),
             ),
             _Row(
-              title: 'Clear the order',
-              subtitle: 'Back to deciding by itself',
-              trailing: _SmallButton(label: 'Clear', icon: Icons.restart_alt_rounded, onTap: () => AutoplayOrder.save(const [])),
+              title: 'Cancella l\'ordine',
+              subtitle: 'Torna a decidere da solo',
+              trailing: _SmallButton(label: 'Cancella', icon: Icons.restart_alt_rounded, onTap: () => AutoplayOrder.save(const [])),
             ),
           ],
         ],
@@ -1452,20 +1452,20 @@ class _StepRow extends StatelessWidget {
       runSpacing: 8,
       children: [
         _StepPick(
-          any: 'Any quality',
+          any: 'Qualsiasi qualità',
           value: s.quality,
           options: AutoplayStep.qualities,
           onPick: (v) => onChange(AutoplayStep(quality: v, audio: s.audio, channels: s.channels)),
         ),
         _StepPick(
-          any: 'Any sound',
+          any: 'Qualsiasi audio',
           value: s.audio,
           options: AutoplayStep.audios,
           label: (a) => a == 'Atmos' ? 'Dolby Atmos' : a,
           onPick: (v) => onChange(AutoplayStep(quality: s.quality, audio: v, channels: s.channels)),
         ),
         _StepPick(
-          any: 'Any channels',
+          any: 'Qualsiasi canale',
           value: s.channels,
           options: AutoplayStep.layouts,
           label: (c) => c == '2.0' ? 'Stereo' : c,
@@ -1476,10 +1476,10 @@ class _StepRow extends StatelessWidget {
     final controls = Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        _IconAction(icon: Icons.arrow_upward_rounded, tooltip: 'Try it sooner', onTap: index == 0 ? null : () => onMove(-1)),
-        _IconAction(icon: Icons.arrow_downward_rounded, tooltip: 'Try it later', onTap: index == count - 1 ? null : () => onMove(1)),
+        _IconAction(icon: Icons.arrow_upward_rounded, tooltip: 'Provalo prima', onTap: index == 0 ? null : () => onMove(-1)),
+        _IconAction(icon: Icons.arrow_downward_rounded, tooltip: 'Provalo dopo', onTap: index == count - 1 ? null : () => onMove(1)),
         const SizedBox(width: 4),
-        _IconAction(icon: Icons.close_rounded, tooltip: 'Remove this step', danger: true, onTap: onRemove),
+        _IconAction(icon: Icons.close_rounded, tooltip: 'Rimuovi questo passo', danger: true, onTap: onRemove),
       ],
     );
     return Column(
@@ -1658,21 +1658,21 @@ class _SubtitlesTab extends StatelessWidget {
           ],
         ),
       _Section(
-        title: 'Caption style',
-        subtitle: "Drawn by the player's subtitle engine (libass), so the preview is close but not exact.",
+        title: 'Stile dei sottotitoli',
+        subtitle: "Disegnati dal motore sottotitoli del player (libass), quindi l'anteprima è simile ma non identica.",
         children: [
           const Padding(padding: EdgeInsets.only(top: 18, bottom: 4), child: _SubtitlePreview()),
           _Row(
-            title: 'Font',
-            subtitle: 'Go Noto covers every language. Other fonts fall back to it for letters they lack.',
+            title: 'Carattere',
+            subtitle: 'Go Noto copre ogni lingua. Gli altri caratteri ripiegano su di esso per le lettere che mancano.',
             trailing: const _FontButton(),
           ),
-          _Row(title: 'Bold', trailing: _Toggle(AppSettings.subtitleBold)),
-          _Row(title: 'Italic', trailing: _Toggle(AppSettings.subtitleItalic)),
+          _Row(title: 'Grassetto', trailing: _Toggle(AppSettings.subtitleBold)),
+          _Row(title: 'Corsivo', trailing: _Toggle(AppSettings.subtitleItalic)),
           ValueListenableBuilder(
             valueListenable: AppSettings.subtitleSize,
             builder: (context, size, _) => _Row(
-              title: 'Text size',
+              title: 'Dimensione del testo',
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -1690,70 +1690,70 @@ class _SubtitlesTab extends StatelessWidget {
               ),
             ),
           ),
-          _Row(title: 'Text colour', trailing: _Swatches(setting: AppSettings.subtitleColor, colors: _captionColors)),
+          _Row(title: 'Colore del testo', trailing: _Swatches(setting: AppSettings.subtitleColor, colors: _captionColors)),
           _Row(
-            title: 'Letter spacing',
-            trailing: _Stepper(setting: AppSettings.subtitleSpacing, min: -20, max: 50, step: 5, label: (v) => v == 0 ? 'Normal' : _tenths(v)),
+            title: 'Spaziatura delle lettere',
+            trailing: _Stepper(setting: AppSettings.subtitleSpacing, min: -20, max: 50, step: 5, label: (v) => v == 0 ? 'Normale' : _tenths(v)),
           ),
         ],
       ),
       _Section(
-        title: 'Background box',
+        title: 'Riquadro di sfondo',
         children: [
           _Row(
-            title: 'Box',
-            subtitle: 'A box behind the text. With no box, the outline and shadow below are used.',
-            below: _Segmented<int>(setting: AppSettings.subtitleBackground, options: captionBoxLevels, label: (v) => v == 0 ? 'None' : '$v%'),
+            title: 'Riquadro',
+            subtitle: 'Un riquadro dietro al testo. Senza riquadro si usano contorno e ombra qui sotto.',
+            below: _Segmented<int>(setting: AppSettings.subtitleBackground, options: captionBoxLevels, label: (v) => v == 0 ? 'Nessuno' : '$v%'),
           ),
-          _Row(title: 'Box colour', trailing: _Swatches(setting: AppSettings.subtitleBackColor, colors: _boxColors)),
+          _Row(title: 'Colore del riquadro', trailing: _Swatches(setting: AppSettings.subtitleBackColor, colors: _boxColors)),
         ],
       ),
       ValueListenableBuilder(
         valueListenable: AppSettings.subtitleBackground,
         builder: (context, back, _) => _Section(
-          title: 'Outline & shadow',
-          subtitle: back > 0 ? 'Turn the background box off to use these.' : null,
+          title: 'Contorno e ombra',
+          subtitle: back > 0 ? 'Disattiva il riquadro di sfondo per usare queste opzioni.' : null,
           children: [
             _Row(
-              title: 'Outline',
-              trailing: _Stepper(setting: AppSettings.subtitleOutline, min: 0, max: 80, step: 5, label: (v) => v == 0 ? 'None' : _tenths(v)),
+              title: 'Contorno',
+              trailing: _Stepper(setting: AppSettings.subtitleOutline, min: 0, max: 80, step: 5, label: (v) => v == 0 ? 'Nessuno' : _tenths(v)),
             ),
-            _Row(title: 'Outline colour', trailing: _Swatches(setting: AppSettings.subtitleOutlineColor, colors: _outlineColors)),
+            _Row(title: 'Colore del contorno', trailing: _Swatches(setting: AppSettings.subtitleOutlineColor, colors: _outlineColors)),
             _Row(
-              title: 'Shadow',
-              trailing: _Stepper(setting: AppSettings.subtitleShadow, min: 0, max: 60, step: 5, label: (v) => v == 0 ? 'None' : _tenths(v)),
+              title: 'Ombra',
+              trailing: _Stepper(setting: AppSettings.subtitleShadow, min: 0, max: 60, step: 5, label: (v) => v == 0 ? 'Nessuno' : _tenths(v)),
             ),
             _Row(
-              title: 'Shadow strength',
+              title: 'Intensità dell\'ombra',
               below: _Segmented<int>(
                 setting: AppSettings.subtitleShadowColor,
                 options: const [0x60000000, 0xA0000000, 0xFF000000],
-                label: (v) => switch (v) { 0x60000000 => 'Soft', 0xA0000000 => 'Medium', _ => 'Strong' },
+                label: (v) => switch (v) { 0x60000000 => 'Leggera', 0xA0000000 => 'Media', _ => 'Forte' },
               ),
             ),
             _Row(
-              title: 'Soft edges',
-              subtitle: 'Blurs the outline a little',
+              title: 'Bordi morbidi',
+              subtitle: 'Sfuma un po\' il contorno',
               trailing: _Stepper(setting: AppSettings.subtitleBlur, min: 0, max: 30, step: 5, label: (v) => v == 0 ? 'Off' : _tenths(v)),
             ),
           ],
         ),
       ),
       _Section(
-        title: 'Position',
+        title: 'Posizione',
         children: [
           _Row(
-            title: 'Place at',
-            trailing: _Segmented<bool>(setting: AppSettings.subtitleTop, options: const [false, true], label: (v) => v ? 'Top' : 'Bottom'),
+            title: 'Posizione',
+            trailing: _Segmented<bool>(setting: AppSettings.subtitleTop, options: const [false, true], label: (v) => v ? 'In alto' : 'In basso'),
           ),
           _Row(
-            title: 'Distance from the edge',
-            subtitle: "Of the screen's height. Bottom subtitles still move up while the controls show.",
-            trailing: _Stepper(setting: AppSettings.subtitleLift, min: 0, max: 45, step: 1, label: (v) => v == 0 ? 'Edge' : '$v%'),
+            title: 'Distanza dal bordo',
+            subtitle: "Dell'altezza dello schermo. I sottotitoli in basso salgono comunque quando ci sono i controlli.",
+            trailing: _Stepper(setting: AppSettings.subtitleLift, min: 0, max: 45, step: 1, label: (v) => v == 0 ? 'Bordo' : '$v%'),
           ),
           _Row(
-            title: 'Keep on the picture',
-            subtitle: "Never put subtitles in a film's black bars",
+            title: 'Tieni sull\'immagine',
+            subtitle: "Non mettere mai i sottotitoli nelle bande nere",
             trailing: _Toggle(AppSettings.subtitleOnPicture),
           ),
         ],
@@ -1761,32 +1761,32 @@ class _SubtitlesTab extends StatelessWidget {
       ValueListenableBuilder(
         valueListenable: AppSettings.subtitleAss,
         builder: (context, mode, _) => _Section(
-          title: 'Styled subtitles',
-          subtitle: 'Anime fansubs (ASS/SSA) often bring their own fonts, colours, signs and karaoke.',
+          title: 'Sottotitoli con stile',
+          subtitle: 'I fansub degli anime (ASS/SSA) spesso hanno caratteri, colori, cartelli e karaoke propri.',
           children: [
             _Row(
-              title: 'Show them',
+              title: 'Mostrali',
               subtitle: switch (mode) {
-                'force' => 'Your font and colours on everything. Signs and karaoke can look wrong.',
-                'strip' => 'Plain text in your style: no signs, karaoke or positions.',
-                _ => 'As their makers styled them, only scaled to the screen.',
+                'force' => 'Il tuo carattere e i tuoi colori su tutto. Cartelli e karaoke possono sembrare sbagliati.',
+                'strip' => 'Testo semplice nel tuo stile: niente cartelli, karaoke o posizioni.',
+                _ => 'Come li hanno fatti i loro autori, solo adattati allo schermo.',
               },
               below: _Segmented<String>(
                 setting: AppSettings.subtitleAss,
                 options: const ['scale', 'force', 'strip'],
-                label: (v) => switch (v) { 'force' => 'Use my style', 'strip' => 'Plain', _ => 'Keep as made' },
+                label: (v) => switch (v) { 'force' => 'Usa il mio stile', 'strip' => 'Semplice', _ => 'Lascia com\'è' },
               ),
             ),
           ],
         ),
       ),
       _Section(
-        title: 'Reset',
+        title: 'Ripristina',
         children: [
           _Row(
-            title: 'Caption style',
-            subtitle: 'Back to how Lorewatch draws subtitles out of the box',
-            trailing: _SmallButton(label: 'Reset', icon: Icons.restart_alt_rounded, onTap: _resetCaptionStyle),
+            title: 'Stile dei sottotitoli',
+            subtitle: 'Torna a come Lorewatch disegna i sottotitoli di base',
+            trailing: _SmallButton(label: 'Ripristina', icon: Icons.restart_alt_rounded, onTap: _resetCaptionStyle),
           ),
         ],
       ),
@@ -1903,7 +1903,7 @@ class _SubtitlePreview extends StatelessWidget {
         fontStyle: AppSettings.subtitleItalic.value ? FontStyle.italic : FontStyle.normal,
         letterSpacing: AppSettings.subtitleSpacing.value / 10 * 1.2,
       );
-      const sample = 'This is how subtitles will look';
+      const sample = 'Ecco come appariranno i sottotitoli';
       Widget text = Stack(
         children: [
           if (outline > 0)
@@ -2025,7 +2025,7 @@ class _FontDialogState extends State<_FontDialog> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Text('Subtitle font', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+              const Text('Carattere dei sottotitoli', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
               const SizedBox(height: 12),
               TextField(
                 controller: _search,
@@ -2033,7 +2033,7 @@ class _FontDialogState extends State<_FontDialog> {
                 onChanged: (_) => setState(() {}),
                 style: const TextStyle(fontSize: 14),
                 decoration: InputDecoration(
-                  hintText: 'Search fonts',
+                  hintText: 'Cerca caratteri',
                   isDense: true,
                   prefixIcon: const Icon(Icons.search_rounded, size: 18),
                   filled: true,
@@ -2125,23 +2125,23 @@ class _AboutTab extends StatelessWidget {
             title: 'Lorewatch',
             children: [
               _Row(
-                title: 'Version',
+                title: 'Versione',
                 trailing: Text(
                   up.current.isEmpty ? '…' : up.current,
                   style: const TextStyle(fontWeight: FontWeight.w700, color: VyseColors.textDim),
                 ),
               ),
               _Row(
-                title: 'Updates',
+                title: 'Aggiornamenti',
                 subtitle: switch (up.stage) {
-                  UpdateStage.checking => 'Checking…',
-                  UpdateStage.failed => up.error ?? "Couldn't check for updates.",
-                  _ when newer != null => 'Version ${newer.version} is ready',
-                  UpdateStage.upToDate => "You're on the newest version",
-                  _ => 'Not checked yet',
+                  UpdateStage.checking => 'Controllo…',
+                  UpdateStage.failed => up.error ?? "Impossibile controllare gli aggiornamenti.",
+                  _ when newer != null => 'La versione ${newer.version} è pronta',
+                  UpdateStage.upToDate => "Hai la versione più recente",
+                  _ => 'Non ancora controllato',
                 },
                 trailing: _SmallButton(
-                  label: newer != null ? 'Update' : 'Check now',
+                  label: newer != null ? 'Aggiorna' : 'Controlla ora',
                   icon: newer != null ? Icons.system_update_alt_rounded : Icons.refresh_rounded,
                   primary: newer != null,
                   onTap: () async {
@@ -2152,11 +2152,11 @@ class _AboutTab extends StatelessWidget {
                 ),
               ),
               _Row(
-                title: 'Check automatically',
-                subtitle: 'Looks for a new version when Lorewatch starts, and tells you',
+                title: 'Controlla automaticamente',
+                subtitle: 'Cerca una nuova versione all\'avvio di Lorewatch, e te lo dice',
                 trailing: _Toggle(AppSettings.updateAuto),
               ),
-              const _Row(title: 'Movies, Music, Manga, Audiobooks and Live TV', subtitle: 'Everything you watch, read and listen to in one place.'),
+              const _Row(title: 'Film, musica, manga, audiolibri e TV in diretta', subtitle: 'Tutto quello che guardi, leggi e ascolti in un unico posto.'),
             ],
           );
         },
@@ -2177,7 +2177,7 @@ class _DangerTab extends StatelessWidget {
           title: Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
           content: Text(body, style: const TextStyle(color: VyseColors.textDim)),
           actions: [
-            TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Cancel')),
+            TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Annulla')),
             TextButton(
               onPressed: () => Navigator.pop(ctx, true),
               child: Text(action, style: const TextStyle(color: _danger, fontWeight: FontWeight.w700)),
@@ -2195,36 +2195,36 @@ class _DangerTab extends StatelessWidget {
   Widget build(BuildContext context) => Column(
     children: [
       _Section(
-        title: 'Reset',
+        title: 'Ripristina',
         children: [
           _Row(
-            title: 'Reset preferences',
-            subtitle: 'Appearance, home, playback, subtitle and sync settings go back to defaults. Your name, avatar and addons stay.',
+            title: 'Ripristina le preferenze',
+            subtitle: 'Aspetto, home, riproduzione, sottotitoli e sincronizzazione tornano ai valori predefiniti. Nome, avatar e addon restano.',
             trailing: _SmallButton(
-              label: 'Reset',
+              label: 'Ripristina',
               danger: true,
               onTap: () async {
-                if (!await _confirm(context, 'Reset preferences?', 'Every setting goes back to its default. Your name, avatar and addons stay.', 'Reset')) return;
+                if (!await _confirm(context, 'Ripristinare le preferenze?', 'Ogni impostazione torna al valore predefinito. Nome, avatar e addon restano.', 'Ripristina')) return;
                 AppSettings.resetPreferences();
-                if (context.mounted) _done(context, 'Preferences reset', Icons.restart_alt_rounded);
+                if (context.mounted) _done(context, 'Preferenze ripristinate', Icons.restart_alt_rounded);
               },
             ),
           ),
           _Row(
-            title: 'Clear manga reading history',
-            subtitle: 'Empties Continue reading and forgets every saved page.',
+            title: 'Cancella la cronologia di lettura manga',
+            subtitle: 'Svuota Continua a leggere e dimentica ogni pagina salvata.',
             trailing: _SmallButton(
-              label: 'Clear',
+              label: 'Cancella',
               danger: true,
               onTap: () async {
                 final all = await MangaHistory.load();
                 if (!context.mounted) return;
-                if (all.isEmpty) return _done(context, 'No reading history to clear', Icons.menu_book_rounded);
-                if (!await _confirm(context, 'Clear reading history?', 'Continue reading will be empty (${all.length} ${all.length == 1 ? 'title' : 'titles'}).', 'Clear')) return;
+                if (all.isEmpty) return _done(context, 'Nessuna cronologia di lettura da cancellare', Icons.menu_book_rounded);
+                if (!await _confirm(context, 'Cancellare la cronologia di lettura?', 'Continue reading will be empty (${all.length} ${all.length == 1 ? 'titolo' : 'titoli'}).', 'Clear')) return;
                 for (final p in all) {
                   await MangaHistory.remove(p.manga);
                 }
-                if (context.mounted) _done(context, 'Reading history cleared', Icons.menu_book_rounded);
+                if (context.mounted) _done(context, 'Cronologia di lettura cancellata', Icons.menu_book_rounded);
               },
             ),
           ),
@@ -2238,14 +2238,14 @@ class _DangerTab extends StatelessWidget {
                 title: 'Account',
                 children: [
                   _Row(
-                    title: 'Delete account',
-                    subtitle: 'Deletes @${u.username} with your profile, friends, messages and synced data. This can\'t be undone.',
+                    title: 'Elimina account',
+                    subtitle: 'Elimina @${u.username} con profilo, amici, messaggi e dati sincronizzati. Non si può annullare.',
                     trailing: _SmallButton(
-                      label: 'Delete',
+                      label: 'Elimina',
                       danger: true,
                       onTap: () async {
                         final gone = await showDialog<bool>(context: context, builder: (_) => const _DeleteAccountDialog());
-                        if (gone == true && context.mounted) _done(context, 'Account deleted', Icons.person_off_rounded);
+                        if (gone == true && context.mounted) _done(context, 'Account eliminato', Icons.person_off_rounded);
                       },
                     ),
                   ),
@@ -2294,7 +2294,7 @@ class _DeleteAccountDialogState extends State<_DeleteAccountDialog> {
   Widget build(BuildContext context) => AlertDialog(
     backgroundColor: VyseColors.surface,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-    title: const Text('Delete your account?', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+    title: const Text('Eliminare il tuo account?', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
     content: SizedBox(
       width: 380,
       child: Column(
@@ -2302,7 +2302,7 @@ class _DeleteAccountDialogState extends State<_DeleteAccountDialog> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            "Your profile, friends, messages and everything synced to your account are deleted from the server. What's saved on this device stays.",
+            "Profilo, amici, messaggi e tutto ciò che è sincronizzato vengono eliminati dal server. Quello salvato su questo dispositivo resta.",
             style: TextStyle(color: VyseColors.textDim, height: 1.35),
           ),
           const SizedBox(height: 16),
@@ -2315,7 +2315,7 @@ class _DeleteAccountDialogState extends State<_DeleteAccountDialog> {
             onSubmitted: (_) => _delete(),
             cursorColor: VyseColors.accent,
             decoration: InputDecoration(
-              hintText: 'Your password',
+              hintText: 'La tua password',
               hintStyle: const TextStyle(color: VyseColors.textFaint, fontSize: 14),
               errorText: _error,
             ),
@@ -2324,11 +2324,11 @@ class _DeleteAccountDialogState extends State<_DeleteAccountDialog> {
       ),
     ),
     actions: [
-      TextButton(onPressed: _busy ? null : () => Navigator.pop(context, false), child: const Text('Cancel')),
+      TextButton(onPressed: _busy ? null : () => Navigator.pop(context, false), child: const Text('Annulla')),
       TextButton(
         onPressed: _busy || _password.text.isEmpty ? null : _delete,
         child: Text(
-          _busy ? 'Deleting…' : 'Delete for good',
+          _busy ? 'Eliminazione…' : 'Elimina per sempre',
           style: TextStyle(color: _busy || _password.text.isEmpty ? VyseColors.textFaint : _danger, fontWeight: FontWeight.w700),
         ),
       ),
@@ -2386,9 +2386,9 @@ class _AddonsTabState extends State<_AddonsTab> {
   Widget build(BuildContext context) => Column(
     children: [
       _Section(
-        title: 'Add an addon',
-        subtitle: 'Paste a Stremio addon link. Stream addons fill the sources screen (Streaming mode off in Playback); '
-            'subtitle addons add their files to every video.',
+        title: 'Aggiungi un addon',
+        subtitle: 'Incolla il link di un addon Stremio. Gli addon di stream riempiono la schermata sorgenti (modalità streaming disattivata in Riproduzione); '
+            'gli addon di sottotitoli aggiungono i loro file a ogni video.',
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 18),
@@ -2423,7 +2423,7 @@ class _AddonsTabState extends State<_AddonsTab> {
                     const SizedBox(width: 10),
                     _busy
                         ? const SizedBox(width: 92, child: Center(child: SizedBox.square(dimension: 18, child: CircularProgressIndicator(strokeWidth: 2))))
-                        : _SmallButton(label: 'Install', icon: Icons.add_rounded, primary: true, onTap: _install),
+                        : _SmallButton(label: 'Installa', icon: Icons.add_rounded, primary: true, onTap: _install),
                   ],
                 ),
                 if (_message != null) ...[
@@ -2445,15 +2445,15 @@ class _AddonsTabState extends State<_AddonsTab> {
       ValueListenableBuilder<List<Addon>>(
         valueListenable: Addons.list,
         builder: (context, list, _) => _Section(
-          title: 'Your addons',
+          title: 'I tuoi addon',
           subtitle: list.isEmpty
               ? null
-              : 'Sources are listed in this order. Torrent results play with P2P streaming (Playback) or your debrid service (Debrid).',
+              : 'Le sorgenti sono elencate in quest\'ordine. I torrent partono con lo streaming P2P (Riproduzione) o con il tuo servizio debrid (Debrid).',
           children: list.isEmpty
               ? const [
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 22),
-                    child: Text('No addons yet. Paste one above.', style: TextStyle(fontSize: 13.5, color: VyseColors.textDim)),
+                    child: Text('Ancora nessun addon. Incollane uno qui sopra.', style: TextStyle(fontSize: 13.5, color: VyseColors.textDim)),
                   ),
                 ]
               : [for (final (i, a) in list.indexed) _AddonRow(addon: a, first: i == 0, last: i == list.length - 1)],
@@ -2485,16 +2485,16 @@ class _AddonRow extends StatelessWidget {
     final controls = Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        _IconAction(icon: Icons.arrow_upward_rounded, tooltip: 'Move up', onTap: first ? null : () => Addons.move(a, -1)),
-        _IconAction(icon: Icons.arrow_downward_rounded, tooltip: 'Move down', onTap: last ? null : () => Addons.move(a, 1)),
+        _IconAction(icon: Icons.arrow_upward_rounded, tooltip: 'Sposta su', onTap: first ? null : () => Addons.move(a, -1)),
+        _IconAction(icon: Icons.arrow_downward_rounded, tooltip: 'Sposta giù', onTap: last ? null : () => Addons.move(a, 1)),
         if (a.configureUrl != null)
           _IconAction(
             icon: Icons.tune_rounded,
-            tooltip: 'Configure (then paste the new link above)',
+            tooltip: 'Configura (poi incolla qui sopra il nuovo link)',
             onTap: () => launchUrl(Uri.parse(a.configureUrl!), mode: LaunchMode.externalApplication),
           ),
         // a built-in addon is part of the app: it is turned off, not removed
-        if (!a.builtIn) _IconAction(icon: Icons.delete_outline_rounded, tooltip: 'Remove', danger: true, onTap: () => Addons.remove(a)),
+        if (!a.builtIn) _IconAction(icon: Icons.delete_outline_rounded, tooltip: 'Rimuovi', danger: true, onTap: () => Addons.remove(a)),
         const SizedBox(width: 8),
         _Switch(value: a.enabled, onChanged: (on) => Addons.setEnabled(a, on)),
       ],
@@ -2510,8 +2510,8 @@ class _AddonRow extends StatelessWidget {
             Text(a.name, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: a.enabled ? VyseColors.text : VyseColors.textDim)),
             if (a.version.isNotEmpty) Text('v${a.version}', style: const TextStyle(fontSize: 12, color: VyseColors.textFaint)),
             if (a.builtIn) const _Kind('Built in', Icons.verified_outlined),
-            if (a.streams) const _Kind('Sources', Icons.play_circle_outline_rounded),
-            if (a.subtitles) const _Kind('Subtitles', Icons.closed_caption_outlined),
+            if (a.streams) const _Kind('Sorgenti', Icons.play_circle_outline_rounded),
+            if (a.subtitles) const _Kind('Sottotitoli', Icons.closed_caption_outlined),
           ],
         ),
         if (a.description.isNotEmpty) ...[
@@ -2627,9 +2627,9 @@ class _SourcesTab extends StatelessWidget {
       }
 
       return _Section(
-        title: 'Film and TV sources',
-        subtitle: 'When a film or episode starts these are asked from the top down, and the first to answer plays. '
-            'Drag a row or use the arrows to change the order; switch one off to skip it. Anime has servers of its own.',
+        title: 'Sorgenti per film e serie TV',
+        subtitle: 'Quando parte un film o un episodio vengono interrogate dall\'alto in basso, e parte la prima che risponde. '
+            'Trascina una riga o usa le frecce per cambiare l\'ordine; spegnine una per saltarla. Gli anime hanno i loro server.',
         children: [
           ReorderableListView.builder(
             shrinkWrap: true,
@@ -2661,10 +2661,10 @@ class _SourcesTab extends StatelessWidget {
             ),
           ),
           _Row(
-            title: 'Default order',
-            subtitle: 'Movy first and every source on',
+            title: 'Ordine predefinito',
+            subtitle: 'Prima Movy e tutte le sorgenti attive',
             trailing: _SmallButton(
-              label: 'Reset',
+              label: 'Ripristina',
               icon: Icons.restart_alt_rounded,
               onTap: () {
                 AppSettings.sourceOrder.set('');
@@ -2733,9 +2733,9 @@ class _SourceRow extends StatelessWidget {
           crossAxisAlignment: WrapCrossAlignment.center,
           children: [
             Text(s.name, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: on ? VyseColors.text : VyseColors.textDim)),
-            if (first) const _Kind('Asked first', Icons.bolt_rounded),
-            if (s.filmsOnly) const _Kind('Films only', Icons.movie_outlined),
-            if (s.showsOnly) const _Kind('Shows only', Icons.live_tv_rounded),
+            if (first) const _Kind('Interrogata per prima', Icons.bolt_rounded),
+            if (s.filmsOnly) const _Kind('Solo film', Icons.movie_outlined),
+            if (s.showsOnly) const _Kind('Solo serie', Icons.live_tv_rounded),
             if (!on) const _Kind('Off', Icons.block_rounded),
           ],
         ),
@@ -2746,11 +2746,11 @@ class _SourceRow extends StatelessWidget {
     final controls = Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        _IconAction(icon: Icons.arrow_upward_rounded, tooltip: 'Move up', onTap: index == 0 ? null : () => onMove(-1)),
-        _IconAction(icon: Icons.arrow_downward_rounded, tooltip: 'Move down', onTap: index == count - 1 ? null : () => onMove(1)),
+        _IconAction(icon: Icons.arrow_upward_rounded, tooltip: 'Sposta su', onTap: index == 0 ? null : () => onMove(-1)),
+        _IconAction(icon: Icons.arrow_downward_rounded, tooltip: 'Sposta giù', onTap: index == count - 1 ? null : () => onMove(1)),
         const SizedBox(width: 8),
         Tooltip(
-          message: locked ? 'At least one source stays on' : (on ? 'Skip this source' : 'Use this source'),
+          message: locked ? 'Almeno una sorgente resta attiva' : (on ? 'Salta questa sorgente' : 'Usa questa sorgente'),
           child: _Switch(value: on, onChanged: (v) => locked ? null : setFilmSourceOn(s, v)),
         ),
       ],
@@ -2826,7 +2826,7 @@ class _DebridTabState extends State<_DebridTab> {
     setState(() {
       _account = user == null ? null : Debrid.describe(user);
       _failed = user == null;
-      _message = user == null ? "${p.label} didn't accept the saved key. Paste a new one." : null;
+      _message = user == null ? "${p.label} non ha accettato la chiave salvata. Incollane una nuova." : null;
     });
   }
 
@@ -2847,17 +2847,17 @@ class _DebridTabState extends State<_DebridTab> {
       await Debrid.saveKey(p, '');
       _account = null;
       _failed = false;
-      _message = 'Key removed.';
+      _message = 'Chiave rimossa.';
     } else {
       final user = await Debrid.verify(p, k);
       if (user == null) {
         _failed = true;
-        _message = "${p.label} didn't accept that key. Check you copied all of it.";
+        _message = "${p.label} non ha accettato la chiave. Controlla di averla copiata tutta.";
       } else {
         await Debrid.saveKey(p, k);
         _failed = false;
         _account = Debrid.describe(user);
-        _message = 'Connected to ${p.label}.';
+        _message = 'Collegato a ${p.label}.';
       }
     }
     if (mounted) setState(() => _busy = false);
@@ -2871,8 +2871,8 @@ class _DebridTabState extends State<_DebridTab> {
       return Column(
         children: [
           _Section(
-            title: 'Service',
-            subtitle: 'A debrid service downloads the torrent on its own servers and streams it to you over HTTPS. Nothing is shared peer to peer from your device.',
+            title: 'Servizio',
+            subtitle: 'Un servizio debrid scarica il torrent sui propri server e te lo trasmette in HTTPS. Dal tuo dispositivo non viene condiviso niente in peer to peer.',
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 18),
@@ -2894,7 +2894,7 @@ class _DebridTabState extends State<_DebridTab> {
                               border: Border.all(color: on ? VyseColors.accent.withValues(alpha: .6) : VyseColors.stroke),
                             ),
                             child: Row(mainAxisSize: MainAxisSize.min, children: [
-                              Text(o?.label ?? 'None', style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.w700, color: on ? VyseColors.text : VyseColors.textDim)),
+                              Text(o?.label ?? 'Nessuno', style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.w700, color: on ? VyseColors.text : VyseColors.textDim)),
                               if (o != null && Debrid.keyed.value.contains(o)) ...[
                                 const SizedBox(width: 8),
                                 const Icon(Icons.check_circle_rounded, size: 15, color: Color(0xFF3DDC97)),
@@ -2910,8 +2910,8 @@ class _DebridTabState extends State<_DebridTab> {
           ),
           if (p != null)
             _Section(
-              title: '${p.label} key',
-              subtitle: "Kept in this device's keychain. It never goes to your Lorewatch account.",
+              title: 'Chiave ${p.label}',
+              subtitle: "Conservata nel portachiavi del dispositivo. Non va mai al tuo account Lorewatch.",
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 18),
@@ -2929,7 +2929,7 @@ class _DebridTabState extends State<_DebridTab> {
                               onChanged: (_) => setState(() {}),
                               style: const TextStyle(fontSize: 14),
                               decoration: InputDecoration(
-                                hintText: 'Paste your ${p.label} API key',
+                                hintText: 'Incolla la tua chiave API di ${p.label}',
                                 hintStyle: const TextStyle(color: VyseColors.textFaint),
                                 isDense: true,
                                 filled: true,
@@ -2937,7 +2937,7 @@ class _DebridTabState extends State<_DebridTab> {
                                 contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
                                 prefixIcon: const Icon(Icons.key_rounded, size: 18, color: VyseColors.textDim),
                                 suffixIcon: IconButton(
-                                  tooltip: _show ? 'Hide' : 'Show',
+                                  tooltip: _show ? 'Nascondi' : 'Mostra',
                                   iconSize: 18,
                                   color: VyseColors.textDim,
                                   onPressed: () => setState(() => _show = !_show),
@@ -2953,7 +2953,7 @@ class _DebridTabState extends State<_DebridTab> {
                           _busy
                               ? const SizedBox(width: 92, child: Center(child: SizedBox.square(dimension: 18, child: CircularProgressIndicator(strokeWidth: 2))))
                               : _SmallButton(
-                                  label: _key.text.trim().isEmpty && Debrid.keyed.value.contains(p) ? 'Remove' : 'Save',
+                                  label: _key.text.trim().isEmpty && Debrid.keyed.value.contains(p) ? 'Rimuovi' : 'Salva',
                                   icon: Icons.check_rounded,
                                   primary: true,
                                   onTap: _save,
@@ -2965,7 +2965,7 @@ class _DebridTabState extends State<_DebridTab> {
                         Pressable(
                           onTap: () => launchUrl(Uri.parse(p.keyPage), mode: LaunchMode.externalApplication),
                           builder: (context, hovered, _) => Text(
-                            'Get your key from ${p.label} ↗',
+                            'Prendi la chiave da ${p.label} ↗',
                             style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: hovered ? VyseColors.text : VyseColors.accent),
                           ),
                         ),
@@ -2997,14 +2997,14 @@ class _DebridTabState extends State<_DebridTab> {
             title: 'Streaming',
             children: [
               _Row(
-                title: 'Play torrents through debrid',
+                title: 'Riproduci i torrent tramite debrid',
                 subtitle: Debrid.active
-                    ? 'On: torrents play from ${Debrid.name} instead of peer to peer. In a watch party you host, everyone streams your link.'
+                    ? 'Attivo: i torrent partono da ${Debrid.name} invece che in peer to peer.'
                     : p == null
-                    ? 'Pick a service and save its key first.'
+                    ? 'Prima scegli un servizio e salva la sua chiave.'
                     : !Debrid.keyed.value.contains(p)
-                    ? 'Save your ${p.label} key first.'
-                    : 'Off: torrents play peer to peer (when P2P streaming is allowed in Playback).',
+                    ? 'Prima salva la chiave di ${p.label}.'
+                    : 'Disattivo: i torrent partono in peer to peer (se lo streaming P2P è consentito in Riproduzione).',
                 trailing: _Toggle(AppSettings.debridOn),
               ),
             ],

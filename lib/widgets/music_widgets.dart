@@ -231,7 +231,7 @@ class TrackRow extends StatelessWidget {
                   const SizedBox(width: 4),
                   Builder(
                     builder: (context) => IconButton(
-                      tooltip: 'More',
+                      tooltip: 'Altro',
                       iconSize: 18,
                       color: hovered ? VyseColors.text : VyseColors.textFaint,
                       icon: const Icon(Icons.more_horiz_rounded),
@@ -264,16 +264,16 @@ Future<void> showTrackMenu(BuildContext context, MusicTrack t, Offset at, {VoidC
     position: RelativeRect.fromLTRB(at.dx, at.dy, at.dx, at.dy),
     items: [
       if (Rooms.mine.value != null && WatchParty.canControl) _item('room', Icons.groups_rounded, 'Play in my room'),
-      _item('next', Icons.playlist_play_rounded, 'Play next'),
-      _item('queue', Icons.queue_music_rounded, 'Add to queue'),
-      _item('radio', Icons.sensors_rounded, 'Start radio'),
+      _item('next', Icons.playlist_play_rounded, 'Riproduci dopo'),
+      _item('queue', Icons.queue_music_rounded, 'Aggiungi alla coda'),
+      _item('radio', Icons.sensors_rounded, 'Avvia radio'),
       const PopupMenuDivider(height: 8),
-      _item('like', liked ? Icons.favorite_rounded : Icons.favorite_border_rounded, liked ? 'Remove from Liked songs' : 'Like'),
-      _item('playlist', Icons.playlist_add_rounded, 'Add to playlist…'),
-      if (onRemove != null) _item('remove', Icons.playlist_remove_rounded, 'Remove from this playlist'),
+      _item('like', liked ? Icons.favorite_rounded : Icons.favorite_border_rounded, liked ? 'Rimuovi dai brani preferiti' : 'Mi piace'),
+      _item('playlist', Icons.playlist_add_rounded, 'Aggiungi a playlist…'),
+      if (onRemove != null) _item('remove', Icons.playlist_remove_rounded, 'Rimuovi da questa playlist'),
       if (t.artistId.isNotEmpty || t.albumId.isNotEmpty) const PopupMenuDivider(height: 8),
-      if (t.artistId.isNotEmpty) _item('artist', Icons.person_rounded, 'Go to artist'),
-      if (t.albumId.isNotEmpty) _item('album', Icons.album_rounded, 'Go to album'),
+      if (t.artistId.isNotEmpty) _item('artist', Icons.person_rounded, 'Vai all\'artista'),
+      if (t.albumId.isNotEmpty) _item('album', Icons.album_rounded, 'Vai all\'album'),
     ],
   );
   if (!context.mounted) return;
@@ -282,15 +282,15 @@ Future<void> showTrackMenu(BuildContext context, MusicTrack t, Offset at, {VoidC
       await playInRoom(context, t);
     case 'next':
       player.addNext(t);
-      showToast(context, Text('Playing next: ${t.title}', maxLines: 1, overflow: TextOverflow.ellipsis), icon: Icons.playlist_play_rounded);
+      showToast(context, Text('Riproduci dopo: ${t.title}', maxLines: 1, overflow: TextOverflow.ellipsis), icon: Icons.playlist_play_rounded);
     case 'queue':
       player.addToQueue(t);
-      showToast(context, Text('Added to queue: ${t.title}', maxLines: 1, overflow: TextOverflow.ellipsis), icon: Icons.queue_music_rounded);
+      showToast(context, Text('Aggiunto alla coda: ${t.title}', maxLines: 1, overflow: TextOverflow.ellipsis), icon: Icons.queue_music_rounded);
     case 'radio':
       await player.startRadio(t);
     case 'like':
       MusicLibrary.setLiked(t, !liked);
-      showToast(context, Text(liked ? 'Removed from Liked songs' : 'Added to Liked songs', maxLines: 1), icon: liked ? Icons.heart_broken_rounded : Icons.favorite_rounded);
+      showToast(context, Text(liked ? 'Rimosso dai brani preferiti' : 'Aggiunto ai brani preferiti', maxLines: 1), icon: liked ? Icons.heart_broken_rounded : Icons.favorite_rounded);
     case 'playlist':
       await showAddToPlaylist(context, [t]);
     case 'remove':
@@ -511,7 +511,7 @@ class ArtistTile extends StatelessWidget {
         ),
         if (artist.fanCount > 0)
           Text(
-            '${fmtCompact(artist.fanCount)} fans',
+            '${fmtCompact(artist.fanCount)} fan',
             textAlign: TextAlign.center,
             style: const TextStyle(fontSize: 10.5, color: VyseColors.textFaint),
           ),
@@ -587,7 +587,7 @@ class MiniPlayer extends StatelessWidget {
                                 ),
                                 LikeButton(track: t, size: 19),
                                 IconButton(
-                                  tooltip: 'Previous',
+                                  tooltip: 'Precedente',
                                   onPressed: p.previous,
                                   icon: const Icon(Icons.skip_previous_rounded),
                                   iconSize: 22,
@@ -601,14 +601,14 @@ class MiniPlayer extends StatelessWidget {
                                         ),
                                       )
                                     : IconButton(
-                                        tooltip: p.playing ? 'Pause' : 'Play',
+                                        tooltip: p.playing ? 'Pausa' : 'Riproduci',
                                         onPressed: p.toggle,
                                         icon: Icon(p.playing ? Icons.pause_rounded : Icons.play_arrow_rounded),
                                         iconSize: 28,
                                       ),
-                                IconButton(tooltip: 'Next', onPressed: p.next, icon: const Icon(Icons.skip_next_rounded), iconSize: 22),
+                                IconButton(tooltip: 'Successivo', onPressed: p.next, icon: const Icon(Icons.skip_next_rounded), iconSize: 22),
                                 IconButton(
-                                  tooltip: 'Close',
+                                  tooltip: 'Chiudi',
                                   onPressed: p.stop,
                                   icon: const Icon(Icons.close_rounded),
                                   iconSize: 18,

@@ -139,12 +139,12 @@ class _AudiobookDetailsPageState extends State<AudiobookDetailsPage> {
             final chapters = snap.data ?? const <AudiobookChapter>[];
             final saved = _p.progressFor(b);
             final label = chapters.isEmpty
-                ? (snap.hasError ? 'Unavailable' : 'Loading…')
+                ? (snap.hasError ? 'Non disponibile' : 'Caricamento…')
                 : _isLoaded && _p.playing
-                    ? 'Now playing'
+                    ? 'In riproduzione'
                     : saved != null
-                        ? 'Resume'
-                        : 'Listen';
+                        ? 'Riprendi'
+                        : 'Ascolta';
             return Wrap(spacing: 10, runSpacing: 10, crossAxisAlignment: WrapCrossAlignment.center, children: [
               PillButton(
                 primary: true,
@@ -168,9 +168,9 @@ class _AudiobookDetailsPageState extends State<AudiobookDetailsPage> {
           if (snap.hasError) {
             return EmptyState(
               icon: Icons.wifi_off_rounded,
-              title: "Couldn't load chapters",
-              body: 'This source may be down. Try again, or pick another result.',
-              action: ('Retry', () => setState(() { _chapters = audiobookService.getChapters(b); })),
+              title: "Impossibile caricare i capitoli",
+              body: 'Questa fonte potrebbe non funzionare. Riprova o scegli un altro risultato.',
+              action: ('Riprova', () => setState(() { _chapters = audiobookService.getChapters(b); })),
             );
           }
           final chapters = snap.data;
@@ -183,14 +183,14 @@ class _AudiobookDetailsPageState extends State<AudiobookDetailsPage> {
             );
           }
           if (chapters.isEmpty) {
-            return const EmptyState(icon: Icons.headphones_rounded, title: 'No chapters found', body: 'Try another result for this book.');
+            return const EmptyState(icon: Icons.headphones_rounded, title: 'Nessun capitolo trovato', body: 'Prova un altro risultato per questo libro.');
           }
           return ListenableBuilder(
             listenable: _p,
             builder: (context, _) {
               final current = _isLoaded ? _p.chapter : _p.progressFor(b)?.chapter;
               return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text('${chapters.length} chapters', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
+                Text('${chapters.length} capitoli', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
                 const SizedBox(height: 12),
                 for (var i = 0; i < chapters.length; i++)
                   _ChapterTile(

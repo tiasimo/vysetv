@@ -112,7 +112,7 @@ class _ServerItemPageState extends State<ServerItemPage> {
       final c = _c = await _client;
       final r = await c.fetchItemWithOnDeck(_titleId);
       final title = r.item ?? (await c.fetchItem(_titleId));
-      if (title == null) throw StateError('This title is no longer on the server');
+      if (title == null) throw StateError('Questo titolo non è più sul server');
       if (!mounted) return;
       setState(() {
         _title = title;
@@ -233,9 +233,9 @@ class _ServerItemPageState extends State<ServerItemPage> {
                 padding: const EdgeInsets.only(top: 80),
                 child: EmptyState(
                   icon: Icons.cloud_off_rounded,
-                  title: "Couldn't open this",
+                  title: "Impossibile aprirlo",
                   body: _error!,
-                  action: ('Try again', _load),
+                  action: ('Riprova', _load),
                 ),
               ),
             )
@@ -276,7 +276,7 @@ class _ServerItemPageState extends State<ServerItemPage> {
     final seasons = _seasons?.where((s) => (s.index ?? 0) > 0).length;
     final meta = <String>[
       ?t.year?.toString(),
-      if (isShow && seasons != null && seasons > 0) seasons == 1 ? '1 season' : '$seasons seasons',
+      if (isShow && seasons != null && seasons > 0) seasons == 1 ? '1 stagione' : '$seasons stagioni',
       if (!isShow && t.durationMs != null) lengthNote(t.copyWith(viewOffsetMs: null)) ?? '',
     ].where((s) => s.isNotEmpty).toList();
     final rating = t.rating;
@@ -285,9 +285,9 @@ class _ServerItemPageState extends State<ServerItemPage> {
     final String playLabel;
     if (isShow) {
       final code = next == null ? null : episodeCode(next);
-      playLabel = next == null ? 'Play' : '${progressOf(next) != null ? 'Resume' : 'Play'} ${code ?? ''}'.trim();
+      playLabel = next == null ? 'Riproduci' : '${progressOf(next) != null ? 'Resume' : 'Riproduci'} ${code ?? ''}'.trim();
     } else {
-      playLabel = p != null ? 'Resume' : 'Play';
+      playLabel = p != null ? 'Riprendi' : 'Riproduci';
     }
 
     final poster = c.posterOf(t, width: 500);
@@ -311,13 +311,13 @@ class _ServerItemPageState extends State<ServerItemPage> {
             const SizedBox(width: 3),
             Text(rating.toStringAsFixed(1), style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w800)),
           ]),
-        if (t.isWatched) const _Tag('Watched', accent: true),
+        if (t.isWatched) const _Tag('Visto', accent: true),
       ]),
       const SizedBox(height: 20),
       Wrap(spacing: 10, runSpacing: 10, children: [
         PillButton(label: playLabel, icon: Icons.play_arrow_rounded, primary: true, onTap: () => playFromServer(context, server, isShow && next != null ? next : t)),
         if (!isShow && p != null)
-          PillButton(label: 'From the start', icon: Icons.replay_rounded, onTap: () => playFromServer(context, server, t, fromStart: true)),
+          PillButton(label: 'Dall\'inizio', icon: Icons.replay_rounded, onTap: () => playFromServer(context, server, t, fromStart: true)),
         _WatchedButton(watched: t.isWatched, busy: _marking, onTap: () => _toggleWatched(t)),
       ]),
       if (p != null && !isShow) ...[
@@ -365,7 +365,7 @@ class _ServerItemPageState extends State<ServerItemPage> {
         const SizedBox(height: 14),
         Text.rich(
           TextSpan(children: [
-            const TextSpan(text: 'Directed by  ', style: TextStyle(color: VyseColors.textFaint)),
+            const TextSpan(text: 'Regia di  ', style: TextStyle(color: VyseColors.textFaint)),
             TextSpan(text: t.directors!.take(3).join(', '), style: const TextStyle(color: VyseColors.text)),
           ]),
           style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
@@ -375,7 +375,7 @@ class _ServerItemPageState extends State<ServerItemPage> {
         const SizedBox(height: 4),
         Text.rich(
           TextSpan(children: [
-            TextSpan(text: isShow ? 'Network  ' : 'Studio  ', style: const TextStyle(color: VyseColors.textFaint)),
+            TextSpan(text: isShow ? 'Rete  ' : 'Studio  ', style: const TextStyle(color: VyseColors.textFaint)),
             TextSpan(text: t.studio, style: const TextStyle(color: VyseColors.text)),
           ]),
           style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
@@ -409,14 +409,14 @@ class _ServerItemPageState extends State<ServerItemPage> {
         padding: EdgeInsets.fromLTRB(inset, 44, right, 14),
         sliver: SliverToBoxAdapter(
           child: Row(children: [
-            const Text('Episodes', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900, letterSpacing: -.3)),
+            const Text('Episodi', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900, letterSpacing: -.3)),
             const Spacer(),
             if (seasons.isNotEmpty)
               _WatchedButton(
                 watched: _shown(season).isWatched,
                 busy: _marking,
                 compact: true,
-                label: _shown(season).isWatched ? 'Season watched' : 'Mark season watched',
+                label: _shown(season).isWatched ? 'Stagione vista' : 'Segna la stagione come vista',
                 onTap: () => _toggleWatched(season),
               ),
           ]),
@@ -434,7 +434,7 @@ class _ServerItemPageState extends State<ServerItemPage> {
               itemBuilder: (context, j) {
                 final s = seasons[j];
                 return FilterChipPill(
-                  label: s.title ?? ((s.index ?? 0) == 0 ? 'Specials' : 'Season ${s.index}'),
+                  label: s.title ?? ((s.index ?? 0) == 0 ? 'Speciali' : 'Stagione ${s.index}'),
                   selected: j == i,
                   icon: _shown(s).isWatched ? Icons.check_rounded : null,
                   onTap: () => setState(() => _seasonIndex = j),
@@ -453,9 +453,9 @@ class _ServerItemPageState extends State<ServerItemPage> {
               return SliverToBoxAdapter(
                 child: EmptyState(
                   icon: Icons.cloud_off_rounded,
-                  title: "Couldn't load the episodes",
+                  title: "Impossibile caricare gli episodi",
                   body: serverError(snap.error!),
-                  action: ('Try again', () => setState(() => _episodes.remove(season.id))),
+                  action: ('Riprova', () => setState(() => _episodes.remove(season.id))),
                 ),
               );
             }
@@ -477,7 +477,7 @@ class _ServerItemPageState extends State<ServerItemPage> {
               return const SliverToBoxAdapter(
                 child: Padding(
                   padding: EdgeInsets.symmetric(vertical: 30),
-                  child: Text('No episodes in this season yet.', style: TextStyle(color: VyseColors.textFaint)),
+                  child: Text('Ancora nessun episodio in questa stagione.', style: TextStyle(color: VyseColors.textFaint)),
                 ),
               );
             }
@@ -557,7 +557,7 @@ class _WatchedButton extends StatelessWidget {
           ),
           const SizedBox(width: 8),
           Text(
-            label ?? (watched ? 'Watched' : 'Mark watched'),
+            label ?? (watched ? 'Visto' : 'Segna come visto'),
             style: TextStyle(fontSize: compact ? 12.5 : 14, fontWeight: FontWeight.w800, color: watched ? VyseColors.accent : VyseColors.text),
           ),
         ]),
@@ -655,7 +655,7 @@ class _EpisodeRow extends StatelessWidget {
                   ),
                   if (!phone)
                     Tooltip(
-                      message: e.isWatched ? 'Mark unwatched' : 'Mark watched',
+                      message: e.isWatched ? 'Segna come non visto' : 'Segna come visto',
                       child: Pressable(
                         onTap: onWatched,
                         builder: (context, h, _) => Padding(
@@ -691,7 +691,7 @@ class _EpisodeRow extends StatelessWidget {
   }
 
   static String _date(DateTime d) {
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const months = ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu', 'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic'];
     return '${months[d.month - 1]} ${d.day}, ${d.year}';
   }
 }

@@ -55,7 +55,7 @@ class ServerPlayback implements OutsidePlayback {
   String get label => '${server.product} · ${server.name}';
 
   @override
-  String get note => 'Straight from your server';
+  String get note => 'Direttamente dal tuo server';
 
   /// The show's or film's clear logo, when the server has one.
   @override
@@ -75,7 +75,7 @@ class ServerPlayback implements OutsidePlayback {
       target = eps.where((e) => !e.isWatched).firstOrNull ?? eps.firstOrNull ?? item;
     }
     if (target.kind != MediaKind.movie && target.kind != MediaKind.episode && target.kind != MediaKind.clip) {
-      throw StateError('Nothing to play here yet');
+      throw StateError('Ancora niente da riprodurre qui');
     }
     final isEp = target.kind == MediaKind.episode;
     String? img(String? path, {int w = 780}) => path == null || path.isEmpty ? null : client.thumbnailUrl(path, width: w);
@@ -142,11 +142,11 @@ class ServerPlayback implements OutsidePlayback {
   Future<ServerStream> open(PlayerEpisode? ep) async {
     stopped();
     final MediaItem? base = ep == null || episodes == null ? _movie : await episodes!.item(ep);
-    if (base == null) throw StateError("This episode isn't on the server");
+    if (base == null) throw StateError("Questo episodio non è sul server");
     final item = await client.fetchItem(base.id).catchError((Object _) => null) ?? base;
     final result = await client.getPlaybackInitialization(PlaybackInitializationOptions(metadata: item, selectedMediaIndex: 0));
     final url = result.videoUrl;
-    if (url == null || url.isEmpty) throw StateError("The server didn't give a way to play this");
+    if (url == null || url.isEmpty) throw StateError("Il server non ha fornito un modo per riprodurlo");
     _item = item;
     _result = result;
     _reportedStart = false;
@@ -321,7 +321,7 @@ class ServerEpisodeStore extends EpisodeStore {
   Future<List<Season>> get seasons => _seasonItems.then((items) {
     final list = [
       for (final s in items)
-        Season(s.index ?? 0, s.title ?? 'Season ${s.index ?? 0}', s.leafCount ?? 0, s.year?.toString(), _img(s.thumbPath)),
+        Season(s.index ?? 0, s.title ?? 'Stagione ${s.index ?? 0}', s.leafCount ?? 0, s.year?.toString(), _img(s.thumbPath)),
     ];
     list.sort((a, b) => a.number == 0 ? 1 : (b.number == 0 ? -1 : a.number.compareTo(b.number)));
     return list;
@@ -341,7 +341,7 @@ class ServerEpisodeStore extends EpisodeStore {
             return EpisodeInfo(
               n,
               number,
-              (e.title ?? '').trim().isEmpty ? 'Episode $number' : e.title!,
+              (e.title ?? '').trim().isEmpty ? 'Episodio $number' : e.title!,
               e.summary ?? '',
               _img(e.thumbPath),
               e.durationMs == null ? null : (e.durationMs! / 60000).round(),

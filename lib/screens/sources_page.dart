@@ -46,21 +46,21 @@ PageRouteBuilder<void> _fade(Widget page, {String? name}) => PageRouteBuilder(
 // ── filters ──
 
 enum _Sort {
-  addon('Addon order'),
-  seeders('Most seeded'),
-  largest('Largest first'),
-  smallest('Smallest first'),
-  quality('Highest quality');
+  addon('Ordine degli addon'),
+  seeders('Più seed'),
+  largest('Prima i più grandi'),
+  smallest('Prima i più piccoli'),
+  quality('Qualità più alta');
 
   const _Sort(this.label);
   final String label;
 }
 
 enum _Size {
-  small('Under 2 GB', 0, 2e9),
+  small('Sotto 2 GB', 0, 2e9),
   medium('2–10 GB', 2e9, 10e9),
   large('10–30 GB', 10e9, 30e9),
-  huge('Over 30 GB', 30e9, double.infinity);
+  huge('Oltre 30 GB', 30e9, double.infinity);
 
   const _Size(this.label, this.min, this.max);
   final String label;
@@ -70,7 +70,7 @@ enum _Size {
 }
 
 enum _Kind {
-  instant('Instant'),
+  instant('Istantanei'),
   p2p('Peer to peer');
 
   const _Kind(this.label);
@@ -173,7 +173,7 @@ class _SourcesPageState extends State<SourcesPage> {
         for (final r in _results.values) {
           r
             ..loading = false
-            ..error = "Couldn't look the title up";
+            ..error = "Impossibile cercare il titolo";
         }
       });
       return;
@@ -201,7 +201,7 @@ class _SourcesPageState extends State<SourcesPage> {
             setState(() {
               r
                 ..loading = false
-                ..error = e is TimeoutException ? 'took too long' : "didn't answer";
+                ..error = e is TimeoutException ? 'troppo lento' : "non ha risposto";
             });
           },
         ),
@@ -217,9 +217,9 @@ class _SourcesPageState extends State<SourcesPage> {
       final x = await AnimeExtras.of(a.id).catchError((Object _) => const AnimeExtras());
       final e = ep == null ? null : x.episodes[ep.number];
       return _Info(
-        title: ep == null ? a.title : (e?.title ?? ep.name ?? 'Episode ${ep.number}'),
+        title: ep == null ? a.title : (e?.title ?? ep.name ?? 'Episodio ${ep.number}'),
         show: ep == null ? '' : a.title,
-        episode: ep == null ? null : 'Episode ${ep.number}',
+        episode: ep == null ? null : 'Episodio ${ep.number}',
         overview: (e?.overview.isNotEmpty ?? false) ? e!.overview : a.description,
         art: x.fanart ?? a.banner ?? e?.image ?? a.cover,
         meta: [?a.year?.toString(), ?mins(e?.runtime ?? a.duration), if (a.score != null) '${(a.score! / 10).toStringAsFixed(1)} / 10'],
@@ -229,9 +229,9 @@ class _SourcesPageState extends State<SourcesPage> {
       final eps = await EpisodeStore(_m).season(ep.season).catchError((Object _) => const <Never>[]);
       final e = eps.where((x) => x.number == ep.number).firstOrNull;
       return _Info(
-        title: e?.name ?? ep.name ?? 'Episode ${ep.number}',
+        title: e?.name ?? ep.name ?? 'Episodio ${ep.number}',
         show: _m.title,
-        episode: 'Season ${ep.season} · Episode ${ep.number}',
+        episode: 'Stagione ${ep.season} · Episodio ${ep.number}',
         overview: (e?.overview.isNotEmpty ?? false) ? e!.overview : _m.overview,
         art: _m.backdrop('w1280') ?? e?.stillUrl('w1280'),
         meta: [if (e?.aired != null) '${e!.aired!.year}' else ?_m.year, ?mins(e?.runtime), if (_m.rating > 0) '${_m.rating.toStringAsFixed(1)} / 10'],
@@ -373,9 +373,9 @@ class _SourcesPageState extends State<SourcesPage> {
             final info =
                 snap.data ??
                 _Info(
-                  title: ep == null ? _m.title : (ep.name ?? 'Episode ${ep.number}'),
+                  title: ep == null ? _m.title : (ep.name ?? 'Episodio ${ep.number}'),
                   show: ep == null ? '' : _m.title,
-                  episode: ep == null ? null : (widget.anime != null ? 'Episode ${ep.number}' : 'Season ${ep.season} · Episode ${ep.number}'),
+                  episode: ep == null ? null : (widget.anime != null ? 'Episodio ${ep.number}' : 'Stagione ${ep.season} · Episodio ${ep.number}'),
                   art: _m.backdrop('w1280'),
                 );
             return Layout.isPhone(context) ? _phone(info) : _desktop(info);
@@ -483,7 +483,7 @@ class _SourcesPageState extends State<SourcesPage> {
                             children: [
                               _Back(onTap: _close),
                               const SizedBox(width: 12),
-                              const Text('Sources', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800, letterSpacing: -.5)),
+                              const Text('Sorgenti', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800, letterSpacing: -.5)),
                               const SizedBox(width: 12),
                               if (_loading)
                                 const SizedBox.square(dimension: 14, child: CircularProgressIndicator(strokeWidth: 1.8, color: VyseColors.textDim))
@@ -526,8 +526,8 @@ class _SourcesPageState extends State<SourcesPage> {
                       const SizedBox(height: 24),
                       Row(
                         children: [
-                          if (best != null) ...[_Primary(label: 'Play best', onTap: () => _play(best)), const SizedBox(width: 10)],
-                          if (!widget.overlay) _Secondary(label: 'Lorewatch servers', onTap: _builtIn),
+                          if (best != null) ...[_Primary(label: 'Riproduci la migliore', onTap: () => _play(best)), const SizedBox(width: 10)],
+                          if (!widget.overlay) _Secondary(label: 'Server integrati', onTap: _builtIn),
                         ],
                       ),
                     ],
@@ -565,7 +565,7 @@ class _SourcesPageState extends State<SourcesPage> {
         nullable: false,
       ),
       _Dropdown<String>(
-        label: _quality ?? 'Quality',
+        label: _quality ?? 'Qualità',
         active: _quality != null,
         value: _quality,
         options: [for (final q in _qualities) (q, q, count((s) => _bucket(s) == q))],
@@ -580,7 +580,7 @@ class _SourcesPageState extends State<SourcesPage> {
           onPick: (l) => setState(() => _language = l),
         ),
       _Dropdown<String>(
-        label: _source ?? 'Source',
+        label: _source ?? 'Sorgente',
         active: _source != null,
         value: _source,
         options: [
@@ -598,7 +598,7 @@ class _SourcesPageState extends State<SourcesPage> {
       ),
       if (all.any((s) => s.torrent) && all.any((s) => !s.torrent))
         _Dropdown<_Kind>(
-          label: _kind?.label ?? 'Type',
+          label: _kind?.label ?? 'Tipo',
           active: _kind != null,
           value: _kind,
           options: [for (final k in _Kind.values) (k, k.label, count(k.has))],
@@ -615,7 +615,7 @@ class _SourcesPageState extends State<SourcesPage> {
           child: ListView(
             scrollDirection: Axis.horizontal,
             children: [
-              _Tab(label: 'All', count: all.length, loading: _loading, selected: _addon == null, onTap: () => setState(() => _addon = null)),
+              _Tab(label: 'Tutti', count: all.length, loading: _loading, selected: _addon == null, onTap: () => setState(() => _addon = null)),
               for (final a in _addons)
                 _Tab(
                   label: a.name,
@@ -654,11 +654,11 @@ class _SourcesPageState extends State<SourcesPage> {
       return [
         one(
           _Note(
-            title: 'No source addons',
-            text: 'Install a Stremio addon in Settings › Addons and its sources show up here.',
+            title: 'Nessun addon di sorgenti',
+            text: 'Installa un addon Stremio in Impostazioni › Addon e le sue sorgenti compariranno qui.',
             actions: [
-              _Primary(label: 'Add addons', onTap: _openAddons),
-              if (!widget.overlay) _Secondary(label: 'Lorewatch servers', onTap: _builtIn),
+              _Primary(label: 'Aggiungi addon', onTap: _openAddons),
+              if (!widget.overlay) _Secondary(label: 'Server integrati', onTap: _builtIn),
             ],
           ),
         ),
@@ -677,15 +677,15 @@ class _SourcesPageState extends State<SourcesPage> {
       return [
         one(
           _Note(
-            title: _filtered ? 'Nothing matches these filters' : 'No sources',
+            title: _filtered ? 'Nessun risultato con questi filtri' : 'Nessuna sorgente',
             text: _filtered
-                ? 'Loosen a filter to see more.'
+                ? 'Allenta un filtro per vederne altre.'
                 : t > 0
-                ? 'Your addons found $t torrents, but this device can only play them through a debrid service set up in the addon.'
-                : 'Your addons have nothing for this right now.',
+                ? 'I tuoi addon hanno trovato $t torrent, ma questo dispositivo può riprodurli solo tramite un servizio debrid configurato nell\'addon.'
+                : 'I tuoi addon non hanno niente per questo al momento.',
             actions: [
-              if (_filtered) _Secondary(label: 'Clear filters', onTap: _clear),
-              if (!widget.overlay) _Secondary(label: 'Lorewatch servers', onTap: _builtIn),
+              if (_filtered) _Secondary(label: 'Azzera i filtri', onTap: _clear),
+              if (!widget.overlay) _Secondary(label: 'Server integrati', onTap: _builtIn),
             ],
           ),
         ),
@@ -702,7 +702,7 @@ class _SourcesPageState extends State<SourcesPage> {
                   child: Center(
                     child: TextButton(
                       onPressed: _builtIn,
-                      child: const Text('Play with Lorewatch’s servers instead', style: TextStyle(color: VyseColors.textDim, fontSize: 13)),
+                      child: const Text('Riproduci invece con i server integrati', style: TextStyle(color: VyseColors.textDim, fontSize: 13)),
                     ),
                   ),
                 )
@@ -868,7 +868,7 @@ class _Tab extends StatelessWidget {
                 const SizedBox.square(dimension: 10, child: CircularProgressIndicator(strokeWidth: 1.5, color: VyseColors.textFaint))
               else if (failed)
                 const Tooltip(
-                  message: "This addon didn't answer",
+                  message: "Questo addon non ha risposto",
                   child: Icon(Icons.error_outline_rounded, size: 14, color: Color(0xFFF26B6B)),
                 )
               else
@@ -924,7 +924,7 @@ class _Dropdown<T> extends StatelessWidget {
       ),
       position: RelativeRect.fromLTRB(at.dx, at.dy, at.dx + 1, at.dy + 1),
       items: [
-        if (nullable) _item('Any', null, value == null),
+        if (nullable) _item('Qualsiasi', null, value == null),
         for (final (v, l, n) in options) _item(l, n, v == value, value: v),
       ],
     );
@@ -994,7 +994,7 @@ class _ClearButton extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 6),
           child: Text(
-            'Clear',
+            'Cancella',
             style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: hovered ? VyseColors.text : VyseColors.accent),
           ),
         ),
@@ -1013,7 +1013,7 @@ class _SourceRow extends StatelessWidget {
   final bool playing; // the one on screen now (in the player's overlay)
 
   static const _now = Text(
-    'NOW PLAYING',
+    'IN RIPRODUZIONE',
     style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w800, letterSpacing: 1.2, color: VyseColors.accent),
   );
 
@@ -1113,10 +1113,10 @@ class _CopyMagnet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => IconButton(
-    tooltip: 'Copy magnet link',
+    tooltip: 'Copia link magnet',
     onPressed: () {
       Clipboard.setData(ClipboardData(text: Torrents.magnet(stream.infoHash!, trackers: stream.trackers, title: stream.release)));
-      showToast(context, const Text('Magnet link copied', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)), icon: Icons.link_rounded);
+      showToast(context, const Text('Link magnet copiato', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)), icon: Icons.link_rounded);
     },
     icon: const Icon(Icons.link_rounded),
     iconSize: 18,

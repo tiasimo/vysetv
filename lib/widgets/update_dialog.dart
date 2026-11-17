@@ -49,7 +49,7 @@ class _UpdateDialog extends StatelessWidget {
         final List<Widget> actions;
         switch (stage) {
           case UpdateStage.downloading || UpdateStage.verifying:
-            title = stage == UpdateStage.verifying ? 'Checking the download' : 'Downloading Lorewatch ${u?.version ?? ''}';
+            title = stage == UpdateStage.verifying ? 'Controllo il download' : 'Downloading Lorewatch ${u?.version ?? ''}';
             final total = up.file?.size ?? 0;
             body = [
               ClipRRect(
@@ -64,52 +64,52 @@ class _UpdateDialog extends StatelessWidget {
               const SizedBox(height: 10),
               Text(
                 stage == UpdateStage.verifying
-                    ? 'Making sure it is exactly the release.'
+                    ? 'Controllo che sia esattamente la versione pubblicata.'
                     : [
-                        if (total > 0) '${bytesLabel(up.received)} of ${bytesLabel(total)}' else bytesLabel(up.received),
+                        if (total > 0) '${bytesLabel(up.received)} di ${bytesLabel(total)}' else bytesLabel(up.received),
                         if (up.progress != null) '${(up.progress! * 100).floor()}%',
                       ].where((s) => s.isNotEmpty).join('  ·  '),
                 style: const TextStyle(fontSize: 12.5, color: VyseColors.textDim, fontFeatures: [FontFeature.tabularFigures()]),
               ),
             ];
-            actions = [if (stage == UpdateStage.downloading) TextButton(onPressed: up.cancel, child: const Text('Cancel'))];
+            actions = [if (stage == UpdateStage.downloading) TextButton(onPressed: up.cancel, child: const Text('Annulla'))];
           case UpdateStage.installing:
-            title = Platform.isWindows || Platform.isLinux ? 'Restarting Lorewatch' : 'Installing';
+            title = Platform.isWindows || Platform.isLinux ? 'Riavvio di Lorewatch' : 'Installazione';
             body = [
               const Row(
                 children: [
                   SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2.2, color: VyseColors.accent)),
                   SizedBox(width: 14),
-                  Expanded(child: Text('Putting the new version in place. Lorewatch closes and opens again by itself.', style: TextStyle(color: VyseColors.textDim, height: 1.45))),
+                  Expanded(child: Text('Metto al suo posto la nuova versione. Lorewatch si chiude e si riapre da solo.', style: TextStyle(color: VyseColors.textDim, height: 1.45))),
                 ],
               ),
             ];
             actions = const [];
           case UpdateStage.handedOver:
-            title = 'Almost there';
+            title = 'Ci siamo quasi';
             body = [
               Text(
                 Platform.isAndroid
-                    ? 'Android is asking whether to install the update. Tap Install there. If it asks to allow installs from Lorewatch first, allow it and come back.'
+                    ? 'Android chiede se installare l\'aggiornamento. Tocca Installa. Se prima chiede di consentire le installazioni da Lorewatch, consentile e torna qui.'
                     : Platform.isMacOS
-                    ? 'The disk image is open. Close Lorewatch, drag the new Lorewatch to Applications, then open it again.'
-                    : 'The download opened in your browser. Install it from there.',
+                    ? 'L\'immagine disco è aperta. Chiudi Lorewatch, trascina il nuovo Lorewatch in Applicazioni, poi riaprilo.'
+                    : 'Il download si è aperto nel browser. Installalo da lì.',
                 style: const TextStyle(color: VyseColors.textDim, height: 1.5),
               ),
             ];
-            actions = [_primary('Done', close)];
+            actions = [_primary('Fatto', close)];
           case UpdateStage.failed:
-            title = "The update didn't go through";
-            body = [Text(up.error ?? 'Something went wrong.', style: const TextStyle(color: VyseColors.textDim, height: 1.5))];
+            title = "L'aggiornamento non è andato a buon fine";
+            body = [Text(up.error ?? 'Qualcosa è andato storto.', style: const TextStyle(color: VyseColors.textDim, height: 1.5))];
             actions = [
-              TextButton(onPressed: close, child: const Text('Close')),
-              if (up.newer != null) _primary('Try again', up.update),
+              TextButton(onPressed: close, child: const Text('Chiudi')),
+              if (up.newer != null) _primary('Riprova', up.update),
             ];
           case UpdateStage.available when u != null:
-            title = 'Lorewatch ${u.version} is ready';
+            title = 'Lorewatch ${u.version} è pronto';
             body = [
               Text(
-                ['You have ${up.current}', if (u.date.isNotEmpty) 'released ${u.date}', if ((up.file?.size ?? 0) > 0) bytesLabel(up.file!.size)].join('  ·  '),
+                ['You have ${up.current}', if (u.date.isNotEmpty) 'pubblicato il ${u.date}', if ((up.file?.size ?? 0) > 0) bytesLabel(up.file!.size)].join('  ·  '),
                 style: const TextStyle(fontSize: 12.5, color: VyseColors.textDim),
               ),
               if (u.notes.isNotEmpty) ...[
@@ -134,20 +134,20 @@ class _UpdateDialog extends StatelessWidget {
                   up.skip(u.version);
                   close();
                 },
-                child: const Text('Skip this version'),
+                child: const Text('Salta questa versione'),
               ),
-              TextButton(onPressed: close, child: const Text('Later')),
-              _primary('Update', up.update),
+              TextButton(onPressed: close, child: const Text('Più tardi')),
+              _primary('Aggiorna', up.update),
             ];
           default:
-            title = up.stage == UpdateStage.checking ? 'Checking for updates' : "You're up to date";
+            title = up.stage == UpdateStage.checking ? 'Controllo aggiornamenti' : "Sei aggiornato";
             body = [
               Text(
-                up.stage == UpdateStage.checking ? 'One moment.' : 'Lorewatch ${up.current} is the newest version.',
+                up.stage == UpdateStage.checking ? 'Un momento.' : 'Lorewatch ${up.current} è la versione più recente.',
                 style: const TextStyle(color: VyseColors.textDim, height: 1.5),
               ),
             ];
-            actions = [TextButton(onPressed: close, child: const Text('Close'))];
+            actions = [TextButton(onPressed: close, child: const Text('Chiudi'))];
         }
 
         return PopScope(

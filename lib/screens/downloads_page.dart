@@ -56,8 +56,8 @@ class _DownloadsPageState extends State<DownloadsPage> {
         title: [d.title, if (d.detail.isNotEmpty) d.detail.split(' · ').first].join(' · '),
         url: url,
         hls: d.isFolder,
-        label: 'Downloaded',
-        note: 'On this device',
+        label: 'Scaricato',
+        note: 'Su questo dispositivo',
         resumeAt: resume,
         downloadable: false,
         poster: d.poster,
@@ -85,7 +85,7 @@ class _DownloadsPageState extends State<DownloadsPage> {
       builder: (ctx) => AlertDialog(
         backgroundColor: VyseColors.surface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: const Text('Where it is', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+        title: const Text('Dov\'è', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
         content: SizedBox(width: 380, child: SelectableText(path, style: const TextStyle(color: VyseColors.textDim, height: 1.45, fontSize: 13))),
         actions: [
           TextButton(
@@ -93,9 +93,9 @@ class _DownloadsPageState extends State<DownloadsPage> {
               Clipboard.setData(ClipboardData(text: path));
               Navigator.pop(ctx);
             },
-            child: const Text('Copy'),
+            child: const Text('Copia'),
           ),
-          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Close')),
+          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Chiudi')),
         ],
       ),
     );
@@ -109,20 +109,20 @@ class _DownloadsPageState extends State<DownloadsPage> {
       builder: (ctx) => AlertDialog(
         backgroundColor: VyseColors.surface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: Text(done ? 'Delete this download?' : 'Stop and remove this download?', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+        title: Text(done ? 'Eliminare questo download?' : 'Fermare e rimuovere questo download?', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
         content: SizedBox(
           width: 380,
           child: Text(
-            done ? '${d.title} is deleted from this device.' : "What's been downloaded of ${d.title} so far is deleted.",
+            done ? '${d.title} viene eliminato da questo dispositivo.' : "Quello che è stato scaricato finora di ${d.title} verrà eliminato.",
             style: const TextStyle(color: VyseColors.textDim, height: 1.45),
           ),
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Keep it')),
+          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Tienilo')),
           FilledButton(
             style: FilledButton.styleFrom(backgroundColor: const Color(0xFFFF4D4F), foregroundColor: Colors.white),
             onPressed: () => Navigator.pop(ctx, true),
-            child: Text(done ? 'Delete' : 'Remove', style: const TextStyle(fontWeight: FontWeight.w800)),
+            child: Text(done ? 'Elimina' : 'Rimuovi', style: const TextStyle(fontWeight: FontWeight.w800)),
           ),
         ],
       ),
@@ -164,15 +164,15 @@ class _DownloadsPageState extends State<DownloadsPage> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text('Downloads', style: TextStyle(fontSize: phone ? 26 : 34, fontWeight: FontWeight.w900, letterSpacing: -.8)),
+                                  Text('Scarica', style: TextStyle(fontSize: phone ? 26 : 34, fontWeight: FontWeight.w900, letterSpacing: -.8)),
                                   const SizedBox(height: 6),
                                   Text(
                                     all.isEmpty
-                                        ? 'What you download from the player shows up here'
+                                        ? 'Quello che scarichi dal player compare qui'
                                         : [
-                                            if (done > 0) '$done ready to watch',
-                                            if (coming > 0) '$coming downloading',
-                                            if (all.length - done - coming > 0) '${all.length - done - coming} stopped',
+                                            if (done > 0) '$done pronti da guardare',
+                                            if (coming > 0) '$coming in download',
+                                            if (all.length - done - coming > 0) '${all.length - done - coming} fermati',
                                           ].join('  ·  '),
                                     style: TextStyle(fontSize: phone ? 12.5 : 14, color: VyseColors.textDim, fontWeight: FontWeight.w500),
                                   ),
@@ -182,8 +182,8 @@ class _DownloadsPageState extends State<DownloadsPage> {
                             if (desktop)
                               _Action(
                                 icon: Icons.folder_open_rounded,
-                                label: phone ? null : 'Open folder',
-                                tooltip: 'Open the downloads folder',
+                                label: phone ? null : 'Apri cartella',
+                                tooltip: 'Apri la cartella dei download',
                                 onTap: () async => _reveal((await Downloads.instance.root()).path, folder: true),
                               ),
                           ],
@@ -196,8 +196,8 @@ class _DownloadsPageState extends State<DownloadsPage> {
                   const SliverToBoxAdapter(
                     child: EmptyState(
                       icon: Icons.download_outlined,
-                      title: 'Nothing downloaded yet',
-                      body: "While something plays, open the player's More menu and choose Download.",
+                      title: 'Ancora nessun download',
+                      body: "Mentre un video è in riproduzione, apri il menu Altro del player e scegli Scarica.",
                     ),
                   )
                 else
@@ -237,10 +237,10 @@ String _clock(int seconds) {
 }
 
 String _left(int seconds) {
-  if (seconds < 60) return 'under a minute left';
-  if (seconds < 3600) return '${(seconds / 60).round()} min left';
+  if (seconds < 60) return 'meno di un minuto';
+  if (seconds < 3600) return '${(seconds / 60).round()} min rimanenti';
   final h = seconds ~/ 3600, m = ((seconds % 3600) / 60).round();
-  return m == 0 ? '$h h left' : '$h h $m min left';
+  return m == 0 ? '$h h rimanenti' : '$h h $m min rimanenti';
 }
 
 class _DownloadCard extends StatelessWidget {
@@ -256,18 +256,18 @@ class _DownloadCard extends StatelessWidget {
     final got = bytesLabel(d.received), size = bytesLabel(d.expected);
     final pct = d.progress == null ? null : '${(d.progress! * 100).floor()}%';
     return switch (d.state) {
-      DownloadState.queued => 'Waiting its turn',
+      DownloadState.queued => 'In attesa del suo turno',
       DownloadState.running => [
-        if (got.isEmpty) (d.kind == DownloadKind.torrent ? 'Finding peers…' : 'Starting…') else size.isEmpty ? got : '$got of $size',
+        if (got.isEmpty) (d.kind == DownloadKind.torrent ? 'Ricerca di peer…' : 'Avvio…') else size.isEmpty ? got : '$got di $size',
         ?pct,
-        if (d.speed >= 1024) '${bytesLabel(d.speed.round())}/s' else if (d.kind == DownloadKind.torrent && got.isNotEmpty) 'waiting for peers',
+        if (d.speed >= 1024) '${bytesLabel(d.speed.round())}/s' else if (d.kind == DownloadKind.torrent && got.isNotEmpty) 'in attesa di peer',
         if (d.secondsLeft case final s?) _left(s),
       ].join('  ·  '),
       DownloadState.paused => ['Paused', ?pct, if (got.isNotEmpty) got].join('  ·  '),
-      DownloadState.failed => d.error ?? "It couldn't be downloaded.",
+      DownloadState.failed => d.error ?? "Non è stato possibile scaricarlo.",
       DownloadState.done => [
         if (bytesLabel(d.total).isNotEmpty) bytesLabel(d.total),
-        if (d.positionMs > 5000 && (d.durationMs == 0 || d.positionMs < d.durationMs * .95)) 'stopped at ${_clock(d.positionMs ~/ 1000)}' else 'Ready to watch',
+        if (d.positionMs > 5000 && (d.durationMs == 0 || d.positionMs < d.durationMs * .95)) 'fermato a ${_clock(d.positionMs ~/ 1000)}' else 'Pronto da guardare',
       ].join('  ·  '),
     };
   }
@@ -330,18 +330,18 @@ class _DownloadCard extends StatelessWidget {
     );
 
     final actions = <Widget>[
-      if (done) _Action(icon: Icons.play_arrow_rounded, label: 'Play', primary: true, onTap: onPlay),
-      if (live) _Action(icon: Icons.pause_rounded, label: phone ? null : 'Pause', tooltip: 'Pause', onTap: () => Downloads.instance.pause(d)),
-      if (d.state == DownloadState.paused) _Action(icon: Icons.play_arrow_rounded, label: 'Resume', onTap: () => Downloads.instance.resume(d)),
-      if (failed) _Action(icon: Icons.refresh_rounded, label: 'Try again', onTap: () => Downloads.instance.resume(d)),
+      if (done) _Action(icon: Icons.play_arrow_rounded, label: 'Riproduci', primary: true, onTap: onPlay),
+      if (live) _Action(icon: Icons.pause_rounded, label: phone ? null : 'Pausa', tooltip: 'Pausa', onTap: () => Downloads.instance.pause(d)),
+      if (d.state == DownloadState.paused) _Action(icon: Icons.play_arrow_rounded, label: 'Riprendi', onTap: () => Downloads.instance.resume(d)),
+      if (failed) _Action(icon: Icons.refresh_rounded, label: 'Riprova', onTap: () => Downloads.instance.resume(d)),
       if (done)
         _Action(
           icon: mobile ? Icons.info_outline_rounded : Icons.folder_open_rounded,
-          label: phone ? null : (mobile ? 'Where it is' : 'Open folder'),
-          tooltip: mobile ? 'Where it is' : 'Open folder',
+          label: phone ? null : (mobile ? 'Dov\'è' : 'Apri cartella'),
+          tooltip: mobile ? 'Dov\'è' : 'Apri cartella',
           onTap: onReveal,
         ),
-      _Action(icon: Icons.delete_outline_rounded, tooltip: done ? 'Delete' : 'Remove', danger: true, onTap: onRemove),
+      _Action(icon: Icons.delete_outline_rounded, tooltip: done ? 'Elimina' : 'Rimuovi', danger: true, onTap: onRemove),
     ];
 
     return Container(

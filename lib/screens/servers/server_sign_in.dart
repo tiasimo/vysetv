@@ -144,15 +144,15 @@ class _SignInState extends State<_SignIn> {
       final account = await flow.wait(cancelled: () => _closed || _plex != flow);
       if (_closed || _plex != flow) return;
       if (account == null) {
-        setState(() => _error = 'That took a while, so the link expired. Try again.');
+        setState(() => _error = 'Ci è voluto troppo e il link è scaduto. Riprova.');
         return;
       }
       final n = account.conn.servers.length;
       _finish(
-        "You're in, ${account.who}",
+        "Sei dentro, ${account.who}",
         n == 0
-            ? 'No servers on this account yet. Ones shared with you later will show up here.'
-            : (n == 1 ? 'Found ${account.conn.servers.first.name}.' : 'Found $n servers.'),
+            ? 'Ancora nessun server su questo account. Quelli condivisi con te compariranno qui.'
+            : (n == 1 ? 'Trovato ${account.conn.servers.first.name}.' : 'Trovati $n server.'),
       );
     } catch (e) {
       if (_closed) return;
@@ -199,7 +199,7 @@ class _SignInState extends State<_SignIn> {
     try {
       final a = await _flow.login(_user.text, _pass.text);
       if (_closed) return;
-      _finish('Welcome, ${a.who}', 'Connected to ${a.conn.serverName}.');
+      _finish('Benvenuto, ${a.who}', 'Collegato a ${a.conn.serverName}.');
     } catch (e) {
       if (_closed) return;
       setState(() {
@@ -227,10 +227,10 @@ class _SignInState extends State<_SignIn> {
       final a = await _flow.waitQuickConnect(qc.secret, cancelled: () => _closed || attempt != _qcAttempt);
       if (_closed || attempt != _qcAttempt) return;
       if (a == null) {
-        setState(() => _error = 'The code expired. Get a new one.');
+        setState(() => _error = 'Il codice è scaduto. Prendine uno nuovo.');
         return;
       }
-      _finish('Welcome, ${a.who}', 'Connected to ${a.conn.serverName}.');
+      _finish('Benvenuto, ${a.who}', 'Collegato a ${a.conn.serverName}.');
     } catch (e) {
       if (_closed || attempt != _qcAttempt) return;
       setState(() {
@@ -294,7 +294,7 @@ class _SignInState extends State<_SignIn> {
             padding: const EdgeInsets.only(right: 10),
             child: GlassIconButton(
               icon: Icons.arrow_back_rounded,
-              label: 'Back',
+              label: 'Indietro',
               size: 34,
               onTap: () => _go(_step == _Step.login || _step == _Step.quickConnect
                   ? _Step.address
@@ -303,7 +303,7 @@ class _SignInState extends State<_SignIn> {
           ),
         ?leading,
         const Spacer(),
-        GlassIconButton(icon: Icons.close_rounded, label: 'Close', size: 34, onTap: () => Navigator.of(context).pop(false)),
+        GlassIconButton(icon: Icons.close_rounded, label: 'Chiudi', size: 34, onTap: () => Navigator.of(context).pop(false)),
       ]),
       const SizedBox(height: 16),
       Text(title, style: const TextStyle(fontSize: 24, height: 1.15, fontWeight: FontWeight.w900, letterSpacing: -.3)),
@@ -340,7 +340,7 @@ class _SignInState extends State<_SignIn> {
   Widget _chooseView() => Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      _header(title: 'Connect a server', body: 'Watch your own library with Lorewatch. Pick what your server runs.'),
+      _header(title: 'Collega un server', body: 'Guarda la tua libreria con Lorewatch. Scegli cosa usa il tuo server.'),
       for (final (i, b) in const [MediaBackend.plex, MediaBackend.jellyfin, MediaBackend.emby].indexed)
         Padding(
           padding: const EdgeInsets.only(bottom: 10),
@@ -350,9 +350,9 @@ class _SignInState extends State<_SignIn> {
             child: _ProviderRow(
               backend: b,
               blurb: switch (b) {
-                MediaBackend.plex => 'Sign in with your Plex account',
-                MediaBackend.emby => 'Your server address and login',
-                _ => 'Your server address, login or Quick Connect',
+                MediaBackend.plex => 'Accedi con il tuo account Plex',
+                MediaBackend.emby => 'Indirizzo del server e accesso',
+                _ => 'Indirizzo del server, accesso o Quick Connect',
               },
               onTap: () => _pick(b),
             ),
@@ -381,19 +381,19 @@ class _SignInState extends State<_SignIn> {
         _header(
           leading: const BrandMark(MediaBackend.plex, size: 34),
           back: widget.backend == null,
-          title: 'Sign in with Plex',
-          body: 'We opened plex.tv in your browser. Sign in there and press Allow, and Lorewatch picks it up by itself.',
+          title: 'Accedi con Plex',
+          body: 'Abbiamo aperto plex.tv nel browser. Accedi lì e premi Consenti, e Lorewatch lo rileva da solo.',
         ),
         _errorLine(),
         if (_error != null)
-          _Submit(label: 'Try again', busy: false, onTap: _startPlex)
+          _Submit(label: 'Riprova', busy: false, onTap: _startPlex)
         else ...[
-          _Waiting(label: flow == null ? 'Getting a sign-in link…' : 'Waiting for you to press Allow…', colors: brandColors(MediaBackend.plex)),
+          _Waiting(label: flow == null ? 'Preparo un link di accesso…' : 'In attesa che premi Consenti…', colors: brandColors(MediaBackend.plex)),
           const SizedBox(height: 18),
           Row(children: [
             Expanded(
               child: PillButton(
-                label: 'Open plex.tv',
+                label: 'Apri plex.tv',
                 icon: Icons.open_in_new_rounded,
                 expand: true,
                 onTap: flow == null ? () {} : () => launchUrl(Uri.parse(flow.url), mode: LaunchMode.externalApplication),
@@ -402,21 +402,21 @@ class _SignInState extends State<_SignIn> {
             const SizedBox(width: 10),
             Expanded(
               child: PillButton(
-                label: 'Copy link',
+                label: 'Copia link',
                 icon: Icons.link_rounded,
                 expand: true,
                 onTap: flow == null
                     ? () {}
                     : () {
                         Clipboard.setData(ClipboardData(text: flow.url));
-                        showToast(context, const Text('Link copied. Open it on any device.', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)), icon: Icons.link_rounded);
+                        showToast(context, const Text('Link copiato. Aprilo su qualsiasi dispositivo.', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)), icon: Icons.link_rounded);
                       },
               ),
             ),
           ]),
         ],
         const SizedBox(height: 16),
-        const _Note(icon: Icons.lock_outline_rounded, text: 'Lorewatch never sees your Plex password. Your sign-in stays on this device.'),
+        const _Note(icon: Icons.lock_outline_rounded, text: 'Lorewatch non vede mai la tua password Plex. L\'accesso resta su questo dispositivo.'),
       ],
     );
   }
@@ -431,12 +431,12 @@ class _SignInState extends State<_SignIn> {
         _header(
           leading: BrandMark(_backend, size: 34),
           back: widget.backend == null,
-          title: 'Find your $name server',
-          body: 'Its address, like 192.168.1.20 or ${name.toLowerCase()}.example.com. The port is optional.',
+          title: 'Trova il tuo server $name',
+          body: 'Il suo indirizzo, come 192.168.1.20 o ${name.toLowerCase()}.example.com. La porta è facoltativa.',
         ),
         _Field(
           controller: _address,
-          label: 'Server address',
+          label: 'Indirizzo del server',
           hint: '192.168.1.20:${_backend == MediaBackend.emby ? 8096 : 8096}',
           icon: Icons.dns_outlined,
           autofocus: widget.found == null,
@@ -447,7 +447,7 @@ class _SignInState extends State<_SignIn> {
         _errorLine(),
         ListenableBuilder(
           listenable: _address,
-          builder: (context, _) => _Submit(label: 'Continue', busy: _busy, enabled: _address.text.trim().isNotEmpty, onTap: _find),
+          builder: (context, _) => _Submit(label: 'Continua', busy: _busy, enabled: _address.text.trim().isNotEmpty, onTap: _find),
         ),
         _Nearby(
           future: _nearby,
@@ -474,19 +474,19 @@ class _SignInState extends State<_SignIn> {
           leading: BrandMark(_backend, size: 34),
           back: true,
           title: info?.serverName ?? brandName(_backend),
-          body: 'Sign in with your ${brandName(_backend)} username and password.',
+          body: 'Accedi con nome utente e password di ${brandName(_backend)}.',
         ),
-        _Field(controller: _user, label: 'Username', hint: 'Your name on the server', icon: Icons.person_outline_rounded, autofocus: true, onSubmit: _login),
+        _Field(controller: _user, label: 'Nome utente', hint: 'Il tuo nome sul server', icon: Icons.person_outline_rounded, autofocus: true, onSubmit: _login),
         const SizedBox(height: 14),
         _Field(
           controller: _pass,
           label: 'Password',
-          hint: 'Leave empty if there is none',
+          hint: 'Lascia vuoto se non c\'è',
           icon: Icons.lock_outline_rounded,
           obscure: !_showPass,
           onSubmit: _login,
           trailing: IconButton(
-            tooltip: _showPass ? 'Hide' : 'Show',
+            tooltip: _showPass ? 'Nascondi' : 'Mostra',
             icon: Icon(_showPass ? Icons.visibility_off_outlined : Icons.visibility_outlined, size: 19, color: VyseColors.textFaint),
             onPressed: () => setState(() => _showPass = !_showPass),
           ),
@@ -495,7 +495,7 @@ class _SignInState extends State<_SignIn> {
         _errorLine(),
         ListenableBuilder(
           listenable: _user,
-          builder: (context, _) => _Submit(label: 'Sign in', busy: _busy, enabled: _user.text.trim().isNotEmpty, onTap: _login),
+          builder: (context, _) => _Submit(label: 'Accedi', busy: _busy, enabled: _user.text.trim().isNotEmpty, onTap: _login),
         ),
         if (_flow.quickConnect) ...[
           const SizedBox(height: 12),
@@ -508,7 +508,7 @@ class _SignInState extends State<_SignIn> {
                   Icon(Icons.bolt_rounded, size: 17, color: hovered ? VyseColors.accent : VyseColors.textDim),
                   const SizedBox(width: 6),
                   Text(
-                    'Use Quick Connect instead',
+                    'Usa invece Quick Connect',
                     style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: hovered ? VyseColors.accent : VyseColors.textDim),
                   ),
                 ]),
@@ -529,7 +529,7 @@ class _SignInState extends State<_SignIn> {
         leading: BrandMark(_backend, size: 34),
         back: true,
         title: 'Quick Connect',
-        body: 'On a device that is already signed in, open your profile, then Quick Connect, and enter this code.',
+        body: 'Su un dispositivo già connesso, apri il profilo, poi Quick Connect, e inserisci questo codice.',
       ),
       _errorLine(),
       Center(
@@ -564,9 +564,9 @@ class _SignInState extends State<_SignIn> {
       ),
       const SizedBox(height: 22),
       if (_error != null)
-        _Submit(label: 'Get a new code', busy: false, onTap: _quickConnect)
+        _Submit(label: 'Prendi un nuovo codice', busy: false, onTap: _quickConnect)
       else
-        _Waiting(label: 'Waiting for the server…', colors: brandColors(_backend)),
+        _Waiting(label: 'In attesa del server…', colors: brandColors(_backend)),
     ],
   );
 
@@ -668,7 +668,7 @@ class _Nearby extends StatelessWidget {
             const Icon(Icons.wifi_tethering_rounded, size: 15, color: VyseColors.textFaint),
             const SizedBox(width: 7),
             Text(
-              searching ? 'Looking around your network…' : 'On your network',
+              searching ? 'Cerco nella tua rete…' : 'Sulla tua rete',
               style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w800, color: VyseColors.textFaint, letterSpacing: .3),
             ),
             if (searching) ...[
@@ -701,7 +701,7 @@ class _Nearby extends StatelessWidget {
                         Text(s.address, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 11.5, color: VyseColors.textFaint)),
                       ]),
                     ),
-                    Text('Connect', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w800, color: hovered ? VyseColors.accent : VyseColors.textDim)),
+                    Text('Collega', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w800, color: hovered ? VyseColors.accent : VyseColors.textDim)),
                   ]),
                 ),
               ),

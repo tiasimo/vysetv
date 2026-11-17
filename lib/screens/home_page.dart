@@ -91,7 +91,7 @@ class _HomePageState extends State<HomePage> {
         curve: Curves.easeInOutCubic,
       );
     }
-    perfMark(value ? 'enter spotlight' : 'leave spotlight');
+    perfMark(value ? 'enter spotlight' : 'esci dal primo piano');
     setState(() => _immersive = value);
     if (!value) {
       _lastExit = DateTime.now();
@@ -269,24 +269,24 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         SizedBox(height: phone ? 8 : 4),
                         const ContinueWatchingRow(),
-                        landscape('Hot right now', _feed.hero),
+                        landscape('Di tendenza ora', _feed.hero),
                         _BecauseRow(hero: _hero, feed: _feed, posterWidth: posterW),
-                        top10("Today's top 10 films", _feed.topMoviesToday),
-                        posters('Series everyone is watching', _feed.popularTv),
+                        top10("I 10 film più visti oggi", _feed.topMoviesToday),
+                        posters('Le serie che guardano tutti', _feed.popularTv),
                         Shelf<WatchProvider>(
-                          title: 'Streaming services',
+                          title: 'Servizi di streaming',
                           load: _feed.providers,
                           itemWidth: phone ? 120 : 172,
                           itemHeight: phone ? 92 : 118,
                           maxItems: 40,
                           itemBuilder: (_, p, _) => PlatformTile(provider: p),
                         ),
-                        landscape('In cinemas now', _feed.nowPlaying),
-                        posters('Anime picks', _feed.anime),
-                        top10("Today's top 10 series", _feed.topTvToday),
+                        landscape('Ora al cinema', _feed.nowPlaying),
+                        posters('Anime consigliati', _feed.anime),
+                        top10("Le 10 serie più viste oggi", _feed.topTvToday),
                         const GenreGrid(),
-                        posters('All-time greats', _feed.topRated),
-                        landscape('Coming soon', _feed.upcoming),
+                        posters('I grandi di sempre', _feed.topRated),
+                        landscape('In arrivo', _feed.upcoming),
                         const _Footer(),
                       ],
                     ),
@@ -348,11 +348,11 @@ class _HeroError extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           const Text(
-            "Couldn't reach TMDB. Check your connection.",
+            "Impossibile raggiungere TMDB. Controlla la connessione.",
             style: TextStyle(color: VyseColors.textDim),
           ),
           const SizedBox(height: 14),
-          TextButton(onPressed: onRetry, child: const Text('Try again')),
+          TextButton(onPressed: onRetry, child: const Text('Riprova')),
         ],
       ),
     ),
@@ -379,7 +379,7 @@ class _Footer extends StatelessWidget {
         ),
         const SizedBox(height: 14),
         const Text(
-          'This product uses the TMDB API but is not endorsed or certified by TMDB.',
+          'Questo prodotto usa le API di TMDB ma non è approvato né certificato da TMDB.',
           style: TextStyle(fontSize: 11, color: VyseColors.textFaint),
         ),
       ],
@@ -417,7 +417,7 @@ class _BecauseRowState extends State<_BecauseRow> {
         final w = widget.posterWidth;
         return Shelf<Media>(
           key: ValueKey('because/${seed.key}'),
-          title: 'If you like ${seed.title}',
+          title: 'Se ti è piaciuto ${seed.title}',
           titleWidget: _SeedPicker(
             seed: seed,
             watching: watching,
@@ -446,7 +446,7 @@ class _SeedPicker extends StatelessWidget {
   Widget build(BuildContext context) {
     final phone = Layout.isPhone(context);
     return Row(children: [
-      const Text('If you like '),
+      const Text('Se ti è piaciuto '),
       Flexible(
         child: MenuAnchor(
           alignmentOffset: const Offset(0, 6),
@@ -463,7 +463,7 @@ class _SeedPicker extends StatelessWidget {
           ),
           menuChildren: [
             if (watching.isNotEmpty) ...[
-              const _MenuLabel('CONTINUE WATCHING'),
+              const _MenuLabel('CONTINUA A GUARDARE'),
               for (final m in watching) _SeedItem(media: m, selected: m.key == seed.key, onTap: () => onPick(m)),
             ],
             if (trending.isNotEmpty) ...[

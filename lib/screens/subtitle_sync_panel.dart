@@ -164,7 +164,7 @@ class _SubtitleSyncPanelState extends State<SubtitleSyncPanel> {
       alignment: left ? Alignment.centerLeft : Alignment.center,
       heightFactor: 1,
       child: Text(
-        _flash ?? (cues.isEmpty ? 'Pick a subtitle first, then line it up here.' : 'Play, listen, then tap the line you just heard.'),
+        _flash ?? (cues.isEmpty ? 'Prima scegli un sottotitolo, poi allinealo qui.' : 'Fai partire, ascolta, poi tocca la riga che hai appena sentito.'),
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         style: TextStyle(fontSize: size, color: _flash == null ? VyseColors.textDim : VyseColors.accent),
@@ -173,7 +173,7 @@ class _SubtitleSyncPanelState extends State<SubtitleSyncPanel> {
   );
 
   Widget _playKey(double size) => Pressable(
-    tooltip: widget.playing ? 'Pause' : 'Play',
+    tooltip: widget.playing ? 'Pausa' : 'Riproduci',
     onTap: widget.onPlayPause,
     builder: (context, hovered, pressed) => AnimatedScale(
       scale: pressed ? .92 : 1,
@@ -220,7 +220,7 @@ class _SubtitleSyncPanelState extends State<SubtitleSyncPanel> {
   List<Widget> _nudges() => [
     for (final d in const [-.5, -.1, .1, .5])
       _Nudge(label: d < 0 ? '−${d.abs()}' : '+$d', onTap: () => _setOffset(widget.offset + d)),
-    _Nudge(label: 'Reset', onTap: widget.offset == 0 ? null : () => _setOffset(0)),
+    _Nudge(label: 'Ripristina', onTap: widget.offset == 0 ? null : () => _setOffset(0)),
   ];
 
   Widget _findBox({bool autofocus = false}) => TextField(
@@ -230,7 +230,7 @@ class _SubtitleSyncPanelState extends State<SubtitleSyncPanel> {
     cursorColor: VyseColors.accent,
     decoration: InputDecoration(
       isDense: true,
-      hintText: 'Find a line',
+      hintText: 'Trova una riga',
       hintStyle: const TextStyle(fontSize: 13.5, color: VyseColors.textFaint),
       prefixIcon: const Icon(Icons.search_rounded, size: 19, color: VyseColors.textFaint),
       contentPadding: const EdgeInsets.symmetric(vertical: 11),
@@ -245,14 +245,14 @@ class _SubtitleSyncPanelState extends State<SubtitleSyncPanel> {
           child: Padding(
             padding: EdgeInsets.all(24),
             child: Text(
-              'Turn on a subtitle from the Subtitles tab and its lines show up here.',
+              'Attiva un sottotitolo dalla scheda Sottotitoli e le sue righe compariranno qui.',
               textAlign: TextAlign.center,
               style: TextStyle(color: VyseColors.textFaint, height: 1.4),
             ),
           ),
         )
       : shown.isEmpty
-      ? const Center(child: Text('No line matches that', style: TextStyle(color: VyseColors.textFaint)))
+      ? const Center(child: Text('Nessuna riga corrisponde', style: TextStyle(color: VyseColors.textFaint)))
       : ListView.builder(
           controller: _scroll,
           itemExtent: _rowExtent,
@@ -281,17 +281,17 @@ class _SubtitleSyncPanelState extends State<SubtitleSyncPanel> {
   /// Everything a phone needs in two slim rows, so the lines get the screen.
   List<Widget> _phone(List<SyncCue> cues, List<int> shown, {required bool narrow}) => [
     Row(children: [
-      _RoundBtn(icon: Icons.replay_5_rounded, tooltip: 'Back 5s', size: 36, onTap: () => widget.onSeekBy(-5)),
+      _RoundBtn(icon: Icons.replay_5_rounded, tooltip: 'Indietro 5s', size: 36, onTap: () => widget.onSeekBy(-5)),
       const SizedBox(width: 4),
       _playKey(40),
       const SizedBox(width: 4),
-      _RoundBtn(icon: Icons.forward_5_rounded, tooltip: 'Forward 5s', size: 36, onTap: () => widget.onSeekBy(5)),
+      _RoundBtn(icon: Icons.forward_5_rounded, tooltip: 'Avanti 5s', size: 36, onTap: () => widget.onSeekBy(5)),
       const SizedBox(width: 10),
       Expanded(child: _time(14.5, total: !narrow)),
       const SizedBox(width: 6),
       _RoundBtn(
         icon: _finding ? Icons.search_off_rounded : Icons.search_rounded,
-        tooltip: 'Find a line',
+        tooltip: 'Trova una riga',
         size: 36,
         on: _finding,
         onTap: () => setState(() {
@@ -300,9 +300,9 @@ class _SubtitleSyncPanelState extends State<SubtitleSyncPanel> {
         }),
       ),
       const SizedBox(width: 4),
-      _RoundBtn(icon: Icons.my_location_rounded, tooltip: 'Keep the spoken line in view', size: 36, on: _follow, onTap: () => setState(() => _follow = !_follow)),
+      _RoundBtn(icon: Icons.my_location_rounded, tooltip: 'Tieni in vista la riga pronunciata', size: 36, on: _follow, onTap: () => setState(() => _follow = !_follow)),
       const SizedBox(width: 4),
-      _RoundBtn(icon: Icons.close_rounded, tooltip: 'Close', size: 36, onTap: widget.onClose),
+      _RoundBtn(icon: Icons.close_rounded, tooltip: 'Chiudi', size: 36, onTap: widget.onClose),
     ]),
     const SizedBox(height: 6),
     SizedBox(
@@ -328,20 +328,20 @@ class _SubtitleSyncPanelState extends State<SubtitleSyncPanel> {
       const Icon(Icons.subtitles_outlined, size: 26, color: VyseColors.accent),
       const SizedBox(width: 12),
       const Expanded(
-        child: Text('Subtitle sync', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800, letterSpacing: -.3)),
+        child: Text('Sincronizzazione sottotitoli', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800, letterSpacing: -.3)),
       ),
-      _RoundBtn(icon: Icons.close_rounded, tooltip: 'Close', onTap: widget.onClose),
+      _RoundBtn(icon: Icons.close_rounded, tooltip: 'Chiudi', onTap: widget.onClose),
     ]),
     const SizedBox(height: 6),
     _hint(cues, 13),
     const SizedBox(height: 20),
     // Transport
     Row(children: [
-      _RoundBtn(icon: Icons.replay_5_rounded, tooltip: 'Back 5s', onTap: () => widget.onSeekBy(-5)),
+      _RoundBtn(icon: Icons.replay_5_rounded, tooltip: 'Indietro 5s', onTap: () => widget.onSeekBy(-5)),
       const SizedBox(width: 6),
       _playKey(48),
       const SizedBox(width: 6),
-      _RoundBtn(icon: Icons.forward_5_rounded, tooltip: 'Forward 5s', onTap: () => widget.onSeekBy(5)),
+      _RoundBtn(icon: Icons.forward_5_rounded, tooltip: 'Avanti 5s', onTap: () => widget.onSeekBy(5)),
       const SizedBox(width: 14),
       Expanded(child: _time(17)),
     ]),
@@ -360,7 +360,7 @@ class _SubtitleSyncPanelState extends State<SubtitleSyncPanel> {
       Expanded(child: SizedBox(height: 40, child: _findBox())),
       const SizedBox(width: 8),
       Pressable(
-        tooltip: 'Keep the spoken line in view',
+        tooltip: 'Tieni in vista la riga pronunciata',
         onTap: () => setState(() => _follow = !_follow),
         builder: (context, hovered, _) => AnimatedContainer(
           duration: const Duration(milliseconds: 160),
@@ -374,7 +374,7 @@ class _SubtitleSyncPanelState extends State<SubtitleSyncPanel> {
             Icon(Icons.my_location_rounded, size: 16, color: _follow ? VyseColors.accent : VyseColors.textDim),
             const SizedBox(width: 6),
             Text(
-              'Follow',
+              'Segui',
               style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w700, color: _follow ? VyseColors.accent : VyseColors.textDim),
             ),
           ]),
@@ -528,7 +528,7 @@ class _CueRow extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 7),
                 decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16)),
                 child: Text(
-                  'Sync  ${_signed(delta)}',
+                  'Sincronia  ${_signed(delta)}',
                   style: const TextStyle(
                     fontSize: 11.5,
                     fontWeight: FontWeight.w800,

@@ -90,7 +90,7 @@ class AnimeEpisodeStore extends EpisodeStore {
   ]);
 
   @override
-  Future<List<Season>> get seasons => Future.value([Season(0, 'Episodes', anime.episodes ?? 0, anime.year?.toString(), null)]);
+  Future<List<Season>> get seasons => Future.value([Season(0, 'Episodi', anime.episodes ?? 0, anime.year?.toString(), null)]);
 
   @override
   Future<List<EpisodeInfo>> season(int n) => _all;
@@ -134,7 +134,7 @@ class _EpisodesPanelState extends State<EpisodesPanel> {
   });
 
   Widget _close(double size) => Pressable(
-    tooltip: 'Close',
+    tooltip: 'Chiudi',
     onTap: widget.onClose,
     builder: (context, hovered, _) => AnimatedContainer(
       duration: const Duration(milliseconds: 160),
@@ -163,7 +163,7 @@ class _EpisodesPanelState extends State<EpisodesPanel> {
           children: [
             for (final s in seasons)
               _SeasonPill(
-                label: s.number == 0 ? 'Specials' : 'Season ${s.number}',
+                label: s.number == 0 ? 'Speciali' : 'Stagione ${s.number}',
                 selected: s.number == _season,
                 playing: s.number == widget.current.season,
                 onTap: () => setState(() => _season = s.number),
@@ -207,7 +207,7 @@ class _EpisodesPanelState extends State<EpisodesPanel> {
                     height: 38,
                     child: Row(
                       children: [
-                        const Text('Episodes', style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800, letterSpacing: -.3, color: MenuInk.title)),
+                        const Text('Episodi', style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800, letterSpacing: -.3, color: MenuInk.title)),
                         const SizedBox(width: 14),
                         Expanded(child: _seasons(34, title: true)),
                         const SizedBox(width: 8),
@@ -222,7 +222,7 @@ class _EpisodesPanelState extends State<EpisodesPanel> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Episodes', style: TextStyle(fontSize: compact ? 21 : 25, height: 1.15, fontWeight: FontWeight.w800, letterSpacing: -.5, color: MenuInk.title)),
+                            Text('Episodi', style: TextStyle(fontSize: compact ? 21 : 25, height: 1.15, fontWeight: FontWeight.w800, letterSpacing: -.5, color: MenuInk.title)),
                             const SizedBox(height: 1),
                             Text(
                               widget.store.show.title,
@@ -247,7 +247,7 @@ class _EpisodesPanelState extends State<EpisodesPanel> {
                     builder: (context, snap) {
                       if (snap.hasError) {
                         return Center(
-                          child: TextButton(onPressed: () => setState(() {}), child: const Text("Couldn't load episodes · Retry")),
+                          child: TextButton(onPressed: () => setState(() {}), child: const Text("Impossibile caricare gli episodi · Riprova")),
                         );
                       }
                       final all = snap.data;
@@ -351,7 +351,7 @@ class _EpisodeRow extends StatelessWidget {
     final w = short ? 100.0 : (compact ? 116.0 : 148.0);
     final meta = [
       'Episode ${e.number}',
-      if (e.upcoming && e.aired != null) 'Out ${e.aired!.day}/${e.aired!.month}/${e.aired!.year}' else if (e.runtime != null) '${e.runtime} min',
+      if (e.upcoming && e.aired != null) 'Uscito il ${e.aired!.day}/${e.aired!.month}/${e.aired!.year}' else if (e.runtime != null) '${e.runtime} min',
     ].join('  ·  ');
     return Opacity(
       opacity: onTap == null && !playing ? .45 : 1,
@@ -426,13 +426,13 @@ class _EpisodeRow extends StatelessWidget {
                       ),
                       const SizedBox(height: 3),
                       Text(
-                        playing ? 'Now playing' : meta,
+                        playing ? 'In riproduzione' : meta,
                         style: TextStyle(fontSize: compact ? 11 : 11.5, fontWeight: FontWeight.w600, color: playing ? VyseColors.accent : MenuInk.dim),
                       ),
                       if (!compact) ...[
                         const SizedBox(height: 4),
                         Text(
-                          e.overview.isEmpty ? 'No synopsis yet.' : e.overview,
+                          e.overview.isEmpty ? 'Ancora nessuna trama.' : e.overview,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(fontSize: 12, height: 1.4, color: MenuInk.dim),
@@ -539,12 +539,12 @@ class _UpNextCardState extends State<UpNextCard> with SingleTickerProviderStateM
                   Row(children: [
                     Expanded(
                       child: Text(
-                        'UP NEXT  ·  ${episodeLabel(e.season, e.number)}',
+                        'A SEGUIRE  ·  ${episodeLabel(e.season, e.number)}',
                         style: const TextStyle(fontSize: 10.5, fontWeight: FontWeight.w800, letterSpacing: 1.2, color: VyseColors.accent),
                       ),
                     ),
                     Pressable(
-                      tooltip: 'Dismiss',
+                      tooltip: 'Chiudi',
                       onTap: widget.onDismiss,
                       builder: (context, h, _) => Container(
                         width: 26,
@@ -574,7 +574,7 @@ class _UpNextCardState extends State<UpNextCard> with SingleTickerProviderStateM
                           const Icon(Icons.play_arrow_rounded, size: 20, color: Colors.black),
                           const SizedBox(width: 4),
                           Text(
-                            widget.auto ? 'Playing in $left' : 'Play next',
+                            widget.auto ? 'Parte tra $left' : 'Riproduci dopo',
                             style: const TextStyle(
                               fontSize: 12.5,
                               fontWeight: FontWeight.w800,

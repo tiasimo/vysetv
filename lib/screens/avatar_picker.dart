@@ -158,9 +158,9 @@ class _AvatarPickerState extends State<_AvatarPicker> {
     setState(() => _saving = true);
     try {
       // signed in: the server checks it first, so a bad link never half-saves
-      if (Account.signedIn) await Account.updateProfile({'avatarUrl': url, 'avatarLabel': 'Image link'});
+      if (Account.signedIn) await Account.updateProfile({'avatarUrl': url, 'avatarLabel': 'Link all\'immagine'});
       AppSettings.avatarUrl.set(url);
-      AppSettings.avatarLabel.set('Image link');
+      AppSettings.avatarLabel.set('Link all\'immagine');
       if (mounted) Navigator.pop(context);
     } catch (e) {
       if (mounted) {
@@ -195,7 +195,7 @@ class _AvatarPickerState extends State<_AvatarPicker> {
                   onPressed: _link == null || _saving ? null : () => _useLink(_link!),
                   child: _saving
                       ? const SizedBox.square(dimension: 16, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.black))
-                      : const Text('Use this image', style: TextStyle(fontWeight: FontWeight.w800)),
+                      : const Text('Usa questa immagine', style: TextStyle(fontWeight: FontWeight.w800)),
                 ),
               ),
             ],
@@ -230,7 +230,7 @@ class _AvatarPickerState extends State<_AvatarPicker> {
                   const ProfileAvatar(size: 44),
                   const SizedBox(width: 14),
                   const Expanded(
-                    child: Text('Choose avatar', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+                    child: Text('Scegli avatar', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
                   ),
                   TextButton.icon(
                     onPressed: () {
@@ -239,12 +239,12 @@ class _AvatarPickerState extends State<_AvatarPicker> {
                     },
                     icon: const Icon(Icons.restart_alt_rounded, size: 18, color: VyseColors.textDim),
                     label: const Text(
-                      'Reset',
+                      'Ripristina',
                       style: TextStyle(color: VyseColors.textDim, fontWeight: FontWeight.w700),
                     ),
                   ),
                   IconButton(
-                    tooltip: 'Close',
+                    tooltip: 'Chiudi',
                     onPressed: () => Navigator.pop(context),
                     icon: const Icon(Icons.close_rounded, color: VyseColors.textDim),
                   ),
@@ -262,7 +262,7 @@ class _AvatarPickerState extends State<_AvatarPicker> {
                 padding: const EdgeInsets.fromLTRB(22, 12, 22, 8),
                 child: VyseSearchField(
                   controller: _search,
-                  hint: _netflix ? 'Search Netflix shows or characters…' : 'Search characters or shows…',
+                  hint: _netflix ? 'Cerca serie o personaggi Netflix…' : 'Cerca personaggi o serie…',
                   autofocus: !phone,
                 ),
               ),
@@ -275,7 +275,7 @@ class _AvatarPickerState extends State<_AvatarPicker> {
                       if (all == null) return const Center(child: CircularProgressIndicator(strokeWidth: 2, color: VyseColors.textDim));
                       final sets = _filterNetflix(all);
                       if (sets.isEmpty) {
-                        return EmptyState(icon: Icons.search_off_rounded, title: 'Nothing found', body: 'No Netflix avatars match "$_query".');
+                        return EmptyState(icon: Icons.search_off_rounded, title: 'Nessun risultato', body: 'Nessun avatar Netflix per "$_query".');
                       }
                       return ListView.builder(
                         padding: const EdgeInsets.fromLTRB(22, 8, 22, 24),
@@ -297,12 +297,12 @@ class _AvatarPickerState extends State<_AvatarPicker> {
                     future: _shows,
                     builder: (context, snap) {
                       if (snap.hasError) {
-                        return const EmptyState(icon: Icons.wifi_off_rounded, title: "Couldn't load shows", body: 'Check your connection and try again.');
+                        return const EmptyState(icon: Icons.wifi_off_rounded, title: "Impossibile caricare le serie", body: 'Controlla la connessione e riprova.');
                       }
                       final shows = snap.data;
                       if (shows == null) return const Center(child: CircularProgressIndicator(strokeWidth: 2, color: VyseColors.textDim));
                       if (shows.isEmpty) {
-                        return EmptyState(icon: Icons.search_off_rounded, title: 'Nothing found', body: 'No shows match "$_query".');
+                        return EmptyState(icon: Icons.search_off_rounded, title: 'Nessun risultato', body: 'Nessuna serie per "$_query".');
                       }
                       return ListView.builder(
                         padding: const EdgeInsets.fromLTRB(22, 8, 22, 24),
@@ -412,9 +412,9 @@ class _SourceSwitch extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           for (final (v, label, sub, dot) in const [
-            (0, 'Netflix', 'Profile icons', Color(0xFFE50914)),
-            (1, 'TMDB', 'Cast photos', Color(0xFF01B4E4)),
-            (2, 'Link', 'Any image URL', VyseColors.accent),
+            (0, 'Netflix', 'Icone del profilo', Color(0xFFE50914)),
+            (1, 'TMDB', 'Foto del cast', Color(0xFF01B4E4)),
+            (2, 'Link', 'Qualsiasi indirizzo di immagine', VyseColors.accent),
           ])
             Pressable(
               onTap: () => onChanged(v),

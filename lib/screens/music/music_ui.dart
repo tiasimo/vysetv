@@ -320,7 +320,7 @@ class LikeButton extends StatelessWidget {
     builder: (context, _, _) {
       final on = MusicLibrary.isLiked(track.id);
       return Pressable(
-        tooltip: on ? 'Remove from Liked songs' : 'Like',
+        tooltip: on ? 'Rimuovi dai brani preferiti' : 'Mi piace',
         onTap: () => MusicLibrary.toggleLike(track),
         builder: (context, hovered, pressed) => AnimatedScale(
           scale: pressed ? .8 : (hovered ? 1.12 : 1),
@@ -419,7 +419,7 @@ Future<void> showAddToPlaylist(BuildContext context, List<MusicTrack> tracks) as
   final name = MusicLibrary.playlist(picked)?.name ?? 'playlist';
   showToast(
     context,
-    Text(added == 0 ? 'Already in $name' : 'Added ${added == 1 ? '1 song' : '$added songs'} to $name', maxLines: 1, overflow: TextOverflow.ellipsis),
+    Text(added == 0 ? 'Già in $name' : 'Added ${added == 1 ? '1 song' : '$added brani'} to $name', maxLines: 1, overflow: TextOverflow.ellipsis),
     icon: added == 0 ? Icons.info_outline_rounded : Icons.playlist_add_check_rounded,
   );
 }
@@ -442,11 +442,11 @@ class _PlaylistPicker extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.fromLTRB(22, 20, 22, 4),
-              child: Text(count == 1 ? 'Add to playlist' : 'Add $count songs to a playlist', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+              child: Text(count == 1 ? 'Aggiungi a una playlist' : 'Aggiungi $count brani a una playlist', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
             ),
             const Padding(
               padding: EdgeInsets.fromLTRB(22, 0, 22, 12),
-              child: Text('Your playlists sync to your account', style: TextStyle(fontSize: 12.5, color: VyseColors.textDim)),
+              child: Text('Le tue playlist si sincronizzano con il tuo account', style: TextStyle(fontSize: 12.5, color: VyseColors.textDim)),
             ),
             _PickRow(
               leading: Container(
@@ -455,8 +455,8 @@ class _PlaylistPicker extends StatelessWidget {
                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(9), color: accentOf(context).withValues(alpha: .15), border: Border.all(color: accentOf(context).withValues(alpha: .4))),
                 child: Icon(Icons.add_rounded, color: accentOf(context)),
               ),
-              title: 'New playlist',
-              subtitle: 'Name it, and these go in first',
+              title: 'Nuova playlist',
+              subtitle: 'Dalle un nome, e questi entrano per primi',
               onTap: () => Navigator.pop(context, '+'),
             ),
             Flexible(
@@ -468,7 +468,7 @@ class _PlaylistPicker extends StatelessWidget {
                     _PickRow(
                       leading: PlaylistArt(covers: p.covers, cover: p.cover, size: 46, radius: 9),
                       title: p.name,
-                      subtitle: '${p.tracks.length} ${p.tracks.length == 1 ? 'song' : 'songs'}${p.public ? '' : '  ·  Private'}',
+                      subtitle: '${p.tracks.length} ${p.tracks.length == 1 ? 'song' : 'songs'}${p.public ? '' : '  ·  Privata'}',
                       onTap: () => Navigator.pop(context, p.id),
                     ),
                 ],
@@ -575,15 +575,15 @@ class _PlaylistEditorState extends State<_PlaylistEditor> {
   Widget build(BuildContext context) => AlertDialog(
     backgroundColor: const Color(0xFF101118),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: const BorderSide(color: VyseColors.stroke)),
-    title: Text(widget.existing == null ? 'New playlist' : 'Edit playlist', style: const TextStyle(fontWeight: FontWeight.w800)),
+    title: Text(widget.existing == null ? 'Nuova playlist' : 'Modifica playlist', style: const TextStyle(fontWeight: FontWeight.w800)),
     content: SizedBox(
       width: 400,
       child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         TextField(controller: _name, autofocus: true, maxLength: 80, decoration: _field('Name'), onSubmitted: (_) => _save()),
         const SizedBox(height: 4),
-        TextField(controller: _desc, maxLines: 3, minLines: 2, maxLength: 300, decoration: _field('Description (optional)')),
+        TextField(controller: _desc, maxLines: 3, minLines: 2, maxLength: 300, decoration: _field('Descrizione (facoltativa)')),
         const SizedBox(height: 4),
-        TextField(controller: _cover, decoration: _field('Cover picture link (optional)')),
+        TextField(controller: _cover, decoration: _field('Link all\'immagine di copertina (facoltativo)')),
         const SizedBox(height: 14),
         Pressable(
           onTap: () => setState(() => _public = !_public),
@@ -592,9 +592,9 @@ class _PlaylistEditorState extends State<_PlaylistEditor> {
             const SizedBox(width: 12),
             Expanded(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text(_public ? 'Public' : 'Private', style: const TextStyle(fontWeight: FontWeight.w700)),
+                Text(_public ? 'Pubblico' : 'Privato', style: const TextStyle(fontWeight: FontWeight.w700)),
                 Text(
-                  _public ? 'Shows on your Party profile' : 'Only you see it',
+                  _public ? 'Visibile sul tuo profilo' : 'Solo tu la vedi',
                   style: const TextStyle(fontSize: 12, color: VyseColors.textDim),
                 ),
               ]),
@@ -605,11 +605,11 @@ class _PlaylistEditorState extends State<_PlaylistEditor> {
       ]),
     ),
     actions: [
-      TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel', style: TextStyle(color: VyseColors.text))),
+      TextButton(onPressed: () => Navigator.pop(context), child: const Text('Annulla', style: TextStyle(color: VyseColors.text))),
       FilledButton(
         style: FilledButton.styleFrom(backgroundColor: accentOf(context), foregroundColor: onAccentOf(context)),
         onPressed: _save,
-        child: Text(widget.existing == null ? 'Create' : 'Save', style: const TextStyle(fontWeight: FontWeight.w800)),
+        child: Text(widget.existing == null ? 'Crea' : 'Salva', style: const TextStyle(fontWeight: FontWeight.w800)),
       ),
     ],
   );
@@ -647,7 +647,7 @@ Future<void> playYtItem(BuildContext context, YtItem i, {bool shuffled = false})
         break;
     }
   } catch (_) {
-    if (context.mounted) showToast(context, const Text("Couldn't load that right now"), icon: Icons.wifi_off_rounded);
+    if (context.mounted) showToast(context, const Text("Impossibile caricarlo ora"), icon: Icons.wifi_off_rounded);
   }
 }
 
@@ -824,5 +824,5 @@ String songCount(int n) => '$n ${n == 1 ? 'song' : 'songs'}';
 String totalTime(int seconds) {
   final m = (seconds / 60).round();
   if (m < 60) return '$m min';
-  return '${m ~/ 60} hr ${m % 60} min';
+  return '${m ~/ 60} h ${m % 60} min';
 }

@@ -52,7 +52,7 @@ void comingSoon(BuildContext context, String what) => showToast(
       Text.rich(
         TextSpan(children: [
           TextSpan(text: what, style: const TextStyle(fontWeight: FontWeight.w700)),
-          const TextSpan(text: '  is coming soon', style: TextStyle(color: VyseColors.textDim)),
+          const TextSpan(text: '  è in arrivo', style: TextStyle(color: VyseColors.textDim)),
         ]),
         style: const TextStyle(fontSize: 13, color: VyseColors.text),
       ),

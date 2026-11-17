@@ -100,7 +100,7 @@ class _WelcomeState extends State<_Welcome> {
           SliverPadding(
             padding: EdgeInsets.fromLTRB(inset, top, right, 26),
             sliver: const SliverToBoxAdapter(
-              child: SectionHeader(title: 'Your servers', subtitle: 'Plex, Jellyfin and Emby, right inside Lorewatch'),
+              child: SectionHeader(title: 'I tuoi server', subtitle: 'Plex, Jellyfin ed Emby, dentro Lorewatch'),
             ),
           ),
           SliverPadding(
@@ -152,7 +152,7 @@ class _WelcomeState extends State<_Welcome> {
                         const Icon(Icons.wifi_tethering_rounded, size: 16, color: VyseColors.textDim),
                         const SizedBox(width: 8),
                         Text(
-                          list.isEmpty ? 'Looking for servers on your network…' : 'Found on your network',
+                          list.isEmpty ? 'Cerco server sulla tua rete…' : 'Trovati sulla tua rete',
                           style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: VyseColors.textDim),
                         ),
                       ]),
@@ -176,8 +176,8 @@ class _WelcomeState extends State<_Welcome> {
                 SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    'Your sign-ins stay on this device, in its secure keychain. What you watch is saved on your server, '
-                    'so it picks up anywhere you use Plex, Jellyfin or Emby.',
+                    'Gli accessi restano su questo dispositivo, nel portachiavi sicuro. Quello che guardi viene salvato sul tuo server, '
+                    'così riprendi ovunque usi Plex, Jellyfin o Emby.',
                     style: TextStyle(fontSize: 12, height: 1.45, color: VyseColors.textFaint),
                   ),
                 ),
@@ -211,23 +211,23 @@ class _Pitch extends StatelessWidget {
       Expanded(
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(
-            'Bring your own library',
+            'Porta la tua libreria',
             style: TextStyle(fontSize: phone ? 24 : 32, height: 1.1, fontWeight: FontWeight.w900, letterSpacing: -.5),
           ),
           const SizedBox(height: 10),
           ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 560),
             child: const Text(
-              'Sign in once and your server lives here: Continue watching, every library, every season. '
-              'It all plays on Lorewatch\'s player, and your progress goes back to your server.',
+              'Accedi una volta e il tuo server vive qui: Continua a guardare, ogni libreria, ogni stagione. '
+              'Tutto parte nel player di Lorewatch, e i progressi tornano al tuo server.',
               style: TextStyle(fontSize: 14, height: 1.5, color: VyseColors.textDim),
             ),
           ),
           const SizedBox(height: 18),
           const Wrap(spacing: 18, runSpacing: 8, children: [
-            _Perk(icon: Icons.bolt_rounded, text: 'Direct play, no transcoding'),
-            _Perk(icon: Icons.subtitles_outlined, text: 'Your subtitle styles'),
-            _Perk(icon: Icons.sync_rounded, text: 'Progress synced back'),
+            _Perk(icon: Icons.bolt_rounded, text: 'Riproduzione diretta, senza transcodifica'),
+            _Perk(icon: Icons.subtitles_outlined, text: 'I tuoi stili dei sottotitoli'),
+            _Perk(icon: Icons.sync_rounded, text: 'Progressi sincronizzati'),
           ]),
         ]),
       ),
@@ -295,9 +295,9 @@ class _ProviderCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = brandColors(backend);
     final (blurb, how) = switch (backend) {
-      MediaBackend.plex => ('Every server on your Plex account, with Plex Home profiles.', 'Sign in on plex.tv'),
-      MediaBackend.emby => ('Your Emby server and everything on it.', 'Address and login'),
-      _ => ('Your Jellyfin server, with Quick Connect.', 'Address, login or Quick Connect'),
+      MediaBackend.plex => ('Ogni server del tuo account Plex, con i profili Plex Home.', 'Accedi su plex.tv'),
+      MediaBackend.emby => ('Il tuo server Emby e tutto quello che contiene.', 'Indirizzo e accesso'),
+      _ => ('Il tuo server Jellyfin, con Quick Connect.', 'Indirizzo, accesso o Quick Connect'),
     };
     return Pressable(
       onTap: onTap,
@@ -507,7 +507,7 @@ class _ServerHomeState extends State<_ServerHome> {
                     future: _results,
                     builder: (context, snap) => VyseSearchField(
                       controller: _query,
-                      hint: 'Search ${server.name}',
+                      hint: 'Cerca in ${server.name}',
                       busy: _results != null && snap.connectionState == ConnectionState.waiting,
                       onSubmit: _search,
                     ),
@@ -535,7 +535,7 @@ class _ServerHomeState extends State<_ServerHome> {
           final list = snap.data ?? const [];
           if (list.isEmpty) {
             return SliverToBoxAdapter(
-              child: EmptyState(icon: Icons.search_off_rounded, title: 'Nothing for "$_searched"', body: 'Try another title, or check the spelling.'),
+              child: EmptyState(icon: Icons.search_off_rounded, title: 'Niente per "$_searched"', body: 'Prova un altro titolo, o controlla l\'ortografia.'),
             );
           }
           return FutureBuilder<MediaServerClient>(
@@ -568,9 +568,9 @@ class _ServerHomeState extends State<_ServerHome> {
             padding: const EdgeInsets.only(top: 30),
             child: EmptyState(
               icon: Icons.cloud_off_rounded,
-              title: "Can't reach ${server.name}",
-              body: '${serverError(snap.error!)}. Check that the server is on and this device can reach it.',
-              action: ('Try again', () => _refresh(reconnect: true)),
+              title: "Impossibile raggiungere ${server.name}",
+              body: '${serverError(snap.error!)}. Controlla che il server sia acceso e raggiungibile da questo dispositivo.',
+              action: ('Riprova', () => _refresh(reconnect: true)),
             ),
           ),
         );
@@ -595,8 +595,8 @@ class _ServerHomeState extends State<_ServerHome> {
       return [
         EmptyState(
           icon: Icons.video_library_outlined,
-          title: 'Nothing here yet',
-          body: '${server.name} has no films or shows you can see. Add some on the server and they show up here.',
+          title: 'Ancora niente qui',
+          body: '${server.name} non ha film o serie che puoi vedere. Aggiungine sul server e compariranno qui.',
         ),
       ];
     }
@@ -611,7 +611,7 @@ class _ServerHomeState extends State<_ServerHome> {
         ),
       if (d.resume.isNotEmpty)
         Shelf<MediaItem>(
-          title: 'Continue watching',
+          title: 'Continua a guardare',
           load: () => Future.value(d.resume),
           itemWidth: sizes.wide,
           itemHeight: sizes.wide * 9 / 16,
@@ -624,7 +624,7 @@ class _ServerHomeState extends State<_ServerHome> {
         ),
       if (d.libraries.isNotEmpty)
         Shelf<MediaLibrary>(
-          title: 'Libraries',
+          title: 'Librerie',
           load: () => Future.value(d.libraries),
           itemWidth: Layout.isPhone(context) ? 150 : 210,
           itemHeight: Layout.isPhone(context) ? 92 : 118,
@@ -727,7 +727,7 @@ class _Header extends StatelessWidget {
             ),
             const SizedBox(height: 4),
             Text(
-              [server.product, if (server.shared) 'shared with you', 'watching as ${a.who}'].join(' · '),
+              [server.product, if (server.shared) 'condivisa con te', 'watching as ${a.who}'].join(' · '),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(fontSize: 13, color: VyseColors.textDim, fontWeight: FontWeight.w600),
@@ -735,10 +735,10 @@ class _Header extends StatelessWidget {
           ]),
         ),
         const SizedBox(width: 10),
-        GlassIconButton(icon: Icons.refresh_rounded, label: 'Refresh', size: 40, onTap: onRefresh),
+        GlassIconButton(icon: Icons.refresh_rounded, label: 'Aggiorna', size: 40, onTap: onRefresh),
         const SizedBox(width: 8),
         Tooltip(
-          message: 'Accounts and profiles',
+          message: 'Account e profili',
           child: Pressable(
             onTap: () => showServerAccounts(context),
             builder: (context, hovered, _) => AnimatedScale(
@@ -816,7 +816,7 @@ class _AddPill extends StatelessWidget {
       child: Row(mainAxisSize: MainAxisSize.min, children: [
         Icon(Icons.add_rounded, size: 17, color: hovered ? VyseColors.accent : VyseColors.textDim),
         const SizedBox(width: 6),
-        Text('Add server', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: hovered ? VyseColors.accent : VyseColors.textDim)),
+        Text('Aggiungi server', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: hovered ? VyseColors.accent : VyseColors.textDim)),
       ]),
     ),
   );
@@ -874,7 +874,7 @@ class _Spotlight extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  resuming ? 'CONTINUE WATCHING' : 'NEW ON ${server.name.toUpperCase()}',
+                  resuming ? 'CONTINUA A GUARDARE' : 'NOVITÀ SU ${server.name.toUpperCase()}',
                   style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1.6, color: VyseColors.accent),
                 ),
                 const SizedBox(height: 10),
@@ -906,13 +906,13 @@ class _Spotlight extends StatelessWidget {
                 const SizedBox(height: 18),
                 Row(children: [
                   PillButton(
-                    label: p != null ? 'Resume' : 'Play',
+                    label: p != null ? 'Riprendi' : 'Riproduci',
                     icon: Icons.play_arrow_rounded,
                     primary: true,
                     onTap: () => playFromServer(context, server, item),
                   ),
                   const SizedBox(width: 10),
-                  PillButton(label: 'Details', icon: Icons.info_outline_rounded, onTap: () => openServerItem(context, server, item)),
+                  PillButton(label: 'Dettagli', icon: Icons.info_outline_rounded, onTap: () => openServerItem(context, server, item)),
                 ]),
                 if (p != null) ...[
                   const SizedBox(height: 16),
@@ -967,17 +967,17 @@ class _Accounts extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(24, 22, 24, 24),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Row(children: [
-            const Expanded(child: Text('Accounts', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: -.3))),
-            GlassIconButton(icon: Icons.close_rounded, label: 'Close', size: 34, onTap: () => Navigator.of(context).pop()),
+            const Expanded(child: Text('Account', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: -.3))),
+            GlassIconButton(icon: Icons.close_rounded, label: 'Chiudi', size: 34, onTap: () => Navigator.of(context).pop()),
           ]),
           const SizedBox(height: 4),
-          const Text('Switch profiles, find new servers, or sign out.', style: TextStyle(fontSize: 13.5, color: VyseColors.textDim)),
+          const Text('Cambia profilo, trova nuovi server o esci.', style: TextStyle(fontSize: 13.5, color: VyseColors.textDim)),
           const SizedBox(height: 18),
           for (final (i, a) in accounts.indexed)
             FadeSlideIn(delay: Duration(milliseconds: 50 * i), offset: 8, child: _AccountCard(account: a)),
           const SizedBox(height: 6),
           PillButton(
-            label: 'Connect another server',
+            label: 'Collega un altro server',
             icon: Icons.add_rounded,
             expand: true,
             onTap: () {
@@ -1027,7 +1027,7 @@ class _AccountCardState extends State<_AccountCard> {
     await _run(() async {
       await MediaServers.instance.switchPlexProfile(acc, u, pin: pin);
       if (mounted) {
-        showToast(context, Text('Watching as ${u.displayName}', style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)), icon: Icons.person_rounded);
+        showToast(context, Text('Guardi come ${u.displayName}', style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)), icon: Icons.person_rounded);
       }
     });
   }
@@ -1040,10 +1040,10 @@ class _AccountCardState extends State<_AccountCard> {
         backgroundColor: const Color(0xFF0B0D16),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18), side: const BorderSide(color: VyseColors.stroke)),
         title: Text('Sign out of ${a is PlexAccount ? 'Plex' : (a as JellyfinAccount).conn.serverName}?', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900)),
-        content: const Text('Your progress stays on the server. You can sign in again any time.', style: TextStyle(fontSize: 13.5, color: VyseColors.textDim)),
+        content: const Text('I tuoi progressi restano sul server. Puoi riaccedere quando vuoi.', style: TextStyle(fontSize: 13.5, color: VyseColors.textDim)),
         actions: [
-          TextButton(onPressed: () => Navigator.of(context).pop(false), child: const Text('Cancel', style: TextStyle(color: VyseColors.textDim))),
-          TextButton(onPressed: () => Navigator.of(context).pop(true), child: const Text('Sign out', style: TextStyle(color: Color(0xFFFF8A93), fontWeight: FontWeight.w800))),
+          TextButton(onPressed: () => Navigator.of(context).pop(false), child: const Text('Annulla', style: TextStyle(color: VyseColors.textDim))),
+          TextButton(onPressed: () => Navigator.of(context).pop(true), child: const Text('Esci', style: TextStyle(color: Color(0xFFFF8A93), fontWeight: FontWeight.w800))),
         ],
       ),
     );
@@ -1072,8 +1072,8 @@ class _AccountCardState extends State<_AccountCard> {
                   maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w900)),
               Text(
                 acc is PlexAccount
-                    ? '${servers.length == 1 ? '1 server' : '${servers.length} servers'} · watching as ${acc.who}'
-                    : 'Signed in as ${acc.who}',
+                    ? '${servers.length == 1 ? '1 server' : '${servers.length} server'} · watching as ${acc.who}'
+                    : 'Accesso eseguito come ${acc.who}',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(fontSize: 12, color: VyseColors.textDim),
@@ -1092,7 +1092,7 @@ class _AccountCardState extends State<_AccountCard> {
               return Padding(
                 padding: const EdgeInsets.only(top: 16),
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  const Text("WHO'S WATCHING", style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w900, letterSpacing: 1.4, color: VyseColors.textFaint)),
+                  const Text("CHI STA GUARDANDO", style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w900, letterSpacing: 1.4, color: VyseColors.textFaint)),
                   const SizedBox(height: 10),
                   Wrap(spacing: 14, runSpacing: 12, children: [
                     for (final u in users)
@@ -1140,8 +1140,8 @@ class _AccountCardState extends State<_AccountCard> {
         const SizedBox(height: 14),
         Wrap(spacing: 8, runSpacing: 8, children: [
           if (acc is PlexAccount)
-            _SmallButton(icon: Icons.travel_explore_rounded, label: 'Look for new servers', onTap: _busy ? null : () => _run(() => MediaServers.instance.refreshPlex(acc))),
-          _SmallButton(icon: Icons.logout_rounded, label: 'Sign out', danger: true, onTap: _busy ? null : _signOut),
+            _SmallButton(icon: Icons.travel_explore_rounded, label: 'Cerca nuovi server', onTap: _busy ? null : () => _run(() => MediaServers.instance.refreshPlex(acc))),
+          _SmallButton(icon: Icons.logout_rounded, label: 'Esci', danger: true, onTap: _busy ? null : _signOut),
         ]),
       ]),
     );
@@ -1187,7 +1187,7 @@ Future<String?> _askPin(BuildContext context, String name) {
     builder: (context) => AlertDialog(
       backgroundColor: const Color(0xFF0B0D16),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18), side: const BorderSide(color: VyseColors.stroke)),
-      title: Text("$name's PIN", style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900)),
+      title: Text("PIN di $name", style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900)),
       content: TextField(
         controller: c,
         autofocus: true,
@@ -1201,10 +1201,10 @@ Future<String?> _askPin(BuildContext context, String name) {
         onSubmitted: (v) => Navigator.of(context).pop(v.trim().isEmpty ? null : v.trim()),
       ),
       actions: [
-        TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancel', style: TextStyle(color: VyseColors.textDim))),
+        TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Annulla', style: TextStyle(color: VyseColors.textDim))),
         TextButton(
           onPressed: () => Navigator.of(context).pop(c.text.trim().isEmpty ? null : c.text.trim()),
-          child: const Text('Switch', style: TextStyle(color: VyseColors.accent, fontWeight: FontWeight.w800)),
+          child: const Text('Cambia', style: TextStyle(color: VyseColors.accent, fontWeight: FontWeight.w800)),
         ),
       ],
     ),

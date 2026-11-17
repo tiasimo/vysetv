@@ -22,7 +22,7 @@ class LivePill extends StatelessWidget {
         child: Row(mainAxisSize: MainAxisSize.min, children: [
           const Icon(Icons.circle, size: 6, color: Colors.white),
           const SizedBox(width: 4),
-          Text(text.isEmpty ? 'LIVE' : 'LIVE  $text',
+          Text(text.isEmpty ? 'IN DIRETTA' : 'IN DIRETTA  $text',
               style: const TextStyle(fontSize: 9.5, fontWeight: FontWeight.w900, letterSpacing: .4, color: Colors.white)),
         ]),
       );
@@ -123,7 +123,7 @@ class MatchCard extends StatelessWidget {
                   // Exact feeds first once known ("beIN Sports 2 · AR"), else the channel names.
                   final exact = found[m.id] ?? const {};
                   final channels = m.channels.take(3).map((c) => exact[c.id]?.firstOrNull ?? c.name).join('   ');
-                  return Text(channels.isEmpty ? 'Search your portals' : channels,
+                  return Text(channels.isEmpty ? 'Cerca nei tuoi portali' : channels,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(fontSize: 11, color: hovered ? VyseColors.textDim : VyseColors.textFaint));

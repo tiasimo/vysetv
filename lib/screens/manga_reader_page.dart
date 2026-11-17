@@ -39,7 +39,7 @@ Future<void> resumeReading(BuildContext context, MangaProgress p) async {
     if (!context.mounted || order.isEmpty) return;
     await openReader(context, manga: p.manga, chapters: order, index: p.chapterIndex.clamp(0, order.length - 1), startPage: p.page);
   } catch (_) {
-    if (context.mounted) showToast(context, const Text("Couldn't load this series"), icon: Icons.error_outline_rounded);
+    if (context.mounted) showToast(context, const Text("Impossibile caricare questa serie"), icon: Icons.error_outline_rounded);
   }
 }
 
@@ -173,7 +173,7 @@ class _MangaReaderPageState extends State<MangaReaderPage> {
     if (m == ReaderMode.scroll) WidgetsBinding.instance.addPostFrameCallback((_) => _repin());
     if (persist) {
       SharedPreferences.getInstance().then((p) => p.setString(_modeKey, m.name)).catchError((Object _) => false);
-      showToast(context, Text(m == ReaderMode.paged ? 'Page mode' : 'Scroll mode'),
+      showToast(context, Text(m == ReaderMode.paged ? 'Modalità pagina' : 'Modalità scorrimento'),
           icon: m == ReaderMode.paged ? Icons.auto_stories_rounded : Icons.view_day_rounded);
     }
   }
@@ -284,9 +284,9 @@ class _MangaReaderPageState extends State<MangaReaderPage> {
                 if (snap.hasError) {
                   return EmptyState(
                     icon: Icons.broken_image_outlined,
-                    title: "Couldn't load this chapter",
-                    body: 'Check your connection and try again.',
-                    action: ('Retry', () => setState(() {
+                    title: "Impossibile caricare questo capitolo",
+                    body: 'Controlla la connessione e riprova.',
+                    action: ('Riprova', () => setState(() {
                           _pages = _load();
                         })),
                   );
@@ -412,7 +412,7 @@ class _MangaReaderPageState extends State<MangaReaderPage> {
         opacity: .7,
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
         child: Row(children: [
-          GlassIconButton(icon: Icons.arrow_back_rounded, label: 'Back (Esc)', size: 38, onTap: _close),
+          GlassIconButton(icon: Icons.arrow_back_rounded, label: 'Indietro (Esc)', size: 38, onTap: _close),
           const SizedBox(width: 12),
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
@@ -428,21 +428,21 @@ class _MangaReaderPageState extends State<MangaReaderPage> {
           ),
           GlassIconButton(
             icon: paged ? Icons.view_day_rounded : Icons.auto_stories_rounded,
-            label: paged ? 'Switch to scroll mode (M)' : 'Switch to page mode (M)',
+            label: paged ? 'Passa alla modalità scorrimento (M)' : 'Passa alla modalità pagina (M)',
             size: 38,
             onTap: () => _switchMode(paged ? ReaderMode.scroll : ReaderMode.paged),
           ),
           const SizedBox(width: 6),
           GlassIconButton(
             icon: Icons.skip_previous_rounded,
-            label: 'Previous chapter',
+            label: 'Capitolo precedente',
             size: 38,
             onTap: _hasPrev ? () => _go(_index - 1) : () {},
           ),
           const SizedBox(width: 6),
           GlassIconButton(
             icon: Icons.skip_next_rounded,
-            label: 'Next chapter',
+            label: 'Capitolo successivo',
             size: 38,
             onTap: _hasNext ? () => _go(_index + 1) : () {},
           ),
@@ -454,19 +454,19 @@ class _MangaReaderPageState extends State<MangaReaderPage> {
   Widget _endCard() => Padding(
         padding: const EdgeInsets.fromLTRB(16, 40, 16, 40),
         child: Column(mainAxisSize: MainAxisSize.min, children: [
-          Text('End of ${_chapter.label}', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+          Text('Fine di ${_chapter.label}', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
           const SizedBox(height: 16),
           if (_hasNext)
             PillButton(
               primary: true,
               icon: Icons.skip_next_rounded,
-              label: 'Next: ${widget.chapters[_index + 1].label}',
+              label: 'Prossimo: ${widget.chapters[_index + 1].label}',
               onTap: () => _go(_index + 1),
             )
           else ...[
-            const Text("You're all caught up.", style: TextStyle(color: VyseColors.textDim)),
+            const Text("Sei in pari.", style: TextStyle(color: VyseColors.textDim)),
             const SizedBox(height: 16),
-            PillButton(icon: Icons.arrow_back_rounded, label: 'Back to series', onTap: _close),
+            PillButton(icon: Icons.arrow_back_rounded, label: 'Torna alla serie', onTap: _close),
           ],
         ]),
       );

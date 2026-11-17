@@ -17,21 +17,21 @@ import '../data/trackers/tracker_hub.dart';
 import 'player_page.dart';
 
 enum _Filter {
-  all('All'),
-  films('Films'),
-  series('Series'),
+  all('Tutti'),
+  films('Film'),
+  series('Serie'),
   anime('Anime'),
-  watching('In progress'),
-  fresh('Not started');
+  watching('In corso'),
+  fresh('Non iniziati');
 
   const _Filter(this.label);
   final String label;
 }
 
 enum _Sort {
-  added('Recently added', Icons.schedule_rounded),
-  title('Title A–Z', Icons.sort_by_alpha_rounded),
-  year('Release year', Icons.calendar_today_rounded),
+  added('Aggiunti di recente', Icons.schedule_rounded),
+  title('Titolo A–Z', Icons.sort_by_alpha_rounded),
+  year('Anno di uscita', Icons.calendar_today_rounded),
   rating('Rating', Icons.star_rounded);
 
   const _Sort(this.label, this.icon);
@@ -41,20 +41,20 @@ enum _Sort {
 
 String _ago(DateTime t) {
   final d = DateTime.now().difference(t);
-  if (d.inMinutes < 1) return 'just now';
-  if (d.inHours < 1) return '${d.inMinutes} min ago';
-  if (d.inDays < 1) return '${d.inHours} h ago';
-  if (d.inDays < 7) return '${d.inDays} d ago';
-  if (d.inDays < 60) return '${d.inDays ~/ 7} wk ago';
-  return '${d.inDays ~/ 30} mo ago';
+  if (d.inMinutes < 1) return 'adesso';
+  if (d.inHours < 1) return '${d.inMinutes} min fa';
+  if (d.inDays < 1) return '${d.inHours} h fa';
+  if (d.inDays < 7) return '${d.inDays} g fa';
+  if (d.inDays < 60) return '${d.inDays ~/ 7} sett. fa';
+  return '${d.inDays ~/ 30} mesi fa';
 }
 
 String _left(Duration d) {
   final m = (d.inSeconds / 60).ceil();
-  if (m <= 1) return 'Almost done';
-  if (m < 60) return '$m min left';
+  if (m <= 1) return 'Quasi finito';
+  if (m < 60) return '$m min rimanenti';
   final r = m % 60;
-  return r == 0 ? '${m ~/ 60} h left' : '${m ~/ 60} h $r min left';
+  return r == 0 ? '${m ~/ 60} h rimanenti' : '${m ~/ 60} h $r min rimanenti';
 }
 
 void _play(BuildContext context, Media m, WatchEntry? progress) => openPlayer(
@@ -230,9 +230,9 @@ class _MyListPageState extends State<MyListPage> {
                   child: const Column(children: [
                     Icon(Icons.filter_alt_off_outlined, size: 34, color: VyseColors.textFaint),
                     SizedBox(height: 12),
-                    Text('Nothing here matches', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700)),
+                    Text('Niente corrisponde', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700)),
                     SizedBox(height: 4),
-                    Text('Try another filter or search', style: TextStyle(fontSize: 13, color: VyseColors.textDim)),
+                    Text('Prova un altro filtro o ricerca', style: TextStyle(fontSize: 13, color: VyseColors.textDim)),
                   ]),
                 ),
               )
@@ -306,7 +306,7 @@ class _MyListPageState extends State<MyListPage> {
   void _pickForMe(BuildContext context, List<SavedTitle> pool, Map<String, WatchEntry> progress) => showGeneralDialog(
     context: context,
     barrierDismissible: true,
-    barrierLabel: 'Pick for me',
+    barrierLabel: 'Scegli tu per me',
     barrierColor: Colors.black.withValues(alpha: .7),
     transitionDuration: const Duration(milliseconds: 260),
     pageBuilder: (dialog, _, _) => _PickForMe(
@@ -348,9 +348,9 @@ class _Header extends StatelessWidget {
     final stats = [
       '${items.length} ${items.length == 1 ? 'title' : 'titles'}',
       if (films > 0) '$films ${films == 1 ? 'film' : 'films'}',
-      if (items.length - films - anime > 0) '${items.length - films - anime} series',
+      if (items.length - films - anime > 0) '${items.length - films - anime} serie',
       if (anime > 0) '$anime anime',
-      if (inProgress > 0) '$inProgress in progress',
+      if (inProgress > 0) '$inProgress in corso',
     ];
     return Stack(children: [
       // the newest addition, blurred into the page
@@ -392,11 +392,11 @@ class _Header extends StatelessWidget {
                   child: Icon(Icons.bookmark_rounded, size: phone ? 20 : 24, color: Colors.black),
                 ),
                 const SizedBox(width: 12),
-                Text('My List', style: TextStyle(fontSize: phone ? 26 : 34, fontWeight: FontWeight.w900, letterSpacing: -.8)),
+                Text('La mia lista', style: TextStyle(fontSize: phone ? 26 : 34, fontWeight: FontWeight.w900, letterSpacing: -.8)),
               ]),
               const SizedBox(height: 8),
               Text(
-                items.isEmpty ? 'Titles you save show up here' : stats.join('  ·  '),
+                items.isEmpty ? 'I titoli che salvi compaiono qui' : stats.join('  ·  '),
                 style: TextStyle(fontSize: phone ? 12.5 : 14, color: VyseColors.textDim, fontWeight: FontWeight.w500),
               ),
             ]),
@@ -415,7 +415,7 @@ class _PickButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Pressable(
-    tooltip: 'Pick something from your list',
+    tooltip: 'Scegli qualcosa dalla tua lista',
     onTap: onTap,
     builder: (context, hovered, pressed) => AnimatedScale(
       scale: pressed ? .95 : (hovered ? 1.03 : 1),
@@ -432,7 +432,7 @@ class _PickButton extends StatelessWidget {
           const Icon(Icons.casino_rounded, size: 18, color: Colors.black),
           if (!compact) ...[
             const SizedBox(width: 8),
-            const Text("Can't decide?", style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.w800, color: Colors.black)),
+            const Text("Indeciso?", style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.w800, color: Colors.black)),
           ],
         ]),
       ),
@@ -477,7 +477,7 @@ class _Toolbar extends StatelessWidget {
         cursorColor: VyseColors.accent,
         decoration: InputDecoration(
           isDense: true,
-          hintText: 'Search your list',
+          hintText: 'Cerca nella tua lista',
           hintStyle: const TextStyle(fontSize: 13.5, color: VyseColors.textFaint),
           prefixIcon: const Icon(Icons.search_rounded, size: 19, color: VyseColors.textFaint),
           suffixIcon: search.text.isEmpty
@@ -498,7 +498,7 @@ class _Toolbar extends StatelessWidget {
       const SizedBox(width: 6),
       _ViewToggle(grid: grid, onGrid: onGrid),
       const SizedBox(width: 6),
-      _RoundTool(icon: Icons.checklist_rounded, tooltip: 'Select', onTap: onSelect),
+      _RoundTool(icon: Icons.checklist_rounded, tooltip: 'Seleziona', onTap: onSelect),
     ]);
     final chips = SingleChildScrollView(
       scrollDirection: Axis.horizontal,
@@ -590,7 +590,7 @@ class _ViewToggle extends StatelessWidget {
     padding: const EdgeInsets.all(3),
     decoration: BoxDecoration(color: Colors.white.withValues(alpha: .06), borderRadius: BorderRadius.circular(20)),
     child: Row(mainAxisSize: MainAxisSize.min, children: [
-      for (final (g, icon, tip) in const [(true, Icons.grid_view_rounded, 'Posters'), (false, Icons.view_agenda_outlined, 'Rows')])
+      for (final (g, icon, tip) in const [(true, Icons.grid_view_rounded, 'Locandine'), (false, Icons.view_agenda_outlined, 'Righe')])
         Pressable(
           tooltip: tip,
           onTap: () => onGrid(g),
@@ -636,7 +636,7 @@ class _SortMenu extends StatelessWidget {
         ),
     ],
     builder: (context, controller, _) => Pressable(
-      tooltip: 'Sort',
+      tooltip: 'Ordina',
       onTap: () => controller.isOpen ? controller.close() : controller.open(),
       builder: (context, hovered, _) => AnimatedContainer(
         duration: const Duration(milliseconds: 150),
@@ -675,11 +675,11 @@ class _SelectBar extends StatelessWidget {
       border: Border.all(color: VyseColors.accent.withValues(alpha: .3)),
     ),
     child: Row(children: [
-      _RoundTool(icon: Icons.close_rounded, tooltip: 'Done', onTap: onCancel),
+      _RoundTool(icon: Icons.close_rounded, tooltip: 'Fatto', onTap: onCancel),
       const SizedBox(width: 10),
       Expanded(
         child: Text(
-          count == 0 ? 'Tap titles to select' : '$count selected',
+          count == 0 ? 'Tocca i titoli per selezionarli' : '$count selezionati',
           style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w800),
           overflow: TextOverflow.ellipsis,
         ),
@@ -687,7 +687,7 @@ class _SelectBar extends StatelessWidget {
       if (count < total)
         TextButton(
           onPressed: onAll,
-          child: const Text('Select all', style: TextStyle(color: VyseColors.text, fontWeight: FontWeight.w700)),
+          child: const Text('Seleziona tutto', style: TextStyle(color: VyseColors.text, fontWeight: FontWeight.w700)),
         ),
       const SizedBox(width: 4),
       Pressable(
@@ -705,7 +705,7 @@ class _SelectBar extends StatelessWidget {
             child: const Row(mainAxisSize: MainAxisSize.min, children: [
               Icon(Icons.delete_outline_rounded, size: 17, color: Color(0xFFFF8A8C)),
               SizedBox(width: 6),
-              Text('Remove', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: Color(0xFFFFB3B4))),
+              Text('Rimuovi', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: Color(0xFFFFB3B4))),
             ]),
           ),
         ),
@@ -825,9 +825,9 @@ class _PosterTile extends StatelessWidget {
                     child: IgnorePointer(
                       ignoring: !hovered,
                       child: Row(children: [
-                        _TileAction(icon: Icons.play_arrow_rounded, tooltip: p == null ? 'Play' : 'Resume', primary: true, onTap: () => _play(context, m, p)),
+                        _TileAction(icon: Icons.play_arrow_rounded, tooltip: p == null ? 'Riproduci' : 'Riprendi', primary: true, onTap: () => _play(context, m, p)),
                         const Spacer(),
-                        _TileAction(icon: Icons.bookmark_remove_outlined, tooltip: 'Remove from My List', onTap: () => TrackerHub.myListRemove({m.key})),
+                        _TileAction(icon: Icons.bookmark_remove_outlined, tooltip: 'Rimuovi da La mia lista', onTap: () => TrackerHub.myListRemove({m.key})),
                       ]),
                     ),
                   ),
@@ -909,7 +909,7 @@ class _RowTile extends StatelessWidget {
       m.kind,
       if (m.year != null) m.year!,
       if (m.rating > 0) '★ ${m.rating.toStringAsFixed(1)}',
-      'added ${_ago(item.added)}',
+      'aggiunto ${_ago(item.added)}',
     ].join('  ·  ');
     return GestureDetector(
       onLongPress: onLongPress,
@@ -965,10 +965,10 @@ class _RowTile extends StatelessWidget {
               if (!selecting) ...[
                 const SizedBox(width: 10),
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  _TileAction(icon: Icons.play_arrow_rounded, tooltip: p == null ? 'Play' : 'Resume', primary: true, onTap: () => _play(context, m, p)),
+                  _TileAction(icon: Icons.play_arrow_rounded, tooltip: p == null ? 'Riproduci' : 'Riprendi', primary: true, onTap: () => _play(context, m, p)),
                   if (!phone) ...[
                     const SizedBox(height: 8),
-                    _TileAction(icon: Icons.bookmark_remove_outlined, tooltip: 'Remove from My List', onTap: () => TrackerHub.myListRemove({m.key})),
+                    _TileAction(icon: Icons.bookmark_remove_outlined, tooltip: 'Rimuovi da La mia lista', onTap: () => TrackerHub.myListRemove({m.key})),
                   ],
                 ]),
                 const SizedBox(width: 4),
@@ -1048,10 +1048,10 @@ class _Empty extends StatelessWidget {
             ]),
           ),
           const SizedBox(height: 22),
-          const Text('Your list is empty', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+          const Text('La tua lista è vuota', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
           const SizedBox(height: 6),
           const Text(
-            'Tap + or Save on any film or series and it lands here, ready for later.',
+            'Tocca + o Salva su qualsiasi film o serie e finisce qui, pronto per dopo.',
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 13.5, height: 1.4, color: VyseColors.textDim),
           ),
@@ -1133,7 +1133,7 @@ class _PickForMeState extends State<_PickForMe> {
           ),
           child: Column(mainAxisSize: MainAxisSize.min, children: [
             Text(
-              _spinning ? 'Picking…' : 'Tonight, watch',
+              _spinning ? 'Scelgo…' : 'Stasera guarda',
               style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w800, letterSpacing: 1.4, color: VyseColors.accent),
             ),
             const SizedBox(height: 16),
@@ -1175,16 +1175,16 @@ class _PickForMeState extends State<_PickForMe> {
                 child: Wrap(alignment: WrapAlignment.center, spacing: 8, runSpacing: 8, children: [
                   _DialogButton(
                     icon: Icons.play_arrow_rounded,
-                    label: p == null ? 'Play' : 'Resume',
+                    label: p == null ? 'Riproduci' : 'Riprendi',
                     primary: true,
                     onTap: () => widget.onPlay(m, p),
                   ),
                   _DialogButton(
                     icon: Icons.info_outline_rounded,
-                    label: 'Details',
+                    label: 'Dettagli',
                     onTap: () => widget.onDetails(m),
                   ),
-                  if (widget.pool.length > 1) _DialogButton(icon: Icons.casino_rounded, label: 'Spin again', onTap: _spin),
+                  if (widget.pool.length > 1) _DialogButton(icon: Icons.casino_rounded, label: 'Gira di nuovo', onTap: _spin),
                 ]),
               ),
             ),

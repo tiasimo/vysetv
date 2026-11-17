@@ -117,7 +117,7 @@ class _LiveChannelPageState extends State<LiveChannelPage> {
             child: SizedBox(
               height: 34,
               child: ListView(scrollDirection: Axis.horizontal, children: [
-                FilterChipPill(label: 'All', selected: sel == null, onTap: () => pick(null)),
+                FilterChipPill(label: 'Tutti', selected: sel == null, onTap: () => pick(null)),
                 for (final v in vals)
                   Padding(padding: const EdgeInsets.only(left: 4), child: FilterChipPill(label: v, selected: sel == v, onTap: () => pick(v))),
               ]),
@@ -129,7 +129,7 @@ class _LiveChannelPageState extends State<LiveChannelPage> {
     return [
       if (nums.length > 1) _pad(context, row('Channel', nums, _num, (v) => setState(() => _num = v)), bottom: 6),
       if (langs.length > 1) _pad(context, row('Language', langs, _lang, (v) => setState(() => _lang = v)), bottom: 6),
-      if (qs.length > 1) _pad(context, row('Quality', qs, _quality, (v) => setState(() => _quality = v)), bottom: 6),
+      if (qs.length > 1) _pad(context, row('Qualità', qs, _quality, (v) => setState(() => _quality = v)), bottom: 6),
       if (nums.length > 1 || langs.length > 1 || qs.length > 1) const SliverToBoxAdapter(child: SizedBox(height: 12)),
     ];
   }
@@ -167,34 +167,34 @@ class _LiveChannelPageState extends State<LiveChannelPage> {
           return _LivePage(
             scroll: _scroll,
             title: ch.name,
-            subtitle: '${ch.category}  ·  ${hits.isEmpty ? 'Search your portals for this channel' : '${all.length} sources found'}',
+            subtitle: '${ch.category}  ·  ${hits.isEmpty ? 'Search your portals for this channel' : '${all.length} sorgenti trovate'}',
             slivers: [
               _pad(
                 context,
                 Wrap(spacing: 8, runSpacing: 8, children: [
                   if (hits.isNotEmpty)
-                    PillButton(primary: true, icon: Icons.play_arrow_rounded, label: 'Watch', onTap: () => openLivePlayer(context, items, 0)),
-                  ToolButton(icon: Icons.search_rounded, label: 'Search portals', onTap: running ? null : () => iptv.runChannelScan(ch)),
+                    PillButton(primary: true, icon: Icons.play_arrow_rounded, label: 'Guarda', onTap: () => openLivePlayer(context, items, 0)),
+                  ToolButton(icon: Icons.search_rounded, label: 'Cerca nei portali', onTap: running ? null : () => iptv.runChannelScan(ch)),
                   ToolButton(
                     icon: Icons.travel_explore_rounded,
-                    label: 'Search deeper',
+                    label: 'Cerca più a fondo',
                     onTap: running ? null : () => iptv.runChannelScan(ch, scrapeMore: true),
                   ),
                   if (hits.isNotEmpty)
-                    ToolButton(icon: Icons.clear_all_rounded, label: 'Clear', danger: true, onTap: () => iptv.removeAllChannelHits(ch.id)),
+                    ToolButton(icon: Icons.clear_all_rounded, label: 'Cancella', danger: true, onTap: () => iptv.removeAllChannelHits(ch.id)),
                 ]),
                 bottom: 16,
               ),
               if (f != null) _pad(context, _MatchGuide(finder: f, sources: all.length, onPick: _pickGroup), bottom: 18),
               ..._filters(context, tags.values),
               if (running || iptv.channelStatus.isNotEmpty)
-                _pad(context, StatusLine(text: iptv.channelStatus.isEmpty ? 'Searching…' : iptv.channelStatus, busy: running, onStop: running ? iptv.stopChannelSearch : null)),
+                _pad(context, StatusLine(text: iptv.channelStatus.isEmpty ? 'Ricerca…' : iptv.channelStatus, busy: running, onStop: running ? iptv.stopChannelSearch : null)),
               if (hits.isEmpty && !running)
                 SliverToBoxAdapter(
                   child: EmptyState(
                     icon: Icons.live_tv_rounded,
-                    title: all.isEmpty ? 'No sources yet' : 'Nothing matches these filters',
-                    body: iptv.verified.isEmpty ? 'Add a portal in the Portals tab, then search again.' : 'Search your portals to find a stream for ${ch.name}.',
+                    title: all.isEmpty ? 'Ancora nessuna sorgente' : 'Nessun risultato con questi filtri',
+                    body: iptv.verified.isEmpty ? 'Aggiungi un portale nella scheda Portali, poi cerca di nuovo.' : 'Cerca nei tuoi portali uno stream per ${ch.name}.',
                   ),
                 )
               else
@@ -237,13 +237,13 @@ class _MatchGuide extends StatelessWidget {
     final busy = finder.busy || (sources == 0 && iptv.channelIsRunning);
     final String status;
     if (found.isNotEmpty) {
-      status = 'Showing this match';
+      status = 'Trasmette questa partita';
     } else if (busy) {
-      status = finder.total == 0 ? 'Finding feeds…' : 'Reading TV guides  ${finder.checked}/${finder.total}';
+      status = finder.total == 0 ? 'Ricerca dei canali…' : 'Lettura delle guide TV  ${finder.checked}/${finder.total}';
     } else if (sources == 0) {
-      status = 'Search your portals to find feeds for this match';
+      status = 'Cerca nei tuoi portali i canali di questa partita';
     } else {
-      status = "Couldn't spot it in the TV guides. It's usually on one of the feeds below.";
+      status = "Non trovata nelle guide TV. Di solito è su uno dei canali qui sotto.";
     }
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
@@ -323,7 +323,7 @@ class _HitRow extends StatelessWidget {
                     maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 11.5, color: VyseColors.textDim)),
                 if (guide != null) ...[
                   const SizedBox(height: 3),
-                  Text('Showing  ${guide!.title}  ·  ${hhmm(guide!.start)}',
+                  Text('In onda  ${guide!.title}  ·  ${hhmm(guide!.start)}',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(fontSize: 11.5, fontWeight: FontWeight.w700, color: VyseColors.accent)),
@@ -331,7 +331,7 @@ class _HitRow extends StatelessWidget {
               ]),
             ),
             IconButton(
-              tooltip: fav ? 'Unfavorite source' : 'Favorite source',
+              tooltip: fav ? 'Togli la sorgente dai preferiti' : 'Sorgente preferita',
               onPressed: () => iptv.toggleFavoriteHit(hit),
               icon: Icon(fav ? Icons.star_rounded : Icons.star_border_rounded, color: fav ? VyseColors.star : VyseColors.textFaint),
             ),
@@ -380,28 +380,28 @@ class _SeriesPageState extends State<SeriesPage> {
           return _LivePage(
             scroll: _scroll,
             title: widget.series.name,
-            subtitle: all.isEmpty ? widget.portal.name : '${seasons.length} seasons  ·  ${all.length} episodes',
+            subtitle: all.isEmpty ? widget.portal.name : '${seasons.length} stagioni  ·  ${all.length} episodi',
             slivers: [
               if (seasons.length > 1)
                 _pad(
                   context,
                   Wrap(spacing: 8, runSpacing: 8, children: [
-                    for (final s in seasons) FilterChipPill(label: 'Season $s', selected: s == season, onTap: () => setState(() => _season = s)),
+                    for (final s in seasons) FilterChipPill(label: 'Stagione $s', selected: s == season, onTap: () => setState(() => _season = s)),
                   ]),
                 ),
               if (snap.hasError)
                 SliverToBoxAdapter(
                   child: EmptyState(
                     icon: Icons.wifi_off_rounded,
-                    title: "Couldn't load episodes",
-                    body: 'The portal didn\'t answer. Try again.',
-                    action: ('Retry', () => setState(() { _future = fetchSeriesEpisodes(widget.portal, widget.series); })),
+                    title: "Impossibile caricare gli episodi",
+                    body: 'Il portale non ha risposto. Riprova.',
+                    action: ('Riprova', () => setState(() { _future = fetchSeriesEpisodes(widget.portal, widget.series); })),
                   ),
                 )
               else if (!snap.hasData)
                 _pad(context, Shimmer(child: Column(children: [for (var i = 0; i < 6; i++) const Padding(padding: EdgeInsets.only(bottom: 8), child: SkeletonBox(width: double.infinity, height: 84))])))
               else if (eps.isEmpty)
-                const SliverToBoxAdapter(child: EmptyState(icon: Icons.video_library_outlined, title: 'No episodes', body: 'This series has no episodes on this portal.'))
+                const SliverToBoxAdapter(child: EmptyState(icon: Icons.video_library_outlined, title: 'Nessun episodio', body: 'Questa serie non ha episodi su questo portale.'))
               else
                 SliverPadding(
                   padding: EdgeInsets.fromLTRB(Layout.inset(context), 0, pageRight(context), 0),
@@ -506,7 +506,7 @@ class _M3uPlaylistPageState extends State<M3uPlaylistPage> {
       title: pl.name,
       subtitle: '${pl.channels.length} channels${groups.isEmpty ? '' : '  ·  ${groups.length} groups'}',
       slivers: [
-        _pad(context, _Filter(controller: _text, hint: 'Filter channels')),
+        _pad(context, _Filter(controller: _text, hint: 'Filtra canali')),
         if (groups.isNotEmpty)
           SliverToBoxAdapter(
             child: Padding(
@@ -519,14 +519,14 @@ class _M3uPlaylistPageState extends State<M3uPlaylistPage> {
                   itemCount: groups.length + 1,
                   separatorBuilder: (_, _) => const SizedBox(width: 8),
                   itemBuilder: (_, i) => i == 0
-                      ? FilterChipPill(label: 'All', selected: _group == null, onTap: () => setState(() => _group = null))
+                      ? FilterChipPill(label: 'Tutti', selected: _group == null, onTap: () => setState(() => _group = null))
                       : FilterChipPill(label: groups[i - 1], selected: _group == groups[i - 1], onTap: () => setState(() => _group = groups[i - 1])),
                 ),
               ),
             ),
           ),
         if (list.isEmpty)
-          const SliverToBoxAdapter(child: EmptyState(icon: Icons.search_off_rounded, title: 'No matches', body: 'Try another group or filter.'))
+          const SliverToBoxAdapter(child: EmptyState(icon: Icons.search_off_rounded, title: 'Nessun risultato', body: 'Prova un altro gruppo o filtro.'))
         else
           SliverPadding(
             padding: EdgeInsets.fromLTRB(Layout.inset(context), 0, pageRight(context), 0),

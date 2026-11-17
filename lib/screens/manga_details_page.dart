@@ -194,10 +194,10 @@ class _MangaDetailsPageState extends State<MangaDetailsPage> {
                 primary: true,
                 icon: Icons.auto_stories_rounded,
                 label: order.isEmpty
-                    ? (chaps.connectionState == ConnectionState.waiting ? 'Loading…' : 'No chapters')
+                    ? (chaps.connectionState == ConnectionState.waiting ? 'Caricamento…' : 'Nessun capitolo')
                     : resume
                         ? 'Continue ${order[p.chapterIndex].label}${p.page > 0 ? ' · p. ${p.page + 1}' : ''}'
-                        : 'Start reading',
+                        : 'Inizia a leggere',
                 onTap: order.isEmpty ? () {} : () => resume ? _read(order, p.chapterIndex, page: p.page) : _read(order, 0),
               ),
               ValueListenableBuilder<List<Manga>>(
@@ -206,7 +206,7 @@ class _MangaDetailsPageState extends State<MangaDetailsPage> {
                   final on = MangaFavorites.has(m);
                   return PillButton(
                     icon: on ? Icons.check_rounded : Icons.add_rounded,
-                    label: on ? 'In Favorites' : 'Favorite',
+                    label: on ? 'Nei preferiti' : 'Preferito',
                     onTap: () => MangaFavorites.toggle(m),
                   );
                 },
@@ -223,9 +223,9 @@ class _MangaDetailsPageState extends State<MangaDetailsPage> {
             return SliverToBoxAdapter(
               child: EmptyState(
                 icon: Icons.wifi_off_rounded,
-                title: "Couldn't load chapters",
-                body: 'Check your connection and try again.',
-                action: ('Retry', () => setState(() {
+                title: "Impossibile caricare i capitoli",
+                body: 'Controlla la connessione e riprova.',
+                action: ('Riprova', () => setState(() {
                       _chapters = mangaService.getChapters(m.id);
                     })),
               ),
@@ -244,7 +244,7 @@ class _MangaDetailsPageState extends State<MangaDetailsPage> {
           final order = readingOrder(snap.data!);
           if (order.isEmpty) {
             return const SliverToBoxAdapter(
-              child: EmptyState(icon: Icons.menu_book_outlined, title: 'No chapters yet', body: 'Check back later.'),
+              child: EmptyState(icon: Icons.menu_book_outlined, title: 'Ancora nessun capitolo', body: 'Ricontrolla più tardi.'),
             );
           }
           return FutureBuilder<MangaProgress?>(
@@ -253,13 +253,13 @@ class _MangaDetailsPageState extends State<MangaDetailsPage> {
               final current = prog.data?.chapterIndex;
               int indexAt(int i) => _newestFirst ? order.length - 1 - i : i;
               return SliverMainAxisGroup(slivers: [
-                SliverToBoxAdapter(child: ShelfHeader(title: '${order.length} chapters')),
+                SliverToBoxAdapter(child: ShelfHeader(title: '${order.length} capitoli')),
                 SliverPadding(
                   padding: EdgeInsets.fromLTRB(inset, 0, right, 14),
                   sliver: SliverToBoxAdapter(
                     child: Wrap(spacing: 4, children: [
-                      FilterChipPill(label: 'Newest first', selected: _newestFirst, onTap: () => setState(() => _newestFirst = true)),
-                      FilterChipPill(label: 'Oldest first', selected: !_newestFirst, onTap: () => setState(() => _newestFirst = false)),
+                      FilterChipPill(label: 'Dal più recente', selected: _newestFirst, onTap: () => setState(() => _newestFirst = true)),
+                      FilterChipPill(label: 'Dal più vecchio', selected: !_newestFirst, onTap: () => setState(() => _newestFirst = false)),
                     ]),
                   ),
                 ),
@@ -375,7 +375,7 @@ class _ChapterTile extends StatelessWidget {
                     )),
                 if (chapter.subtitle != null || current) ...[
                   const SizedBox(height: 2),
-                  Text(current ? 'Reading' : chapter.subtitle!,
+                  Text(current ? 'In lettura' : chapter.subtitle!,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(fontSize: 11.5, color: current ? VyseColors.accent : VyseColors.textFaint)),

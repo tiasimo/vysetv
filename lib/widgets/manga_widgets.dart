@@ -52,7 +52,7 @@ class MangaCard extends StatelessWidget {
                   opacity: hovered || Layout.isPhone(context) ? 1 : 0,
                   duration: const Duration(milliseconds: 160),
                   child: Tooltip(
-                    message: 'Remove',
+                    message: 'Rimuovi',
                     child: Pressable(
                       onTap: onRemove,
                       builder: (context, h, _) => AnimatedContainer(

@@ -20,7 +20,7 @@ Color? animeColor(Anime a) {
 String airsIn(DateTime at) {
   final d = at.difference(DateTime.now());
   if (d.isNegative) return 'now';
-  if (d.inDays > 0) return '${d.inDays}d ${d.inHours % 24}h';
+  if (d.inDays > 0) return '${d.inDays}g ${d.inHours % 24}h';
   if (d.inHours > 0) return '${d.inHours}h ${d.inMinutes % 60}m';
   return '${d.inMinutes.clamp(1, 59)}m';
 }
@@ -178,7 +178,7 @@ class _AnimeDetailsPageState extends State<AnimeDetailsPage> {
     final tabs = <(String, Widget)>[
       if (!a.isMovie || (a.episodes ?? 0) > 1)
         (
-          'Episodes',
+          'Episodi',
           Padding(
             padding: EdgeInsets.fromLTRB(inset, 6, right, 34),
             child: FutureBuilder<AnimeExtras>(
@@ -193,9 +193,9 @@ class _AnimeDetailsPageState extends State<AnimeDetailsPage> {
         ),
       if (a.characters.isNotEmpty)
         (
-          'Characters',
+          'Personaggi',
           Shelf<AnimeCharacter>(
-            title: 'Characters and their Japanese voices',
+            title: 'Personaggi e doppiatori giapponesi',
             load: () async => a.characters,
             maxItems: 18,
             itemWidth: 116,
@@ -206,7 +206,7 @@ class _AnimeDetailsPageState extends State<AnimeDetailsPage> {
         ),
       if (a.trailer != null)
         (
-          'Trailers',
+          'Trailer',
           Shelf<Anime>(
             title: '1 video',
             load: () async => [a],
@@ -218,9 +218,9 @@ class _AnimeDetailsPageState extends State<AnimeDetailsPage> {
         ),
       if (related.isNotEmpty)
         (
-          'Related',
+          'Correlati',
           Shelf<AnimeRelation>(
-            title: 'Seasons, films and side stories',
+            title: 'Stagioni, film e storie parallele',
             load: () async => related,
             itemWidth: posterW,
             itemHeight: posterW * 1.5 + 22,
@@ -234,9 +234,9 @@ class _AnimeDetailsPageState extends State<AnimeDetailsPage> {
         ),
       if (a.recommendations.isNotEmpty)
         (
-          'More like this',
+          'Titoli simili',
           Shelf<Anime>(
-            title: 'Picked by fans of this on AniList',
+            title: 'Scelti dai fan di questo titolo su AniList',
             load: () async => a.recommendations,
             itemWidth: posterW,
             itemHeight: posterW * 1.5,
@@ -245,7 +245,7 @@ class _AnimeDetailsPageState extends State<AnimeDetailsPage> {
           ),
         ),
       (
-        'Details',
+        'Dettagli',
         Padding(
           padding: EdgeInsets.fromLTRB(inset, 4, right, 30),
           child: ConstrainedBox(constraints: const BoxConstraints(maxWidth: 900), child: _AnimeFacts(anime: a)),
@@ -488,7 +488,7 @@ class _AnimeMetaLine extends StatelessWidget {
       if (a.duration != null) Text(fmtRuntime(a.duration!, perEpisode: !a.isMovie), style: dim),
       if (count != null && count > 0) Text('$count episode${count == 1 ? '' : 's'}', style: dim),
       if (a.nextEpisode != null && a.nextEpisodeAt != null)
-        Text('EP ${a.nextEpisode} in ${airsIn(a.nextEpisodeAt!)}', style: dim.copyWith(color: VyseColors.accent, fontWeight: FontWeight.w700)),
+        Text('EP ${a.nextEpisode} tra ${airsIn(a.nextEpisodeAt!)}', style: dim.copyWith(color: VyseColors.accent, fontWeight: FontWeight.w700)),
     ];
     return Wrap(
       alignment: centered ? WrapAlignment.center : WrapAlignment.start,
@@ -573,7 +573,7 @@ class _AnimeBody extends StatelessWidget {
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 680),
             child: Text(
-              a.description.isNotEmpty ? a.description : (loaded ? 'No overview yet.' : ''),
+              a.description.isNotEmpty ? a.description : (loaded ? 'Ancora nessuna trama.' : ''),
               textAlign: align,
               style: TextStyle(color: const Color(0xFFC3C7D4), fontSize: compact ? 13.5 : 14, height: 1.65),
             ),
@@ -588,10 +588,10 @@ class _AnimeBody extends StatelessWidget {
             spacing: 8,
             runSpacing: 8,
             children: [
-              _Pill(icon: Icons.play_arrow_rounded, label: 'Play', primary: true, onTap: onPlay),
+              _Pill(icon: Icons.play_arrow_rounded, label: 'Riproduci', primary: true, onTap: onPlay),
               if (!a.isAdult) const _AudioToggle(),
               _SaveButton(media: a.media),
-              _RoundAction(icon: Icons.open_in_new_rounded, tooltip: 'Open on AniList', onTap: () => _open(context, link)),
+              _RoundAction(icon: Icons.open_in_new_rounded, tooltip: 'Apri su AniList', onTap: () => _open(context, link)),
             ],
           ),
         ),
@@ -612,20 +612,20 @@ class _AnimeFacts extends StatelessWidget {
     final a = anime;
     String? date(DateTime? d) => d == null ? null : fmtDate(d);
     final rows = <(String, String?)>[
-      ('Status', animeStatuses[a.status] ?? a.status),
-      (a.isMovie ? 'Released' : 'First aired', date(a.started)),
-      if (!a.isMovie && a.status == 'FINISHED') ('Last aired', date(a.ended)),
+      ('Stato', animeStatuses[a.status] ?? a.status),
+      (a.isMovie ? 'Released' : 'Prima messa in onda', date(a.started)),
+      if (!a.isMovie && a.status == 'FINISHED') ('Ultima messa in onda', date(a.ended)),
       ('Format', a.formatLabel),
-      if (!a.isMovie) ('Episodes', a.episodes?.toString()),
-      ('Runtime', a.duration == null ? null : fmtRuntime(a.duration!, perEpisode: !a.isMovie)),
-      ('Season', a.season != null && a.year != null ? '${animeSeasons[a.season] ?? a.season} ${a.year}' : null),
+      if (!a.isMovie) ('Episodi', a.episodes?.toString()),
+      ('Durata', a.duration == null ? null : fmtRuntime(a.duration!, perEpisode: !a.isMovie)),
+      ('Stagione', a.season != null && a.year != null ? '${animeSeasons[a.season] ?? a.season} ${a.year}' : null),
       ('Studio', a.studios.isEmpty ? null : a.studios.join(', ')),
-      ('Source', a.source == null ? null : animeSources[a.source] ?? a.source),
+      ('Sorgente', a.source == null ? null : animeSources[a.source] ?? a.source),
       ('Country', a.country == null ? null : animeCountries[a.country] ?? a.country),
-      ('Native title', a.native.isEmpty ? null : a.native),
+      ('Titolo originale', a.native.isEmpty ? null : a.native),
       ('Romaji', a.english.isEmpty || a.romaji.isEmpty ? null : a.romaji),
-      ('Also known as', a.synonyms.isEmpty ? null : a.synonyms.take(4).join(', ')),
-      ('Favourited by', a.favourites > 0 ? fmtThousands(a.favourites) : null),
+      ('Conosciuto anche come', a.synonyms.isEmpty ? null : a.synonyms.take(4).join(', ')),
+      ('Tra i preferiti di', a.favourites > 0 ? fmtThousands(a.favourites) : null),
     ];
     return LayoutBuilder(
       builder: (context, c) {
@@ -723,7 +723,7 @@ class _AnimeTrailer extends StatelessWidget {
   final Anime anime;
 
   @override
-  Widget build(BuildContext context) => _VideoCard(video: Video(anime.trailer!, '${anime.title} trailer', 'Trailer', true));
+  Widget build(BuildContext context) => _VideoCard(video: Video(anime.trailer!, 'Trailer di ${anime.title}', 'Trailer', true));
 }
 
 /// Sub or dub: which version Play and the episode list start on. Every server that has the dub
@@ -756,7 +756,7 @@ class _AudioToggle extends StatelessWidget {
         ),
       );
       return Tooltip(
-        message: dub ? '$audio dub where there is one' : 'Japanese audio with subtitles',
+        message: dub ? 'Doppiaggio $audio se c\'è' : 'Audio giapponese con sottotitoli',
         child: Container(
           height: 38,
           padding: const EdgeInsets.all(4),

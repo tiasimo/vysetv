@@ -13,14 +13,14 @@ class AppTheme {
 }
 
 const appThemes = [
-  AppTheme('vyse', 'Lorewatch', 'Amber light, violet haze', Color(0xFFFFA53A), glow: false),
-  AppTheme('crimson', 'Crimson', 'Low red glow, like a cinema', Color(0xFFE5383B)),
-  AppTheme('abyss', 'Abyss', 'Deep navy, blue haze', Color(0xFF3B82F6)),
-  AppTheme('amber', 'Amber', 'Warm gold undertones', Color(0xFFF59E0B)),
-  AppTheme('bloom', 'Bloom', 'Dark rose, soft pink light', Color(0xFFEC4899)),
-  AppTheme('canopy', 'Canopy', 'Emerald mist', Color(0xFF10B981)),
-  AppTheme('glacier', 'Glacier', 'Steel blue, cyan frost', Color(0xFF06B6D4)),
-  AppTheme('violet', 'Violet', 'Purple dusk', Color(0xFF8B5CF6)),
+  AppTheme('vyse', 'Lorewatch', 'Luce ambra, foschia viola', Color(0xFFFFA53A), glow: false),
+  AppTheme('crimson', 'Cremisi', 'Bagliore rosso tenue, come al cinema', Color(0xFFE5383B)),
+  AppTheme('abyss', 'Abisso', 'Blu notte, foschia azzurra', Color(0xFF3B82F6)),
+  AppTheme('amber', 'Ambra', 'Sfumature oro caldo', Color(0xFFF59E0B)),
+  AppTheme('bloom', 'Fioritura', 'Rosa scuro, luce rosa tenue', Color(0xFFEC4899)),
+  AppTheme('canopy', 'Chioma', 'Nebbia smeraldo', Color(0xFF10B981)),
+  AppTheme('glacier', 'Ghiacciaio', 'Blu acciaio, brina ciano', Color(0xFF06B6D4)),
+  AppTheme('violet', 'Viola', 'Crepuscolo viola', Color(0xFF8B5CF6)),
 ];
 
 /// A saved preference you can listen to.

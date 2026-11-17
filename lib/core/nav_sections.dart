@@ -20,20 +20,20 @@ class NavItem {
 /// Every section, in the default order.
 const navItems = [
   NavItem('home', 'Home', Icons.home_outlined, Icons.home_rounded),
-  NavItem('discover', 'Discover', Icons.explore_outlined, Icons.explore_rounded),
-  NavItem('search', 'Search', Icons.search_rounded, Icons.search_rounded),
-  NavItem('movies', 'Movies', Icons.movie_creation_outlined, Icons.movie_creation_rounded),
-  NavItem('tv', 'TV Shows', Icons.tv_outlined, Icons.tv_rounded),
+  NavItem('discover', 'Scopri', Icons.explore_outlined, Icons.explore_rounded),
+  NavItem('search', 'Cerca', Icons.search_rounded, Icons.search_rounded),
+  NavItem('movies', 'Film', Icons.movie_creation_outlined, Icons.movie_creation_rounded),
+  NavItem('tv', 'Serie TV', Icons.tv_outlined, Icons.tv_rounded),
   NavItem('anime', 'Anime', Icons.circle, Icons.circle, glyph: 'ヴ'),
-  NavItem('top', 'Top Rated', Icons.star_border_rounded, Icons.star_rounded),
-  NavItem('list', 'My List', Icons.bookmark_border_rounded, Icons.bookmark_rounded),
-  NavItem('downloads', 'Downloads', Icons.download_outlined, Icons.download_rounded),
-  NavItem('history', 'History', Icons.history_rounded, Icons.history_rounded),
-  NavItem('servers', 'Servers', Icons.dns_outlined, Icons.dns_rounded),
+  NavItem('top', 'Più votati', Icons.star_border_rounded, Icons.star_rounded),
+  NavItem('list', 'La mia lista', Icons.bookmark_border_rounded, Icons.bookmark_rounded),
+  NavItem('downloads', 'Download', Icons.download_outlined, Icons.download_rounded),
+  NavItem('history', 'Cronologia', Icons.history_rounded, Icons.history_rounded),
+  NavItem('servers', 'Server', Icons.dns_outlined, Icons.dns_rounded),
   NavItem('manga', 'Manga', Icons.menu_book_outlined, Icons.menu_book_rounded),
-  NavItem('music', 'Music', Icons.music_note_outlined, Icons.music_note_rounded),
-  NavItem('audiobooks', 'Audiobooks', Icons.headphones_outlined, Icons.headphones_rounded),
-  NavItem('live', 'Live TV', Icons.live_tv_outlined, Icons.live_tv_rounded),
+  NavItem('music', 'Musica', Icons.music_note_outlined, Icons.music_note_rounded),
+  NavItem('audiobooks', 'Audiolibri', Icons.headphones_outlined, Icons.headphones_rounded),
+  NavItem('live', 'TV in diretta', Icons.live_tv_outlined, Icons.live_tv_rounded),
 ];
 
 NavItem navItem(String id) => navItems.firstWhere((s) => s.id == id, orElse: () => navItems.first);

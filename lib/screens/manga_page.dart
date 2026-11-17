@@ -154,7 +154,7 @@ class _MangaPageState extends State<MangaPage> {
               sliver: SliverToBoxAdapter(
                 child: SectionHeader(
                   title: _tag ?? 'Manga',
-                  subtitle: _tag == null ? 'Read series, one chapter at a time' : 'Manga tagged $_tag',
+                  subtitle: _tag == null ? 'Leggi le serie, un capitolo alla volta' : 'Manga con tag $_tag',
                 ),
               ),
             ),
@@ -170,7 +170,7 @@ class _MangaPageState extends State<MangaPage> {
                       offset: 10,
                       child: VyseSearchField(
                         controller: _text,
-                        hint: 'Search manga',
+                        hint: 'Cerca manga',
                         busy: _loading && !browsing && _items.isEmpty,
                         onSubmit: _search,
                       ),
@@ -220,7 +220,7 @@ class _MangaPageState extends State<MangaPage> {
                     itemCount: tags.length + 1,
                     separatorBuilder: (_, _) => const SizedBox(width: 8),
                     itemBuilder: (_, i) => i == 0
-                        ? FilterChipPill(label: 'All', selected: _tag == null && browsing, onTap: () => _pickTag(null))
+                        ? FilterChipPill(label: 'Tutti', selected: _tag == null && browsing, onTap: () => _pickTag(null))
                         : FilterChipPill(
                             label: tags[i - 1],
                             selected: browsing && _tag == tags[i - 1],
@@ -233,9 +233,9 @@ class _MangaPageState extends State<MangaPage> {
             if (browsing && _tag == null) ...[
               SliverToBoxAdapter(child: _ContinueShelf(coverW: coverW)),
               SliverToBoxAdapter(child: _FavoritesShelf(coverW: coverW)),
-              SliverToBoxAdapter(child: ShelfHeader(title: 'Browse')),
+              SliverToBoxAdapter(child: ShelfHeader(title: 'Sfoglia')),
             ] else
-              SliverToBoxAdapter(child: ShelfHeader(title: browsing ? 'Browse' : 'Results for "$_query"')),
+              SliverToBoxAdapter(child: ShelfHeader(title: browsing ? 'Sfoglia' : 'Risultati per "$_query"')),
             SliverPadding(
               padding: EdgeInsets.fromLTRB(inset, 4, right, 0),
               sliver: _grid(coverW),
@@ -280,16 +280,16 @@ class _MangaPageState extends State<MangaPage> {
     if (_error != null) {
       return EmptyState(
         icon: Icons.wifi_off_rounded,
-        title: "Couldn't load manga",
-        body: 'Check your connection and try again.',
-        action: ('Retry', _loadMore),
+        title: "Impossibile caricare i manga",
+        body: 'Controlla la connessione e riprova.',
+        action: ('Riprova', _loadMore),
       );
     }
     if (_done && _items.isEmpty) {
       return EmptyState(
         icon: Icons.search_off_rounded,
-        title: _query.isEmpty ? 'Nothing here yet' : 'No results for "$_query"',
-        body: 'Try a different title or tag.',
+        title: _query.isEmpty ? 'Ancora niente qui' : 'Nessun risultato per "$_query"',
+        body: 'Prova un altro titolo o tag.',
       );
     }
     if (_loading && _items.isNotEmpty) {
@@ -317,7 +317,7 @@ class _ContinueShelf extends StatelessWidget {
             if (rows.isEmpty) return const SizedBox.shrink();
             return Shelf<MangaProgress>(
               key: ValueKey('continue/$rev'),
-              title: 'Continue reading',
+              title: 'Continua a leggere',
               load: () async => rows,
               itemWidth: coverW,
               itemHeight: coverW * 1.5 + 38,
@@ -326,7 +326,7 @@ class _ContinueShelf extends StatelessWidget {
                 return MangaCard(
                   manga: p.manga,
                   heroTag: tag,
-                  caption: p.chapterLabel ?? 'Chapter ${p.chapterIndex + 1}',
+                  caption: p.chapterLabel ?? 'Capitolo ${p.chapterIndex + 1}',
                   onTap: () => resumeReading(context, p),
                   onRemove: () => MangaHistory.remove(p.manga),
                 );
@@ -348,7 +348,7 @@ class _FavoritesShelf extends StatelessWidget {
           if (favs.isEmpty) return const SizedBox.shrink();
           return Shelf<Manga>(
             key: ValueKey('favs/${favs.length}/${favs.first.id}'),
-            title: 'Favorites',
+            title: 'Preferiti',
             load: () async => favs,
             itemWidth: coverW,
             itemHeight: coverW * 1.5 + 38,

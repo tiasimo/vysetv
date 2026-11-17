@@ -47,7 +47,7 @@ class _ContinueWatchingRowState extends State<ContinueWatchingRow> {
         padding: EdgeInsets.only(bottom: phone ? 22 : 30),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           ShelfHeader(
-            title: 'Continue watching',
+            title: 'Continua a guardare',
             onPrev: phone || entries.length < 3 ? null : () => _page(-1),
             onNext: phone || entries.length < 3 ? null : () => _page(1),
           ),
@@ -83,10 +83,10 @@ class _ContinueWatchingRowState extends State<ContinueWatchingRow> {
 
 String _left(Duration d) {
   final m = (d.inSeconds / 60).ceil();
-  if (m <= 1) return 'Almost done';
-  if (m < 60) return '$m min left';
+  if (m <= 1) return 'Quasi finito';
+  if (m < 60) return '$m min rimanenti';
   final rest = m % 60;
-  return rest == 0 ? '${m ~/ 60} h left' : '${m ~/ 60} h $rest min left';
+  return rest == 0 ? '${m ~/ 60} h rimanenti' : '${m ~/ 60} h $rest min rimanenti';
 }
 
 /// Backdrop and logo; a ring-shaped play button that shows how far in you are, and a glowing
@@ -245,7 +245,7 @@ class _ResumeCardState extends State<_ResumeCard> {
                     child: IgnorePointer(
                       ignoring: !hovered,
                       child: Pressable(
-                        tooltip: 'Remove from Continue watching',
+                        tooltip: 'Rimuovi da Continua a guardare',
                         onTap: _remove,
                         builder: (context, h, _) => Container(
                           width: 28,

@@ -187,7 +187,7 @@ class _AnimePageState extends State<AnimePage> {
               decoration: BoxDecoration(color: hovered ? Colors.white : const Color(0xFFF1F1F5), borderRadius: BorderRadius.circular(radius)),
               child: _loading && (_reloading || _items.isEmpty)
                   ? const SizedBox.square(dimension: 18, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.black))
-                  : Text('Show ${_countLabel(_total)}', style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 14)),
+                  : Text('Mostra ${_countLabel(_total)}', style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 14)),
             ),
           ),
         ),
@@ -198,7 +198,7 @@ class _AnimePageState extends State<AnimePage> {
     showGeneralDialog<void>(
       context: context,
       barrierDismissible: true,
-      barrierLabel: 'Filters',
+      barrierLabel: 'Filtri',
       barrierColor: Colors.black.withValues(alpha: .45),
       transitionDuration: const Duration(milliseconds: 340),
       transitionBuilder: (_, a, _, child) => SlideTransition(
@@ -220,8 +220,8 @@ class _AnimePageState extends State<AnimePage> {
                   builder: (context, _, _) => Row(children: [
                     const Icon(Icons.tune_rounded, size: 20, color: VyseColors.accent),
                     const SizedBox(width: 10),
-                    const Expanded(child: Text('Filters', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800))),
-                    if (_q.activeFilters > 0) TextButton(onPressed: () => _apply(_q.cleared()), child: const Text('Clear all')),
+                    const Expanded(child: Text('Filtri', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800))),
+                    if (_q.activeFilters > 0) TextButton(onPressed: () => _apply(_q.cleared()), child: const Text('Cancella tutto')),
                     IconButton(onPressed: () => Navigator.pop(panel), icon: const Icon(Icons.close_rounded, color: VyseColors.textDim)),
                   ]),
                 ),
@@ -314,14 +314,14 @@ class _AnimePageState extends State<AnimePage> {
                       Text(widget.title, style: TextStyle(fontSize: phone ? 28 : 32, fontWeight: FontWeight.w800, letterSpacing: -1, height: 1.05)),
                       const SizedBox(height: 6),
                       Text(
-                        _total > 0 ? 'From AniList  ·  ${_countLabel(_total)}' : 'From AniList',
+                        _total > 0 ? 'Da AniList  ·  ${_countLabel(_total)}' : 'Da AniList',
                         style: const TextStyle(color: VyseColors.textDim, fontSize: 13),
                       ),
                     ]),
                   ),
                   _RoundButton(
                     icon: _searching ? Icons.close_rounded : Icons.search_rounded,
-                    tooltip: _searching ? 'Close search' : 'Search anime',
+                    tooltip: _searching ? 'Chiudi la ricerca' : 'Cerca anime',
                     active: _searching,
                     onTap: _toggleSearch,
                   ),
@@ -405,16 +405,16 @@ class _AnimePageState extends State<AnimePage> {
         child: _error != null
             ? _Message(
                 icon: Icons.wifi_off_rounded,
-                title: "Couldn't reach AniList",
-                body: 'Check your connection and try again.',
-                action: 'Retry',
+                title: "Impossibile raggiungere AniList",
+                body: 'Controlla la connessione e riprova.',
+                action: 'Riprova',
                 onAction: _retry,
               )
             : _Message(
                 icon: Icons.travel_explore_rounded,
-                title: 'Nothing matches',
-                body: _q.search.trim().isNotEmpty ? 'Try another name, or fewer filters.' : 'Try removing a filter or widening a range.',
-                action: 'Clear filters',
+                title: 'Nessun risultato',
+                body: _q.search.trim().isNotEmpty ? 'Prova un altro nome, o meno filtri.' : 'Prova a togliere un filtro o ad allargare un intervallo.',
+                action: 'Azzera i filtri',
                 onAction: () => _apply(_q.cleared()),
               ),
       );
@@ -442,17 +442,17 @@ class _AnimePageState extends State<AnimePage> {
 
   Widget _footer() {
     if (_items.isEmpty) return const SizedBox.shrink();
-    if (_error != null) return Center(child: TextButton(onPressed: _retry, child: const Text("Couldn't load more · Retry")));
+    if (_error != null) return Center(child: TextButton(onPressed: _retry, child: const Text("Impossibile caricarne altri · Riprova")));
     if (_loading && !_reloading) {
       return const Center(child: SizedBox.square(dimension: 22, child: CircularProgressIndicator(strokeWidth: 2, color: VyseColors.accent)));
     }
-    if (!_hasMore) return const Center(child: Text("That's everything", style: TextStyle(color: VyseColors.textFaint, fontSize: 12)));
+    if (!_hasMore) return const Center(child: Text("Non c'è altro", style: TextStyle(color: VyseColors.textFaint, fontSize: 12)));
     return const SizedBox(height: 22);
   }
 }
 
 /// AniList stops counting at 5,000.
-String _countLabel(int n) => n >= 5000 ? '5,000+ titles' : '${fmtThousands(n)} title${n == 1 ? '' : 's'}';
+String _countLabel(int n) => n >= 5000 ? 'Oltre 5.000 titoli' : '${fmtThousands(n)} title${n == 1 ? '' : 's'}';
 
 class _RoundButton extends StatelessWidget {
   const _RoundButton({required this.icon, required this.tooltip, required this.onTap, this.active = false});
@@ -500,7 +500,7 @@ class _SearchField extends StatelessWidget {
           textInputAction: TextInputAction.search,
           style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
           decoration: InputDecoration(
-            hintText: 'Search anime by name (English, romaji or Japanese)',
+            hintText: 'Cerca anime per nome (inglese, romaji o giapponese)',
             hintStyle: const TextStyle(color: VyseColors.textFaint),
             prefixIcon: const Icon(Icons.search_rounded, color: VyseColors.textDim),
             suffixIcon: ValueListenableBuilder<TextEditingValue>(
@@ -508,7 +508,7 @@ class _SearchField extends StatelessWidget {
               builder: (context, v, _) => v.text.isEmpty
                   ? const SizedBox.shrink()
                   : IconButton(
-                      tooltip: 'Clear',
+                      tooltip: 'Cancella',
                       onPressed: () {
                         controller.clear();
                         onChanged('');
@@ -651,7 +651,7 @@ class _BackLink extends StatelessWidget {
           ),
           child: Row(mainAxisSize: MainAxisSize.min, children: [
             Icon(Icons.chevron_left_rounded, size: 20, color: hovered ? VyseColors.text : VyseColors.textDim),
-            Text('Back', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: hovered ? VyseColors.text : VyseColors.textDim)),
+            Text('Indietro', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: hovered ? VyseColors.text : VyseColors.textDim)),
           ]),
         ),
       );
@@ -726,7 +726,7 @@ class _SortBar extends StatelessWidget {
                           decoration: const BoxDecoration(color: VyseColors.accent, shape: BoxShape.circle),
                         ),
                         Text(
-                          searching && s == AnimeSort.trending ? 'Best match' : s.label,
+                          searching && s == AnimeSort.trending ? 'Più pertinenti' : s.label,
                           style: TextStyle(
                             fontSize: 13,
                             fontWeight: on ? FontWeight.w700 : FontWeight.w600,
@@ -765,7 +765,7 @@ class _FiltersButton extends StatelessWidget {
             child: Row(mainAxisSize: MainAxisSize.min, children: [
               const Icon(Icons.tune_rounded, size: 16),
               const SizedBox(width: 6),
-              const Text('Filters', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+              const Text('Filtri', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
               if (count > 0)
                 Container(
                   margin: const EdgeInsets.only(left: 6),
@@ -780,7 +780,7 @@ class _FiltersButton extends StatelessWidget {
 }
 
 String _range(int? lo, int? hi, String unit) =>
-    lo != null && hi != null ? '$lo–$hi$unit' : (lo != null ? '$lo+$unit' : 'up to $hi$unit');
+    lo != null && hi != null ? '$lo–$hi$unit' : (lo != null ? '$lo+$unit' : 'fino a $hi$unit');
 
 /// A removable pill for every active filter, so what narrows the grid is always in view.
 class _ActiveFilters extends StatelessWidget {
@@ -794,27 +794,27 @@ class _ActiveFilters extends StatelessWidget {
     Set<String> minus(Set<String> s, String x) => {...s}..remove(x);
     final pills = <(String, AnimeQuery)>[
       for (final g in q.genres) (g, q.copyWith(genres: minus(q.genres, g))),
-      for (final g in q.genresNot) ('Not $g', q.copyWith(genresNot: minus(q.genresNot, g))),
+      for (final g in q.genresNot) ('Non $g', q.copyWith(genresNot: minus(q.genresNot, g))),
       for (final t in q.tags) (t, q.copyWith(tags: minus(q.tags, t))),
-      for (final t in q.tagsNot) ('Not $t', q.copyWith(tagsNot: minus(q.tagsNot, t))),
+      for (final t in q.tagsNot) ('Non $t', q.copyWith(tagsNot: minus(q.tagsNot, t))),
       for (final f in q.formats) (animeFormats[f] ?? f, q.copyWith(formats: minus(q.formats, f))),
       for (final s in q.statuses) (animeStatuses[s] ?? s, q.copyWith(statuses: minus(q.statuses, s))),
       if (q.season != null) (animeSeasons[q.season] ?? q.season!, q.copyWith(season: null)),
       if (q.yearFrom != null || q.yearTo != null)
         (
-          q.yearFrom == q.yearTo ? '${q.yearFrom}' : (q.yearFrom != null && q.yearTo != null ? '${q.yearFrom}–${q.yearTo}' : (q.yearFrom != null ? '${q.yearFrom} on' : 'Until ${q.yearTo}')),
+          q.yearFrom == q.yearTo ? '${q.yearFrom}' : (q.yearFrom != null && q.yearTo != null ? '${q.yearFrom}–${q.yearTo}' : (q.yearFrom != null ? '${q.yearFrom} on' : 'Fino al ${q.yearTo}')),
           q.copyWith(yearFrom: null, yearTo: null),
         ),
       for (final s in q.sources) (animeSources[s] ?? s, q.copyWith(sources: minus(q.sources, s))),
       if (q.country != null) (animeCountries[q.country] ?? q.country!, q.copyWith(country: null)),
-      for (final s in q.streaming) ('On $s', q.copyWith(streaming: minus(q.streaming, s))),
+      for (final s in q.streaming) ('Su $s', q.copyWith(streaming: minus(q.streaming, s))),
       if (q.episodesMin != null || q.episodesMax != null) (_range(q.episodesMin, q.episodesMax, ' episodes'), q.copyWith(episodesMin: null, episodesMax: null)),
       if (q.durationMin != null || q.durationMax != null) (_range(q.durationMin, q.durationMax, ' min'), q.copyWith(durationMin: null, durationMax: null)),
       if (q.scoreMin != null || q.scoreMax != null) ('Score ${_range(q.scoreMin, q.scoreMax, '%')}', q.copyWith(scoreMin: null, scoreMax: null)),
       if (q.doujin) ('Doujin', q.copyWith(doujin: false)),
-      if (q.tagRank != null && (q.tags.isNotEmpty || q.tagsNot.isNotEmpty)) ('Tags ${q.tagRank}%+', q.copyWith(tagRank: null)),
-      if (q.adult == AdultFilter.only) ('Adult only', q.copyWith(adult: AdultFilter.include)),
-      if (q.adult == AdultFilter.include) ('Incl. adult', q.copyWith(adult: AdultFilter.hide)),
+      if (q.tagRank != null && (q.tags.isNotEmpty || q.tagsNot.isNotEmpty)) ('Tag ${q.tagRank}%+', q.copyWith(tagRank: null)),
+      if (q.adult == AdultFilter.only) ('Solo per adulti', q.copyWith(adult: AdultFilter.include)),
+      if (q.adult == AdultFilter.include) ('Incl. adulti', q.copyWith(adult: AdultFilter.hide)),
     ];
     return AnimatedSize(
       duration: const Duration(milliseconds: 260),
@@ -848,7 +848,7 @@ class _ActiveFilters extends StatelessWidget {
                   onTap: () => onChanged(q.cleared()),
                   builder: (context, hovered, _) => Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-                    child: Text('Clear all',
+                    child: Text('Cancella tutto',
                         style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: hovered ? VyseColors.accent : VyseColors.textDim)),
                   ),
                 ),
@@ -892,21 +892,21 @@ class _AnimeFiltersState extends State<_AnimeFilters> {
       builder: (ctx) => AlertDialog(
         backgroundColor: VyseColors.surface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: const Text('Adult anime (18+)', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+        title: const Text('Anime per adulti (18+)', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
         content: const SizedBox(
           width: 380,
           child: Text(
-            'This shows hentai and other titles AniList marks as adult, including explicit cover art. '
-            "Only turn it on if you're 18 or older. You can turn it off again here.",
+            'Mostra gli hentai e gli altri titoli che AniList segna per adulti, comprese copertine esplicite. '
+            "Attivalo solo se hai almeno 18 anni. Puoi disattivarlo di nuovo qui.",
             style: TextStyle(color: VyseColors.textDim, height: 1.5),
           ),
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Cancel')),
+          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Annulla')),
           FilledButton(
             style: FilledButton.styleFrom(backgroundColor: VyseColors.accent, foregroundColor: Colors.black),
             onPressed: () => Navigator.pop(ctx, true),
-            child: const Text("I'm 18 or older", style: TextStyle(fontWeight: FontWeight.w800)),
+            child: const Text("Ho almeno 18 anni", style: TextStyle(fontWeight: FontWeight.w800)),
           ),
         ],
       ),
@@ -935,7 +935,7 @@ class _AnimeFiltersState extends State<_AnimeFilters> {
   Widget build(BuildContext context) {
     final year = DateTime.now().year + 1;
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      const _Label('Genres', hint: 'Tap once to include, twice to exclude'),
+      const _Label('Genres', hint: 'Tocca una volta per includere, due per escludere'),
       _Loaded<List<String>>(
         future: _genres,
         builder: (genres) => Wrap(spacing: 6, runSpacing: 6, children: [
@@ -960,7 +960,7 @@ class _AnimeFiltersState extends State<_AnimeFilters> {
                 style: const TextStyle(fontSize: 13),
                 decoration: InputDecoration(
                   isDense: true,
-                  hintText: 'Find a tag: isekai, time travel, iyashikei…',
+                  hintText: 'Cerca un tag: isekai, viaggi nel tempo, iyashikei…',
                   hintStyle: const TextStyle(color: VyseColors.textFaint, fontSize: 13),
                   prefixIcon: const Icon(Icons.sell_outlined, size: 17, color: VyseColors.textDim),
                   filled: true,
@@ -975,10 +975,10 @@ class _AnimeFiltersState extends State<_AnimeFilters> {
                 for (final t in matches) _TriChip(label: t.name, state: 0, tooltip: t.description, onTap: () => _cycle(t.name, tag: true)),
               ]),
               if (find.isNotEmpty && matches.isEmpty)
-                const Padding(padding: EdgeInsets.only(top: 8), child: Text('No tag by that name', style: TextStyle(fontSize: 12, color: VyseColors.textFaint))),
+                const Padding(padding: EdgeInsets.only(top: 8), child: Text('Nessun tag con questo nome', style: TextStyle(fontSize: 12, color: VyseColors.textFaint))),
               if (picked.isNotEmpty)
                 _Percent(
-                  label: 'Minimum tag relevance',
+                  label: 'Rilevanza minima del tag',
                   value: q.tagRank ?? 0,
                   onChanged: (v) => _set(q.copyWith(tagRank: v == 0 ? null : v), debounce: true),
                 ),
@@ -991,21 +991,21 @@ class _AnimeFiltersState extends State<_AnimeFilters> {
         for (final MapEntry(:key, :value) in animeFormats.entries)
           _Chip(label: value, selected: q.formats.contains(key), onTap: () => _set(q.copyWith(formats: _flip(q.formats, key)))),
       ]),
-      const _Label('Airing status'),
+      const _Label('Stato di trasmissione'),
       Wrap(spacing: 6, runSpacing: 6, children: [
         for (final MapEntry(:key, :value) in animeStatuses.entries)
           _Chip(label: value, selected: q.statuses.contains(key), onTap: () => _set(q.copyWith(statuses: _flip(q.statuses, key)))),
       ]),
-      const _Label('Season'),
+      const _Label('Stagione'),
       Wrap(spacing: 6, runSpacing: 6, children: [
         for (final MapEntry(:key, :value) in animeSeasons.entries)
           _Chip(label: value, selected: q.season == key, onTap: () => _set(q.copyWith(season: q.season == key ? null : key))),
       ]),
-      const _Label('Year'),
+      const _Label('Anno'),
       Row(children: [
         Expanded(
           child: _YearPick(
-            label: q.yearFrom == null ? 'From any year' : 'From ${q.yearFrom}',
+            label: q.yearFrom == null ? 'Da qualsiasi anno' : 'Dal ${q.yearFrom}',
             active: q.yearFrom != null,
             first: year,
             onPicked: (y) => _set(q.copyWith(yearFrom: y, yearTo: y != null && q.yearTo != null && q.yearTo! < y ? y : q.yearTo)),
@@ -1014,32 +1014,32 @@ class _AnimeFiltersState extends State<_AnimeFilters> {
         const SizedBox(width: 8),
         Expanded(
           child: _YearPick(
-            label: q.yearTo == null ? 'To any year' : 'To ${q.yearTo}',
+            label: q.yearTo == null ? 'A qualsiasi anno' : 'Al ${q.yearTo}',
             active: q.yearTo != null,
             first: year,
             onPicked: (y) => _set(q.copyWith(yearTo: y, yearFrom: y != null && q.yearFrom != null && q.yearFrom! > y ? y : q.yearFrom)),
           ),
         ),
       ]),
-      const _Label('Streaming on'),
+      const _Label('In streaming su'),
       _Loaded<List<StreamingSite>>(
         future: _sites,
         builder: (sites) => Wrap(spacing: 6, runSpacing: 6, children: [
           for (final s in sites) _Chip(label: s.name, selected: q.streaming.contains(s.name), onTap: () => _set(q.copyWith(streaming: _flip(q.streaming, s.name)))),
         ]),
       ),
-      const _Label('Country of origin'),
+      const _Label('Paese d\'origine'),
       Wrap(spacing: 6, runSpacing: 6, children: [
         for (final MapEntry(:key, :value) in animeCountries.entries)
           _Chip(label: value, selected: q.country == key, onTap: () => _set(q.copyWith(country: q.country == key ? null : key))),
       ]),
-      const _Label('Source material'),
+      const _Label('Opera originale'),
       Wrap(spacing: 6, runSpacing: 6, children: [
         for (final MapEntry(:key, :value) in animeSources.entries)
           _Chip(label: value, selected: q.sources.contains(key), onTap: () => _set(q.copyWith(sources: _flip(q.sources, key)))),
       ]),
       _Range(
-        label: 'Episodes',
+        label: 'Episodi',
         max: AnimeQuery.maxEpisodes,
         lo: q.episodesMin,
         hi: q.episodesMax,
@@ -1047,7 +1047,7 @@ class _AnimeFiltersState extends State<_AnimeFilters> {
         onChanged: (lo, hi) => _set(q.copyWith(episodesMin: lo, episodesMax: hi), debounce: true),
       ),
       _Range(
-        label: 'Episode length',
+        label: 'Durata dell\'episodio',
         max: AnimeQuery.maxDuration,
         lo: q.durationMin,
         hi: q.durationMax,
@@ -1055,7 +1055,7 @@ class _AnimeFiltersState extends State<_AnimeFilters> {
         onChanged: (lo, hi) => _set(q.copyWith(durationMin: lo, durationMax: hi), debounce: true),
       ),
       _Range(
-        label: 'Average score',
+        label: 'Voto medio',
         max: 100,
         lo: q.scoreMin,
         hi: q.scoreMax,
@@ -1066,28 +1066,28 @@ class _AnimeFiltersState extends State<_AnimeFilters> {
       Row(children: [
         const Expanded(
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text('Doujin only', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+            Text('Solo doujin', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
             SizedBox(height: 2),
-            Text('Self-published, unlicensed works', style: TextStyle(fontSize: 11.5, color: VyseColors.textFaint)),
+            Text('Opere autoprodotte, senza licenza', style: TextStyle(fontSize: 11.5, color: VyseColors.textFaint)),
           ]),
         ),
         Switch(value: q.doujin, activeThumbColor: VyseColors.accent, onChanged: (v) => _set(q.copyWith(doujin: v))),
       ]),
-      const _Label('Adult content (18+)'),
+      const _Label('Contenuti per adulti (18+)'),
       if (!_adult)
         Row(children: [
           const Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text('Show adult anime', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+              Text('Mostra anime per adulti', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
               SizedBox(height: 2),
-              Text('Hentai and other titles AniList marks 18+', style: TextStyle(fontSize: 11.5, color: VyseColors.textFaint)),
+              Text('Hentai e altri titoli che AniList segna 18+', style: TextStyle(fontSize: 11.5, color: VyseColors.textFaint)),
             ]),
           ),
           Switch(value: false, activeThumbColor: VyseColors.accent, onChanged: (_) => _allowAdult()),
         ])
       else ...[
         Wrap(spacing: 6, runSpacing: 6, children: [
-          for (final (f, label) in const [(AdultFilter.hide, 'Hide'), (AdultFilter.include, 'Include'), (AdultFilter.only, 'Only adult')])
+          for (final (f, label) in const [(AdultFilter.hide, 'Nascondi'), (AdultFilter.include, 'Includi'), (AdultFilter.only, 'Solo adulti')])
             _Chip(label: label, selected: q.adult == f, onTap: () => _set(q.copyWith(adult: f))),
         ]),
         Align(
@@ -1095,7 +1095,7 @@ class _AnimeFiltersState extends State<_AnimeFilters> {
           child: TextButton(
             style: TextButton.styleFrom(padding: EdgeInsets.zero, foregroundColor: VyseColors.textDim),
             onPressed: () => AppSettings.animeAdult.set(false),
-            child: const Text('Turn adult content off', style: TextStyle(fontSize: 12)),
+            child: const Text('Disattiva i contenuti per adulti', style: TextStyle(fontSize: 12)),
           ),
         ),
       ],
@@ -1114,7 +1114,7 @@ class _Loaded<T> extends StatelessWidget {
         future: future,
         builder: (context, s) {
           if (s.hasData) return builder(s.data as T);
-          if (s.hasError) return const Text("Couldn't load these from AniList", style: TextStyle(fontSize: 12, color: VyseColors.textFaint));
+          if (s.hasError) return const Text("Impossibile caricarli da AniList", style: TextStyle(fontSize: 12, color: VyseColors.textFaint));
           return const Shimmer(child: SkeletonBox(width: double.infinity, height: 64, radius: 8));
         },
       );
@@ -1219,7 +1219,7 @@ class _YearPick extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10), side: const BorderSide(color: VyseColors.stroke)),
         onSelected: (y) => onPicked(y == 0 ? null : y),
         itemBuilder: (_) => [
-          const PopupMenuItem(value: 0, height: 34, child: Text('Any year', style: TextStyle(fontSize: 13))),
+          const PopupMenuItem(value: 0, height: 34, child: Text('Qualsiasi anno', style: TextStyle(fontSize: 13))),
           for (var y = first; y >= 1940; y--) PopupMenuItem(value: y, height: 34, child: Text('$y', style: const TextStyle(fontSize: 13))),
         ],
         child: Container(
@@ -1261,7 +1261,7 @@ class _PercentState extends State<_Percent> {
         child: Row(children: [
           Text(widget.label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: VyseColors.textDim)),
           const Spacer(),
-          Text(v == 0 ? 'Any' : '${v.round()}%+', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: v == 0 ? VyseColors.textFaint : VyseColors.text)),
+          Text(v == 0 ? 'Qualsiasi' : '${v.round()}%+', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: v == 0 ? VyseColors.textFaint : VyseColors.text)),
         ]),
       ),
       SliderTheme(
@@ -1311,7 +1311,7 @@ class _RangeState extends State<_Range> {
     final v = _values;
     final lo = v.start.round(), hi = v.end.round();
     final any = lo == 0 && hi == widget.max;
-    final text = any ? 'Any' : '$lo–${hi == widget.max ? '${widget.max}+' : '$hi'}${widget.unit}';
+    final text = any ? 'Qualsiasi' : '$lo–${hi == widget.max ? '${widget.max}+' : '$hi'}${widget.unit}';
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Padding(
         padding: const EdgeInsets.only(top: 22),

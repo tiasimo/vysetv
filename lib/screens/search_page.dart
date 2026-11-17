@@ -190,12 +190,12 @@ class _LinkCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(magnet ? 'MAGNET LINK' : 'LINK', style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w800, letterSpacing: 1.1, color: VyseColors.accent)),
+        Text(magnet ? 'LINK MAGNET' : 'LINK', style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w800, letterSpacing: 1.1, color: VyseColors.accent)),
         const SizedBox(height: 6),
         Text(link.what, maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 17, height: 1.25, fontWeight: FontWeight.w800)),
         const SizedBox(height: 5),
         Text(
-          magnet ? '${link.how}. You pick the file to play.' : '${link.how}. Plays in the player as it is.',
+          magnet ? '${link.how}. Scegli tu il file da riprodurre.' : '${link.how}. Si riproduce nel player così com\'è.',
           style: const TextStyle(fontSize: 13, height: 1.4, color: VyseColors.textDim),
         ),
       ],
@@ -206,7 +206,7 @@ class _LinkCard extends StatelessWidget {
       decoration: BoxDecoration(shape: BoxShape.circle, color: VyseColors.accent.withValues(alpha: .14)),
       child: Icon(magnet ? Icons.hub_outlined : Icons.link_rounded, color: VyseColors.accent, size: 22),
     );
-    final play = PillButton(label: 'Play', icon: Icons.play_arrow_rounded, primary: true, expand: phone, onTap: onPlay);
+    final play = PillButton(label: 'Riproduci', icon: Icons.play_arrow_rounded, primary: true, expand: phone, onTap: onPlay);
     return Padding(
       padding: EdgeInsets.fromLTRB(Layout.inset(context), 6, phone ? 16 : 40, 0),
       child: Center(
@@ -361,7 +361,7 @@ class _SearchBarState extends State<_SearchBar> {
                   style: TextStyle(fontSize: phone ? 15.5 : 17, fontWeight: FontWeight.w500, color: VyseColors.text),
                   decoration: InputDecoration.collapsed(
                     // says what else the bar takes: a pasted link plays, a magnet lists its files
-                    hintText: phone ? 'Search, or paste a link or magnet' : 'Movies, shows and people, or paste a magnet or stream link',
+                    hintText: phone ? 'Cerca, o incolla un link o un magnet' : 'Film, serie e persone, o incolla un link magnet o di stream',
                     hintMaxLines: 1,
                     hintStyle: TextStyle(fontSize: phone ? 15.5 : 17, color: VyseColors.textFaint),
                   ),
@@ -374,7 +374,7 @@ class _SearchBarState extends State<_SearchBar> {
               curve: Curves.easeOutBack,
               child: Pressable(
                 onTap: widget.onClear,
-                tooltip: 'Clear (Esc)',
+                tooltip: 'Cancella (Esc)',
                 builder: (context, hovered, _) => AnimatedContainer(
                   duration: const Duration(milliseconds: 140),
                   width: 28,
@@ -425,7 +425,7 @@ class _IdleState extends State<_Idle> {
               : Padding(
                   padding: EdgeInsets.fromLTRB(inset, 0, right, 26),
                   child: _ChipSection(
-                    title: 'Recent',
+                    title: 'Recenti',
                     icon: Icons.history_rounded,
                     children: [
                       for (final (i, r) in recent.indexed)
@@ -456,7 +456,7 @@ class _IdleState extends State<_Idle> {
                 : Padding(
                     padding: EdgeInsets.fromLTRB(inset, 0, right, 30),
                     child: _ChipSection(
-                      title: 'Try searching',
+                      title: 'Prova a cercare',
                       icon: Icons.trending_up_rounded,
                       children: [
                         for (final (i, m) in picks.indexed)
@@ -472,7 +472,7 @@ class _IdleState extends State<_Idle> {
         },
       ),
       Shelf<Media>(
-        title: 'Trending today',
+        title: 'Di tendenza oggi',
         load: () => _trending,
         itemWidth: landW,
         itemHeight: landW * 9 / 16,
@@ -598,9 +598,9 @@ class _ResultsState extends State<_Results> {
         if (snap.hasError) {
           return _Empty(
             icon: Icons.wifi_off_rounded,
-            title: "Couldn't reach TMDB",
-            body: 'Check your connection and try again.',
-            action: ('Retry', () => setState(() { _all = _load(); })),
+            title: "Impossibile raggiungere TMDB",
+            body: 'Controlla la connessione e riprova.',
+            action: ('Riprova', () => setState(() { _all = _load(); })),
           );
         }
         if (!snap.hasData) return _ResultsSkeleton(posterW: posterW);
@@ -614,8 +614,8 @@ class _ResultsState extends State<_Results> {
         if (movies.isEmpty && shows.isEmpty && people.isEmpty && studios.isEmpty) {
           return _Empty(
             icon: Icons.search_off_rounded,
-            title: 'No results for "${widget.query}"',
-            body: 'Check the spelling, or try a shorter title.',
+            title: 'Nessun risultato per "${widget.query}"',
+            body: 'Controlla l\'ortografia, o prova un titolo più corto.',
           );
         }
 
@@ -632,7 +632,7 @@ class _ResultsState extends State<_Results> {
           if (withPosters(movies).isNotEmpty)
             Shelf<Media>(
               key: ValueKey('movies/$q'),
-              title: 'Movies',
+              title: 'Film',
               load: () async => withPosters(movies),
               itemWidth: posterW,
               itemHeight: posterW * 1.5 + 38,
@@ -641,7 +641,7 @@ class _ResultsState extends State<_Results> {
           if (withPosters(shows).isNotEmpty)
             Shelf<Media>(
               key: ValueKey('shows/$q'),
-              title: 'TV Shows',
+              title: 'Serie TV',
               load: () async => withPosters(shows),
               itemWidth: posterW,
               itemHeight: posterW * 1.5 + 38,
@@ -650,7 +650,7 @@ class _ResultsState extends State<_Results> {
           if (people.isNotEmpty)
             Shelf<Person>(
               key: ValueKey('people/$q'),
-              title: 'People',
+              title: 'Persone',
               load: () async => people,
               itemWidth: 108,
               itemHeight: 150,
@@ -660,7 +660,7 @@ class _ResultsState extends State<_Results> {
           if (studios.isNotEmpty)
             Shelf<Studio>(
               key: ValueKey('studios/$q'),
-              title: 'Studios & Networks',
+              title: 'Studi e reti TV',
               load: () async => studios,
               itemWidth: phone ? 150 : 180,
               itemHeight: (phone ? 150 : 180) * .56 + 40,
@@ -744,7 +744,7 @@ class _TopResult extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
                       decoration: BoxDecoration(color: VyseColors.accent, borderRadius: BorderRadius.circular(4)),
-                      child: const Text('TOP RESULT',
+                      child: const Text('RISULTATO PRINCIPALE',
                           style: TextStyle(fontSize: 9.5, fontWeight: FontWeight.w900, color: Colors.black, letterSpacing: .4)),
                     ),
                     const SizedBox(height: 10),
@@ -776,14 +776,14 @@ class _TopResult extends StatelessWidget {
                     Row(children: [
                       _MiniPill(
                         icon: Icons.play_arrow_rounded,
-                        label: 'Play',
+                        label: 'Riproduci',
                         primary: true,
                         onTap: () => openPlayer(context, media, episode: media.isTv ? const PlayerEpisode(season: 1, number: 1) : null),
                       ),
                       const SizedBox(width: 8),
                       _MiniPill(
                         icon: Icons.info_outline_rounded,
-                        label: 'Details',
+                        label: 'Dettagli',
                         onTap: () => openDetails(context, media, heroTag: tag),
                       ),
                       const SizedBox(width: 8),
@@ -793,7 +793,7 @@ class _TopResult extends StatelessWidget {
                           final on = saved.contains(media.key);
                           return _MiniPill(
                             icon: on ? Icons.check_rounded : Icons.add_rounded,
-                            label: on ? 'In My List' : 'My List',
+                            label: on ? 'Nella mia lista' : 'La mia lista',
                             onTap: () => TrackerHub.myListToggle(media),
                           );
                         },

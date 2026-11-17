@@ -40,8 +40,8 @@ class PastedLink {
 
   /// How it will play.
   String get how {
-    if (!isMagnet) return Uri.tryParse(url!)?.host ?? 'A link';
-    if (Debrid.active) return 'Through ${Debrid.name}';
+    if (!isMagnet) return Uri.tryParse(url!)?.host ?? 'Un link';
+    if (Debrid.active) return 'Tramite ${Debrid.name}';
     return 'Peer to peer';
   }
 }
@@ -72,7 +72,7 @@ Future<void> playPastedLink(BuildContext context, PastedLink link) async {
   void failed(Object e) {
     if (!root.mounted) return;
     final text = switch (e) {
-      TimeoutException() => 'No peers answered for this torrent.',
+      TimeoutException() => 'Nessun peer ha risposto per questo torrent.',
       StateError(:final message) => message,
       _ => e.toString().replaceFirst(RegExp(r'^(Exception|Error): ?'), ''),
     };
@@ -82,11 +82,11 @@ Future<void> playPastedLink(BuildContext context, PastedLink link) async {
   if (Debrid.active) {
     final name = Debrid.name;
     try {
-      final file = await _busy(root, 'Asking $name for this torrent…', () => Debrid.resolveMagnet(m.uri, ask: (files) => ask(files, 'Through $name')), onCancel: () => calledOff = true);
+      final file = await _busy(root, 'Chiedo a $name questo torrent…', () => Debrid.resolveMagnet(m.uri, ask: (files) => ask(files, 'Tramite $name')), onCancel: () => calledOff = true);
       if (file == null || !root.mounted) return;
       await playDirect(
         root.context,
-        DirectPlayback(title: _titleOf(file.filename, m), url: file.downloadUrl, hls: false, label: name, note: 'From your magnet link'),
+        DirectPlayback(title: _titleOf(file.filename, m), url: file.downloadUrl, hls: false, label: name, note: 'Dal tuo link magnet'),
       );
     } on TorrentFileNotChosen {
       return;
@@ -97,7 +97,7 @@ Future<void> playPastedLink(BuildContext context, PastedLink link) async {
   }
 
   if (!Torrents.supported) {
-    showToast(context, const Text("This device can't stream torrents. Turn on a debrid service in Settings to play magnet links.", style: TextStyle(fontSize: 13)), icon: Icons.error_outline_rounded);
+    showToast(context, const Text("Questo dispositivo non può riprodurre torrent. Attiva un servizio debrid nelle Impostazioni per i link magnet.", style: TextStyle(fontSize: 13)), icon: Icons.error_outline_rounded);
     return;
   }
   if (!await allowP2p(context)) return; // asks only when P2P streaming is off
@@ -107,7 +107,7 @@ Future<void> playPastedLink(BuildContext context, PastedLink link) async {
   try {
     final url = await _busy(
       root,
-      'Finding peers…',
+      'Ricerca di peer…',
       () => Torrents.open(
         m.hash,
         trackers: m.trackers,
@@ -132,7 +132,7 @@ Future<void> playPastedLink(BuildContext context, PastedLink link) async {
         url: url,
         hls: false,
         label: 'Torrent',
-        note: 'Peer to peer, from your magnet link',
+        note: 'Peer to peer, dal tuo link magnet',
         onClose: () => Torrents.release(m.hash),
       ),
     );
@@ -185,7 +185,7 @@ Future<T?> _busy<T>(NavigatorState root, String text, Future<T> Function() work,
                       Navigator.of(ctx, rootNavigator: true).pop();
                     }
                   },
-                  child: const Text('Cancel'),
+                  child: const Text('Annulla'),
                 ),
               ],
             ),

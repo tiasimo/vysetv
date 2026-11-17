@@ -42,7 +42,7 @@ class ShellRoute<T> extends PageRouteBuilder<T> {
 Future<void> openDiscover(
   BuildContext context, {
   required String title,
-  String subtitle = 'Movies and TV shows',
+  String subtitle = 'Film e serie TV',
   required DiscoverQuery query,
 }) =>
     Navigator.of(context).push(ShellRoute(child: DiscoverPage(title: title, subtitle: subtitle, initial: query)));

@@ -128,7 +128,7 @@ class BookCard extends StatelessWidget {
             top: 4,
             right: 4,
             child: IconButton(
-              tooltip: 'Remove',
+              tooltip: 'Rimuovi',
               onPressed: onRemove,
               iconSize: 16,
               style: IconButton.styleFrom(backgroundColor: Colors.black.withValues(alpha: .6), minimumSize: const Size(30, 30)),
@@ -209,20 +209,20 @@ class _BookMiniBar extends StatelessWidget {
                         style: TextStyle(fontSize: 11.5, color: p.error != null ? VyseColors.accentHot : VyseColors.textDim)),
                   ]),
                 ),
-                IconButton(tooltip: 'Back 30s', onPressed: () => p.skip(-30), icon: const Icon(Icons.replay_30_rounded), iconSize: 22),
+                IconButton(tooltip: 'Indietro 30s', onPressed: () => p.skip(-30), icon: const Icon(Icons.replay_30_rounded), iconSize: 22),
                 p.loading || p.buffering
                     ? const SizedBox.square(
                         dimension: 40,
                         child: Padding(padding: EdgeInsets.all(10), child: CircularProgressIndicator(strokeWidth: 2, color: VyseColors.accent)),
                       )
                     : IconButton(
-                        tooltip: p.playing ? 'Pause' : 'Play',
+                        tooltip: p.playing ? 'Pausa' : 'Riproduci',
                         onPressed: p.toggle,
                         icon: Icon(p.playing ? Icons.pause_rounded : Icons.play_arrow_rounded),
                         iconSize: 28,
                       ),
-                IconButton(tooltip: 'Forward 30s', onPressed: () => p.skip(30), icon: const Icon(Icons.forward_30_rounded), iconSize: 22),
-                IconButton(tooltip: 'Close', onPressed: p.stop, icon: const Icon(Icons.close_rounded), iconSize: 18, color: VyseColors.textFaint),
+                IconButton(tooltip: 'Avanti 30s', onPressed: () => p.skip(30), icon: const Icon(Icons.forward_30_rounded), iconSize: 22),
+                IconButton(tooltip: 'Chiudi', onPressed: p.stop, icon: const Icon(Icons.close_rounded), iconSize: 18, color: VyseColors.textFaint),
               ]),
             ),
             Positioned(

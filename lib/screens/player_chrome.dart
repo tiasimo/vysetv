@@ -99,7 +99,7 @@ class NowPlaying extends StatelessWidget {
         ],
         SizedBox(height: phone ? 6 : 8),
         Pressable(
-          tooltip: 'Change source',
+          tooltip: 'Cambia sorgente',
           onTap: onSource,
           builder: (context, hovered, _) => Wrap(
             spacing: 9,
@@ -158,7 +158,7 @@ class RailCaption extends StatelessWidget {
           const SizedBox(width: 12),
           Text(formatTime(p), style: _time),
           Text('  /  ${formatTime(d)}', style: _dim),
-          if (ends != null) Text('   ·   ends ${TimeOfDay.fromDateTime(ends).format(context)}', style: _dim),
+          if (ends != null) Text('   ·   finisce alle ${TimeOfDay.fromDateTime(ends).format(context)}', style: _dim),
         ],
       );
     },
@@ -444,22 +444,22 @@ class PlayerDock extends StatelessWidget {
                   const Spacer(),
                   _Capsule(
                     children: [
-                      if (onNext != null) _Tool(icon: Icons.skip_next_rounded, tooltip: 'Next episode (N)', onTap: onNext!),
-                      if (onEpisodes != null) _Tool(icon: Icons.video_library_outlined, tooltip: 'Episodes (E)', onTap: onEpisodes!),
+                      if (onNext != null) _Tool(icon: Icons.skip_next_rounded, tooltip: 'Prossimo episodio (N)', onTap: onNext!),
+                      if (onEpisodes != null) _Tool(icon: Icons.video_library_outlined, tooltip: 'Episodi (E)', onTap: onEpisodes!),
                       _Tool(
                         icon: subtitlesOn ? Icons.closed_caption_rounded : Icons.closed_caption_off_outlined,
-                        tooltip: 'Subtitles (C)',
+                        tooltip: 'Sottotitoli (C)',
                         on: subtitlesOn,
                         onTap: onSubtitles,
                       ),
                       if (wide) ...[
                         _Tool(icon: Icons.graphic_eq_rounded, tooltip: 'Audio', onTap: onAudio),
-                        _Tool(icon: Icons.speed_rounded, tooltip: 'Speed', onTap: onSpeed),
-                        _Tool(icon: Icons.stream_rounded, tooltip: 'Sources', onTap: onSources),
+                        _Tool(icon: Icons.speed_rounded, tooltip: 'Velocità', onTap: onSpeed),
+                        _Tool(icon: Icons.stream_rounded, tooltip: 'Sorgenti', onTap: onSources),
                       ],
-                      _Tool(icon: Icons.tune_rounded, tooltip: 'Settings (S)', onTap: onSettings),
+                      _Tool(icon: Icons.tune_rounded, tooltip: 'Impostazioni (S)', onTap: onSettings),
                       if (onFullscreen != null)
-                        _Tool(icon: fullscreen ? Icons.fullscreen_exit_rounded : Icons.fullscreen_rounded, tooltip: 'Full screen (F)', onTap: onFullscreen!),
+                        _Tool(icon: fullscreen ? Icons.fullscreen_exit_rounded : Icons.fullscreen_rounded, tooltip: 'Schermo intero (F)', onTap: onFullscreen!),
                     ],
                   ),
                 ],
@@ -467,11 +467,11 @@ class PlayerDock extends StatelessWidget {
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  if (mid) _Skip(icon: back, tooltip: 'Back ${seekSeconds}s', onTap: onBack),
+                  if (mid) _Skip(icon: back, tooltip: 'Indietro ${seekSeconds}s', onTap: onBack),
                   const SizedBox(width: 10),
                   PlayKey(paused: paused, onTap: onPause),
                   const SizedBox(width: 10),
-                  if (mid) _Skip(icon: fwd, tooltip: 'Forward ${seekSeconds}s', onTap: onForward),
+                  if (mid) _Skip(icon: fwd, tooltip: 'Avanti ${seekSeconds}s', onTap: onForward),
                 ],
               ),
             ],
@@ -504,11 +504,11 @@ class PhoneTools extends StatelessWidget {
   Widget build(BuildContext context) => Center(
     child: _Capsule(
       children: [
-        _Tool(icon: subtitlesOn ? Icons.closed_caption_rounded : Icons.closed_caption_off_outlined, tooltip: 'Subtitles', on: subtitlesOn, onTap: onSubtitles),
+        _Tool(icon: subtitlesOn ? Icons.closed_caption_rounded : Icons.closed_caption_off_outlined, tooltip: 'Sottotitoli', on: subtitlesOn, onTap: onSubtitles),
         _Tool(icon: Icons.graphic_eq_rounded, tooltip: 'Audio', onTap: onAudio),
-        _Tool(icon: Icons.tune_rounded, tooltip: 'Settings', onTap: onSettings),
-        if (onEpisodes != null) _Tool(icon: Icons.video_library_outlined, tooltip: 'Episodes', onTap: onEpisodes!),
-        if (onNext != null) _Tool(icon: Icons.skip_next_rounded, tooltip: 'Next episode', onTap: onNext!),
+        _Tool(icon: Icons.tune_rounded, tooltip: 'Impostazioni', onTap: onSettings),
+        if (onEpisodes != null) _Tool(icon: Icons.video_library_outlined, tooltip: 'Episodi', onTap: onEpisodes!),
+        if (onNext != null) _Tool(icon: Icons.skip_next_rounded, tooltip: 'Prossimo episodio', onTap: onNext!),
       ],
     ),
   );
@@ -522,7 +522,7 @@ class PlayKey extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Pressable(
-    tooltip: 'Play / pause (Space)',
+    tooltip: 'Play / pausa (Spazio)',
     onTap: onTap,
     builder: (context, hovered, pressed) => AnimatedScale(
       scale: pressed ? .92 : (hovered ? 1.05 : 1),
@@ -629,7 +629,7 @@ class _Volume extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Pressable(
-          tooltip: 'Mute',
+          tooltip: 'Muto',
           onTap: () => onVolume(v == 0 ? 80 : 0),
           builder: (context, hovered, _) => SizedBox.square(
             dimension: 40,

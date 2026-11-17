@@ -141,10 +141,10 @@ String? episodeCode(MediaItem m) {
 /// "1h 12m left", "45m", "8 episodes"…
 String? lengthNote(MediaItem m) {
   final d = m.durationMs;
-  if (m.hasActiveProgress && d != null) return '${_minutes(d - m.viewOffsetMs!)} left';
+  if (m.hasActiveProgress && d != null) return '${_minutes(d - m.viewOffsetMs!)} rimanenti';
   if (d != null && d > 0) return _minutes(d);
   final n = m.leafCount ?? m.childCount;
-  if (n != null && n > 0) return m.kind == MediaKind.show ? (n == 1 ? '1 episode' : '$n episodes') : null;
+  if (n != null && n > 0) return m.kind == MediaKind.show ? (n == 1 ? '1 episodio' : '$n episodi') : null;
   return null;
 }
 
@@ -429,7 +429,7 @@ class LibraryTile extends StatelessWidget {
 /// next episode to watch. [fromStart] ignores where you left off.
 Future<void> playFromServer(BuildContext context, MediaServer server, MediaItem item, {bool fromStart = false}) async {
   final nav = Navigator.of(context, rootNavigator: true);
-  final busy = _BusyNote.show(context, item.kind == MediaKind.show ? 'Finding your next episode…' : 'Getting it ready…');
+  final busy = _BusyNote.show(context, item.kind == MediaKind.show ? 'Cerco il tuo prossimo episodio…' : 'Lo preparo…');
   final ServerPlayback playback;
   try {
     playback = await ServerPlayback.prepare(server, item, fromStart: fromStart);

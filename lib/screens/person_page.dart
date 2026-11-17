@@ -94,10 +94,10 @@ class _PersonPageState extends State<PersonPage> {
                         Padding(
                           padding: EdgeInsets.only(left: inset),
                           child: Row(children: [
-                            const Text("Couldn't load this person.", style: TextStyle(color: VyseColors.textDim)),
+                            const Text("Impossibile caricare questa persona.", style: TextStyle(color: VyseColors.textDim)),
                             TextButton(
                               onPressed: () => setState(() => _details = HomeFeed.instance.person(widget.id)),
-                              child: const Text('Retry'),
+                              child: const Text('Riprova'),
                             ),
                           ]),
                         )
@@ -109,7 +109,7 @@ class _PersonPageState extends State<PersonPage> {
                       else ...[
                         if (d.knownFor.isNotEmpty)
                           Shelf<Media>(
-                            title: 'Known for',
+                            title: 'Conosciuto per',
                             load: () async => d.knownFor,
                             itemWidth: _posterW(context),
                             itemHeight: _posterW(context) * 1.5,
@@ -117,7 +117,7 @@ class _PersonPageState extends State<PersonPage> {
                           ),
                         if (d.photos.length > 1)
                           Shelf<String>(
-                            title: 'Photos',
+                            title: 'Foto',
                             load: () async => d.photos,
                             itemWidth: phone ? 100 : 128,
                             itemHeight: (phone ? 100 : 128) * 1.5,
@@ -314,7 +314,7 @@ class _NameBlock extends StatelessWidget {
     const dim = TextStyle(color: Color(0xFFC3C7D4), fontSize: 13);
     final bits = <String>[
       if (d != null && d.person.department.isNotEmpty) d.person.department,
-      if (d?.age != null) d!.deathday != null ? '${d.birthday!.year} – ${d.deathday!.year} (${d.age})' : 'Age ${d.age}',
+      if (d?.age != null) d!.deathday != null ? '${d.birthday!.year} – ${d.deathday!.year} (${d.age})' : '${d.age} anni',
       if (d?.birthplace != null && !compact) d!.birthplace!,
     ];
     return Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
@@ -354,7 +354,7 @@ class _NameBlock extends StatelessWidget {
         FadeSlideIn(
           offset: 6,
           child: Wrap(spacing: 6, runSpacing: 6, children: [
-            _Stat(icon: Icons.movie_filter_outlined, label: '${d.creditCount} credits'),
+            _Stat(icon: Icons.movie_filter_outlined, label: '${d.creditCount} crediti'),
             if (d.knownFor.isNotEmpty) _Stat(icon: Icons.local_fire_department_outlined, label: d.knownFor.first.title),
           ]),
         ),
@@ -412,7 +412,7 @@ class _BioState extends State<_Bio> {
         ]),
       );
     }
-    final text = d.biography.isEmpty ? 'No biography yet.' : d.biography;
+    final text = d.biography.isEmpty ? 'Ancora nessuna biografia.' : d.biography;
     const style = TextStyle(color: Color(0xFFC3C7D4), fontSize: 14, height: 1.65);
     return FadeSlideIn(
       offset: 10,
@@ -438,7 +438,7 @@ class _BioState extends State<_Bio> {
                 builder: (context, hovered, _) => Padding(
                   padding: const EdgeInsets.only(top: 6),
                   child: Row(mainAxisSize: MainAxisSize.min, children: [
-                    Text(_open ? 'Show less' : 'Read more',
+                    Text(_open ? 'Mostra meno' : 'Leggi di più',
                         style: TextStyle(
                             fontSize: 12.5, fontWeight: FontWeight.w700, color: hovered ? VyseColors.text : VyseColors.accent)),
                     AnimatedRotation(
@@ -474,11 +474,11 @@ class _Links extends StatelessWidget {
         if (d?.twitter != null) _LinkPill(label: 'X', icon: Icons.alternate_email_rounded, url: 'https://x.com/${d!.twitter}'),
         if (d?.tiktok != null) _LinkPill(label: 'TikTok', icon: Icons.music_note_rounded, url: 'https://www.tiktok.com/@${d!.tiktok}'),
         _LinkPill(
-          label: 'Share',
+          label: 'Condividi',
           icon: Icons.ios_share_rounded,
           onTap: () {
             Clipboard.setData(ClipboardData(text: person.tmdbUrl));
-            showToast(context, const Text('Link copied to clipboard', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+            showToast(context, const Text('Link copiato negli appunti', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
                 icon: Icons.link_rounded);
           },
         ),
@@ -529,12 +529,12 @@ class _Facts extends StatelessWidget {
     final rows = d == null
         ? const <(String, String)>[]
         : [
-            if (d.person.department.isNotEmpty) ('Known for', d.person.department),
-            if (d.birthday != null) ('Born', fmtDate(d.birthday!)),
-            if (d.deathday != null) ('Died', fmtDate(d.deathday!)),
-            if (d.birthplace != null) ('Birthplace', d.birthplace!),
-            ('Credits', '${d.creditCount}'),
-            if (d.alsoKnownAs.isNotEmpty) ('Also known as', d.alsoKnownAs.join(', ')),
+            if (d.person.department.isNotEmpty) ('Conosciuto per', d.person.department),
+            if (d.birthday != null) ('Nascita', fmtDate(d.birthday!)),
+            if (d.deathday != null) ('Morte', fmtDate(d.deathday!)),
+            if (d.birthplace != null) ('Luogo di nascita', d.birthplace!),
+            ('Crediti', '${d.creditCount}'),
+            if (d.alsoKnownAs.isNotEmpty) ('Conosciuto anche come', d.alsoKnownAs.join(', ')),
           ];
     return FadeSlideIn(
       delay: const Duration(milliseconds: 150),
@@ -620,7 +620,7 @@ void _openLightbox(BuildContext context, List<String> photos, int start) {
   showGeneralDialog<void>(
     context: context,
     barrierDismissible: true,
-    barrierLabel: 'Close',
+    barrierLabel: 'Chiudi',
     barrierColor: Colors.black.withValues(alpha: .88),
     transitionDuration: const Duration(milliseconds: 320),
     transitionBuilder: (_, a, _, child) {
@@ -779,7 +779,7 @@ class _FilmographyState extends State<_Filmography> {
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 980),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        const Text('Filmography', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, letterSpacing: -.2)),
+        const Text('Filmografia', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, letterSpacing: -.2)),
         const SizedBox(height: 12),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
@@ -867,7 +867,7 @@ class _FilmographyState extends State<_Filmography> {
                   borderRadius: BorderRadius.circular(18),
                   color: Colors.white.withValues(alpha: hovered ? .14 : .06),
                 ),
-                child: Text(_all ? 'Show less' : 'Show all ${list.length}',
+                child: Text(_all ? 'Mostra meno' : 'Mostra tutti i ${list.length}',
                     style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w600)),
               ),
             ),
@@ -877,7 +877,7 @@ class _FilmographyState extends State<_Filmography> {
     );
   }
 
-  static String _year(Credit c) => c.media.year ?? 'Upcoming';
+  static String _year(Credit c) => c.media.year ?? 'In uscita';
 }
 
 class _CreditRow extends StatelessWidget {
@@ -1005,7 +1005,7 @@ class _BackButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Pressable(
         onTap: onTap,
-        tooltip: 'Back (Esc)',
+        tooltip: 'Indietro (Esc)',
         builder: (context, hovered, _) => AnimatedContainer(
           duration: const Duration(milliseconds: 150),
           padding: const EdgeInsets.fromLTRB(6, 6, 12, 6),
@@ -1015,7 +1015,7 @@ class _BackButton extends StatelessWidget {
           ),
           child: Row(mainAxisSize: MainAxisSize.min, children: [
             Icon(Icons.chevron_left_rounded, size: 20, color: hovered ? VyseColors.text : VyseColors.textDim),
-            Text('Back',
+            Text('Indietro',
                 style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: hovered ? VyseColors.text : VyseColors.textDim)),
           ]),
         ),

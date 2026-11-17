@@ -15,8 +15,8 @@ import '../widgets/page_scrollbar.dart';
 import '../widgets/section_chrome.dart';
 import 'live_tv_pages.dart';
 
-const _weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-const _months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const _weekdays = ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'];
+const _months = ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu', 'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic'];
 
 /// Live TV → Matches: pick a day and a sport, see every fixture by league with where it's on.
 class MatchesView extends StatefulWidget {
@@ -68,9 +68,9 @@ class _MatchesViewState extends State<MatchesView> {
       });
 
   String _dayLabel(int o) {
-    if (o == -1) return 'Yesterday';
-    if (o == 0) return 'Today';
-    if (o == 1) return 'Tomorrow';
+    if (o == -1) return 'Ieri';
+    if (o == 0) return 'Oggi';
+    if (o == 1) return 'Domani';
     final d = DateTime.now().add(Duration(days: o));
     return '${_weekdays[d.weekday - 1]} ${d.day}';
   }
@@ -125,7 +125,7 @@ class _MatchesViewState extends State<MatchesView> {
             SizedBox(
               height: 36,
               child: ListView(scrollDirection: Axis.horizontal, padding: EdgeInsets.only(left: inset, right: right), children: [
-                FilterChipPill(label: 'All sports', selected: _sport == null, onTap: () => setState(() => _sport = _lastSport = null)),
+                FilterChipPill(label: 'Tutti gli sport', selected: _sport == null, onTap: () => setState(() => _sport = _lastSport = null)),
                 for (final s in SportKind.values)
                   if (sports.contains(s))
                     Padding(
@@ -153,16 +153,16 @@ class _MatchesViewState extends State<MatchesView> {
           else if (list.isEmpty)
             EmptyState(
               icon: Icons.event_busy_rounded,
-              title: snap.hasError ? "Couldn't load fixtures" : 'No matches ${_dayLabel(_offset).toLowerCase()}',
-              body: snap.hasError ? 'Check your connection and try again.' : 'Try another day or sport.',
-              action: snap.hasError ? ('Retry', () => _pickDay(_offset)) : null,
+              title: snap.hasError ? "Impossibile caricare il calendario" : 'Nessuna partita ${_dayLabel(_offset).toLowerCase()}',
+              body: snap.hasError ? 'Controlla la connessione e riprova.' : 'Prova un altro giorno o sport.',
+              action: snap.hasError ? ('Riprova', () => _pickDay(_offset)) : null,
             )
           else ...[
-            if (live.isNotEmpty) shelf('Live now', live, 'live'),
+            if (live.isNotEmpty) shelf('In diretta ora', live, 'live'),
             for (final e in byLeague.entries) shelf(e.key.name, e.value, e.key.path),
             Padding(
               padding: EdgeInsets.fromLTRB(inset, 4, right, 0),
-              child: const Text('Fixtures and US listings from ESPN. International channels added by Lorewatch.',
+              child: const Text('Calendari e palinsesti USA da ESPN. Canali internazionali aggiunti da Lorewatch.',
                   style: TextStyle(fontSize: 11, color: VyseColors.textFaint)),
             ),
           ],
@@ -244,7 +244,7 @@ class _MatchPageState extends State<MatchPage> {
                               ),
                             ),
                             const SizedBox(height: 4),
-                            Text(m.state == MatchState.upcoming ? 'Kick-off' : m.status,
+                            Text(m.state == MatchState.upcoming ? 'Calcio d\'inizio' : m.status,
                                 style: const TextStyle(fontSize: 12, color: VyseColors.textFaint)),
                           ]),
                           Expanded(child: _BigSide(team: m.away!)),
@@ -258,7 +258,7 @@ class _MatchPageState extends State<MatchPage> {
                 ),
               ),
             ),
-            const SliverToBoxAdapter(child: ShelfHeader(title: 'Where to watch')),
+            const SliverToBoxAdapter(child: ShelfHeader(title: 'Dove vederla')),
             SliverPadding(
               padding: EdgeInsets.fromLTRB(inset, 4, right, 0),
               sliver: SliverGrid.builder(
@@ -309,7 +309,7 @@ class _MatchPageState extends State<MatchPage> {
             SliverPadding(
               padding: EdgeInsets.fromLTRB(inset, 16, right, 0),
               sliver: const SliverToBoxAdapter(
-                child: Text('Pick a channel and Lorewatch searches your portals, then reads their TV guides to find the exact feed (beIN Sports 2, AR…).',
+                child: Text('Scegli un canale e Lorewatch cerca nei tuoi portali, poi legge le loro guide TV per trovare il canale esatto (beIN Sports 2, AR…).',
                     style: TextStyle(fontSize: 12, color: VyseColors.textFaint)),
               ),
             ),

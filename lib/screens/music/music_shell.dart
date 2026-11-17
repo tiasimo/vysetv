@@ -170,7 +170,7 @@ class _TopBar extends StatelessWidget {
         opacity: canPop ? 1 : .3,
         duration: const Duration(milliseconds: 160),
         child: Pressable(
-          tooltip: 'Back',
+          tooltip: 'Indietro',
           onTap: canPop ? onBack : null,
           builder: (context, hovered, _) => Container(
             width: 38,
@@ -318,14 +318,14 @@ class _SearchPillState extends State<_SearchPill> {
               decoration: const InputDecoration(
                 isDense: true,
                 border: InputBorder.none,
-                hintText: 'Search artists, songs, playlists, and albums',
+                hintText: 'Cerca artisti, brani, playlist e album',
                 hintStyle: TextStyle(color: VyseColors.textFaint, fontSize: 14.5),
               ),
             ),
           ),
           if (widget.controller.text.isNotEmpty)
             IconButton(
-              tooltip: 'Clear',
+              tooltip: 'Cancella',
               iconSize: 18,
               color: VyseColors.textDim,
               onPressed: () {
@@ -386,10 +386,10 @@ class _SidebarState extends State<_Sidebar> {
         final likes = MusicLibrary.likes;
         final rows = <Widget>[
           if (!_albums) ...[
-            if (match('liked songs'))
+            if (match('brani preferiti'))
               _SideRow(
                 art: const LikedArt(size: 44, radius: 7),
-                title: 'Liked songs',
+                title: 'Brani preferiti',
                 subtitle: songCount(likes.length),
                 onTap: () => widget.open(const LikedSongsPage()),
               ),
@@ -398,7 +398,7 @@ class _SidebarState extends State<_Sidebar> {
                 _SideRow(
                   art: PlaylistArt(covers: p.covers, cover: p.cover, size: 44, radius: 7),
                   title: p.name,
-                  subtitle: '${p.public ? 'Playlist' : 'Private'} · ${songCount(p.tracks.length)}',
+                  subtitle: '${p.public ? 'Playlist' : 'Privato'} · ${songCount(p.tracks.length)}',
                   onTap: () => widget.open(MyPlaylistPage(id: p.id)),
                 ),
             for (final s in MusicLibrary.savedPlaylists)
@@ -441,7 +441,7 @@ class _SidebarState extends State<_Sidebar> {
                 child: const Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   Icon(Icons.add_circle_outline_rounded, size: 18, color: VyseColors.textDim),
                   SizedBox(width: 8),
-                  Text('New playlist', style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.w600)),
+                  Text('Nuova playlist', style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.w600)),
                 ]),
               ),
             ),
@@ -455,7 +455,7 @@ class _SidebarState extends State<_Sidebar> {
                 onChanged: (_) => setState(() {}),
                 style: const TextStyle(fontSize: 13),
                 decoration: InputDecoration(
-                  hintText: _albums ? 'Filter albums' : 'Filter playlists',
+                  hintText: _albums ? 'Filtra album' : 'Filtra playlist',
                   hintStyle: const TextStyle(color: VyseColors.textFaint, fontSize: 13),
                   prefixIcon: const Icon(Icons.search_rounded, size: 17, color: VyseColors.textFaint),
                   filled: true,
@@ -471,7 +471,7 @@ class _SidebarState extends State<_Sidebar> {
                 ? Padding(
                     padding: const EdgeInsets.all(18),
                     child: Text(
-                      _albums ? 'Albums you save show up here.' : 'Playlists you make or save show up here.',
+                      _albums ? 'Gli album che salvi compaiono qui.' : 'Le playlist che crei o salvi compaiono qui.',
                       textAlign: TextAlign.center,
                       style: const TextStyle(fontSize: 12.5, color: VyseColors.textFaint, height: 1.4),
                     ),
@@ -495,7 +495,7 @@ class _Segments extends StatelessWidget {
     padding: const EdgeInsets.all(3),
     decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), color: Colors.white.withValues(alpha: .05), border: Border.all(color: VyseColors.stroke)),
     child: Row(children: [
-      for (final (v, icon, label) in [(false, Icons.queue_music_rounded, 'Playlists'), (true, Icons.album_rounded, 'Albums')])
+      for (final (v, icon, label) in [(false, Icons.queue_music_rounded, 'Playlist'), (true, Icons.album_rounded, 'Albums')])
         Expanded(
           child: Pressable(
             onTap: () => onChanged(v),
@@ -603,12 +603,12 @@ class MusicBar extends StatelessWidget {
                       flex: 4,
                       child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
                         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                          _BarIcon(icon: Icons.shuffle_rounded, tooltip: 'Shuffle', on: p.shuffle, onTap: p.toggleShuffle),
+                          _BarIcon(icon: Icons.shuffle_rounded, tooltip: 'Casuale', on: p.shuffle, onTap: p.toggleShuffle),
                           const SizedBox(width: 6),
-                          _BarIcon(icon: Icons.skip_previous_rounded, tooltip: 'Previous', size: 26, onTap: p.previous),
+                          _BarIcon(icon: Icons.skip_previous_rounded, tooltip: 'Precedente', size: 26, onTap: p.previous),
                           const SizedBox(width: 10),
                           Pressable(
-                            tooltip: p.playing ? 'Pause' : 'Play',
+                            tooltip: p.playing ? 'Pausa' : 'Riproduci',
                             onTap: p.toggle,
                             builder: (context, hovered, pressed) => AnimatedScale(
                               scale: pressed ? .92 : (hovered ? 1.05 : 1),
@@ -628,11 +628,11 @@ class MusicBar extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(width: 10),
-                          _BarIcon(icon: Icons.skip_next_rounded, tooltip: 'Next', size: 26, onTap: p.next),
+                          _BarIcon(icon: Icons.skip_next_rounded, tooltip: 'Successivo', size: 26, onTap: p.next),
                           const SizedBox(width: 6),
                           _BarIcon(
                             icon: p.repeat == LoopMode.one ? Icons.repeat_one_rounded : Icons.repeat_rounded,
-                            tooltip: 'Repeat',
+                            tooltip: 'Ripeti',
                             on: p.repeat != LoopMode.off,
                             onTap: p.cycleRepeat,
                           ),
@@ -645,7 +645,7 @@ class MusicBar extends StatelessWidget {
                     Expanded(
                       flex: 3,
                       child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                        _BarIcon(icon: Icons.queue_music_rounded, tooltip: 'Up next', on: queueOpen, onTap: onQueue),
+                        _BarIcon(icon: Icons.queue_music_rounded, tooltip: 'A seguire', on: queueOpen, onTap: onQueue),
                         const SizedBox(width: 4),
                         Icon(p.volume == 0 ? Icons.volume_off_rounded : Icons.volume_up_rounded, size: 19, color: VyseColors.textDim),
                         SizedBox(
@@ -663,7 +663,7 @@ class MusicBar extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(width: 6),
-                        _BarIcon(icon: Icons.open_in_full_rounded, tooltip: 'Full player', size: 19, onTap: () => openMusicPlayer(context)),
+                        _BarIcon(icon: Icons.open_in_full_rounded, tooltip: 'Player completo', size: 19, onTap: () => openMusicPlayer(context)),
                       ]),
                     ),
                   ]),
@@ -797,7 +797,7 @@ class _QueuePanel extends StatelessWidget {
                   ),
                   if (hovered)
                     IconButton(
-                      tooltip: 'Remove',
+                      tooltip: 'Rimuovi',
                       iconSize: 16,
                       visualDensity: VisualDensity.compact,
                       color: VyseColors.textFaint,
@@ -825,20 +825,20 @@ class _QueuePanel extends StatelessWidget {
                 const SizedBox(width: 10),
                 Expanded(
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    const Text('Up next', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800)),
+                    const Text('A seguire', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800)),
                     Text(songCount(up.length), style: const TextStyle(fontSize: 12, color: VyseColors.textDim)),
                   ]),
                 ),
-                _BarIcon(icon: Icons.shuffle_rounded, tooltip: 'Shuffle what’s next', on: p.shuffle, onTap: p.toggleShuffle),
+                _BarIcon(icon: Icons.shuffle_rounded, tooltip: 'Mescola i prossimi', on: p.shuffle, onTap: p.toggleShuffle),
                 _BarIcon(
                   icon: Icons.playlist_add_rounded,
-                  tooltip: 'More like this',
+                  tooltip: 'Titoli simili',
                   onTap: () {
                     final c = p.current;
                     if (c != null) p.startRadio(c);
                   },
                 ),
-                _BarIcon(icon: Icons.close_rounded, tooltip: 'Close', onTap: onClose),
+                _BarIcon(icon: Icons.close_rounded, tooltip: 'Chiudi', onTap: onClose),
               ]),
             ),
             Expanded(
@@ -860,7 +860,7 @@ class _QueuePanel extends StatelessWidget {
                       const SizedBox(width: 12),
                       Expanded(
                         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                          Text('NOW PLAYING', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1, color: accentOf(context))),
+                          Text('IN RIPRODUZIONE', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1, color: accentOf(context))),
                           Text(now.title, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 13.5, fontWeight: FontWeight.w700)),
                           Text(now.artist, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12, color: VyseColors.textDim)),
                         ]),
@@ -870,10 +870,10 @@ class _QueuePanel extends StatelessWidget {
                 if (up.isEmpty)
                   const Padding(
                     padding: EdgeInsets.all(20),
-                    child: Text('Nothing after this one. "Play next" and "Add to queue" on any song put it here.', textAlign: TextAlign.center, style: TextStyle(fontSize: 12.5, color: VyseColors.textFaint, height: 1.4)),
+                    child: Text('Niente dopo questo. "Riproduci dopo" e "Aggiungi alla coda" su qualsiasi brano lo mettono qui.', textAlign: TextAlign.center, style: TextStyle(fontSize: 12.5, color: VyseColors.textFaint, height: 1.4)),
                   ),
-                if (mine.isNotEmpty) ...[label('ADDED BY YOU', mine.length), for (final i in mine) row(i)],
-                if (auto.isNotEmpty) ...[label('UP NEXT', auto.length), for (final i in auto) row(i)],
+                if (mine.isNotEmpty) ...[label('AGGIUNTI DA TE', mine.length), for (final i in mine) row(i)],
+                if (auto.isNotEmpty) ...[label('A SEGUIRE', auto.length), for (final i in auto) row(i)],
               ]),
             ),
           ]);

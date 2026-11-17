@@ -26,7 +26,7 @@ Future<void> connectTracker(BuildContext context, TrackerId id) async {
   if (!browser && !paste) {
     showToast(
       context,
-      Text('Connect ${id.label} from Lorewatch on a computer for now', style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+      Text('Per ora collega ${id.label} da Lorewatch su un computer', style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
       icon: Icons.computer_rounded,
     );
     return;
@@ -44,7 +44,7 @@ Future<void> connectTracker(BuildContext context, TrackerId id) async {
 void _connected(BuildContext context, TrackerId id, String name) {
   showToast(
     context,
-    Text(name.isEmpty ? '${id.label} connected' : '${id.label} connected as $name', style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+    Text(name.isEmpty ? '${id.label} collegato' : '${id.label} collegato come $name', style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
     icon: Icons.check_circle_rounded,
   );
   importFromTracker(context, id);
@@ -102,7 +102,7 @@ class _SignInState extends State<_SignIn> {
       final name = await TrackerHub.connectAniListToken(t);
       if (mounted) Navigator.pop(context, name);
     } catch (e) {
-      if (mounted) setState(() => _error = "That token didn't work. Copy the whole thing and try again.");
+      if (mounted) setState(() => _error = "Quel token non ha funzionato. Copialo tutto e riprova.");
     } finally {
       if (mounted) setState(() => _busy = false);
     }
@@ -130,24 +130,24 @@ class _SignInState extends State<_SignIn> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (!_pasting) ...[
-              const Text('Finish signing in in your browser. Lorewatch picks it up by itself.', style: dim),
+              const Text('Completa l\'accesso nel browser, poi torna in Lorewatch: lo rileva da solo.', style: dim),
               if (_error == null) ...[
                 const SizedBox(height: 16),
                 const SizedBox(height: 3, child: LinearProgressIndicator(color: VyseColors.accent, backgroundColor: Colors.white10)),
               ],
               if (widget.paste) ...[
                 const SizedBox(height: 10),
-                TextButton(onPressed: _switchToPaste, child: const Text('Paste a token instead')),
+                TextButton(onPressed: _switchToPaste, child: const Text('Incolla invece un token')),
               ],
             ] else ...[
-              const Text('Open AniList, approve Lorewatch, then copy the token it shows and paste it here.', style: dim),
+              const Text('Apri AniList, approva Lorewatch, poi copia il token che mostra e incollalo qui.', style: dim),
               const SizedBox(height: 10),
               Align(
                 alignment: Alignment.centerLeft,
                 child: TextButton.icon(
                   onPressed: () => TrackerHub.openAniListTokenPage().catchError((Object _) {}),
                   icon: const Icon(Icons.open_in_new_rounded, size: 16),
-                  label: const Text('Open AniList'),
+                  label: const Text('Apri AniList'),
                 ),
               ),
               const SizedBox(height: 6),
@@ -155,7 +155,7 @@ class _SignInState extends State<_SignIn> {
                 controller: _token,
                 minLines: 1,
                 maxLines: 3,
-                decoration: const InputDecoration(hintText: 'Paste the token', isDense: true),
+                decoration: const InputDecoration(hintText: 'Incolla il token', isDense: true),
                 onSubmitted: (_) => _usePasted(),
               ),
             ],
@@ -167,13 +167,13 @@ class _SignInState extends State<_SignIn> {
         ),
       ),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
-        if (!_pasting && _error != null) TextButton(onPressed: _viaBrowser, child: const Text('Try again')),
+        TextButton(onPressed: () => Navigator.pop(context), child: const Text('Annulla')),
+        if (!_pasting && _error != null) TextButton(onPressed: _viaBrowser, child: const Text('Riprova')),
         if (_pasting)
           FilledButton(
             style: FilledButton.styleFrom(backgroundColor: VyseColors.accent, foregroundColor: Colors.black),
             onPressed: _busy ? null : _usePasted,
-            child: const Text('Connect', style: TextStyle(fontWeight: FontWeight.w800)),
+            child: const Text('Collega', style: TextStyle(fontWeight: FontWeight.w800)),
           ),
       ],
     );
@@ -257,7 +257,7 @@ class _DeviceCodeDialogState extends State<_DeviceCodeDialog> {
             else if (c == null)
               const SizedBox(height: 3, child: LinearProgressIndicator(color: VyseColors.accent, backgroundColor: Colors.white10))
             else ...[
-              Text('Go to ${c.site} and enter this code. Lorewatch connects as soon as you approve it.', style: dim),
+              Text('Vai su ${c.site} e inserisci questo codice. Lorewatch si collega appena lo approvi.', style: dim),
               const SizedBox(height: 16),
               Center(
                 child: SelectableText(
@@ -280,15 +280,15 @@ class _DeviceCodeDialogState extends State<_DeviceCodeDialog> {
                   TextButton.icon(
                     onPressed: () => TrackerHub.openPage(c.url).catchError((Object _) {}),
                     icon: const Icon(Icons.open_in_new_rounded, size: 16),
-                    label: Text('Open ${c.site}'),
+                    label: Text('Apri ${c.site}'),
                   ),
                   TextButton.icon(
                     onPressed: () {
                       Clipboard.setData(ClipboardData(text: c.userCode));
-                      showToast(context, const Text('Code copied', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)), icon: Icons.copy_rounded);
+                      showToast(context, const Text('Codice copiato', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)), icon: Icons.copy_rounded);
                     },
                     icon: const Icon(Icons.copy_rounded, size: 16),
-                    label: const Text('Copy code'),
+                    label: const Text('Copia codice'),
                   ),
                 ],
               ),
@@ -297,8 +297,8 @@ class _DeviceCodeDialogState extends State<_DeviceCodeDialog> {
         ),
       ),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
-        if (_error != null) TextButton(onPressed: _start, child: const Text('Try again')),
+        TextButton(onPressed: () => Navigator.pop(context), child: const Text('Annulla')),
+        if (_error != null) TextButton(onPressed: _start, child: const Text('Riprova')),
       ],
     );
   }
@@ -312,5 +312,5 @@ Widget _title(TrackerId id) => Row(children: [
     TrackerId.trakt => Service.trakt,
   }, size: 34),
   const SizedBox(width: 12),
-  Expanded(child: Text('Connect ${id.label}', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800))),
+  Expanded(child: Text('Collega ${id.label}', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800))),
 ]);

@@ -256,7 +256,7 @@ class StatusLine extends StatelessWidget {
           const SizedBox(width: 8),
         ],
         Expanded(child: Text(text, maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12.5, color: VyseColors.textDim))),
-        if (onStop != null) TextButton(onPressed: onStop, child: const Text('Stop')),
+        if (onStop != null) TextButton(onPressed: onStop, child: const Text('Ferma')),
       ]);
 }
 
@@ -355,7 +355,7 @@ Future<List<String>?> showFieldsDialog(
               const SizedBox(height: 14),
             ],
             Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-              TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Cancel', style: TextStyle(color: VyseColors.textDim))),
+              TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Annulla', style: TextStyle(color: VyseColors.textDim))),
               const SizedBox(width: 8),
               PillButton(
                 primary: true,

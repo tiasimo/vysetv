@@ -15,22 +15,22 @@ Future<bool> allowP2p(BuildContext context, {String? who}) async {
     builder: (ctx) => AlertDialog(
       backgroundColor: VyseColors.surface,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      title: const Text('Allow P2P streaming?', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+      title: const Text('Consentire lo streaming P2P?', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
       content: SizedBox(
         width: 380,
         child: Text(
           '${who == null ? 'This source' : '$who wants to watch a source together that'} streams peer to peer, so you connect '
-          'directly to other people sharing it. They can see your IP address and your internet provider.\n\n'
-          'Allowing turns on P2P streaming. You can turn it off any time in your Playback settings.',
+          'direttamente ad altre persone che lo condividono. Possono vedere il tuo indirizzo IP e il tuo provider.\n\n'
+          'Consentire attiva lo streaming P2P. Puoi disattivarlo quando vuoi nelle impostazioni di Riproduzione.',
           style: const TextStyle(color: VyseColors.textDim, height: 1.5),
         ),
       ),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Cancel')),
+        TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Annulla')),
         FilledButton(
           style: FilledButton.styleFrom(backgroundColor: VyseColors.accent, foregroundColor: Colors.black),
           onPressed: () => Navigator.pop(ctx, true),
-          child: const Text('Allow', style: TextStyle(fontWeight: FontWeight.w800)),
+          child: const Text('Consenti', style: TextStyle(fontWeight: FontWeight.w800)),
         ),
       ],
     ),
@@ -95,7 +95,7 @@ class _WaitingState extends State<_Waiting> {
       return AlertDialog(
         backgroundColor: VyseColors.surface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: const Text('Waiting for everyone', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+        title: const Text('In attesa di tutti', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
         content: SizedBox(
           width: 380,
           child: Column(
@@ -115,7 +115,7 @@ class _WaitingState extends State<_Waiting> {
                     children: [
                       Expanded(child: Text(m.name, overflow: TextOverflow.ellipsis, style: const TextStyle(fontWeight: FontWeight.w600))),
                       Text(
-                        switch (r[m.id]) { true => 'Allowed', false => 'Said no', null => 'Waiting…' },
+                        switch (r[m.id]) { true => 'Consentito', false => 'Ha detto no', null => 'In attesa…' },
                         style: TextStyle(color: r[m.id] == true ? VyseColors.accent : VyseColors.textDim, fontSize: 13),
                       ),
                     ],
@@ -124,7 +124,7 @@ class _WaitingState extends State<_Waiting> {
             ],
           ),
         ),
-        actions: [TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Cancel'))],
+        actions: [TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Annulla'))],
       );
     },
   );
