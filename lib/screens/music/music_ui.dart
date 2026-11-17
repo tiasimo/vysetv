@@ -83,7 +83,7 @@ class MusicTitle extends StatelessWidget {
         Text(title, style: TextStyle(fontSize: Layout.isPhone(context) ? 28 : 36, fontWeight: FontWeight.w800, letterSpacing: -1.2, height: 1.1)),
         if (subtitle != null) ...[
           const SizedBox(height: 6),
-          Text(subtitle!, style: const TextStyle(fontSize: 13.5, color: VyseColors.textDim)),
+          Text(subtitle!, style: TextStyle(fontSize: 13.5, color: VyseColors.textDim)),
         ],
       ]),
     ),
@@ -106,7 +106,7 @@ class MusicBackdrop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const bg = VyseColors.bg;
+    final bg = VyseColors.bg;
     return IgnorePointer(
       child: Stack(fit: StackFit.expand, children: [
         if (url != null && url!.isNotEmpty)
@@ -220,7 +220,7 @@ class MetaLine extends StatelessWidget {
       crossAxisAlignment: WrapCrossAlignment.center,
       children: [
         for (var i = 0; i < shown.length; i++) ...[
-          if (i > 0) const Text('  ·  ', style: TextStyle(fontSize: 13, color: VyseColors.textFaint)),
+          if (i > 0) Text('  ·  ', style: TextStyle(fontSize: 13, color: VyseColors.textFaint)),
           shown[i].$2 == null
               ? Text(shown[i].$1, style: const TextStyle(fontSize: 13, color: Color(0xFFC3C7D4)))
               : Pressable(
@@ -263,7 +263,7 @@ class RoundAction extends StatelessWidget {
         height: 44,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: on ? accentOf(context).withValues(alpha: .16) : Colors.white.withValues(alpha: hovered ? .14 : .08),
+          color: on ? accentOf(context).withValues(alpha: .16) : VyseColors.ink.withValues(alpha: hovered ? .14 : .08),
           border: Border.all(color: on ? accentOf(context).withValues(alpha: .5) : VyseColors.stroke),
         ),
         child: Icon(icon, size: 20, color: on ? accentOf(context) : VyseColors.text),
@@ -292,7 +292,7 @@ class MusicChips<T> extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(99),
-              color: v == value ? accentOf(context) : Colors.white.withValues(alpha: hovered ? .12 : .07),
+              color: v == value ? accentOf(context) : VyseColors.ink.withValues(alpha: hovered ? .12 : .07),
               border: Border.all(color: v == value ? accentOf(context) : VyseColors.stroke),
             ),
             child: Text(
@@ -367,7 +367,7 @@ class PlaylistArt extends StatelessWidget {
     } else if (covers.isNotEmpty) {
       child = NetImage(url: covers.first, fallback: Icons.queue_music_rounded);
     } else {
-      child = const DecoratedBox(
+      child = DecoratedBox(
         decoration: BoxDecoration(gradient: LinearGradient(colors: [Color(0xFF2B2F52), Color(0xFF151829)], begin: Alignment.topLeft, end: Alignment.bottomRight)),
         child: Center(child: Icon(Icons.queue_music_rounded, size: 40, color: VyseColors.textDim)),
       );
@@ -433,7 +433,7 @@ class _PlaylistPicker extends StatelessWidget {
     final lists = MusicLibrary.playlists;
     return Dialog(
       backgroundColor: const Color(0xFF101118),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: const BorderSide(color: VyseColors.stroke)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: BorderSide(color: VyseColors.stroke)),
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 420, maxHeight: 560),
         child: Column(
@@ -444,7 +444,7 @@ class _PlaylistPicker extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(22, 20, 22, 4),
               child: Text(count == 1 ? 'Aggiungi a una playlist' : 'Aggiungi $count brani a una playlist', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
             ),
-            const Padding(
+            Padding(
               padding: EdgeInsets.fromLTRB(22, 0, 22, 12),
               child: Text('Le tue playlist si sincronizzano con il tuo account', style: TextStyle(fontSize: 12.5, color: VyseColors.textDim)),
             ),
@@ -495,7 +495,7 @@ class _PickRow extends StatelessWidget {
       duration: const Duration(milliseconds: 140),
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), color: Colors.white.withValues(alpha: hovered ? .07 : 0)),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), color: VyseColors.ink.withValues(alpha: hovered ? .07 : 0)),
       child: Row(children: [
         leading,
         const SizedBox(width: 14),
@@ -503,7 +503,7 @@ class _PickRow extends StatelessWidget {
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(title, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700)),
             const SizedBox(height: 2),
-            Text(subtitle, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12, color: VyseColors.textDim)),
+            Text(subtitle, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, color: VyseColors.textDim)),
           ]),
         ),
       ]),
@@ -562,19 +562,19 @@ class _PlaylistEditorState extends State<_PlaylistEditor> {
 
   InputDecoration _field(String hint) => InputDecoration(
     hintText: hint,
-    hintStyle: const TextStyle(color: VyseColors.textFaint),
+    hintStyle: TextStyle(color: VyseColors.textFaint),
     filled: true,
-    fillColor: Colors.white.withValues(alpha: .05),
+    fillColor: VyseColors.ink.withValues(alpha: .05),
     contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: VyseColors.stroke)),
-    enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: VyseColors.stroke)),
+    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: VyseColors.stroke)),
+    enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: VyseColors.stroke)),
     focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: accentOf(context))),
   );
 
   @override
   Widget build(BuildContext context) => AlertDialog(
     backgroundColor: const Color(0xFF101118),
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: const BorderSide(color: VyseColors.stroke)),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: BorderSide(color: VyseColors.stroke)),
     title: Text(widget.existing == null ? 'Nuova playlist' : 'Modifica playlist', style: const TextStyle(fontWeight: FontWeight.w800)),
     content: SizedBox(
       width: 400,
@@ -595,7 +595,7 @@ class _PlaylistEditorState extends State<_PlaylistEditor> {
                 Text(_public ? 'Pubblico' : 'Privato', style: const TextStyle(fontWeight: FontWeight.w700)),
                 Text(
                   _public ? 'Visibile sul tuo profilo' : 'Solo tu la vedi',
-                  style: const TextStyle(fontSize: 12, color: VyseColors.textDim),
+                  style: TextStyle(fontSize: 12, color: VyseColors.textDim),
                 ),
               ]),
             ),
@@ -605,7 +605,7 @@ class _PlaylistEditorState extends State<_PlaylistEditor> {
       ]),
     ),
     actions: [
-      TextButton(onPressed: () => Navigator.pop(context), child: const Text('Annulla', style: TextStyle(color: VyseColors.text))),
+      TextButton(onPressed: () => Navigator.pop(context), child: Text('Annulla', style: TextStyle(color: VyseColors.text))),
       FilledButton(
         style: FilledButton.styleFrom(backgroundColor: accentOf(context), foregroundColor: onAccentOf(context)),
         onPressed: _save,
@@ -717,7 +717,7 @@ class YtArtistCard extends StatelessWidget {
               duration: const Duration(milliseconds: 180),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color: hovered ? Colors.white : Colors.white.withValues(alpha: .06), width: hovered ? 2 : 1),
+                border: Border.all(color: hovered ? Colors.white : VyseColors.ink.withValues(alpha: .06), width: hovered ? 2 : 1),
               ),
               child: Artwork(url: sizedArt(item.thumb, 400), circle: true),
             ),
@@ -737,7 +737,7 @@ class YtArtistCard extends StatelessWidget {
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         textAlign: TextAlign.center,
-        style: const TextStyle(fontSize: 10.5, color: VyseColors.textFaint),
+        style: TextStyle(fontSize: 10.5, color: VyseColors.textFaint),
       ),
     ]),
   );

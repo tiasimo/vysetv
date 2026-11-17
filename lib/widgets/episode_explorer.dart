@@ -195,7 +195,7 @@ class _EpisodeExplorerState extends State<EpisodeExplorer> with SingleTickerProv
       builder: (context, snap) {
         final eps = snap.data;
         if (eps == null) {
-          return const SizedBox(
+          return SizedBox(
             height: 320,
             child: Center(child: CircularProgressIndicator(strokeWidth: 2, color: VyseColors.textDim)),
           );
@@ -206,7 +206,7 @@ class _EpisodeExplorerState extends State<EpisodeExplorer> with SingleTickerProv
             child: Center(
               child: Text(
                 _season == null ? 'Ancora nessun episodio.' : 'Ancora nessun episodio per questa stagione.',
-                style: const TextStyle(color: VyseColors.textDim),
+                style: TextStyle(color: VyseColors.textDim),
               ),
             ),
           );
@@ -300,7 +300,7 @@ class _EpisodeExplorerState extends State<EpisodeExplorer> with SingleTickerProv
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         index,
-        Container(width: 1, height: 400, margin: const EdgeInsets.symmetric(horizontal: 34), color: Colors.white.withValues(alpha: .07)),
+        Container(width: 1, height: 400, margin: const EdgeInsets.symmetric(horizontal: 34), color: VyseColors.ink.withValues(alpha: .07)),
         Expanded(child: stage),
       ],
     );
@@ -325,7 +325,7 @@ class _SeasonNumber extends StatelessWidget {
         final numeral = Text(
           label,
           style: selected
-              ? const TextStyle(fontSize: 46, height: 1, fontWeight: FontWeight.w900, letterSpacing: -2, color: VyseColors.text)
+              ? TextStyle(fontSize: 46, height: 1, fontWeight: FontWeight.w900, letterSpacing: -2, color: VyseColors.text)
               : TextStyle(
                   fontSize: 46,
                   height: 1,
@@ -334,7 +334,7 @@ class _SeasonNumber extends StatelessWidget {
                   foreground: Paint()
                     ..style = PaintingStyle.stroke
                     ..strokeWidth = 1.4
-                    ..color = Colors.white.withValues(alpha: hovered ? .7 : .28),
+                    ..color = VyseColors.ink.withValues(alpha: hovered ? .7 : .28),
                 ),
         );
         final meta = AnimatedOpacity(
@@ -349,7 +349,7 @@ class _SeasonNumber extends StatelessWidget {
                 style: const TextStyle(fontSize: 11.5, fontWeight: FontWeight.w700),
               ),
               if (season.year != null)
-                Text(season.year!, style: const TextStyle(fontSize: 11, color: VyseColors.textFaint)),
+                Text(season.year!, style: TextStyle(fontSize: 11, color: VyseColors.textFaint)),
             ],
           ),
         );
@@ -413,7 +413,7 @@ class _Preview extends StatelessWidget {
                 imageUrl: art,
                 fit: BoxFit.cover,
                 fadeInDuration: const Duration(milliseconds: 250),
-                placeholder: (_, _) => const ColoredBox(color: VyseColors.surfaceHi),
+                placeholder: (_, _) => ColoredBox(color: VyseColors.surfaceHi),
               ),
             // big faint episode number in the corner of the frame
             Positioned(
@@ -426,7 +426,7 @@ class _Preview extends StatelessWidget {
                   height: 1,
                   fontWeight: FontWeight.w900,
                   letterSpacing: -4,
-                  color: Colors.white.withValues(alpha: .18),
+                  color: VyseColors.ink.withValues(alpha: .18),
                 ),
               ),
             ),
@@ -439,7 +439,7 @@ class _Preview extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(code, style: const TextStyle(fontSize: 11.5, fontWeight: FontWeight.w800, letterSpacing: 1.6, color: VyseColors.accent)),
+        Text(code, style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.w800, letterSpacing: 1.6, color: VyseColors.accent)),
         const SizedBox(height: 8),
         Text(
           e.name,
@@ -530,7 +530,7 @@ class _PlayEpisode extends StatelessWidget {
         height: 42,
         padding: const EdgeInsets.fromLTRB(8, 0, 20, 0),
         decoration: BoxDecoration(
-          color: !enabled ? Colors.white.withValues(alpha: .08) : (hovered ? Colors.white : const Color(0xFFF1F1F5)),
+          color: !enabled ? VyseColors.ink.withValues(alpha: .08) : (hovered ? Colors.white : const Color(0xFFF1F1F5)),
           borderRadius: BorderRadius.circular(21),
         ),
         child: Row(
@@ -539,7 +539,7 @@ class _PlayEpisode extends StatelessWidget {
             Container(
               width: 28,
               height: 28,
-              decoration: BoxDecoration(color: enabled ? VyseColors.accent : Colors.white24, shape: BoxShape.circle),
+              decoration: BoxDecoration(color: enabled ? VyseColors.accent : VyseColors.ink.withValues(alpha: .24), shape: BoxShape.circle),
               child: Icon(enabled ? Icons.play_arrow_rounded : Icons.schedule_rounded, size: 18, color: Colors.black),
             ),
             const SizedBox(width: 10),
@@ -632,7 +632,7 @@ class _TimelineState extends State<_Timeline> {
                     left: _pad,
                     right: _pad,
                     top: 55,
-                    child: Container(height: 2, color: Colors.white.withValues(alpha: .1)),
+                    child: Container(height: 2, color: VyseColors.ink.withValues(alpha: .1)),
                   ),
                   // watched-so-far fill up to the chosen stop
                   AnimatedPositioned(
@@ -719,10 +719,10 @@ class _RangeBar extends StatelessWidget {
         children: [
           Text(
             'EPISODI ${start + 1}–${start + size}',
-            style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w800, letterSpacing: 1.4, color: VyseColors.accent),
+            style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800, letterSpacing: 1.4, color: VyseColors.accent),
           ),
           const SizedBox(width: 8),
-          Text('di $total', style: const TextStyle(fontSize: 11, color: VyseColors.textFaint)),
+          Text('di $total', style: TextStyle(fontSize: 11, color: VyseColors.textFaint)),
           const Spacer(),
           _JumpBox(controller: goto, total: total, onJump: onJump),
           const SizedBox(width: 6),
@@ -758,7 +758,7 @@ class _RangeBar extends StatelessWidget {
                       top: 8,
                       child: Container(
                         height: 6,
-                        decoration: BoxDecoration(color: Colors.white.withValues(alpha: .07), borderRadius: BorderRadius.circular(3)),
+                        decoration: BoxDecoration(color: VyseColors.ink.withValues(alpha: .07), borderRadius: BorderRadius.circular(3)),
                       ),
                     ),
                     // where the chosen episode sits in the whole season
@@ -808,7 +808,7 @@ class _StepButton extends StatelessWidget {
       height: 28,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: onTap == null ? Colors.transparent : Colors.white.withValues(alpha: hovered ? .16 : .07),
+        color: onTap == null ? Colors.transparent : VyseColors.ink.withValues(alpha: hovered ? .16 : .07),
       ),
       child: Icon(icon, size: 18, color: onTap == null ? VyseColors.textFaint : VyseColors.text),
     ),
@@ -841,14 +841,14 @@ class _JumpBox extends StatelessWidget {
       decoration: InputDecoration(
         isDense: true,
         hintText: 'Vai al n.',
-        hintStyle: const TextStyle(fontSize: 12, color: VyseColors.textFaint),
+        hintStyle: TextStyle(fontSize: 12, color: VyseColors.textFaint),
         contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
         filled: true,
-        fillColor: Colors.white.withValues(alpha: .06),
+        fillColor: VyseColors.ink.withValues(alpha: .06),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide.none),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: VyseColors.accent),
+          borderSide: BorderSide(color: VyseColors.accent),
         ),
       ),
     ),
@@ -890,8 +890,8 @@ class _Stop extends StatelessWidget {
                     ? VyseColors.accent
                     : upcoming
                         ? Colors.transparent
-                        : (passed ? VyseColors.accent.withValues(alpha: .55) : Colors.white.withValues(alpha: hovered ? .9 : .35)),
-                border: upcoming && !picked ? Border.all(color: Colors.white.withValues(alpha: .4), width: 1.5) : null,
+                        : (passed ? VyseColors.accent.withValues(alpha: .55) : VyseColors.ink.withValues(alpha: hovered ? .9 : .35)),
+                border: upcoming && !picked ? Border.all(color: VyseColors.ink.withValues(alpha: .4), width: 1.5) : null,
                 boxShadow: picked ? [BoxShadow(color: VyseColors.accent.withValues(alpha: .7), blurRadius: 14)] : null,
               ),
             ),
@@ -926,7 +926,7 @@ class _HoverCard extends StatelessWidget {
     decoration: BoxDecoration(
       color: const Color(0xF2141729),
       borderRadius: BorderRadius.circular(12),
-      border: Border.all(color: Colors.white.withValues(alpha: .1)),
+      border: Border.all(color: VyseColors.ink.withValues(alpha: .1)),
       boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: .5), blurRadius: 18, offset: const Offset(0, 8))],
     ),
     child: Row(
@@ -937,7 +937,7 @@ class _HoverCard extends StatelessWidget {
             width: 56,
             height: 32,
             child: episode.thumb == null
-                ? const ColoredBox(color: VyseColors.surfaceHi)
+                ? ColoredBox(color: VyseColors.surfaceHi)
                 : CachedNetworkImage(imageUrl: episode.thumb!, fit: BoxFit.cover, fadeInDuration: Duration.zero),
           ),
         ),
@@ -947,7 +947,7 @@ class _HoverCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('Episodio ${episode.number}', style: const TextStyle(fontSize: 10, color: VyseColors.textFaint)),
+              Text('Episodio ${episode.number}', style: TextStyle(fontSize: 10, color: VyseColors.textFaint)),
               Text(
                 episode.name,
                 maxLines: 1,

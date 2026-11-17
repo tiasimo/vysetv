@@ -293,7 +293,7 @@ class _MangaPageState extends State<MangaPage> {
       );
     }
     if (_loading && _items.isNotEmpty) {
-      return const Padding(
+      return Padding(
         padding: EdgeInsets.all(28),
         child: Center(child: SizedBox.square(dimension: 22, child: CircularProgressIndicator(strokeWidth: 2, color: VyseColors.accent))),
       );

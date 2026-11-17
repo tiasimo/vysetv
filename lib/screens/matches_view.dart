@@ -162,7 +162,7 @@ class _MatchesViewState extends State<MatchesView> {
             for (final e in byLeague.entries) shelf(e.key.name, e.value, e.key.path),
             Padding(
               padding: EdgeInsets.fromLTRB(inset, 4, right, 0),
-              child: const Text('Calendari e palinsesti USA da ESPN. Canali internazionali aggiunti da Lorewatch.',
+              child: Text('Calendari e palinsesti USA da ESPN. Canali internazionali aggiunti da Lorewatch.',
                   style: TextStyle(fontSize: 11, color: VyseColors.textFaint)),
             ),
           ],
@@ -223,7 +223,7 @@ class _MatchPageState extends State<MatchPage> {
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                     Row(children: [
                       if (m.leagueLogo != null) ...[TeamBadge(url: m.leagueLogo, size: 20), const SizedBox(width: 8)],
-                      Text(m.league.name, style: const TextStyle(fontSize: 13, color: VyseColors.textDim, fontWeight: FontWeight.w600)),
+                      Text(m.league.name, style: TextStyle(fontSize: 13, color: VyseColors.textDim, fontWeight: FontWeight.w600)),
                       const SizedBox(width: 10),
                       if (m.state == MatchState.live) LivePill(m.status),
                     ]),
@@ -245,7 +245,7 @@ class _MatchPageState extends State<MatchPage> {
                             ),
                             const SizedBox(height: 4),
                             Text(m.state == MatchState.upcoming ? 'Calcio d\'inizio' : m.status,
-                                style: const TextStyle(fontSize: 12, color: VyseColors.textFaint)),
+                                style: TextStyle(fontSize: 12, color: VyseColors.textFaint)),
                           ]),
                           Expanded(child: _BigSide(team: m.away!)),
                         ]),
@@ -308,7 +308,7 @@ class _MatchPageState extends State<MatchPage> {
             ),
             SliverPadding(
               padding: EdgeInsets.fromLTRB(inset, 16, right, 0),
-              sliver: const SliverToBoxAdapter(
+              sliver: SliverToBoxAdapter(
                 child: Text('Scegli un canale e Lorewatch cerca nei tuoi portali, poi legge le loro guide TV per trovare il canale esatto (beIN Sports 2, AR…).',
                     style: TextStyle(fontSize: 12, color: VyseColors.textFaint)),
               ),

@@ -22,7 +22,7 @@ Future<bool> allowP2p(BuildContext context, {String? who}) async {
           '${who == null ? 'This source' : '$who wants to watch a source together that'} streams peer to peer, so you connect '
           'direttamente ad altre persone che lo condividono. Possono vedere il tuo indirizzo IP e il tuo provider.\n\n'
           'Consentire attiva lo streaming P2P. Puoi disattivarlo quando vuoi nelle impostazioni di Riproduzione.',
-          style: const TextStyle(color: VyseColors.textDim, height: 1.5),
+          style: TextStyle(color: VyseColors.textDim, height: 1.5),
         ),
       ),
       actions: [
@@ -102,7 +102,7 @@ class _WaitingState extends State<_Waiting> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'This source streams peer to peer, so everyone in the room needs P2P streaming on first. '
                 "It starts once they've all allowed it.",
                 style: TextStyle(color: VyseColors.textDim, height: 1.5),

@@ -640,7 +640,7 @@ class _PortalBrowserPageState extends State<PortalBrowserPage> {
               ),
               if (!compact && meta.isNotEmpty) ...[
                 const SizedBox(height: 2),
-                Text(meta, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12.5, color: VyseColors.textDim)),
+                Text(meta, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12.5, color: VyseColors.textDim)),
               ],
             ],
           ),
@@ -807,7 +807,7 @@ class _PortalBrowserPageState extends State<PortalBrowserPage> {
                     if (_alive.running)
                       Text(
                         'Controllati ${_alive.done} di ${_alive.total}',
-                        style: const TextStyle(fontSize: 12, color: VyseColors.textFaint, fontFeatures: [FontFeature.tabularFigures()]),
+                        style: TextStyle(fontSize: 12, color: VyseColors.textFaint, fontFeatures: [FontFeature.tabularFigures()]),
                       ),
                   ]),
                 ),
@@ -839,7 +839,7 @@ class _PortalBrowserPageState extends State<PortalBrowserPage> {
       // and the player in the pane stops when it's covered.
       useRootNavigator: true,
       color: VyseColors.surfaceHi,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: const BorderSide(color: VyseColors.stroke)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: VyseColors.stroke)),
       onSelected: (v) {
         if (v is _Sort) {
           setState(() => _sort = v);
@@ -1032,7 +1032,7 @@ class _PaneScrollbar extends StatelessWidget {
         thickness: WidgetStateProperty.resolveWith((s) => s.contains(WidgetState.hovered) || s.contains(WidgetState.dragged) ? 7 : 4),
         thumbColor: WidgetStateProperty.resolveWith((s) {
           if (s.contains(WidgetState.dragged)) return accent;
-          return Colors.white.withValues(alpha: s.contains(WidgetState.hovered) ? .5 : .2);
+          return VyseColors.ink.withValues(alpha: s.contains(WidgetState.hovered) ? .5 : .2);
         }),
         radius: const Radius.circular(8),
         crossAxisMargin: 2,
@@ -1054,8 +1054,8 @@ class _PaneTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const big = TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: VyseColors.text, height: 1.2);
-    const small = TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: VyseColors.textDim, fontFeatures: [FontFeature.tabularFigures()]);
+    final big = TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: VyseColors.text, height: 1.2);
+    final small = TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: VyseColors.textDim, fontFeatures: [FontFeature.tabularFigures()]);
     if (inline) {
       return Text.rich(
         TextSpan(children: [
@@ -1101,7 +1101,7 @@ class _SectionTabs extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 14),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(9),
-            color: selected ? accent : Colors.white.withValues(alpha: hovered ? .08 : 0),
+            color: selected ? accent : VyseColors.ink.withValues(alpha: hovered ? .08 : 0),
           ),
           child: Text(
             it.$2,
@@ -1121,7 +1121,7 @@ class _SectionTabs extends StatelessWidget {
       padding: const EdgeInsets.all(3),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: Colors.white.withValues(alpha: .05),
+        color: VyseColors.ink.withValues(alpha: .05),
         border: Border.all(color: VyseColors.stroke),
       ),
       child: Row(mainAxisSize: expand ? MainAxisSize.max : MainAxisSize.min, children: [for (final it in _items) tab(it)]),
@@ -1150,7 +1150,7 @@ class _IconTool extends StatelessWidget {
         height: d,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: active ? accent.withValues(alpha: hovered ? .24 : .16) : Colors.white.withValues(alpha: hovered ? .1 : 0),
+          color: active ? accent.withValues(alpha: hovered ? .24 : .16) : VyseColors.ink.withValues(alpha: hovered ? .1 : 0),
         ),
         child: Icon(icon, size: 19, color: active ? accent : (hovered ? VyseColors.text : VyseColors.textDim)),
       ),
@@ -1173,7 +1173,7 @@ class _Chip extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 6),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: selected ? accent : Colors.white.withValues(alpha: hovered ? .12 : .07),
+          color: selected ? accent : VyseColors.ink.withValues(alpha: hovered ? .12 : .07),
         ),
         child: Text(
           label,
@@ -1294,8 +1294,8 @@ class _PaneSearchState extends State<_PaneSearch> {
         padding: const EdgeInsets.only(left: 12, right: 3),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          color: Colors.white.withValues(alpha: focused ? .08 : .05),
-          border: Border.all(color: focused ? accent.withValues(alpha: .6) : Colors.white.withValues(alpha: .08), width: focused ? 1.4 : 1),
+          color: VyseColors.ink.withValues(alpha: focused ? .08 : .05),
+          border: Border.all(color: focused ? accent.withValues(alpha: .6) : VyseColors.ink.withValues(alpha: .08), width: focused ? 1.4 : 1),
         ),
         child: Row(children: [
           Icon(Icons.search_rounded, size: 18, color: focused ? accent : VyseColors.textDim),
@@ -1309,8 +1309,8 @@ class _PaneSearchState extends State<_PaneSearch> {
                 textInputAction: TextInputAction.search,
                 cursorColor: accent,
                 cursorWidth: 1.6,
-                style: const TextStyle(fontSize: 13.5, fontWeight: FontWeight.w500, color: VyseColors.text),
-                decoration: InputDecoration.collapsed(hintText: widget.hint, hintStyle: const TextStyle(fontSize: 13.5, color: VyseColors.textFaint)),
+                style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.w500, color: VyseColors.text),
+                decoration: InputDecoration.collapsed(hintText: widget.hint, hintStyle: TextStyle(fontSize: 13.5, color: VyseColors.textFaint)),
               ),
             ),
           ),
@@ -1348,7 +1348,7 @@ class _CategoryTile extends StatelessWidget {
         padding: const EdgeInsets.only(left: 12, right: 8),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: selected ? accent.withValues(alpha: .14) : Colors.white.withValues(alpha: hovered ? .06 : 0),
+          color: selected ? accent.withValues(alpha: .14) : VyseColors.ink.withValues(alpha: hovered ? .06 : 0),
           border: Border.all(color: selected ? accent.withValues(alpha: .6) : Colors.transparent),
         ),
         child: Row(children: [
@@ -1368,7 +1368,7 @@ class _CategoryTile extends StatelessWidget {
           const SizedBox(width: 8),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: selected ? accent : Colors.white.withValues(alpha: .07)),
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: selected ? accent : VyseColors.ink.withValues(alpha: .07)),
             child: Text(
               fmtThousands(count),
               style: TextStyle(
@@ -1398,7 +1398,7 @@ class _Logo extends StatelessWidget {
       width: size,
       height: size,
       padding: EdgeInsets.all(size * .13),
-      decoration: BoxDecoration(color: Colors.white.withValues(alpha: .05), borderRadius: BorderRadius.circular(size * .24)),
+      decoration: BoxDecoration(color: VyseColors.ink.withValues(alpha: .05), borderRadius: BorderRadius.circular(size * .24)),
       child: url.isEmpty
           ? fallback
           : CachedNetworkImage(
@@ -1447,7 +1447,7 @@ class _Progress extends StatelessWidget {
   Widget build(BuildContext context) => ClipRRect(
         borderRadius: BorderRadius.circular(height),
         child: ColoredBox(
-          color: Colors.white.withValues(alpha: .1),
+          color: VyseColors.ink.withValues(alpha: .1),
           child: SizedBox(
             height: height,
             child: Align(
@@ -1480,13 +1480,13 @@ class _PaneNote extends StatelessWidget {
               Container(
                 width: 54,
                 height: 54,
-                decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white.withValues(alpha: .05)),
+                decoration: BoxDecoration(shape: BoxShape.circle, color: VyseColors.ink.withValues(alpha: .05)),
                 child: Icon(icon, size: 25, color: VyseColors.textDim),
               ),
               const SizedBox(height: 14),
               Text(title, textAlign: TextAlign.center, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700)),
               const SizedBox(height: 5),
-              Text(body, textAlign: TextAlign.center, style: const TextStyle(fontSize: 13, color: VyseColors.textDim, height: 1.4)),
+              Text(body, textAlign: TextAlign.center, style: TextStyle(fontSize: 13, color: VyseColors.textDim, height: 1.4)),
               if (action != null) ...[
                 const SizedBox(height: 16),
                 _AccentButton(label: action!.$1, onTap: action!.$2, height: 40),
@@ -1602,7 +1602,7 @@ class _ChannelRowState extends State<_ChannelRow> {
         padding: const EdgeInsets.only(left: 10, right: 2),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(13),
-          color: selected ? accent.withValues(alpha: .12) : Colors.white.withValues(alpha: hovered ? .05 : 0),
+          color: selected ? accent.withValues(alpha: .12) : VyseColors.ink.withValues(alpha: hovered ? .05 : 0),
           border: Border.all(color: selected ? accent.withValues(alpha: .65) : Colors.transparent),
         ),
         child: Row(children: [
@@ -1657,8 +1657,8 @@ class _GuideLines extends StatelessWidget {
   /// null while it loads; empty when there is none.
   final List<EpgEntry>? guide;
 
-  static const _title = TextStyle(fontSize: 12.5, color: VyseColors.textDim, height: 1.25);
-  static const _time = TextStyle(fontSize: 11, color: VyseColors.textFaint, height: 1.25, fontFeatures: [FontFeature.tabularFigures()]);
+  static final _title = TextStyle(fontSize: 12.5, color: VyseColors.textDim, height: 1.25);
+  static final _time = TextStyle(fontSize: 11, color: VyseColors.textFaint, height: 1.25, fontFeatures: [FontFeature.tabularFigures()]);
 
   @override
   Widget build(BuildContext context) {
@@ -1715,7 +1715,7 @@ class _GuideLines extends StatelessWidget {
             child: Text.rich(
               TextSpan(children: [
                 const TextSpan(text: 'Dopo  '),
-                TextSpan(text: next.title, style: const TextStyle(color: VyseColors.textDim)),
+                TextSpan(text: next.title, style: TextStyle(color: VyseColors.textDim)),
               ]),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -1808,7 +1808,7 @@ class _ChannelDetailsState extends State<_ChannelDetails> {
                 Text(s.name, maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w800, height: 1.2)),
                 if (sub.isNotEmpty) ...[
                   const SizedBox(height: 3),
-                  Text(sub, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12.5, color: VyseColors.textDim)),
+                  Text(sub, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12.5, color: VyseColors.textDim)),
                 ],
               ],
             ),
@@ -1839,7 +1839,7 @@ class _ChannelDetailsState extends State<_ChannelDetails> {
   }
 
   Widget _schedule(BuildContext context, List<EpgEntry>? guide) {
-    const quiet = TextStyle(fontSize: 13, color: VyseColors.textFaint);
+    final quiet = TextStyle(fontSize: 13, color: VyseColors.textFaint);
     if (guide == null) return const Text('Caricamento della guida', style: quiet);
     final t = DateTime.now();
     final now = NowNext.of(guide, t).now;
@@ -1848,8 +1848,8 @@ class _ChannelDetailsState extends State<_ChannelDetails> {
         if (e.start.isAfter(t)) e,
     ].take(6).toList();
     if (now == null && later.isEmpty) return const Text('Nessuna guida per questo canale', style: quiet);
-    const label = TextStyle(fontSize: 11, fontWeight: FontWeight.w800, letterSpacing: 1, color: VyseColors.textFaint);
-    const time = TextStyle(fontSize: 12.5, color: VyseColors.textDim, fontFeatures: [FontFeature.tabularFigures()]);
+    final label = TextStyle(fontSize: 11, fontWeight: FontWeight.w800, letterSpacing: 1, color: VyseColors.textFaint);
+    final time = TextStyle(fontSize: 12.5, color: VyseColors.textDim, fontFeatures: [FontFeature.tabularFigures()]);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -1864,7 +1864,7 @@ class _ChannelDetailsState extends State<_ChannelDetails> {
           _Progress(NowNext(now, null).progress(t), height: 4),
           if (now.description.trim().isNotEmpty) ...[
             const SizedBox(height: 12),
-            Text(now.description.trim(), maxLines: 5, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 13, color: VyseColors.textDim, height: 1.45)),
+            Text(now.description.trim(), maxLines: 5, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 13, color: VyseColors.textDim, height: 1.45)),
           ],
           const SizedBox(height: 22),
         ],
@@ -1943,7 +1943,7 @@ class _NowNextStripState extends State<_NowNextStrip> {
                   Expanded(
                     child: Text(now.title, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700)),
                   ),
-                  Text('${guideTime(now.start)} – ${guideTime(now.stop)}', style: const TextStyle(fontSize: 12, color: VyseColors.textDim)),
+                  Text('${guideTime(now.start)} – ${guideTime(now.stop)}', style: TextStyle(fontSize: 12, color: VyseColors.textDim)),
                 ]),
                 const SizedBox(height: 6),
                 _Progress(nn.progress(t)),
@@ -1953,7 +1953,7 @@ class _NowNextStripState extends State<_NowNextStrip> {
                     'Dopo  ${guideTime(next.start)}  ${next.title}',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(fontSize: 12, color: VyseColors.textDim),
+                    style: TextStyle(fontSize: 12, color: VyseColors.textDim),
                   ),
                 ],
               ],

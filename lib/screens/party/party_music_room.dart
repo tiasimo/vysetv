@@ -200,7 +200,7 @@ Future<void> showPartyMusicPicker(BuildContext context) {
     builder: (_) => Dialog(
       backgroundColor: const Color(0xFF0B0D16),
       insetPadding: const EdgeInsets.all(24),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22), side: const BorderSide(color: VyseColors.stroke)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22), side: BorderSide(color: VyseColors.stroke)),
       child: ConstrainedBox(constraints: const BoxConstraints(maxWidth: 520, maxHeight: 620), child: body),
     ),
   );
@@ -267,8 +267,8 @@ class _PickerState extends State<_Picker> {
           cursorColor: VyseColors.accent,
           decoration: InputDecoration(
             hintText: 'Search songs and artists',
-            hintStyle: const TextStyle(color: VyseColors.textFaint),
-            prefixIcon: const Icon(Icons.search_rounded, size: 20, color: VyseColors.textFaint),
+            hintStyle: TextStyle(color: VyseColors.textFaint),
+            prefixIcon: Icon(Icons.search_rounded, size: 20, color: VyseColors.textFaint),
             filled: true,
             fillColor: Colors.white.withValues(alpha: .06),
             contentPadding: const EdgeInsets.symmetric(vertical: 12),
@@ -278,18 +278,18 @@ class _PickerState extends State<_Picker> {
         const SizedBox(height: 8),
         Expanded(
           child: _found == null
-              ? const Center(child: Text('Find something to play for everyone.', style: TextStyle(fontSize: 13, color: VyseColors.textDim)))
+              ? Center(child: Text('Find something to play for everyone.', style: TextStyle(fontSize: 13, color: VyseColors.textDim)))
               : FutureBuilder<List<MusicTrack>>(
                   future: _found,
                   builder: (context, snap) {
                     if (snap.hasError) {
-                      return const Center(child: Text("Couldn't search right now.", style: TextStyle(fontSize: 13, color: VyseColors.textDim)));
+                      return Center(child: Text("Couldn't search right now.", style: TextStyle(fontSize: 13, color: VyseColors.textDim)));
                     }
                     final list = snap.data;
                     if (list == null) {
                       return const Center(child: SizedBox.square(dimension: 24, child: CircularProgressIndicator(strokeWidth: 2.2, color: Colors.white)));
                     }
-                    if (list.isEmpty) return const Center(child: Text('Nothing found.', style: TextStyle(fontSize: 13, color: VyseColors.textDim)));
+                    if (list.isEmpty) return Center(child: Text('Nothing found.', style: TextStyle(fontSize: 13, color: VyseColors.textDim)));
                     return ListView.builder(
                       itemCount: list.length,
                       itemBuilder: (context, i) => _Found(track: list[i], onPlay: () => _play(list[i]), onQueue: () => _queue(list[i])),
@@ -325,7 +325,7 @@ class _Found extends StatelessWidget {
               children: [
                 Text(track.title, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 14.5, fontWeight: FontWeight.w700, letterSpacing: -.1)),
                 const SizedBox(height: 1),
-                Text(track.artist, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12.5, color: VyseColors.textDim)),
+                Text(track.artist, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12.5, color: VyseColors.textDim)),
               ],
             ),
           ),

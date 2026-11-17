@@ -211,18 +211,18 @@ class _AnimePageState extends State<AnimePage> {
           color: VyseColors.surface,
           child: Container(
             width: 420,
-            decoration: const BoxDecoration(border: Border(left: BorderSide(color: VyseColors.stroke))),
+            decoration: BoxDecoration(border: Border(left: BorderSide(color: VyseColors.stroke))),
             child: Column(children: [
               Padding(
                 padding: EdgeInsets.fromLTRB(24, Layout.topChrome(context) + 8, 12, 4),
                 child: ValueListenableBuilder<int>(
                   valueListenable: _changed,
                   builder: (context, _, _) => Row(children: [
-                    const Icon(Icons.tune_rounded, size: 20, color: VyseColors.accent),
+                    Icon(Icons.tune_rounded, size: 20, color: VyseColors.accent),
                     const SizedBox(width: 10),
                     const Expanded(child: Text('Filtri', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800))),
                     if (_q.activeFilters > 0) TextButton(onPressed: () => _apply(_q.cleared()), child: const Text('Cancella tutto')),
-                    IconButton(onPressed: () => Navigator.pop(panel), icon: const Icon(Icons.close_rounded, color: VyseColors.textDim)),
+                    IconButton(onPressed: () => Navigator.pop(panel), icon: Icon(Icons.close_rounded, color: VyseColors.textDim)),
                   ]),
                 ),
               ),
@@ -255,7 +255,7 @@ class _AnimePageState extends State<AnimePage> {
         minChildSize: .5,
         maxChildSize: .95,
         builder: (context, sc) => Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             color: VyseColors.surface,
             borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
             border: Border(top: BorderSide(color: VyseColors.stroke)),
@@ -315,7 +315,7 @@ class _AnimePageState extends State<AnimePage> {
                       const SizedBox(height: 6),
                       Text(
                         _total > 0 ? 'Da AniList  ·  ${_countLabel(_total)}' : 'Da AniList',
-                        style: const TextStyle(color: VyseColors.textDim, fontSize: 13),
+                        style: TextStyle(color: VyseColors.textDim, fontSize: 13),
                       ),
                     ]),
                   ),
@@ -359,7 +359,7 @@ class _AnimePageState extends State<AnimePage> {
                 AnimatedOpacity(
                   opacity: _reloading ? 1 : 0,
                   duration: const Duration(milliseconds: 200),
-                  child: const ClipRRect(
+                  child: ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(2)),
                     child: LinearProgressIndicator(minHeight: 2, color: VyseColors.accent, backgroundColor: Color(0x14FFFFFF)),
                   ),
@@ -444,9 +444,9 @@ class _AnimePageState extends State<AnimePage> {
     if (_items.isEmpty) return const SizedBox.shrink();
     if (_error != null) return Center(child: TextButton(onPressed: _retry, child: const Text("Impossibile caricarne altri · Riprova")));
     if (_loading && !_reloading) {
-      return const Center(child: SizedBox.square(dimension: 22, child: CircularProgressIndicator(strokeWidth: 2, color: VyseColors.accent)));
+      return Center(child: SizedBox.square(dimension: 22, child: CircularProgressIndicator(strokeWidth: 2, color: VyseColors.accent)));
     }
-    if (!_hasMore) return const Center(child: Text("Non c'è altro", style: TextStyle(color: VyseColors.textFaint, fontSize: 12)));
+    if (!_hasMore) return Center(child: Text("Non c'è altro", style: TextStyle(color: VyseColors.textFaint, fontSize: 12)));
     return const SizedBox(height: 22);
   }
 }
@@ -474,7 +474,7 @@ class _RoundButton extends StatelessWidget {
             height: 42,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: active ? VyseColors.accent.withValues(alpha: .22) : Colors.white.withValues(alpha: hovered ? .14 : .07),
+              color: active ? VyseColors.accent.withValues(alpha: .22) : VyseColors.ink.withValues(alpha: hovered ? .14 : .07),
               border: Border.all(color: active ? VyseColors.accent.withValues(alpha: .5) : VyseColors.stroke),
             ),
             child: Icon(icon, size: 21, color: active ? VyseColors.accent : VyseColors.text),
@@ -501,8 +501,8 @@ class _SearchField extends StatelessWidget {
           style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
           decoration: InputDecoration(
             hintText: 'Cerca anime per nome (inglese, romaji o giapponese)',
-            hintStyle: const TextStyle(color: VyseColors.textFaint),
-            prefixIcon: const Icon(Icons.search_rounded, color: VyseColors.textDim),
+            hintStyle: TextStyle(color: VyseColors.textFaint),
+            prefixIcon: Icon(Icons.search_rounded, color: VyseColors.textDim),
             suffixIcon: ValueListenableBuilder<TextEditingValue>(
               valueListenable: controller,
               builder: (context, v, _) => v.text.isEmpty
@@ -514,14 +514,14 @@ class _SearchField extends StatelessWidget {
                         onChanged('');
                         focus.requestFocus();
                       },
-                      icon: const Icon(Icons.close_rounded, size: 18, color: VyseColors.textDim),
+                      icon: Icon(Icons.close_rounded, size: 18, color: VyseColors.textDim),
                     ),
             ),
             filled: true,
-            fillColor: Colors.white.withValues(alpha: .06),
+            fillColor: VyseColors.ink.withValues(alpha: .06),
             contentPadding: const EdgeInsets.symmetric(vertical: 14),
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: const BorderSide(color: VyseColors.stroke)),
-            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: const BorderSide(color: VyseColors.stroke)),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: VyseColors.stroke)),
+            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: VyseColors.stroke)),
             focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: VyseColors.accent.withValues(alpha: .6))),
           ),
         ),
@@ -555,7 +555,7 @@ class AnimeCard extends StatelessWidget {
                   color: tint.withValues(alpha: .35),
                   padding: const EdgeInsets.all(12),
                   alignment: Alignment.center,
-                  child: Text(a.title, textAlign: TextAlign.center, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13, color: VyseColors.textDim)),
+                  child: Text(a.title, textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.w700, fontSize: 13, color: VyseColors.textDim)),
                 )
               : CachedNetworkImage(
                   imageUrl: cover,
@@ -594,7 +594,7 @@ class AnimeCard extends StatelessWidget {
                       [a.formatLabel, if (a.year != null) '${a.year}', if (a.episodes != null && !a.isMovie) '${a.episodes} ep'].join(' · '),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(fontSize: 10.5, color: VyseColors.textDim),
+                      style: TextStyle(fontSize: 10.5, color: VyseColors.textDim),
                     ),
                   ),
                   if (a.score != null) ...[
@@ -647,7 +647,7 @@ class _BackLink extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(6, 5, 12, 5),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            color: hovered ? Colors.white.withValues(alpha: .1) : Colors.transparent,
+            color: hovered ? VyseColors.ink.withValues(alpha: .1) : Colors.transparent,
           ),
           child: Row(mainAxisSize: MainAxisSize.min, children: [
             Icon(Icons.chevron_left_rounded, size: 20, color: hovered ? VyseColors.text : VyseColors.textDim),
@@ -674,7 +674,7 @@ class _Message extends StatelessWidget {
             const SizedBox(height: 12),
             Text(title, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w700)),
             const SizedBox(height: 6),
-            Text(body, textAlign: TextAlign.center, style: const TextStyle(color: VyseColors.textDim)),
+            Text(body, textAlign: TextAlign.center, style: TextStyle(color: VyseColors.textDim)),
             const SizedBox(height: 14),
             TextButton(onPressed: onAction, child: Text(action)),
           ]),
@@ -698,9 +698,9 @@ class _SortBar extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: .05),
+              color: VyseColors.ink.withValues(alpha: .05),
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.white.withValues(alpha: .06)),
+              border: Border.all(color: VyseColors.ink.withValues(alpha: .06)),
             ),
             child: Row(mainAxisSize: MainAxisSize.min, children: [
               for (final s in AnimeSort.values)
@@ -714,7 +714,7 @@ class _SortBar extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(9),
-                        color: on ? const Color(0xFF242842) : Colors.white.withValues(alpha: hovered ? .05 : 0),
+                        color: on ? const Color(0xFF242842) : VyseColors.ink.withValues(alpha: hovered ? .05 : 0),
                         boxShadow: on ? [BoxShadow(color: Colors.black.withValues(alpha: .35), blurRadius: 10, offset: const Offset(0, 3))] : null,
                       ),
                       child: Row(mainAxisSize: MainAxisSize.min, children: [
@@ -723,7 +723,7 @@ class _SortBar extends StatelessWidget {
                           width: on ? 6 : 0,
                           height: 6,
                           margin: EdgeInsets.only(right: on ? 7 : 0),
-                          decoration: const BoxDecoration(color: VyseColors.accent, shape: BoxShape.circle),
+                          decoration: BoxDecoration(color: VyseColors.accent, shape: BoxShape.circle),
                         ),
                         Text(
                           searching && s == AnimeSort.trending ? 'Più pertinenti' : s.label,
@@ -759,7 +759,7 @@ class _FiltersButton extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-              color: Colors.white.withValues(alpha: hovered ? .14 : .07),
+              color: VyseColors.ink.withValues(alpha: hovered ? .14 : .07),
               border: Border.all(color: VyseColors.stroke),
             ),
             child: Row(mainAxisSize: MainAxisSize.min, children: [
@@ -840,7 +840,7 @@ class _ActiveFilters extends StatelessWidget {
                       child: Row(mainAxisSize: MainAxisSize.min, children: [
                         Text(label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
                         const SizedBox(width: 4),
-                        const Icon(Icons.close_rounded, size: 14, color: VyseColors.textDim),
+                        Icon(Icons.close_rounded, size: 14, color: VyseColors.textDim),
                       ]),
                     ),
                   ),
@@ -893,7 +893,7 @@ class _AnimeFiltersState extends State<_AnimeFilters> {
         backgroundColor: VyseColors.surface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: const Text('Anime per adulti (18+)', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
-        content: const SizedBox(
+        content: SizedBox(
           width: 380,
           child: Text(
             'Mostra gli hentai e gli altri titoli che AniList segna per adulti, comprese copertine esplicite. '
@@ -961,10 +961,10 @@ class _AnimeFiltersState extends State<_AnimeFilters> {
                 decoration: InputDecoration(
                   isDense: true,
                   hintText: 'Cerca un tag: isekai, viaggi nel tempo, iyashikei…',
-                  hintStyle: const TextStyle(color: VyseColors.textFaint, fontSize: 13),
-                  prefixIcon: const Icon(Icons.sell_outlined, size: 17, color: VyseColors.textDim),
+                  hintStyle: TextStyle(color: VyseColors.textFaint, fontSize: 13),
+                  prefixIcon: Icon(Icons.sell_outlined, size: 17, color: VyseColors.textDim),
                   filled: true,
-                  fillColor: Colors.white.withValues(alpha: .05),
+                  fillColor: VyseColors.ink.withValues(alpha: .05),
                   contentPadding: const EdgeInsets.symmetric(vertical: 10),
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
                 ),
@@ -975,7 +975,7 @@ class _AnimeFiltersState extends State<_AnimeFilters> {
                 for (final t in matches) _TriChip(label: t.name, state: 0, tooltip: t.description, onTap: () => _cycle(t.name, tag: true)),
               ]),
               if (find.isNotEmpty && matches.isEmpty)
-                const Padding(padding: EdgeInsets.only(top: 8), child: Text('Nessun tag con questo nome', style: TextStyle(fontSize: 12, color: VyseColors.textFaint))),
+                Padding(padding: EdgeInsets.only(top: 8), child: Text('Nessun tag con questo nome', style: TextStyle(fontSize: 12, color: VyseColors.textFaint))),
               if (picked.isNotEmpty)
                 _Percent(
                   label: 'Rilevanza minima del tag',
@@ -1064,7 +1064,7 @@ class _AnimeFiltersState extends State<_AnimeFilters> {
       ),
       const SizedBox(height: 18),
       Row(children: [
-        const Expanded(
+        Expanded(
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text('Solo doujin', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
             SizedBox(height: 2),
@@ -1076,7 +1076,7 @@ class _AnimeFiltersState extends State<_AnimeFilters> {
       const _Label('Contenuti per adulti (18+)'),
       if (!_adult)
         Row(children: [
-          const Expanded(
+          Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text('Mostra anime per adulti', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
               SizedBox(height: 2),
@@ -1114,7 +1114,7 @@ class _Loaded<T> extends StatelessWidget {
         future: future,
         builder: (context, s) {
           if (s.hasData) return builder(s.data as T);
-          if (s.hasError) return const Text("Impossibile caricarli da AniList", style: TextStyle(fontSize: 12, color: VyseColors.textFaint));
+          if (s.hasError) return Text("Impossibile caricarli da AniList", style: TextStyle(fontSize: 12, color: VyseColors.textFaint));
           return const Shimmer(child: SkeletonBox(width: double.infinity, height: 64, radius: 8));
         },
       );
@@ -1129,10 +1129,10 @@ class _Label extends StatelessWidget {
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.only(top: 22, bottom: 10),
         child: Row(children: [
-          Text(text, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: VyseColors.textDim)),
+          Text(text, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: VyseColors.textDim)),
           if (hint != null) ...[
             const SizedBox(width: 8),
-            Flexible(child: Text(hint!, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 11, color: VyseColors.textFaint))),
+            Flexible(child: Text(hint!, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 11, color: VyseColors.textFaint))),
           ],
         ]),
       );
@@ -1172,13 +1172,13 @@ class _TriChip extends StatelessWidget {
               color: switch (state) {
                 1 => Colors.white,
                 2 => const Color(0x33FF4D4F),
-                _ => Colors.white.withValues(alpha: hovered ? .12 : .05),
+                _ => VyseColors.ink.withValues(alpha: hovered ? .12 : .05),
               },
               border: Border.all(
                 color: switch (state) {
                   1 => Colors.white,
                   2 => const Color(0x99FF4D4F),
-                  _ => Colors.white.withValues(alpha: .06),
+                  _ => VyseColors.ink.withValues(alpha: .06),
                 },
               ),
             ),
@@ -1216,7 +1216,7 @@ class _YearPick extends StatelessWidget {
         tooltip: '',
         color: VyseColors.surfaceHi,
         constraints: const BoxConstraints(maxHeight: 320, minWidth: 140),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10), side: const BorderSide(color: VyseColors.stroke)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10), side: BorderSide(color: VyseColors.stroke)),
         onSelected: (y) => onPicked(y == 0 ? null : y),
         itemBuilder: (_) => [
           const PopupMenuItem(value: 0, height: 34, child: Text('Qualsiasi anno', style: TextStyle(fontSize: 13))),
@@ -1227,12 +1227,12 @@ class _YearPick extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            color: Colors.white.withValues(alpha: .05),
-            border: Border.all(color: active ? VyseColors.accent.withValues(alpha: .5) : Colors.white.withValues(alpha: .06)),
+            color: VyseColors.ink.withValues(alpha: .05),
+            border: Border.all(color: active ? VyseColors.accent.withValues(alpha: .5) : VyseColors.ink.withValues(alpha: .06)),
           ),
           child: Row(children: [
             Expanded(child: Text(label, style: TextStyle(fontSize: 12.5, color: active ? VyseColors.text : VyseColors.textDim))),
-            const Icon(Icons.expand_more_rounded, size: 16, color: VyseColors.textFaint),
+            Icon(Icons.expand_more_rounded, size: 16, color: VyseColors.textFaint),
           ]),
         ),
       );
@@ -1259,7 +1259,7 @@ class _PercentState extends State<_Percent> {
       Padding(
         padding: const EdgeInsets.only(top: 14),
         child: Row(children: [
-          Text(widget.label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: VyseColors.textDim)),
+          Text(widget.label, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: VyseColors.textDim)),
           const Spacer(),
           Text(v == 0 ? 'Qualsiasi' : '${v.round()}%+', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: v == 0 ? VyseColors.textFaint : VyseColors.text)),
         ]),
@@ -1267,7 +1267,7 @@ class _PercentState extends State<_Percent> {
       SliderTheme(
         data: SliderTheme.of(context).copyWith(
           activeTrackColor: VyseColors.accent,
-          inactiveTrackColor: Colors.white.withValues(alpha: .1),
+          inactiveTrackColor: VyseColors.ink.withValues(alpha: .1),
           thumbColor: Colors.white,
           overlayColor: VyseColors.accent.withValues(alpha: .15),
           trackHeight: 3,
@@ -1316,7 +1316,7 @@ class _RangeState extends State<_Range> {
       Padding(
         padding: const EdgeInsets.only(top: 22),
         child: Row(children: [
-          Text(widget.label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: VyseColors.textDim)),
+          Text(widget.label, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: VyseColors.textDim)),
           const Spacer(),
           Text(text, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: any ? VyseColors.textFaint : VyseColors.text)),
         ]),
@@ -1324,7 +1324,7 @@ class _RangeState extends State<_Range> {
       SliderTheme(
         data: SliderTheme.of(context).copyWith(
           activeTrackColor: VyseColors.accent,
-          inactiveTrackColor: Colors.white.withValues(alpha: .1),
+          inactiveTrackColor: VyseColors.ink.withValues(alpha: .1),
           thumbColor: Colors.white,
           overlayColor: VyseColors.accent.withValues(alpha: .15),
           trackHeight: 3,

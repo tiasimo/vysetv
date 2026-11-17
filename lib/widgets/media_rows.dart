@@ -166,7 +166,7 @@ class _Chevron extends StatelessWidget {
       height: 26,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(6),
-        color: hovered ? Colors.white.withValues(alpha: .1) : Colors.transparent,
+        color: hovered ? VyseColors.ink.withValues(alpha: .1) : Colors.transparent,
       ),
       child: Icon(icon, size: 18, color: hovered ? VyseColors.text : const Color(0xFF8B90A3)),
     ),
@@ -182,9 +182,9 @@ class _RowError extends StatelessWidget {
     padding: EdgeInsets.only(left: Layout.inset(context)),
     child: Row(
       children: [
-        const Icon(Icons.wifi_off_rounded, size: 18, color: VyseColors.textFaint),
+        Icon(Icons.wifi_off_rounded, size: 18, color: VyseColors.textFaint),
         const SizedBox(width: 10),
-        const Text("Impossibile caricare questa riga.", style: TextStyle(color: VyseColors.textDim, fontSize: 13)),
+        Text("Impossibile caricare questa riga.", style: TextStyle(color: VyseColors.textDim, fontSize: 13)),
         const SizedBox(width: 8),
         TextButton(onPressed: onRetry, child: const Text('Riprova')),
       ],
@@ -212,7 +212,7 @@ class OutlineCard extends StatelessWidget {
         duration: const Duration(milliseconds: 180),
         foregroundDecoration: BoxDecoration(
           borderRadius: BorderRadius.circular(radius),
-          border: Border.all(color: hovered ? Colors.white : Colors.white.withValues(alpha: .05), width: hovered ? 2 : 1),
+          border: Border.all(color: hovered ? Colors.white : VyseColors.ink.withValues(alpha: .05), width: hovered ? 2 : 1),
         ),
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(radius), color: VyseColors.surface),
         clipBehavior: Clip.antiAlias,
@@ -223,7 +223,7 @@ class OutlineCard extends StatelessWidget {
 }
 
 Widget _image(String? url, {Alignment alignment = Alignment.center}) => url == null
-    ? const ColoredBox(
+    ? ColoredBox(
         color: VyseColors.surface,
         child: Center(child: Icon(Icons.image_not_supported_outlined, color: VyseColors.textFaint, size: 20)),
       )
@@ -232,8 +232,8 @@ Widget _image(String? url, {Alignment alignment = Alignment.center}) => url == n
         fit: BoxFit.cover,
         alignment: alignment,
         fadeInDuration: const Duration(milliseconds: 300),
-        placeholder: (_, _) => const ColoredBox(color: VyseColors.surface),
-        errorWidget: (_, _, _) => const ColoredBox(color: VyseColors.surface),
+        placeholder: (_, _) => ColoredBox(color: VyseColors.surface),
+        errorWidget: (_, _, _) => ColoredBox(color: VyseColors.surface),
       );
 
 Widget _dimmer(bool hovered) => IgnorePointer(
@@ -354,7 +354,7 @@ class _LandscapeCardState extends State<LandscapeCard> {
                     const SizedBox(height: 2),
                     Text(
                       [m.year ?? '', m.kind, '★ ${m.rating.toStringAsFixed(1)}'].where((s) => s.isNotEmpty).join('  ·  '),
-                      style: const TextStyle(fontSize: 10.5, color: VyseColors.textDim),
+                      style: TextStyle(fontSize: 10.5, color: VyseColors.textDim),
                     ),
                   ],
                 ),
@@ -437,7 +437,7 @@ class Top10Card extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 12),
                       ),
-                      Text(media.year ?? '', style: const TextStyle(fontSize: 10, color: VyseColors.textDim)),
+                      Text(media.year ?? '', style: TextStyle(fontSize: 10, color: VyseColors.textDim)),
                     ],
                   ),
                 ),
@@ -479,7 +479,7 @@ class PlatformTile extends StatelessWidget {
                 child: provider.logo == null
                     ? SizedBox.square(
                         dimension: logo,
-                        child: const Icon(Icons.live_tv_rounded, color: VyseColors.textFaint),
+                        child: Icon(Icons.live_tv_rounded, color: VyseColors.textFaint),
                       )
                     : ClipRRect(
                         borderRadius: BorderRadius.circular(logo * .24),
@@ -694,7 +694,7 @@ class StudioTile extends StatelessWidget {
                     textAlign: TextAlign.center,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 14, color: VyseColors.textDim),
+                    style: TextStyle(fontWeight: FontWeight.w800, fontSize: 14, color: VyseColors.textDim),
                   )
                 : AnimatedScale(
                     scale: hovered ? 1.06 : 1,
@@ -712,7 +712,7 @@ class StudioTile extends StatelessWidget {
         overflow: TextOverflow.ellipsis,
         style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w600),
       ),
-      Text([studio.kind, ?studio.country].join(' · '), maxLines: 1, style: const TextStyle(fontSize: 11, color: VyseColors.textFaint)),
+      Text([studio.kind, ?studio.country].join(' · '), maxLines: 1, style: TextStyle(fontSize: 11, color: VyseColors.textFaint)),
     ],
   );
 }

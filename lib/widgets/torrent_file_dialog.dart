@@ -28,7 +28,7 @@ Future<int?> askTorrentFile(BuildContext context, List<TorrentFileChoice> files,
       return Dialog(
         backgroundColor: VyseColors.surface,
         insetPadding: EdgeInsets.symmetric(horizontal: size.width < 520 ? 14 : 24, vertical: 24),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: const BorderSide(color: VyseColors.stroke)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: BorderSide(color: VyseColors.stroke)),
         clipBehavior: Clip.antiAlias,
         child: ConstrainedBox(
           constraints: BoxConstraints(maxWidth: 560, maxHeight: size.height * .78),
@@ -55,7 +55,7 @@ Future<int?> askTorrentFile(BuildContext context, List<TorrentFileChoice> files,
                             ].join('  ·  '),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(fontSize: 12.5, color: VyseColors.textDim),
+                            style: TextStyle(fontSize: 12.5, color: VyseColors.textDim),
                           ),
                         ],
                       ),
@@ -63,7 +63,7 @@ Future<int?> askTorrentFile(BuildContext context, List<TorrentFileChoice> files,
                     IconButton(
                       tooltip: 'Annulla',
                       onPressed: () => Navigator.pop(ctx),
-                      icon: const Icon(Icons.close_rounded, size: 20, color: VyseColors.textDim),
+                      icon: Icon(Icons.close_rounded, size: 20, color: VyseColors.textDim),
                     ),
                   ],
                 ),
@@ -102,7 +102,7 @@ class _FileRow extends StatelessWidget {
     return Pressable(
       onTap: onTap,
       builder: (context, hovered, _) => ColoredBox(
-        color: hovered ? Colors.white.withValues(alpha: .06) : Colors.transparent,
+        color: hovered ? VyseColors.ink.withValues(alpha: .06) : Colors.transparent,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 11, 14, 11),
           child: Row(
@@ -117,14 +117,14 @@ class _FileRow extends StatelessWidget {
                     Text(name, maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 13.5, fontWeight: FontWeight.w600, height: 1.3)),
                     if (folder.isNotEmpty) ...[
                       const SizedBox(height: 2),
-                      Text(folder, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 11.5, color: VyseColors.textFaint)),
+                      Text(folder, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 11.5, color: VyseColors.textFaint)),
                     ],
                   ],
                 ),
               ),
               if (size.isNotEmpty) ...[
                 const SizedBox(width: 12),
-                Text(size, style: const TextStyle(fontSize: 12, color: VyseColors.textDim, fontWeight: FontWeight.w600, fontFeatures: [FontFeature.tabularFigures()])),
+                Text(size, style: TextStyle(fontSize: 12, color: VyseColors.textDim, fontWeight: FontWeight.w600, fontFeatures: [FontFeature.tabularFigures()])),
               ],
             ],
           ),

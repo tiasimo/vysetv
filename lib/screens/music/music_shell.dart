@@ -175,7 +175,7 @@ class _TopBar extends StatelessWidget {
           builder: (context, hovered, _) => Container(
             width: 38,
             height: 38,
-            decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white.withValues(alpha: hovered && canPop ? .12 : 0)),
+            decoration: BoxDecoration(shape: BoxShape.circle, color: VyseColors.ink.withValues(alpha: hovered && canPop ? .12 : 0)),
             child: const Icon(Icons.arrow_back_rounded, size: 21),
           ),
         ),
@@ -254,7 +254,7 @@ class _SearchPillState extends State<_SearchPill> {
             color: const Color(0xFF15161D),
             elevation: 12,
             shadowColor: Colors.black,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14), side: const BorderSide(color: VyseColors.stroke)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14), side: BorderSide(color: VyseColors.stroke)),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 6),
               child: Column(mainAxisSize: MainAxisSize.min, children: [
@@ -264,12 +264,12 @@ class _SearchPillState extends State<_SearchPill> {
                     builder: (context, hovered, _) => Container(
                       height: 40,
                       padding: const EdgeInsets.symmetric(horizontal: 16),
-                      color: Colors.white.withValues(alpha: hovered ? .06 : 0),
+                      color: VyseColors.ink.withValues(alpha: hovered ? .06 : 0),
                       child: Row(children: [
-                        const Icon(Icons.search_rounded, size: 17, color: VyseColors.textFaint),
+                        Icon(Icons.search_rounded, size: 17, color: VyseColors.textFaint),
                         const SizedBox(width: 12),
                         Expanded(child: Text(s, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 14))),
-                        const Icon(Icons.north_west_rounded, size: 15, color: VyseColors.textFaint),
+                        Icon(Icons.north_west_rounded, size: 15, color: VyseColors.textFaint),
                       ]),
                     ),
                   ),
@@ -300,12 +300,12 @@ class _SearchPillState extends State<_SearchPill> {
         height: 44,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(99),
-          color: Colors.white.withValues(alpha: focused ? .1 : .065),
+          color: VyseColors.ink.withValues(alpha: focused ? .1 : .065),
           border: Border.all(color: focused ? VyseColors.strokeHi : VyseColors.stroke),
         ),
         child: Row(children: [
           const SizedBox(width: 16),
-          const Icon(Icons.search_rounded, size: 20, color: VyseColors.textDim),
+          Icon(Icons.search_rounded, size: 20, color: VyseColors.textDim),
           const SizedBox(width: 10),
           Expanded(
             child: TextField(
@@ -315,7 +315,7 @@ class _SearchPillState extends State<_SearchPill> {
               onSubmitted: _submit,
               textInputAction: TextInputAction.search,
               style: const TextStyle(fontSize: 14.5),
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 isDense: true,
                 border: InputBorder.none,
                 hintText: 'Cerca artisti, brani, playlist e album',
@@ -339,8 +339,8 @@ class _SearchPillState extends State<_SearchPill> {
             Container(
               margin: const EdgeInsets.only(right: 10),
               padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(6), color: Colors.white.withValues(alpha: .08)),
-              child: const Text('Ctrl Space', style: TextStyle(fontSize: 11, color: VyseColors.textDim, fontWeight: FontWeight.w600)),
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(6), color: VyseColors.ink.withValues(alpha: .08)),
+              child: Text('Ctrl Space', style: TextStyle(fontSize: 11, color: VyseColors.textDim, fontWeight: FontWeight.w600)),
             ),
         ]),
       ),
@@ -375,7 +375,7 @@ class _SidebarState extends State<_Sidebar> {
     margin: EdgeInsets.fromLTRB(Layout.railCollapsed + 8, widget.top + 10, 0, 10),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(16),
-      color: Colors.white.withValues(alpha: .035),
+      color: VyseColors.ink.withValues(alpha: .035),
       border: Border.all(color: VyseColors.stroke),
     ),
     child: ListenableBuilder(
@@ -435,10 +435,10 @@ class _SidebarState extends State<_Sidebar> {
                 height: 40,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: Colors.white.withValues(alpha: hovered ? .07 : .02),
-                  border: Border.all(color: Colors.white.withValues(alpha: hovered ? .3 : .14)),
+                  color: VyseColors.ink.withValues(alpha: hovered ? .07 : .02),
+                  border: Border.all(color: VyseColors.ink.withValues(alpha: hovered ? .3 : .14)),
                 ),
-                child: const Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   Icon(Icons.add_circle_outline_rounded, size: 18, color: VyseColors.textDim),
                   SizedBox(width: 8),
                   Text('Nuova playlist', style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.w600)),
@@ -456,10 +456,10 @@ class _SidebarState extends State<_Sidebar> {
                 style: const TextStyle(fontSize: 13),
                 decoration: InputDecoration(
                   hintText: _albums ? 'Filtra album' : 'Filtra playlist',
-                  hintStyle: const TextStyle(color: VyseColors.textFaint, fontSize: 13),
-                  prefixIcon: const Icon(Icons.search_rounded, size: 17, color: VyseColors.textFaint),
+                  hintStyle: TextStyle(color: VyseColors.textFaint, fontSize: 13),
+                  prefixIcon: Icon(Icons.search_rounded, size: 17, color: VyseColors.textFaint),
                   filled: true,
-                  fillColor: Colors.white.withValues(alpha: .05),
+                  fillColor: VyseColors.ink.withValues(alpha: .05),
                   contentPadding: EdgeInsets.zero,
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(99), borderSide: BorderSide.none),
                 ),
@@ -473,7 +473,7 @@ class _SidebarState extends State<_Sidebar> {
                     child: Text(
                       _albums ? 'Gli album che salvi compaiono qui.' : 'Le playlist che crei o salvi compaiono qui.',
                       textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 12.5, color: VyseColors.textFaint, height: 1.4),
+                      style: TextStyle(fontSize: 12.5, color: VyseColors.textFaint, height: 1.4),
                     ),
                   )
                 : ListView(padding: const EdgeInsets.fromLTRB(6, 2, 6, 10), children: rows),
@@ -493,7 +493,7 @@ class _Segments extends StatelessWidget {
   Widget build(BuildContext context) => Container(
     height: 40,
     padding: const EdgeInsets.all(3),
-    decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), color: Colors.white.withValues(alpha: .05), border: Border.all(color: VyseColors.stroke)),
+    decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), color: VyseColors.ink.withValues(alpha: .05), border: Border.all(color: VyseColors.stroke)),
     child: Row(children: [
       for (final (v, icon, label) in [(false, Icons.queue_music_rounded, 'Playlist'), (true, Icons.album_rounded, 'Albums')])
         Expanded(
@@ -503,7 +503,7 @@ class _Segments extends StatelessWidget {
               duration: const Duration(milliseconds: 180),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(9),
-                color: albums == v ? Colors.white.withValues(alpha: .13) : Colors.transparent,
+                color: albums == v ? VyseColors.ink.withValues(alpha: .13) : Colors.transparent,
               ),
               child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 Icon(icon, size: 16, color: albums == v ? VyseColors.text : VyseColors.textDim),
@@ -530,7 +530,7 @@ class _SideRow extends StatelessWidget {
     builder: (context, hovered, _) => AnimatedContainer(
       duration: const Duration(milliseconds: 120),
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.white.withValues(alpha: hovered ? .06 : 0)),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: VyseColors.ink.withValues(alpha: hovered ? .06 : 0)),
       child: Row(children: [
         art,
         const SizedBox(width: 12),
@@ -538,7 +538,7 @@ class _SideRow extends StatelessWidget {
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(title, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
             const SizedBox(height: 2),
-            Text(subtitle, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12, color: VyseColors.textDim)),
+            Text(subtitle, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, color: VyseColors.textDim)),
           ]),
         ),
       ]),
@@ -570,7 +570,7 @@ class MusicBar extends StatelessWidget {
               : Container(
                   height: 84,
                   padding: EdgeInsets.fromLTRB(Layout.railCollapsed + 16, 0, 22, 0),
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     color: Color(0xFF0B0C12),
                     border: Border(top: BorderSide(color: VyseColors.stroke)),
                   ),
@@ -656,7 +656,7 @@ class MusicBar extends StatelessWidget {
                               thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 6),
                               overlayShape: SliderComponentShape.noOverlay,
                               activeTrackColor: VyseColors.text,
-                              inactiveTrackColor: Colors.white24,
+                              inactiveTrackColor: VyseColors.ink.withValues(alpha: .24),
                               thumbColor: Colors.white,
                             ),
                             child: Slider(value: p.volume.clamp(0, 100), max: 100, onChanged: p.setVolume),
@@ -689,7 +689,7 @@ class _BarIcon extends StatelessWidget {
     builder: (context, hovered, _) => Container(
       width: 36,
       height: 36,
-      decoration: BoxDecoration(shape: BoxShape.circle, color: on ? accentOf(context).withValues(alpha: .14) : Colors.white.withValues(alpha: hovered ? .08 : 0)),
+      decoration: BoxDecoration(shape: BoxShape.circle, color: on ? accentOf(context).withValues(alpha: .14) : VyseColors.ink.withValues(alpha: hovered ? .08 : 0)),
       child: Icon(icon, size: size, color: on ? accentOf(context) : (hovered ? VyseColors.text : VyseColors.textDim)),
     ),
   );
@@ -715,7 +715,7 @@ class _ProgressState extends State<_Progress> {
         builder: (context, pos, _) {
           final total = dur.inMilliseconds.toDouble();
           final at = _drag ?? (total <= 0 ? 0.0 : (pos.inMilliseconds / total).clamp(0.0, 1.0));
-          const time = TextStyle(fontSize: 11.5, color: VyseColors.textFaint, fontFeatures: [FontFeature.tabularFigures()]);
+          final time = TextStyle(fontSize: 11.5, color: VyseColors.textFaint, fontFeatures: [FontFeature.tabularFigures()]);
           return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             SizedBox(width: 44, child: Text(fmtClock(Duration(milliseconds: (at * total).round())), textAlign: TextAlign.right, style: time)),
             const SizedBox(width: 10),
@@ -730,7 +730,7 @@ class _ProgressState extends State<_Progress> {
                     thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 6),
                     overlayShape: SliderComponentShape.noOverlay,
                     activeTrackColor: accentOf(context),
-                    inactiveTrackColor: Colors.white24,
+                    inactiveTrackColor: VyseColors.ink.withValues(alpha: .24),
                     thumbColor: Colors.white,
                   ),
                   child: Slider(
@@ -767,7 +767,7 @@ class _QueuePanel extends StatelessWidget {
     return Container(
       width: 340,
       margin: EdgeInsets.fromLTRB(0, top + 10, 10, 10),
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), color: Colors.white.withValues(alpha: .035), border: Border.all(color: VyseColors.stroke)),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), color: VyseColors.ink.withValues(alpha: .035), border: Border.all(color: VyseColors.stroke)),
       child: ListenableBuilder(
         listenable: p,
         builder: (context, _) {
@@ -785,14 +785,14 @@ class _QueuePanel extends StatelessWidget {
               builder: (context, hovered, _) => Container(
                 height: 56,
                 padding: const EdgeInsets.symmetric(horizontal: 8),
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.white.withValues(alpha: hovered ? .06 : 0)),
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: VyseColors.ink.withValues(alpha: hovered ? .06 : 0)),
                 child: Row(children: [
                   Artwork(url: t.coverUrl, size: 40, radius: 6),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: [
                       Text(t.title, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 13.5, fontWeight: FontWeight.w600)),
-                      Text(t.artist, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12, color: VyseColors.textDim)),
+                      Text(t.artist, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, color: VyseColors.textDim)),
                     ]),
                   ),
                   if (hovered)
@@ -812,8 +812,8 @@ class _QueuePanel extends StatelessWidget {
           Widget label(String text, int n) => Padding(
             padding: const EdgeInsets.fromLTRB(10, 14, 10, 6),
             child: Row(children: [
-              Expanded(child: Text(text, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w800, letterSpacing: 1.1, color: VyseColors.textDim))),
-              Text('$n', style: const TextStyle(fontSize: 11.5, color: VyseColors.textFaint)),
+              Expanded(child: Text(text, style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800, letterSpacing: 1.1, color: VyseColors.textDim))),
+              Text('$n', style: TextStyle(fontSize: 11.5, color: VyseColors.textFaint)),
             ]),
           );
 
@@ -821,12 +821,12 @@ class _QueuePanel extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(14, 12, 8, 4),
               child: Row(children: [
-                const Icon(Icons.queue_music_rounded, size: 20, color: VyseColors.textDim),
+                Icon(Icons.queue_music_rounded, size: 20, color: VyseColors.textDim),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                     const Text('A seguire', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800)),
-                    Text(songCount(up.length), style: const TextStyle(fontSize: 12, color: VyseColors.textDim)),
+                    Text(songCount(up.length), style: TextStyle(fontSize: 12, color: VyseColors.textDim)),
                   ]),
                 ),
                 _BarIcon(icon: Icons.shuffle_rounded, tooltip: 'Mescola i prossimi', on: p.shuffle, onTap: p.toggleShuffle),
@@ -862,13 +862,13 @@ class _QueuePanel extends StatelessWidget {
                         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                           Text('IN RIPRODUZIONE', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1, color: accentOf(context))),
                           Text(now.title, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 13.5, fontWeight: FontWeight.w700)),
-                          Text(now.artist, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12, color: VyseColors.textDim)),
+                          Text(now.artist, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, color: VyseColors.textDim)),
                         ]),
                       ),
                     ]),
                   ),
                 if (up.isEmpty)
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.all(20),
                     child: Text('Niente dopo questo. "Riproduci dopo" e "Aggiungi alla coda" su qualsiasi brano lo mettono qui.', textAlign: TextAlign.center, style: TextStyle(fontSize: 12.5, color: VyseColors.textFaint, height: 1.4)),
                   ),

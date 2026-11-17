@@ -142,7 +142,7 @@ class _ResumeCardState extends State<_ResumeCard> {
             ),
             foregroundDecoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: hovered ? Colors.white.withValues(alpha: .9) : Colors.white.withValues(alpha: .06), width: hovered ? 1.5 : 1),
+              border: Border.all(color: hovered ? VyseColors.ink.withValues(alpha: .9) : VyseColors.ink.withValues(alpha: .06), width: hovered ? 1.5 : 1),
             ),
             child: Stack(fit: StackFit.expand, children: [
               // backdrop, drifting in a touch on hover
@@ -152,13 +152,13 @@ class _ResumeCardState extends State<_ResumeCard> {
                 curve: Curves.easeOutCubic,
                 // anime without a banner: their cover
                 child: (e.media.backdrop('w780') ?? (e.media.anime ? e.media.poster() : null)) == null
-                    ? const ColoredBox(color: VyseColors.surface)
+                    ? ColoredBox(color: VyseColors.surface)
                     : CachedNetworkImage(
                         imageUrl: (e.media.backdrop('w780') ?? e.media.poster())!,
                         fit: BoxFit.cover,
                         fadeInDuration: const Duration(milliseconds: 300),
-                        placeholder: (_, _) => const ColoredBox(color: VyseColors.surface),
-                        errorWidget: (_, _, _) => const ColoredBox(color: VyseColors.surface),
+                        placeholder: (_, _) => ColoredBox(color: VyseColors.surface),
+                        errorWidget: (_, _, _) => ColoredBox(color: VyseColors.surface),
                       ),
               ),
               // shade for the text
@@ -212,9 +212,9 @@ class _ResumeCardState extends State<_ResumeCard> {
                       width: 3,
                       height: 3,
                       margin: const EdgeInsets.symmetric(horizontal: 7),
-                      decoration: const BoxDecoration(color: VyseColors.textFaint, shape: BoxShape.circle),
+                      decoration: BoxDecoration(color: VyseColors.textFaint, shape: BoxShape.circle),
                     ),
-                    Text(_left(e.left), style: const TextStyle(fontSize: 11.5, fontWeight: FontWeight.w700, color: VyseColors.accent)),
+                    Text(_left(e.left), style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.w700, color: VyseColors.accent)),
                   ]),
                 ]),
               ),
@@ -253,7 +253,7 @@ class _ResumeCardState extends State<_ResumeCard> {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: Colors.black.withValues(alpha: h ? .8 : .55),
-                            border: Border.all(color: Colors.white.withValues(alpha: h ? .5 : .2)),
+                            border: Border.all(color: VyseColors.ink.withValues(alpha: h ? .5 : .2)),
                           ),
                           child: const Icon(Icons.close_rounded, size: 16),
                         ),
@@ -267,7 +267,7 @@ class _ResumeCardState extends State<_ResumeCard> {
                 right: 0,
                 bottom: 0,
                 child: Stack(children: [
-                  Container(height: 3, color: Colors.white.withValues(alpha: .16)),
+                  Container(height: 3, color: VyseColors.ink.withValues(alpha: .16)),
                   FractionallySizedBox(
                     widthFactor: e.fraction,
                     child: Container(
@@ -311,7 +311,7 @@ class _Ring extends StatelessWidget {
           strokeWidth: size > 50 ? 3 : 2.5,
           strokeCap: StrokeCap.round,
           color: VyseColors.accent,
-          backgroundColor: Colors.white.withValues(alpha: .18),
+          backgroundColor: VyseColors.ink.withValues(alpha: .18),
         ),
       ),
       Icon(Icons.play_arrow_rounded, size: size * .5, color: Colors.white),

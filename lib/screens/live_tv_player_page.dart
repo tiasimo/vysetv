@@ -240,7 +240,7 @@ class _LiveTvPlayerPageState extends State<LiveTvPlayerPage> {
               child: Stack(children: [
                 Positioned.fill(child: VyseVideo(player: _player)),
                 if (_buffering && _error == null)
-                  const Center(child: SizedBox.square(dimension: 36, child: CircularProgressIndicator(strokeWidth: 2.6, color: VyseColors.accent))),
+                  Center(child: SizedBox.square(dimension: 36, child: CircularProgressIndicator(strokeWidth: 2.6, color: VyseColors.accent))),
                 if (_error != null) Center(child: _errorCard()),
                 // Top: back, title, LIVE.
                 _fade(
@@ -268,7 +268,7 @@ class _LiveTvPlayerPageState extends State<LiveTvPlayerPage> {
                                 maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w800)),
                             if (_item.subtitle != null)
                               Text(_item.subtitle!,
-                                  maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12, color: VyseColors.textDim)),
+                                  maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, color: VyseColors.textDim)),
                           ]),
                         ),
                         if (_item.live) const _LiveBadge(),
@@ -380,11 +380,11 @@ class _LiveTvPlayerPageState extends State<LiveTvPlayerPage> {
         opacity: .8,
         padding: const EdgeInsets.all(22),
         child: Column(mainAxisSize: MainAxisSize.min, children: [
-          const Icon(Icons.signal_wifi_connected_no_internet_4_rounded, size: 32, color: VyseColors.accentHot),
+          Icon(Icons.signal_wifi_connected_no_internet_4_rounded, size: 32, color: VyseColors.accentHot),
           const SizedBox(height: 10),
           const Text("Questo stream non parte", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
           const SizedBox(height: 4),
-          const Text('La sorgente potrebbe essere offline o occupata.', style: TextStyle(fontSize: 12.5, color: VyseColors.textDim)),
+          Text('La sorgente potrebbe essere offline o occupata.', style: TextStyle(fontSize: 12.5, color: VyseColors.textDim)),
           const SizedBox(height: 14),
           Row(mainAxisSize: MainAxisSize.min, children: [
             TextButton(onPressed: _open, child: const Text('Riprova')),
@@ -472,11 +472,11 @@ class _EpgStrip extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 8),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Row(children: [
-                const Text('NOW  ', style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w900, color: VyseColors.accent, letterSpacing: .6)),
+                Text('NOW  ', style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w900, color: VyseColors.accent, letterSpacing: .6)),
                 Expanded(
                   child: Text(cur.title, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700)),
                 ),
-                Text('${hm(cur.start)} – ${hm(cur.stop)}', style: const TextStyle(fontSize: 12, color: VyseColors.textDim)),
+                Text('${hm(cur.start)} – ${hm(cur.stop)}', style: TextStyle(fontSize: 12, color: VyseColors.textDim)),
               ]),
               const SizedBox(height: 6),
               ClipRRect(
@@ -491,7 +491,7 @@ class _EpgStrip extends StatelessWidget {
               if (next != null) ...[
                 const SizedBox(height: 6),
                 Text('Dopo  ${hm(next.start)}  ${next.title}',
-                    maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12, color: VyseColors.textDim)),
+                    maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, color: VyseColors.textDim)),
               ],
             ]),
           );

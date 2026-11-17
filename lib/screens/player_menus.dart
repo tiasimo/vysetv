@@ -551,7 +551,7 @@ class MenuRow extends StatelessWidget {
                     alignment: Alignment.centerRight,
                     child: chevron
                         ? Icon(Icons.chevron_right_rounded, size: 21, color: selected ? VyseColors.accent : MenuInk.faint)
-                        : (live ? const LiveBars() : const Icon(Icons.check_rounded, size: 19, color: VyseColors.accent)),
+                        : (live ? const LiveBars() : Icon(Icons.check_rounded, size: 19, color: VyseColors.accent)),
                   ),
                 ),
             ],
@@ -564,8 +564,9 @@ class MenuRow extends StatelessWidget {
 
 /// Three bars that move: this one is playing.
 class LiveBars extends StatefulWidget {
-  const LiveBars({super.key, this.color = VyseColors.accent, this.height = 14});
-  final Color color;
+  const LiveBars({super.key, Color? color, this.height = 14}) : _color = color;
+  final Color? _color;
+  Color get color => _color ?? VyseColors.accent;
   final double height;
 
   @override
@@ -651,7 +652,7 @@ class _Onward extends StatelessWidget {
               offset: Offset(hovered ? .16 : 0, 0),
               duration: const Duration(milliseconds: 220),
               curve: MenuInk.ease,
-              child: const Icon(Icons.arrow_forward_rounded, size: 19, color: VyseColors.accent),
+              child: Icon(Icons.arrow_forward_rounded, size: 19, color: VyseColors.accent),
             ),
           ],
         ),
@@ -1235,7 +1236,7 @@ class _SubtitlesPaneState extends State<SubtitlesPane> {
         ),
         Rise(
           index: i++,
-          child: MenuRow(title: 'Off', selected: widget.active == null, onTap: () => widget.onTrack(null)),
+          child: MenuRow(title: 'Nessuno', selected: widget.active == null, onTap: () => widget.onTrack(null)),
         ),
         if (widget.loading)
           const Padding(
@@ -1535,7 +1536,7 @@ class MenuToggle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-      MenuRow(title: title, detail: detail, value: value ? 'On' : 'Off', selected: value, onTap: () => onChanged(!value));
+      MenuRow(title: title, detail: detail, value: value ? 'Sì' : 'No', selected: value, onTap: () => onChanged(!value));
 }
 
 /// Title on the left, − value + on the right. Tapping the value resets it.

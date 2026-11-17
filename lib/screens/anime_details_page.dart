@@ -228,7 +228,7 @@ class _AnimeDetailsPageState extends State<AnimeDetailsPage> {
             itemBuilder: (_, r, _) => Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               SizedBox(width: posterW, height: posterW * 1.5, child: AnimeCard(anime: r.anime)),
               const SizedBox(height: 6),
-              Text(r.label, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 11, color: VyseColors.textFaint)),
+              Text(r.label, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 11, color: VyseColors.textFaint)),
             ]),
           ),
         ),
@@ -258,7 +258,7 @@ class _AnimeDetailsPageState extends State<AnimeDetailsPage> {
       Padding(
         padding: EdgeInsets.fromLTRB(inset, 0, right, 0),
         child: Container(
-          decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.white.withValues(alpha: .08)))),
+          decoration: BoxDecoration(border: Border(bottom: BorderSide(color: VyseColors.ink.withValues(alpha: .08)))),
           child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(children: [
@@ -290,7 +290,7 @@ class _AnimeBackdrop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const bg = VyseColors.bg;
+    final bg = VyseColors.bg;
     return Stack(
       fit: StackFit.expand,
       children: [
@@ -408,7 +408,7 @@ class _AnimePoster extends StatelessWidget {
       ),
       clipBehavior: Clip.antiAlias,
       child: anime.cover == null
-          ? const Icon(Icons.movie_outlined, color: VyseColors.textFaint)
+          ? Icon(Icons.movie_outlined, color: VyseColors.textFaint)
           : CachedNetworkImage(
               imageUrl: anime.cover!,
               fit: BoxFit.cover,
@@ -497,7 +497,7 @@ class _AnimeMetaLine extends StatelessWidget {
       runSpacing: 6,
       children: [
         for (var i = 0; i < parts.length; i++) ...[
-          if (i > 0) const Text('·', style: TextStyle(color: VyseColors.textFaint, fontSize: 13)),
+          if (i > 0) Text('·', style: TextStyle(color: VyseColors.textFaint, fontSize: 13)),
           parts[i],
         ],
         if (a.score != null) ...[
@@ -508,14 +508,14 @@ class _AnimeMetaLine extends StatelessWidget {
             Text((a.score! / 10).toStringAsFixed(1), style: const TextStyle(color: VyseColors.star, fontWeight: FontWeight.w700, fontSize: 13)),
             if (a.popularity > 0) ...[
               const SizedBox(width: 4),
-              Text('(${fmtCompact(a.popularity)})', style: const TextStyle(color: VyseColors.textFaint, fontSize: 12)),
+              Text('(${fmtCompact(a.popularity)})', style: TextStyle(color: VyseColors.textFaint, fontSize: 12)),
             ],
           ]),
         ],
         if (a.status.isNotEmpty)
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(4), border: Border.all(color: Colors.white.withValues(alpha: .3))),
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(4), border: Border.all(color: VyseColors.ink.withValues(alpha: .3))),
             child: Text(
               (animeStatuses[a.status] ?? a.status).toUpperCase(),
               style: const TextStyle(fontSize: 10.5, fontWeight: FontWeight.w700, color: Color(0xFFC3C7D4)),
@@ -537,7 +537,7 @@ class _AnimeGenreChip extends StatelessWidget {
     builder: (context, hovered, _) => AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(6), color: Colors.white.withValues(alpha: hovered ? .16 : .08)),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(6), color: VyseColors.ink.withValues(alpha: hovered ? .16 : .08)),
       child: Text(label, style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.w600, color: hovered ? VyseColors.text : VyseColors.textDim)),
     ),
   );
@@ -563,7 +563,7 @@ class _AnimeBody extends StatelessWidget {
         if (other != null) ...[
           FadeSlideIn(
             offset: 8,
-            child: Text(other, textAlign: align, style: const TextStyle(color: VyseColors.textDim, fontSize: 13.5, fontStyle: FontStyle.italic)),
+            child: Text(other, textAlign: align, style: TextStyle(color: VyseColors.textDim, fontSize: 13.5, fontStyle: FontStyle.italic)),
           ),
           const SizedBox(height: 10),
         ],
@@ -640,12 +640,12 @@ class _AnimeFacts extends StatelessWidget {
                 child: Container(
                   width: cellW,
                   padding: const EdgeInsets.fromLTRB(0, 13, 18, 13),
-                  decoration: BoxDecoration(border: Border(top: BorderSide(color: Colors.white.withValues(alpha: .08)))),
+                  decoration: BoxDecoration(border: Border(top: BorderSide(color: VyseColors.ink.withValues(alpha: .08)))),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(label, style: const TextStyle(fontSize: 12, color: VyseColors.textFaint)),
+                      Text(label, style: TextStyle(fontSize: 12, color: VyseColors.textFaint)),
                       const SizedBox(height: 4),
                       Text(value!, maxLines: 2, overflow: TextOverflow.ellipsis, style: _FactsPanel._value),
                     ],
@@ -683,11 +683,11 @@ class _CharacterTile extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(14),
                 color: VyseColors.surfaceHi,
-                border: Border.all(color: Colors.white.withValues(alpha: hovered ? .4 : .06)),
+                border: Border.all(color: VyseColors.ink.withValues(alpha: hovered ? .4 : .06)),
               ),
               clipBehavior: Clip.antiAlias,
               child: c.image == null
-                  ? const Icon(Icons.person_rounded, color: VyseColors.textFaint, size: 32)
+                  ? Icon(Icons.person_rounded, color: VyseColors.textFaint, size: 32)
                   : CachedNetworkImage(
                       imageUrl: c.image!,
                       fit: BoxFit.cover,
@@ -709,7 +709,7 @@ class _CharacterTile extends StatelessWidget {
             c.actor ?? c.roleLabel,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(fontSize: 10.5, color: VyseColors.textFaint),
+            style: TextStyle(fontSize: 10.5, color: VyseColors.textFaint),
           ),
         ],
       ),
@@ -747,7 +747,7 @@ class _AudioToggle extends StatelessWidget {
           alignment: Alignment.center,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
-            color: on ? Colors.white : Colors.white.withValues(alpha: hovered ? .08 : 0),
+            color: on ? Colors.white : VyseColors.ink.withValues(alpha: hovered ? .08 : 0),
           ),
           child: Text(
             label,
@@ -762,8 +762,8 @@ class _AudioToggle extends StatelessWidget {
           padding: const EdgeInsets.all(4),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            color: Colors.white.withValues(alpha: .06),
-            border: Border.all(color: Colors.white.withValues(alpha: .08)),
+            color: VyseColors.ink.withValues(alpha: .06),
+            border: Border.all(color: VyseColors.ink.withValues(alpha: .08)),
           ),
           child: Row(mainAxisSize: MainAxisSize.min, children: [
             side('Sub', !dub, () => AppSettings.animeAudio.set('')),

@@ -476,7 +476,7 @@ class _PlayerPageState extends State<_PlayerView> {
   List<SyncCue> _cues = const []; // lines of the subtitle in use, for the sync panel
   /// Films, TV series and anime keep their own audio and subtitle languages (Settings → Languages).
   late final PlayKind _kind = PlaybackPrefs.of(widget.media, anime: widget.anime != null);
-  late String _subtitle = PlaybackPrefs.autoSubtitles(_kind).value ? PlaybackPrefs.subtitles(_kind).value : 'Off';
+  late String _subtitle = PlaybackPrefs.autoOn(_kind) ? PlaybackPrefs.subtitles(_kind).value : 'Off';
   int _audioPrefLoad = -1; // the load the preferred audio language was last looked for in
   bool _audioByHand = false; // picked in the player's menu: the Settings language no longer applies
   double _speed = 1;
@@ -1226,7 +1226,7 @@ class _PlayerPageState extends State<_PlayerView> {
           headers: src.headers,
           exactHeaders: widget.server is DirectPlayback,
           audioLanguage: _audioNow?.language,
-          subtitleLanguage: PlaybackPrefs.subtitles(_kind).value,
+          subtitleLanguage: PlaybackPrefs.autoOn(_kind) ? PlaybackPrefs.subtitles(_kind).value : null,
         );
       }
       await Downloads.instance.add(r);
@@ -1663,7 +1663,7 @@ class _PlayerPageState extends State<_PlayerView> {
       }
       return; // the one you had comes first; nothing is picked for you meanwhile
     }
-    if (!PlaybackPrefs.autoSubtitles(_kind).value || _subsChosen || _follower || id != _loadId) return;
+    if (!PlaybackPrefs.autoOn(_kind) || _subsChosen || _follower || id != _loadId) return;
     if (_activeSubTrack?.provider == 'Built in') return;
     final mine = sub.inLanguage(_builtIn, sub.preferredLang());
     final pick = mine.where((t) => !t.release.contains('Forced')).firstOrNull ?? mine.firstOrNull;
@@ -2200,7 +2200,7 @@ class _PlayerPageState extends State<_PlayerView> {
         _partyFollow(); // the host's subtitle, not ours
       } else if (_restoreSub != null && !_subsChosen) {
         _resumeSubtitle(id);
-      } else if (PlaybackPrefs.autoSubtitles(_kind).value && !_subsChosen && _subsPicked != id && _activeSubTrack?.provider != 'Built in') {
+      } else if (PlaybackPrefs.autoOn(_kind) && !_subsChosen && _subsPicked != id && _activeSubTrack?.provider != 'Built in') {
         // once per episode: later refreshes (anime servers adding their tracks) keep what's on,
         // or off
         final mine = sub.inLanguage(_subtitleTracks, sub.preferredLang());
@@ -3206,7 +3206,7 @@ class _PlayerPageState extends State<_PlayerView> {
     _Tab.sources => _sources.isEmpty ? 'Caricamento…' : [_nowQuality, _sources[_source].server].where((x) => x.isNotEmpty).join(' · '),
     _Tab.quality => _variant != null ? _variants[_variant!].label : (_variants.length > 1 ? 'Auto' : _nowQuality),
     _Tab.audio => _audioNow == null ? '' : _audioName(_audioNow!),
-    _Tab.subtitles => _subOffset == 0 ? _subtitle : '$_subtitle · ${_subOffset > 0 ? '+' : ''}${_subOffset}s',
+    _Tab.subtitles => _subOffset == 0 ? (_subtitle == 'Off' ? 'Nessuno' : _subtitle) : '$_subtitle · ${_subOffset > 0 ? '+' : ''}${_subOffset}s',
     _Tab.speed => _speedLabel(_speed),
     _Tab.more => [
         if (AppSettings.upscaler.value != 'none') pz.Upscaler.byId(AppSettings.upscaler.value).label,
@@ -3873,7 +3873,7 @@ class _PlayerPageState extends State<_PlayerView> {
             MenuChoice<int>(
               title: _sleepTitle,
               value: _sleepMinutes ?? 0,
-              options: const [(0, 'Off'), (15, '15m'), (30, '30m'), (60, '1h'), (90, '1½h'), (-1, 'Episode')],
+              options: const [(0, 'Spento'), (15, '15m'), (30, '30m'), (60, '1h'), (90, '1½h'), (-1, 'Episodio')],
               onChanged: _setSleep,
             ),
           ]),
@@ -3980,7 +3980,7 @@ class _Spinner extends StatelessWidget {
             ? const SizedBox(width: 0)
             : Padding(
                 padding: const EdgeInsets.only(top: 16),
-                child: Text(note!, style: const TextStyle(fontSize: 13, color: VyseColors.textDim)),
+                child: Text(note!, style: TextStyle(fontSize: 13, color: VyseColors.textDim)),
               ),
       ),
     ]),
@@ -4044,7 +4044,7 @@ class _PhoneTransport extends StatelessWidget {
       ]),
       if (note != null) ...[
         const SizedBox(height: 14),
-        Text(note!, style: const TextStyle(fontSize: 12.5, color: VyseColors.textDim)),
+        Text(note!, style: TextStyle(fontSize: 12.5, color: VyseColors.textDim)),
       ],
     ]);
   }
@@ -4486,7 +4486,7 @@ class _MiniWindowState extends State<_MiniWindow> {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 11.5, color: VyseColors.textDim),
+                  style: TextStyle(fontSize: 11.5, color: VyseColors.textDim),
                 ),
               ),
             ),

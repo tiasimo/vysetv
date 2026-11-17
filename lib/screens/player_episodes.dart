@@ -323,7 +323,7 @@ class _SeasonPill extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             if (playing) ...[
-              Container(width: 5, height: 5, decoration: const BoxDecoration(color: VyseColors.accent, shape: BoxShape.circle)),
+              Container(width: 5, height: 5, decoration: BoxDecoration(color: VyseColors.accent, shape: BoxShape.circle)),
               const SizedBox(width: 7),
             ],
             Text(
@@ -392,7 +392,7 @@ class _EpisodeRow extends StatelessWidget {
                           curve: MenuInk.ease,
                           child: e.stillUrl() != null
                               ? CachedNetworkImage(imageUrl: e.stillUrl()!, fit: BoxFit.cover, memCacheWidth: 340, fadeInDuration: const Duration(milliseconds: 200))
-                              : const ColoredBox(color: VyseColors.surfaceHi, child: Icon(Icons.movie_outlined, color: VyseColors.textFaint)),
+                              : ColoredBox(color: VyseColors.surfaceHi, child: Icon(Icons.movie_outlined, color: VyseColors.textFaint)),
                         ),
                         AnimatedOpacity(
                           opacity: playing || hovered ? 1 : 0,
@@ -527,7 +527,7 @@ class _UpNextCardState extends State<UpNextCard> with SingleTickerProviderStateM
                     if (e.stillUrl() != null)
                       CachedNetworkImage(imageUrl: e.stillUrl()!, fit: BoxFit.cover)
                     else
-                      const ColoredBox(color: VyseColors.surfaceHi),
+                      ColoredBox(color: VyseColors.surfaceHi),
                     ColoredBox(color: Colors.black.withValues(alpha: hovered ? .2 : .35)),
                     const Center(child: Icon(Icons.play_arrow_rounded, size: 34, color: Colors.white)),
                   ]),
@@ -540,7 +540,7 @@ class _UpNextCardState extends State<UpNextCard> with SingleTickerProviderStateM
                     Expanded(
                       child: Text(
                         'A SEGUIRE  ·  ${episodeLabel(e.season, e.number)}',
-                        style: const TextStyle(fontSize: 10.5, fontWeight: FontWeight.w800, letterSpacing: 1.2, color: VyseColors.accent),
+                        style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w800, letterSpacing: 1.2, color: VyseColors.accent),
                       ),
                     ),
                     Pressable(

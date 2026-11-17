@@ -69,20 +69,20 @@ class PartyRoomsPanel extends StatelessWidget {
             Expanded(
               child: Text(
                 'ROOMS — ${rooms.length}',
-                style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w800, letterSpacing: .7, color: VyseColors.textDim),
+                style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800, letterSpacing: .7, color: VyseColors.textDim),
               ),
             ),
             IconButton(
               tooltip: 'Join with an invite code',
               visualDensity: VisualDensity.compact,
               onPressed: () => showJoinCodeDialog(context),
-              icon: const Icon(Icons.vpn_key_outlined, size: 18, color: VyseColors.textDim),
+              icon: Icon(Icons.vpn_key_outlined, size: 18, color: VyseColors.textDim),
             ),
             IconButton(
               tooltip: 'Create a room',
               visualDensity: VisualDensity.compact,
               onPressed: () => showCreateRoomDialog(context),
-              icon: const Icon(Icons.add_rounded, size: 22, color: VyseColors.text),
+              icon: Icon(Icons.add_rounded, size: 22, color: VyseColors.text),
             ),
           ],
         ),
@@ -90,7 +90,7 @@ class PartyRoomsPanel extends StatelessWidget {
       final rows = [
         for (final r in rooms) _RoomRow(room: r, onTap: () => _join(context, r)),
         if (rooms.isEmpty)
-          const Padding(
+          Padding(
             padding: EdgeInsets.fromLTRB(8, 4, 8, 8),
             child: Text(
               'No rooms right now. Make one with + and your friends can hop in: voice, chat and watching together.',
@@ -158,7 +158,7 @@ class _RoomRow extends StatelessWidget {
                     const SizedBox(width: 8),
                     Text(
                       '${r.size}/${r.limit}',
-                      style: const TextStyle(fontSize: 11.5, color: VyseColors.textFaint, fontWeight: FontWeight.w700),
+                      style: TextStyle(fontSize: 11.5, color: VyseColors.textFaint, fontWeight: FontWeight.w700),
                     ),
                   ],
                 ),
@@ -192,7 +192,7 @@ class _RoomRow extends StatelessWidget {
                             m.name,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(fontSize: 12.5, color: VyseColors.textDim, fontWeight: FontWeight.w600),
+                            style: TextStyle(fontSize: 12.5, color: VyseColors.textDim, fontWeight: FontWeight.w600),
                           ),
                         ),
                         if (m.owner) ...[const SizedBox(width: 4), const Icon(Icons.workspace_premium_rounded, size: 12, color: VyseColors.star)],
@@ -304,7 +304,7 @@ class _CreateRoomState extends State<_CreateRoom> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(title, style: const TextStyle(fontSize: 13.5, fontWeight: FontWeight.w800)),
-                            Text(body, style: const TextStyle(fontSize: 11.5, color: VyseColors.textDim)),
+                            Text(body, style: TextStyle(fontSize: 11.5, color: VyseColors.textDim)),
                           ],
                         ),
                       ),
@@ -473,7 +473,7 @@ class _Sheet extends StatelessWidget {
     insetPadding: const EdgeInsets.all(20),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(20),
-      side: const BorderSide(color: VyseColors.stroke),
+      side: BorderSide(color: VyseColors.stroke),
     ),
     child: ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 460),
@@ -485,7 +485,7 @@ class _Sheet extends StatelessWidget {
           children: [
             Text(title, style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w900)),
             const SizedBox(height: 4),
-            Text(subtitle, style: const TextStyle(fontSize: 13, color: VyseColors.textDim)),
+            Text(subtitle, style: TextStyle(fontSize: 13, color: VyseColors.textDim)),
             const SizedBox(height: 18),
             ...children,
             if (error != null) ...[
@@ -501,7 +501,7 @@ class _Sheet extends StatelessWidget {
                 const Spacer(),
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: const Text('Cancel', style: TextStyle(color: VyseColors.textDim)),
+                  child: Text('Cancel', style: TextStyle(color: VyseColors.textDim)),
                 ),
                 const SizedBox(width: 6),
                 FilledButton(
@@ -548,7 +548,7 @@ class _Input extends StatelessWidget {
         padding: const EdgeInsets.only(left: 4, bottom: 6),
         child: Text(
           label,
-          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: VyseColors.textDim),
+          style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: VyseColors.textDim),
         ),
       ),
       TextField(
@@ -563,7 +563,7 @@ class _Input extends StatelessWidget {
         decoration: InputDecoration(
           counterText: '',
           hintText: hint,
-          hintStyle: const TextStyle(color: VyseColors.textFaint),
+          hintStyle: TextStyle(color: VyseColors.textFaint),
           filled: true,
           fillColor: Colors.white.withValues(alpha: .05),
           contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),

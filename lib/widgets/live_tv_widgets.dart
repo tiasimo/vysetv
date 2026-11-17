@@ -42,7 +42,7 @@ class _HoverCaption extends StatelessWidget {
                 Text(title, maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 12.5, height: 1.2)),
                 if (meta != null && meta!.isNotEmpty) ...[
                   const SizedBox(height: 3),
-                  Text(meta!, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 10.5, color: VyseColors.textDim)),
+                  Text(meta!, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 10.5, color: VyseColors.textDim)),
                 ],
               ]),
             ),
@@ -62,7 +62,7 @@ class ChannelTile extends StatelessWidget {
       textAlign: TextAlign.center,
       maxLines: 2,
       overflow: TextOverflow.ellipsis,
-      style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 15, color: VyseColors.textDim));
+      style: TextStyle(fontWeight: FontWeight.w800, fontSize: 15, color: VyseColors.textDim));
 
   @override
   Widget build(BuildContext context) => OutlineCard(
@@ -145,7 +145,7 @@ class StreamCard extends StatelessWidget {
                   textAlign: TextAlign.center,
                   maxLines: 4,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13, color: VyseColors.textDim)),
+                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 13, color: VyseColors.textDim)),
             ),
           _HoverCaption(hovered: hovered, title: name),
         ]),
@@ -199,7 +199,7 @@ class StreamCard extends StatelessWidget {
       textAlign: TextAlign.center,
       maxLines: 2,
       overflow: TextOverflow.ellipsis,
-      style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 13, color: VyseColors.textDim));
+      style: TextStyle(fontWeight: FontWeight.w800, fontSize: 13, color: VyseColors.textDim));
 }
 
 /// Flat info tile (portals, playlists): studio-tile base with the white hover outline.
@@ -249,13 +249,13 @@ class StatusLine extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Row(children: [
         if (busy) ...[
-          const SizedBox.square(dimension: 14, child: CircularProgressIndicator(strokeWidth: 2, color: VyseColors.accent)),
+          SizedBox.square(dimension: 14, child: CircularProgressIndicator(strokeWidth: 2, color: VyseColors.accent)),
           const SizedBox(width: 10),
         ] else ...[
-          const Icon(Icons.info_outline_rounded, size: 15, color: VyseColors.textFaint),
+          Icon(Icons.info_outline_rounded, size: 15, color: VyseColors.textFaint),
           const SizedBox(width: 8),
         ],
-        Expanded(child: Text(text, maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12.5, color: VyseColors.textDim))),
+        Expanded(child: Text(text, maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12.5, color: VyseColors.textDim))),
         if (onStop != null) TextButton(onPressed: onStop, child: const Text('Ferma')),
       ]);
 }
@@ -285,7 +285,7 @@ class ToolButton extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(11, 8, 14, 8),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                color: Colors.white.withValues(alpha: hovered && onTap != null ? .1 : 0),
+                color: VyseColors.ink.withValues(alpha: hovered && onTap != null ? .1 : 0),
               ),
               child: Row(mainAxisSize: MainAxisSize.min, children: [
                 Icon(icon, size: 15, color: fg),
@@ -323,11 +323,11 @@ Future<List<String>?> showFieldsDialog(
             Text(title, style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w800, letterSpacing: -.4)),
             if (message != null) ...[
               const SizedBox(height: 6),
-              Text(message, style: const TextStyle(fontSize: 12.5, color: VyseColors.textDim)),
+              Text(message, style: TextStyle(fontSize: 12.5, color: VyseColors.textDim)),
             ],
             const SizedBox(height: 16),
             for (final (i, f) in fields.indexed) ...[
-              Text(f.$1, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: VyseColors.textDim)),
+              Text(f.$1, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: VyseColors.textDim)),
               const SizedBox(height: 6),
               TextField(
                 controller: controllers[i],
@@ -339,13 +339,13 @@ Future<List<String>?> showFieldsDialog(
                 style: const TextStyle(fontSize: 14),
                 decoration: InputDecoration(
                   hintText: f.$2,
-                  hintStyle: const TextStyle(color: VyseColors.textFaint, fontSize: 13.5),
+                  hintStyle: TextStyle(color: VyseColors.textFaint, fontSize: 13.5),
                   filled: true,
-                  fillColor: Colors.white.withValues(alpha: .05),
+                  fillColor: VyseColors.ink.withValues(alpha: .05),
                   isDense: true,
                   contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: VyseColors.stroke)),
-                  enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: VyseColors.stroke)),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: VyseColors.stroke)),
+                  enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: VyseColors.stroke)),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide(color: VyseColors.accent.withValues(alpha: .6), width: 1.4),
@@ -355,7 +355,7 @@ Future<List<String>?> showFieldsDialog(
               const SizedBox(height: 14),
             ],
             Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-              TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Annulla', style: TextStyle(color: VyseColors.textDim))),
+              TextButton(onPressed: () => Navigator.pop(ctx), child: Text('Annulla', style: TextStyle(color: VyseColors.textDim))),
               const SizedBox(width: 8),
               PillButton(
                 primary: true,

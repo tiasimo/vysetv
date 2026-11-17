@@ -98,6 +98,8 @@ class AppSettings {
   static final animeAutoSubs = Setting<bool>('lw.anime.autoSubs', true);
   // Lorewatch: the manga library the Manga page browses (MangaLibraryChoice)
   static final mangaLibrary = Setting<String>('lw.manga.library', 'mangaworld');
+  // Lorewatch: day or night: 'system', 'light', 'dark'
+  static final themeMode = Setting<String>('lw.theme.mode', 'dark');
   static final seekSeconds = Setting<int>('play.seek', 10);
   // P2P (torrent) sources: off until you allow them, since peers can see your IP address
   static final p2pStreaming = Setting<bool>('play.p2p', false);
@@ -177,7 +179,7 @@ class AppSettings {
         subtitleShadow, subtitleShadowColor, subtitleBlur, subtitleSpacing, subtitleTop, subtitleLift, subtitleOnPicture, subtitleAss,
         audioDelayMs, audioPassthrough, audioChannels, hdrOutput, matchRefreshRate, volumeLevelling,
         upscaler, ambientLight, partyLibrary, musicAutoplay, debridProvider, debridOn, updateAuto, updateSkipped, myListGrid, myListSort, partyMembers, partySounds, partyMuted, animeAdult, animeAudio,
-        movieAudio, tvAudio, movieSubs, tvSubs, animeSubs, movieAutoSubs, tvAutoSubs, animeAutoSubs, mangaLibrary,
+        movieAudio, tvAudio, movieSubs, tvSubs, animeSubs, movieAutoSubs, tvAutoSubs, animeAutoSubs, mangaLibrary, themeMode,
       ];
 
   static Future<void> initialize() async {

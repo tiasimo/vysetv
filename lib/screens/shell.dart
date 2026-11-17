@@ -208,11 +208,11 @@ class _AppShellState extends State<AppShell> {
         Text.rich(
           TextSpan(children: [
             TextSpan(text: '$who  ', style: const TextStyle(fontWeight: FontWeight.w800)),
-            TextSpan(text: m.body.replaceAll('\n', ' '), style: const TextStyle(color: VyseColors.textDim)),
+            TextSpan(text: m.body.replaceAll('\n', ' '), style: TextStyle(color: VyseColors.textDim)),
           ]),
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
-          style: const TextStyle(fontSize: 13, color: VyseColors.text),
+          style: TextStyle(fontSize: 13, color: VyseColors.text),
         ),
         icon: Icons.chat_bubble_rounded,
         // pressing it opens their chat in a small window that stays over whatever you're doing
@@ -814,7 +814,7 @@ class Avatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
         padding: const EdgeInsets.all(1.5),
-        decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.white.withValues(alpha: .35))),
+        decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: VyseColors.ink.withValues(alpha: .35))),
         child: ProfileAvatar(size: size - 3),
       );
 }
@@ -886,7 +886,7 @@ class _BottomBarState extends State<BottomBar> {
       padding: EdgeInsets.only(bottom: bottom),
       decoration: BoxDecoration(
         color: VyseColors.bg.withValues(alpha: lightEffects ? .97 : .82),
-        border: const Border(top: BorderSide(color: VyseColors.stroke)),
+        border: Border(top: BorderSide(color: VyseColors.stroke)),
       ),
       child: SizedBox(
         height: 60,
@@ -984,7 +984,7 @@ class _WinButton extends StatelessWidget {
           width: 40,
           height: 32,
           color: hovered
-              ? (danger ? const Color(0xFFE5383B) : Colors.white.withValues(alpha: .08))
+              ? (danger ? const Color(0xFFE5383B) : VyseColors.ink.withValues(alpha: .08))
               : Colors.transparent,
           child: Icon(icon, size: 13, color: hovered ? Colors.white : const Color(0xFF8B90A3)),
         ),
@@ -1007,7 +1007,7 @@ class _PlaceholderPage extends StatelessWidget {
               const SizedBox(height: 18),
               Text(item.label, style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w800, letterSpacing: -.6)),
               const SizedBox(height: 6),
-              const Text('In arrivo.', style: TextStyle(color: VyseColors.textDim)),
+              Text('In arrivo.', style: TextStyle(color: VyseColors.textDim)),
             ]),
           ),
         ),

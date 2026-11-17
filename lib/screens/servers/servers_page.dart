@@ -149,11 +149,11 @@ class _WelcomeState extends State<_Welcome> {
                     delay: const Duration(milliseconds: 300),
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                       Row(children: [
-                        const Icon(Icons.wifi_tethering_rounded, size: 16, color: VyseColors.textDim),
+                        Icon(Icons.wifi_tethering_rounded, size: 16, color: VyseColors.textDim),
                         const SizedBox(width: 8),
                         Text(
                           list.isEmpty ? 'Cerco server sulla tua rete…' : 'Trovati sulla tua rete',
-                          style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: VyseColors.textDim),
+                          style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: VyseColors.textDim),
                         ),
                       ]),
                       const SizedBox(height: 12),
@@ -170,7 +170,7 @@ class _WelcomeState extends State<_Welcome> {
           ),
           SliverPadding(
             padding: EdgeInsets.fromLTRB(inset, 30, right, pageBottom(context)),
-            sliver: const SliverToBoxAdapter(
+            sliver: SliverToBoxAdapter(
               child: Row(children: [
                 Icon(Icons.lock_outline_rounded, size: 14, color: VyseColors.textFaint),
                 SizedBox(width: 8),
@@ -203,9 +203,9 @@ class _Pitch extends StatelessWidget {
       gradient: LinearGradient(
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
-        colors: [VyseColors.accent.withValues(alpha: .16), VyseColors.violet.withValues(alpha: .12), Colors.white.withValues(alpha: .02)],
+        colors: [VyseColors.accent.withValues(alpha: .16), VyseColors.violet.withValues(alpha: .12), VyseColors.ink.withValues(alpha: .02)],
       ),
-      border: Border.all(color: Colors.white.withValues(alpha: .08)),
+      border: Border.all(color: VyseColors.ink.withValues(alpha: .08)),
     ),
     child: Row(children: [
       Expanded(
@@ -217,7 +217,7 @@ class _Pitch extends StatelessWidget {
           const SizedBox(height: 10),
           ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 560),
-            child: const Text(
+            child: Text(
               'Accedi una volta e il tuo server vive qui: Continua a guardare, ogni libreria, ogni stagione. '
               'Tutto parte nel player di Lorewatch, e i progressi tornano al tuo server.',
               style: TextStyle(fontSize: 14, height: 1.5, color: VyseColors.textDim),
@@ -248,7 +248,7 @@ class _Perk extends StatelessWidget {
   Widget build(BuildContext context) => Row(mainAxisSize: MainAxisSize.min, children: [
     Icon(icon, size: 16, color: VyseColors.accent),
     const SizedBox(width: 6),
-    Text(text, style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w700, color: VyseColors.text)),
+    Text(text, style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w700, color: VyseColors.text)),
   ]);
 }
 
@@ -319,7 +319,7 @@ class _ProviderCard extends StatelessWidget {
               end: Alignment.bottomRight,
               colors: [c.first.withValues(alpha: hovered ? .2 : .1), VyseColors.surface],
             ),
-            border: Border.all(color: hovered ? c.first.withValues(alpha: .55) : Colors.white.withValues(alpha: .07)),
+            border: Border.all(color: hovered ? c.first.withValues(alpha: .55) : VyseColors.ink.withValues(alpha: .07)),
             boxShadow: [if (hovered) BoxShadow(color: c.last.withValues(alpha: .22), blurRadius: 30, offset: const Offset(0, 10))],
           ),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -330,14 +330,14 @@ class _ProviderCard extends StatelessWidget {
                 duration: const Duration(milliseconds: 200),
                 width: 36,
                 height: 36,
-                decoration: BoxDecoration(shape: BoxShape.circle, color: hovered ? Colors.white : Colors.white.withValues(alpha: .08)),
+                decoration: BoxDecoration(shape: BoxShape.circle, color: hovered ? Colors.white : VyseColors.ink.withValues(alpha: .08)),
                 child: Icon(Icons.arrow_forward_rounded, size: 19, color: hovered ? Colors.black : VyseColors.textDim),
               ),
             ]),
             const SizedBox(height: 18),
             Text(brandName(backend), style: const TextStyle(fontSize: 21, fontWeight: FontWeight.w900)),
             const SizedBox(height: 5),
-            Text(blurb, style: const TextStyle(fontSize: 13, height: 1.45, color: VyseColors.textDim)),
+            Text(blurb, style: TextStyle(fontSize: 13, height: 1.45, color: VyseColors.textDim)),
             const SizedBox(height: 14),
             const Spacer(), // the "how" line sits on the bottom edge of every card
             Text(how, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w800, color: c.first)),
@@ -361,15 +361,15 @@ class _NearbyChip extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(10, 9, 16, 9),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(14),
-        color: Colors.white.withValues(alpha: hovered ? .08 : .04),
-        border: Border.all(color: Colors.white.withValues(alpha: hovered ? .16 : .07)),
+        color: VyseColors.ink.withValues(alpha: hovered ? .08 : .04),
+        border: Border.all(color: VyseColors.ink.withValues(alpha: hovered ? .16 : .07)),
       ),
       child: Row(mainAxisSize: MainAxisSize.min, children: [
         BrandMark(server.dialect.backend, size: 30),
         const SizedBox(width: 10),
         Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
           Text(server.name, style: const TextStyle(fontSize: 13.5, fontWeight: FontWeight.w800)),
-          Text(server.address, style: const TextStyle(fontSize: 11, color: VyseColors.textFaint)),
+          Text(server.address, style: TextStyle(fontSize: 11, color: VyseColors.textFaint)),
         ]),
         const SizedBox(width: 14),
         Icon(Icons.add_circle_outline_rounded, size: 18, color: hovered ? VyseColors.accent : VyseColors.textDim),
@@ -530,7 +530,7 @@ class _ServerHomeState extends State<_ServerHome> {
         future: _results,
         builder: (context, snap) {
           if (snap.connectionState != ConnectionState.done) {
-            return const SliverToBoxAdapter(child: SizedBox(height: 200, child: Center(child: CircularProgressIndicator(strokeWidth: 2.4, color: VyseColors.accent))));
+            return SliverToBoxAdapter(child: SizedBox(height: 200, child: Center(child: CircularProgressIndicator(strokeWidth: 2.4, color: VyseColors.accent))));
           }
           final list = snap.data ?? const [];
           if (list.isEmpty) {
@@ -730,7 +730,7 @@ class _Header extends StatelessWidget {
               [server.product, if (server.shared) 'condivisa con te', 'watching as ${a.who}'].join(' · '),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontSize: 13, color: VyseColors.textDim, fontWeight: FontWeight.w600),
+              style: TextStyle(fontSize: 13, color: VyseColors.textDim, fontWeight: FontWeight.w600),
             ),
           ]),
         ),
@@ -744,7 +744,7 @@ class _Header extends StatelessWidget {
             builder: (context, hovered, _) => AnimatedScale(
               scale: hovered ? 1.06 : 1,
               duration: const Duration(milliseconds: 160),
-              child: ServerAvatar(name: a.who, url: a.avatar, size: 40, ring: hovered ? VyseColors.accent : Colors.white.withValues(alpha: .12)),
+              child: ServerAvatar(name: a.who, url: a.avatar, size: 40, ring: hovered ? VyseColors.accent : VyseColors.ink.withValues(alpha: .12)),
             ),
           ),
         ),
@@ -783,8 +783,8 @@ class _ServerPill extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(7, 6, 14, 6),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: selected ? Colors.white : Colors.white.withValues(alpha: hovered ? .1 : .05),
-        border: Border.all(color: selected ? Colors.white : Colors.white.withValues(alpha: .08)),
+        color: selected ? Colors.white : VyseColors.ink.withValues(alpha: hovered ? .1 : .05),
+        border: Border.all(color: selected ? Colors.white : VyseColors.ink.withValues(alpha: .08)),
       ),
       child: Row(mainAxisSize: MainAxisSize.min, children: [
         BrandMark(server.backend, size: 22),
@@ -811,7 +811,7 @@ class _AddPill extends StatelessWidget {
       alignment: Alignment.center,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: hovered ? VyseColors.accent.withValues(alpha: .7) : Colors.white.withValues(alpha: .14)),
+        border: Border.all(color: hovered ? VyseColors.accent.withValues(alpha: .7) : VyseColors.ink.withValues(alpha: .14)),
       ),
       child: Row(mainAxisSize: MainAxisSize.min, children: [
         Icon(Icons.add_rounded, size: 17, color: hovered ? VyseColors.accent : VyseColors.textDim),
@@ -875,7 +875,7 @@ class _Spotlight extends StatelessWidget {
               children: [
                 Text(
                   resuming ? 'CONTINUA A GUARDARE' : 'NOVITÀ SU ${server.name.toUpperCase()}',
-                  style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1.6, color: VyseColors.accent),
+                  style: TextStyle(fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1.6, color: VyseColors.accent),
                 ),
                 const SizedBox(height: 10),
                 ConstrainedBox(
@@ -894,13 +894,13 @@ class _Spotlight extends StatelessWidget {
                 ),
                 if (meta.isNotEmpty) ...[
                   const SizedBox(height: 10),
-                  Text(meta, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: VyseColors.textDim)),
+                  Text(meta, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: VyseColors.textDim)),
                 ],
                 if (!phone && (item.summary ?? '').isNotEmpty) ...[
                   const SizedBox(height: 8),
                   ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 520),
-                    child: Text(item.summary!, maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 13.5, height: 1.45, color: VyseColors.textDim)),
+                    child: Text(item.summary!, maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 13.5, height: 1.45, color: VyseColors.textDim)),
                   ),
                 ],
                 const SizedBox(height: 18),
@@ -948,7 +948,7 @@ Future<void> showServerAccounts(BuildContext context) {
     builder: (context) => Dialog(
       backgroundColor: const Color(0xFF0B0D16),
       insetPadding: const EdgeInsets.all(24),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22), side: const BorderSide(color: VyseColors.stroke)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22), side: BorderSide(color: VyseColors.stroke)),
       clipBehavior: Clip.antiAlias,
       child: ConstrainedBox(constraints: const BoxConstraints(maxWidth: 480), child: const SingleChildScrollView(child: body)),
     ),
@@ -971,7 +971,7 @@ class _Accounts extends StatelessWidget {
             GlassIconButton(icon: Icons.close_rounded, label: 'Chiudi', size: 34, onTap: () => Navigator.of(context).pop()),
           ]),
           const SizedBox(height: 4),
-          const Text('Cambia profilo, trova nuovi server o esci.', style: TextStyle(fontSize: 13.5, color: VyseColors.textDim)),
+          Text('Cambia profilo, trova nuovi server o esci.', style: TextStyle(fontSize: 13.5, color: VyseColors.textDim)),
           const SizedBox(height: 18),
           for (final (i, a) in accounts.indexed)
             FadeSlideIn(delay: Duration(milliseconds: 50 * i), offset: 8, child: _AccountCard(account: a)),
@@ -1038,11 +1038,11 @@ class _AccountCardState extends State<_AccountCard> {
       barrierColor: Colors.black.withValues(alpha: .6),
       builder: (context) => AlertDialog(
         backgroundColor: const Color(0xFF0B0D16),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18), side: const BorderSide(color: VyseColors.stroke)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18), side: BorderSide(color: VyseColors.stroke)),
         title: Text('Sign out of ${a is PlexAccount ? 'Plex' : (a as JellyfinAccount).conn.serverName}?', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900)),
-        content: const Text('I tuoi progressi restano sul server. Puoi riaccedere quando vuoi.', style: TextStyle(fontSize: 13.5, color: VyseColors.textDim)),
+        content: Text('I tuoi progressi restano sul server. Puoi riaccedere quando vuoi.', style: TextStyle(fontSize: 13.5, color: VyseColors.textDim)),
         actions: [
-          TextButton(onPressed: () => Navigator.of(context).pop(false), child: const Text('Annulla', style: TextStyle(color: VyseColors.textDim))),
+          TextButton(onPressed: () => Navigator.of(context).pop(false), child: Text('Annulla', style: TextStyle(color: VyseColors.textDim))),
           TextButton(onPressed: () => Navigator.of(context).pop(true), child: const Text('Esci', style: TextStyle(color: Color(0xFFFF8A93), fontWeight: FontWeight.w800))),
         ],
       ),
@@ -1059,8 +1059,8 @@ class _AccountCardState extends State<_AccountCard> {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
-        color: Colors.white.withValues(alpha: .04),
-        border: Border.all(color: Colors.white.withValues(alpha: .07)),
+        color: VyseColors.ink.withValues(alpha: .04),
+        border: Border.all(color: VyseColors.ink.withValues(alpha: .07)),
       ),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(children: [
@@ -1076,11 +1076,11 @@ class _AccountCardState extends State<_AccountCard> {
                     : 'Accesso eseguito come ${acc.who}',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(fontSize: 12, color: VyseColors.textDim),
+                style: TextStyle(fontSize: 12, color: VyseColors.textDim),
               ),
             ]),
           ),
-          if (_busy) const SizedBox.square(dimension: 18, child: CircularProgressIndicator(strokeWidth: 2, color: VyseColors.accent)),
+          if (_busy) SizedBox.square(dimension: 18, child: CircularProgressIndicator(strokeWidth: 2, color: VyseColors.accent)),
         ]),
         if (acc is PlexAccount)
           FutureBuilder<List<PlexHomeUser>>(
@@ -1092,7 +1092,7 @@ class _AccountCardState extends State<_AccountCard> {
               return Padding(
                 padding: const EdgeInsets.only(top: 16),
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  const Text("CHI STA GUARDANDO", style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w900, letterSpacing: 1.4, color: VyseColors.textFaint)),
+                  Text("CHI STA GUARDANDO", style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w900, letterSpacing: 1.4, color: VyseColors.textFaint)),
                   const SizedBox(height: 10),
                   Wrap(spacing: 14, runSpacing: 12, children: [
                     for (final u in users)
@@ -1111,11 +1111,11 @@ class _AccountCardState extends State<_AccountCard> {
                                     name: u.displayName,
                                     url: u.thumb,
                                     size: 54,
-                                    ring: on ? VyseColors.accent : (hovered ? Colors.white54 : Colors.white.withValues(alpha: .1)),
+                                    ring: on ? VyseColors.accent : (hovered ? VyseColors.ink.withValues(alpha: .54) : VyseColors.ink.withValues(alpha: .1)),
                                   ),
                                 ),
                                 if (u.protected)
-                                  const Positioned(
+                                  Positioned(
                                     right: -2,
                                     bottom: -2,
                                     child: CircleAvatar(radius: 9, backgroundColor: Color(0xFF0B0D16), child: Icon(Icons.lock_rounded, size: 11, color: VyseColors.textDim)),
@@ -1165,8 +1165,8 @@ class _SmallButton extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: hovered ? fg.withValues(alpha: .12) : Colors.white.withValues(alpha: .05),
-          border: Border.all(color: hovered ? fg.withValues(alpha: .3) : Colors.white.withValues(alpha: .07)),
+          color: hovered ? fg.withValues(alpha: .12) : VyseColors.ink.withValues(alpha: .05),
+          border: Border.all(color: hovered ? fg.withValues(alpha: .3) : VyseColors.ink.withValues(alpha: .07)),
         ),
         child: Row(mainAxisSize: MainAxisSize.min, children: [
           Icon(icon, size: 15, color: fg),
@@ -1186,7 +1186,7 @@ Future<String?> _askPin(BuildContext context, String name) {
     barrierColor: Colors.black.withValues(alpha: .6),
     builder: (context) => AlertDialog(
       backgroundColor: const Color(0xFF0B0D16),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18), side: const BorderSide(color: VyseColors.stroke)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18), side: BorderSide(color: VyseColors.stroke)),
       title: Text("PIN di $name", style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900)),
       content: TextField(
         controller: c,
@@ -1197,14 +1197,14 @@ Future<String?> _askPin(BuildContext context, String name) {
         textAlign: TextAlign.center,
         cursorColor: VyseColors.accent,
         style: const TextStyle(fontSize: 26, letterSpacing: 14, fontWeight: FontWeight.w900),
-        decoration: const InputDecoration(counterText: '', hintText: '••••', hintStyle: TextStyle(color: VyseColors.textFaint)),
+        decoration: InputDecoration(counterText: '', hintText: '••••', hintStyle: TextStyle(color: VyseColors.textFaint)),
         onSubmitted: (v) => Navigator.of(context).pop(v.trim().isEmpty ? null : v.trim()),
       ),
       actions: [
-        TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Annulla', style: TextStyle(color: VyseColors.textDim))),
+        TextButton(onPressed: () => Navigator.of(context).pop(), child: Text('Annulla', style: TextStyle(color: VyseColors.textDim))),
         TextButton(
           onPressed: () => Navigator.of(context).pop(c.text.trim().isEmpty ? null : c.text.trim()),
-          child: const Text('Cambia', style: TextStyle(color: VyseColors.accent, fontWeight: FontWeight.w800)),
+          child: Text('Cambia', style: TextStyle(color: VyseColors.accent, fontWeight: FontWeight.w800)),
         ),
       ],
     ),

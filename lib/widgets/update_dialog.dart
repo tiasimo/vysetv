@@ -57,7 +57,7 @@ class _UpdateDialog extends StatelessWidget {
                 child: LinearProgressIndicator(
                   value: stage == UpdateStage.verifying ? null : up.progress,
                   minHeight: 6,
-                  backgroundColor: Colors.white.withValues(alpha: .08),
+                  backgroundColor: VyseColors.ink.withValues(alpha: .08),
                   color: VyseColors.accent,
                 ),
               ),
@@ -69,14 +69,14 @@ class _UpdateDialog extends StatelessWidget {
                         if (total > 0) '${bytesLabel(up.received)} di ${bytesLabel(total)}' else bytesLabel(up.received),
                         if (up.progress != null) '${(up.progress! * 100).floor()}%',
                       ].where((s) => s.isNotEmpty).join('  ·  '),
-                style: const TextStyle(fontSize: 12.5, color: VyseColors.textDim, fontFeatures: [FontFeature.tabularFigures()]),
+                style: TextStyle(fontSize: 12.5, color: VyseColors.textDim, fontFeatures: [FontFeature.tabularFigures()]),
               ),
             ];
             actions = [if (stage == UpdateStage.downloading) TextButton(onPressed: up.cancel, child: const Text('Annulla'))];
           case UpdateStage.installing:
             title = Platform.isWindows || Platform.isLinux ? 'Riavvio di Lorewatch' : 'Installazione';
             body = [
-              const Row(
+              Row(
                 children: [
                   SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2.2, color: VyseColors.accent)),
                   SizedBox(width: 14),
@@ -94,13 +94,13 @@ class _UpdateDialog extends StatelessWidget {
                     : Platform.isMacOS
                     ? 'L\'immagine disco è aperta. Chiudi Lorewatch, trascina il nuovo Lorewatch in Applicazioni, poi riaprilo.'
                     : 'Il download si è aperto nel browser. Installalo da lì.',
-                style: const TextStyle(color: VyseColors.textDim, height: 1.5),
+                style: TextStyle(color: VyseColors.textDim, height: 1.5),
               ),
             ];
             actions = [_primary('Fatto', close)];
           case UpdateStage.failed:
             title = "L'aggiornamento non è andato a buon fine";
-            body = [Text(up.error ?? 'Qualcosa è andato storto.', style: const TextStyle(color: VyseColors.textDim, height: 1.5))];
+            body = [Text(up.error ?? 'Qualcosa è andato storto.', style: TextStyle(color: VyseColors.textDim, height: 1.5))];
             actions = [
               TextButton(onPressed: close, child: const Text('Chiudi')),
               if (up.newer != null) _primary('Riprova', up.update),
@@ -110,7 +110,7 @@ class _UpdateDialog extends StatelessWidget {
             body = [
               Text(
                 ['You have ${up.current}', if (u.date.isNotEmpty) 'pubblicato il ${u.date}', if ((up.file?.size ?? 0) > 0) bytesLabel(up.file!.size)].join('  ·  '),
-                style: const TextStyle(fontSize: 12.5, color: VyseColors.textDim),
+                style: TextStyle(fontSize: 12.5, color: VyseColors.textDim),
               ),
               if (u.notes.isNotEmpty) ...[
                 const SizedBox(height: 14),
@@ -118,7 +118,7 @@ class _UpdateDialog extends StatelessWidget {
                   child: Container(
                     constraints: BoxConstraints(maxHeight: (size.height * .34).clamp(90, 280)),
                     padding: const EdgeInsets.fromLTRB(14, 12, 10, 12),
-                    decoration: BoxDecoration(color: Colors.white.withValues(alpha: .04), borderRadius: BorderRadius.circular(10)),
+                    decoration: BoxDecoration(color: VyseColors.ink.withValues(alpha: .04), borderRadius: BorderRadius.circular(10)),
                     child: SingleChildScrollView(
                       child: Text(u.notes, style: const TextStyle(fontSize: 13.5, height: 1.5, color: Color(0xFFD5D8E6))),
                     ),
@@ -126,7 +126,7 @@ class _UpdateDialog extends StatelessWidget {
                 ),
               ],
               const SizedBox(height: 12),
-              Text('${up.how}.', style: const TextStyle(fontSize: 12.5, color: VyseColors.textFaint)),
+              Text('${up.how}.', style: TextStyle(fontSize: 12.5, color: VyseColors.textFaint)),
             ];
             actions = [
               TextButton(
@@ -144,7 +144,7 @@ class _UpdateDialog extends StatelessWidget {
             body = [
               Text(
                 up.stage == UpdateStage.checking ? 'Un momento.' : 'Lorewatch ${up.current} è la versione più recente.',
-                style: const TextStyle(color: VyseColors.textDim, height: 1.5),
+                style: TextStyle(color: VyseColors.textDim, height: 1.5),
               ),
             ];
             actions = [TextButton(onPressed: close, child: const Text('Chiudi'))];
@@ -156,7 +156,7 @@ class _UpdateDialog extends StatelessWidget {
           child: Dialog(
             backgroundColor: VyseColors.surface,
             insetPadding: EdgeInsets.symmetric(horizontal: size.width < 520 ? 16 : 24, vertical: 24),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: const BorderSide(color: VyseColors.stroke)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: BorderSide(color: VyseColors.stroke)),
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 460),
               child: Padding(

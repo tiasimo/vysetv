@@ -149,7 +149,7 @@ class _YtArtistPageState extends State<YtArtistPage> {
                       padding: const EdgeInsets.all(18),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(14),
-                        color: Colors.white.withValues(alpha: hovered ? .07 : .045),
+                        color: VyseColors.ink.withValues(alpha: hovered ? .07 : .045),
                         border: Border.all(color: VyseColors.stroke),
                       ),
                       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -240,12 +240,12 @@ class _NumberedSong extends StatelessWidget {
     final tracks = ytTracks(queue);
     final t = ytTrack(item);
     return Row(children: [
-      SizedBox(width: 30, child: Text('${index + 1}', textAlign: TextAlign.center, style: const TextStyle(fontSize: 13, color: VyseColors.textFaint, fontWeight: FontWeight.w700))),
+      SizedBox(width: 30, child: Text('${index + 1}', textAlign: TextAlign.center, style: TextStyle(fontSize: 13, color: VyseColors.textFaint, fontWeight: FontWeight.w700))),
       Expanded(child: TrackRow(track: t, queue: tracks, index: index)),
       if (item.plays != null && !Layout.isPhone(context))
         SizedBox(
           width: 110,
-          child: Text(item.plays!.replaceAll(' plays', ''), textAlign: TextAlign.right, style: const TextStyle(fontSize: 12, color: VyseColors.textFaint)),
+          child: Text(item.plays!.replaceAll(' plays', ''), textAlign: TextAlign.right, style: TextStyle(fontSize: 12, color: VyseColors.textFaint)),
         ),
     ]);
   }
@@ -333,7 +333,7 @@ class _YtAlbumPageState extends State<YtAlbumPage> {
               SliverToBoxAdapter(
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(Layout.inset(context), 0, pageRight(context), 20),
-                  child: Text(a.description, maxLines: 6, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 13, height: 1.5, color: VyseColors.textDim)),
+                  child: Text(a.description, maxLines: 6, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 13, height: 1.5, color: VyseColors.textDim)),
                 ),
               ),
             for (final s in a.more) SliverToBoxAdapter(child: YtShelfView(shelf: s)),
@@ -393,7 +393,7 @@ class _YtPlaylistPageState extends State<YtPlaylistPage> {
               lines: [
                 if (p != null) MetaLine(parts: [(p.author, null), (p.info.replaceAll(' • ', ' · '), null)]),
                 if (p != null && p.description.isNotEmpty)
-                  Text(p.description, maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12.5, color: VyseColors.textDim)),
+                  Text(p.description, maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12.5, color: VyseColors.textDim)),
               ],
               actions: p == null
                   ? const []
@@ -479,10 +479,10 @@ class _FilterBox extends StatelessWidget {
       style: const TextStyle(fontSize: 13),
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: const TextStyle(color: VyseColors.textFaint),
-        prefixIcon: const Icon(Icons.search_rounded, size: 18, color: VyseColors.textFaint),
+        hintStyle: TextStyle(color: VyseColors.textFaint),
+        prefixIcon: Icon(Icons.search_rounded, size: 18, color: VyseColors.textFaint),
         filled: true,
-        fillColor: Colors.white.withValues(alpha: .06),
+        fillColor: VyseColors.ink.withValues(alpha: .06),
         contentPadding: EdgeInsets.zero,
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(99), borderSide: BorderSide.none),
       ),
@@ -519,9 +519,9 @@ class _MyPlaylistPageState extends State<MyPlaylistPage> {
         backgroundColor: const Color(0xFF101118),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: Text('Eliminare ${p.name}?', style: const TextStyle(fontWeight: FontWeight.w800)),
-        content: const Text("Viene rimossa da tutti i dispositivi in cui hai effettuato l'accesso.", style: TextStyle(color: VyseColors.textDim, height: 1.4)),
+        content: Text("Viene rimossa da tutti i dispositivi in cui hai effettuato l'accesso.", style: TextStyle(color: VyseColors.textDim, height: 1.4)),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Annulla', style: TextStyle(color: VyseColors.text))),
+          TextButton(onPressed: () => Navigator.pop(ctx, false), child: Text('Annulla', style: TextStyle(color: VyseColors.text))),
           FilledButton(
             style: FilledButton.styleFrom(backgroundColor: const Color(0xFFFF4D4F), foregroundColor: Colors.white),
             onPressed: () => Navigator.pop(ctx, true),
@@ -563,7 +563,7 @@ class _MyPlaylistPageState extends State<MyPlaylistPage> {
                   if (p.seconds > 0) (totalTime(p.seconds), null),
                 ]),
                 if (p.description.isNotEmpty)
-                  Text(p.description, maxLines: 3, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12.5, color: VyseColors.textDim)),
+                  Text(p.description, maxLines: 3, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12.5, color: VyseColors.textDim)),
               ],
               actions: [
                 PillButton(accent: accentOf(context), primary: true, icon: Icons.play_arrow_rounded, label: 'Riproduci', onTap: p.tracks.isEmpty ? null : () => MusicPlayer.instance.playQueue(p.tracks)),
@@ -641,7 +641,7 @@ class _MoveButton extends StatelessWidget {
     iconSize: 18,
     visualDensity: VisualDensity.compact,
     color: VyseColors.textFaint,
-    disabledColor: Colors.white12,
+    disabledColor: VyseColors.ink.withValues(alpha: .12),
     onPressed: onTap,
     icon: Icon(icon),
   );
@@ -928,7 +928,7 @@ class _ArtTile extends StatelessWidget {
     const SizedBox(height: 8),
     Text(title, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
     const SizedBox(height: 2),
-    Text(subtitle, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 11.5, color: VyseColors.textFaint)),
+    Text(subtitle, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 11.5, color: VyseColors.textFaint)),
   ]);
 }
 
@@ -1052,7 +1052,7 @@ class MoodChip extends StatelessWidget {
           height: 48,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: Colors.white.withValues(alpha: hovered ? .11 : .06),
+            color: VyseColors.ink.withValues(alpha: hovered ? .11 : .06),
             border: Border.all(color: VyseColors.stroke),
           ),
           clipBehavior: Clip.antiAlias,

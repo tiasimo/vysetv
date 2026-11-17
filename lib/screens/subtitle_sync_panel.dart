@@ -195,7 +195,7 @@ class _SubtitleSyncPanelState extends State<SubtitleSyncPanel> {
         if (total)
           TextSpan(
             text: '  /  ${_stamp(widget.duration.value.inMilliseconds / 1000).split('.').first}',
-            style: const TextStyle(fontSize: 12.5, color: VyseColors.textFaint),
+            style: TextStyle(fontSize: 12.5, color: VyseColors.textFaint),
           ),
       ]),
       maxLines: 1,
@@ -231,8 +231,8 @@ class _SubtitleSyncPanelState extends State<SubtitleSyncPanel> {
     decoration: InputDecoration(
       isDense: true,
       hintText: 'Trova una riga',
-      hintStyle: const TextStyle(fontSize: 13.5, color: VyseColors.textFaint),
-      prefixIcon: const Icon(Icons.search_rounded, size: 19, color: VyseColors.textFaint),
+      hintStyle: TextStyle(fontSize: 13.5, color: VyseColors.textFaint),
+      prefixIcon: Icon(Icons.search_rounded, size: 19, color: VyseColors.textFaint),
       contentPadding: const EdgeInsets.symmetric(vertical: 11),
       filled: true,
       fillColor: Colors.white.withValues(alpha: .06),
@@ -241,7 +241,7 @@ class _SubtitleSyncPanelState extends State<SubtitleSyncPanel> {
   );
 
   Widget _lines(List<SyncCue> cues, List<int> shown, bool compact) => cues.isEmpty
-      ? const Center(
+      ? Center(
           child: Padding(
             padding: EdgeInsets.all(24),
             child: Text(
@@ -252,7 +252,7 @@ class _SubtitleSyncPanelState extends State<SubtitleSyncPanel> {
           ),
         )
       : shown.isEmpty
-      ? const Center(child: Text('Nessuna riga corrisponde', style: TextStyle(color: VyseColors.textFaint)))
+      ? Center(child: Text('Nessuna riga corrisponde', style: TextStyle(color: VyseColors.textFaint)))
       : ListView.builder(
           controller: _scroll,
           itemExtent: _rowExtent,
@@ -325,7 +325,7 @@ class _SubtitleSyncPanelState extends State<SubtitleSyncPanel> {
   List<Widget> _roomy(List<SyncCue> cues, List<int> shown) => [
     // Header
     Row(children: [
-      const Icon(Icons.subtitles_outlined, size: 26, color: VyseColors.accent),
+      Icon(Icons.subtitles_outlined, size: 26, color: VyseColors.accent),
       const SizedBox(width: 12),
       const Expanded(
         child: Text('Sincronizzazione sottotitoli', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800, letterSpacing: -.3)),
@@ -348,7 +348,7 @@ class _SubtitleSyncPanelState extends State<SubtitleSyncPanel> {
     const SizedBox(height: 16),
     // Offset
     Row(children: [
-      const Text('OFFSET', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800, letterSpacing: 1.3, color: VyseColors.textFaint)),
+      Text('OFFSET', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800, letterSpacing: 1.3, color: VyseColors.textFaint)),
       const SizedBox(width: 10),
       _offsetValue(),
       const Spacer(),

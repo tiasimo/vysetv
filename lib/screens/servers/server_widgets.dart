@@ -91,7 +91,7 @@ Widget serverImage(String? url, {Alignment alignment = Alignment.center, BoxFit 
             fit: fit,
             alignment: alignment,
             fadeInDuration: const Duration(milliseconds: 300),
-            placeholder: (_, _) => const ColoredBox(color: VyseColors.surface),
+            placeholder: (_, _) => ColoredBox(color: VyseColors.surface),
             errorWidget: (_, _, _) => ColoredBox(
               color: VyseColors.surface,
               child: Center(child: Icon(icon, color: VyseColors.textFaint, size: 22)),
@@ -156,13 +156,13 @@ class ThinProgress extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
     height: height,
-    color: Colors.white.withValues(alpha: .18),
+    color: VyseColors.ink.withValues(alpha: .18),
     alignment: Alignment.centerLeft,
     child: FractionallySizedBox(
       widthFactor: value,
       child: Container(
         decoration: BoxDecoration(
-          gradient: const LinearGradient(colors: [VyseColors.accent, VyseColors.accentHot]),
+          gradient: LinearGradient(colors: [VyseColors.accent, VyseColors.accentHot]),
           boxShadow: [BoxShadow(color: VyseColors.accent.withValues(alpha: .6), blurRadius: 6)],
         ),
       ),
@@ -252,7 +252,7 @@ class CaptionedPoster extends StatelessWidget {
       Text(
         [?item.year?.toString(), ?episodeCode(item)].join(' · '),
         maxLines: 1,
-        style: const TextStyle(fontSize: 11.5, color: VyseColors.textFaint, fontWeight: FontWeight.w600),
+        style: TextStyle(fontSize: 11.5, color: VyseColors.textFaint, fontWeight: FontWeight.w600),
       ),
     ],
   );
@@ -309,7 +309,7 @@ class ServerWideCard extends StatelessWidget {
                     height: 52,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Colors.white.withValues(alpha: .92),
+                      color: VyseColors.ink.withValues(alpha: .92),
                       boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: .4), blurRadius: 18)],
                     ),
                     child: const Icon(Icons.play_arrow_rounded, color: Colors.black, size: 32),
@@ -336,7 +336,7 @@ class ServerWideCard extends StatelessWidget {
                       sub,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.w600, color: Colors.white.withValues(alpha: .75)),
+                      style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.w600, color: VyseColors.ink.withValues(alpha: .75)),
                     ),
                 ],
               ),
@@ -398,7 +398,7 @@ class LibraryTile extends StatelessWidget {
             child: AnimatedRotation(
               turns: hovered ? -.03 : 0,
               duration: const Duration(milliseconds: 320),
-              child: Icon(libraryIcon(library.kind), size: 96, color: Colors.white.withValues(alpha: .16)),
+              child: Icon(libraryIcon(library.kind), size: 96, color: VyseColors.ink.withValues(alpha: .16)),
             ),
           ),
           Padding(
@@ -469,9 +469,9 @@ class _BusyNote {
                 radius: 24,
                 padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
                 child: Row(mainAxisSize: MainAxisSize.min, children: [
-                  const SizedBox.square(dimension: 16, child: CircularProgressIndicator(strokeWidth: 2.2, color: VyseColors.accent)),
+                  SizedBox.square(dimension: 16, child: CircularProgressIndicator(strokeWidth: 2.2, color: VyseColors.accent)),
                   const SizedBox(width: 12),
-                  Text(text, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700, decoration: TextDecoration.none, color: VyseColors.text)),
+                  Text(text, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, decoration: TextDecoration.none, color: VyseColors.text)),
                 ]),
               ),
             ),

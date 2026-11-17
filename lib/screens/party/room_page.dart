@@ -385,11 +385,11 @@ class _RoomPageState extends State<RoomPage> {
         backgroundColor: const Color(0xFF101118),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: Text('Remove ${m.name}?', style: const TextStyle(fontWeight: FontWeight.w800)),
-        content: const Text("They can't come back for 10 minutes.", style: TextStyle(color: VyseColors.textDim)),
+        content: Text("They can't come back for 10 minutes.", style: TextStyle(color: VyseColors.textDim)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Cancel', style: TextStyle(color: VyseColors.text)),
+            child: Text('Cancel', style: TextStyle(color: VyseColors.text)),
           ),
           FilledButton(
             style: FilledButton.styleFrom(backgroundColor: const Color(0xFFFF4D4F), foregroundColor: Colors.white),
@@ -414,7 +414,7 @@ class _RoomPageState extends State<RoomPage> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(Icons.meeting_room_outlined, size: 40, color: VyseColors.textFaint),
+              Icon(Icons.meeting_room_outlined, size: 40, color: VyseColors.textFaint),
               const SizedBox(height: 12),
               const Text("You're not in a room.", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
               const SizedBox(height: 12),
@@ -539,7 +539,7 @@ class _RoomPageState extends State<RoomPage> {
                           ),
                           Container(
                             width: chatWidth,
-                            decoration: const BoxDecoration(
+                            decoration: BoxDecoration(
                               border: Border(left: BorderSide(color: VyseColors.stroke)),
                             ),
                             child: chat,
@@ -567,7 +567,7 @@ class _RoomPageState extends State<RoomPage> {
                             ),
                           ),
                         if (showBar) Padding(padding: EdgeInsets.fromLTRB(side, showStage ? 0 : 8, side, 8), child: bar),
-                        const Divider(height: 1, color: VyseColors.stroke),
+                        Divider(height: 1, color: VyseColors.stroke),
                         Expanded(child: chat),
                       ],
                     );
@@ -592,7 +592,7 @@ class _Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
     padding: EdgeInsets.fromLTRB(side - 8, Layout.windowChrome(context) + 10, pageRight(context), 12),
-    decoration: const BoxDecoration(
+    decoration: BoxDecoration(
       border: Border(bottom: BorderSide(color: VyseColors.stroke)),
     ),
     // One row at every width: Back, the room's name and topic (which give way first), then the
@@ -606,7 +606,7 @@ class _Header extends StatelessWidget {
               IconButton(
                 tooltip: 'Back',
                 onPressed: () => Navigator.of(context).maybePop(),
-                icon: const Icon(Icons.arrow_back_rounded, color: VyseColors.textDim),
+                icon: Icon(Icons.arrow_back_rounded, color: VyseColors.textDim),
               ),
             const SizedBox(width: 4),
             Expanded(
@@ -629,7 +629,7 @@ class _Header extends StatelessWidget {
                       const SizedBox(width: 8),
                       Text(
                         '${room.size}/${room.limit}',
-                        style: const TextStyle(fontSize: 13, color: VyseColors.textDim, fontWeight: FontWeight.w700),
+                        style: TextStyle(fontSize: 13, color: VyseColors.textDim, fontWeight: FontWeight.w700),
                       ),
                     ],
                   ),
@@ -638,7 +638,7 @@ class _Header extends StatelessWidget {
                       room.topic,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(fontSize: 13, color: VyseColors.textDim),
+                      style: TextStyle(fontSize: 13, color: VyseColors.textDim),
                     ),
                 ],
               ),
@@ -661,10 +661,10 @@ class _Header extends StatelessWidget {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(Icons.vpn_key_outlined, size: 15, color: VyseColors.textDim),
+                      Icon(Icons.vpn_key_outlined, size: 15, color: VyseColors.textDim),
                       SizedBox(width: narrow ? 6 : 8),
                       Text(room.code, style: TextStyle(fontSize: narrow ? 13 : 14, fontWeight: FontWeight.w800, letterSpacing: narrow ? 1.2 : 2.5)),
-                      if (!narrow) ...[const SizedBox(width: 8), const Icon(Icons.copy_rounded, size: 14, color: VyseColors.textFaint)],
+                      if (!narrow) ...[const SizedBox(width: 8), Icon(Icons.copy_rounded, size: 14, color: VyseColors.textFaint)],
                     ],
                   ),
                 ),
@@ -675,7 +675,7 @@ class _Header extends StatelessWidget {
                 tooltip: 'Room settings',
                 color: VyseColors.surfaceHi,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                icon: const Icon(Icons.tune_rounded, color: VyseColors.textDim),
+                icon: Icon(Icons.tune_rounded, color: VyseColors.textDim),
                 onSelected: (v) {
                   switch (v) {
                     case 'edit':
@@ -886,7 +886,7 @@ class _VoiceBar extends StatelessWidget {
               if (state == VoiceState.off)
                 PartyChipButton(icon: Icons.refresh_rounded, label: 'Reconnect', primary: true, onTap: onJoin)
               else if (state == VoiceState.connecting)
-                const SizedBox.square(dimension: 20, child: CircularProgressIndicator(strokeWidth: 2, color: VyseColors.textDim))
+                SizedBox.square(dimension: 20, child: CircularProgressIndicator(strokeWidth: 2, color: VyseColors.textDim))
               else ...[
                 if (ptt) ...[if (!pttBelow) const HoldToTalk()] else
                   _RoundToggle(
@@ -997,7 +997,7 @@ class _VoiceBar extends StatelessWidget {
                     value: Voice.pushToTalk.value,
                     activeThumbColor: VyseColors.accent,
                     title: const Text('Push to talk', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700)),
-                    subtitle: const Text(
+                    subtitle: Text(
                       'Your mic only sends while you hold the key or the talk button. Best without headphones, so the movie stays out of your mic.',
                       style: TextStyle(fontSize: 12, color: VyseColors.textDim),
                     ),
@@ -1028,14 +1028,14 @@ class _VoiceBar extends StatelessWidget {
                         ),
                       ],
                     ),
-                  const Divider(color: VyseColors.stroke),
+                  Divider(color: VyseColors.stroke),
                   for (final (label, list, current, use) in [
                     ('Microphone', ins, Voice.inputId, Voice.useInput),
                     ('Speakers / headphones', outs, Voice.outputId, Voice.useOutput),
                   ]) ...[
                     Text(
                       label,
-                      style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w700, color: VyseColors.textDim),
+                      style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w700, color: VyseColors.textDim),
                     ),
                     const SizedBox(height: 6),
                     DropdownButton<String>(
@@ -1057,7 +1057,7 @@ class _VoiceBar extends StatelessWidget {
                     ),
                     const SizedBox(height: 14),
                   ],
-                  const Divider(color: VyseColors.stroke),
+                  Divider(color: VyseColors.stroke),
                   for (final (label, hint, value, set) in [
                     (
                       'Noise suppression',
@@ -1078,7 +1078,7 @@ class _VoiceBar extends StatelessWidget {
                       value: value,
                       activeThumbColor: VyseColors.accent,
                       title: Text(label, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700)),
-                      subtitle: Text(hint, style: const TextStyle(fontSize: 12, color: VyseColors.textDim)),
+                      subtitle: Text(hint, style: TextStyle(fontSize: 12, color: VyseColors.textDim)),
                       onChanged: (v) async {
                         await set(v);
                         setState(() {});
@@ -1217,7 +1217,7 @@ class _Tile extends StatelessWidget {
                       children: [
                         if (m.owner) ...[const Icon(Icons.workspace_premium_rounded, size: 15, color: VyseColors.star), const SizedBox(width: 4)],
                         if (m.controls && !m.owner)
-                          const Tooltip(
+                          Tooltip(
                             message: 'Can play and pause for everyone',
                             child: Padding(padding: EdgeInsets.only(right: 4), child: Icon(Icons.smart_display_rounded, size: 14, color: VyseColors.accent)),
                           ),
@@ -1236,7 +1236,7 @@ class _Tile extends StatelessWidget {
                       ],
                     ),
                     if (away && !phone)
-                      const Padding(
+                      Padding(
                         padding: EdgeInsets.only(top: 2),
                         child: Text('connecting…', style: TextStyle(fontSize: 11, color: VyseColors.textFaint)),
                       ),
@@ -1332,7 +1332,7 @@ class _Chat extends StatelessWidget {
           itemCount: lines.length + 1,
           itemBuilder: (context, i) {
             if (i == lines.length) {
-              return const Padding(
+              return Padding(
                 padding: EdgeInsets.only(bottom: 14),
                 child: Text('Room chat. It disappears when the room closes.', style: TextStyle(fontSize: 12.5, color: VyseColors.textFaint)),
               );
@@ -1344,12 +1344,12 @@ class _Chat extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 6),
                 child: Row(
                   children: [
-                    const Icon(Icons.arrow_right_alt_rounded, size: 16, color: VyseColors.textFaint),
+                    Icon(Icons.arrow_right_alt_rounded, size: 16, color: VyseColors.textFaint),
                     const SizedBox(width: 6),
                     Expanded(
                       child: Text(
                         line.note!,
-                        style: const TextStyle(fontSize: 12.5, color: VyseColors.textFaint, fontWeight: FontWeight.w600),
+                        style: TextStyle(fontSize: 12.5, color: VyseColors.textFaint, fontWeight: FontWeight.w600),
                       ),
                     ),
                   ],
@@ -1389,7 +1389,7 @@ class _Chat extends StatelessWidget {
                                   ),
                                 ),
                                 const SizedBox(width: 8),
-                                Text(_clock(m.created), style: const TextStyle(fontSize: 11, color: VyseColors.textFaint)),
+                                Text(_clock(m.created), style: TextStyle(fontSize: 11, color: VyseColors.textFaint)),
                               ],
                             ),
                           Text(m.body, style: const TextStyle(fontSize: 14, height: 1.4)),
@@ -1432,7 +1432,7 @@ class _Chat extends StatelessWidget {
                     onTapOutside: dismissKeyboard,
                     style: const TextStyle(fontSize: 14, height: 1.35),
                     cursorColor: VyseColors.accent,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       counterText: '',
                       border: InputBorder.none,
                       hintText: 'Message the room',
@@ -1447,8 +1447,8 @@ class _Chat extends StatelessWidget {
                   tooltip: 'Send',
                   onPressed: sending ? null : onSend,
                   icon: sending
-                      ? const SizedBox.square(dimension: 16, child: CircularProgressIndicator(strokeWidth: 2, color: VyseColors.textDim))
-                      : const Icon(Icons.send_rounded, color: VyseColors.accent, size: 20),
+                      ? SizedBox.square(dimension: 16, child: CircularProgressIndicator(strokeWidth: 2, color: VyseColors.textDim))
+                      : Icon(Icons.send_rounded, color: VyseColors.accent, size: 20),
                 ),
               ),
             ],
@@ -1490,7 +1490,7 @@ class _WatchTile extends StatelessWidget {
                 width: w,
                 height: h,
                 child: v == null
-                    ? const ColoredBox(
+                    ? ColoredBox(
                         color: Colors.black,
                         child: Center(
                           child: Text('Playing in your other tab', style: TextStyle(color: VyseColors.textDim)),
@@ -1531,7 +1531,7 @@ class _WatchTile extends StatelessWidget {
                   IconButton(
                     tooltip: 'Full screen (F)',
                     onPressed: v == null ? null : () => RoomPage.theater.value = true,
-                    icon: const Icon(Icons.fullscreen_rounded, color: VyseColors.textDim),
+                    icon: Icon(Icons.fullscreen_rounded, color: VyseColors.textDim),
                   ),
                   if (host) ...[
                     const SizedBox(width: 4),
@@ -1563,7 +1563,7 @@ Future<LogicalKeyboardKey?> _askKey(BuildContext context) => showDialog<LogicalK
       backgroundColor: VyseColors.surface,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       title: const Text('Press a key', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
-      content: const Text('The key you hold to talk. Esc cancels.', style: TextStyle(color: VyseColors.textDim)),
+      content: Text('The key you hold to talk. Esc cancels.', style: TextStyle(color: VyseColors.textDim)),
     ),
   ),
 );

@@ -21,10 +21,10 @@ class PageScrollbar extends StatelessWidget {
         ),
         thumbColor: WidgetStateProperty.resolveWith((s) {
           if (s.contains(WidgetState.dragged)) return VyseColors.accent;
-          if (s.contains(WidgetState.hovered)) return Colors.white.withValues(alpha: .55);
-          return Colors.white.withValues(alpha: .25);
+          if (s.contains(WidgetState.hovered)) return VyseColors.ink.withValues(alpha: .55);
+          return VyseColors.ink.withValues(alpha: .25);
         }),
-        trackColor: WidgetStateProperty.all(Colors.white.withValues(alpha: .04)),
+        trackColor: WidgetStateProperty.all(VyseColors.ink.withValues(alpha: .04)),
         trackBorderColor: WidgetStateProperty.all(Colors.transparent),
         radius: const Radius.circular(8),
         crossAxisMargin: 3,

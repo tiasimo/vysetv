@@ -187,7 +187,7 @@ class _PartyLivePlayerState extends State<PartyLivePlayer> {
                         const SizedBox.square(dimension: 34, child: CircularProgressIndicator(strokeWidth: 2.4, color: Colors.white)),
                         if (_lost) ...[
                           const SizedBox(height: 12),
-                          const Text('Catching the stream…', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: VyseColors.textDim)),
+                          Text('Catching the stream…', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: VyseColors.textDim)),
                         ],
                       ],
                     ),

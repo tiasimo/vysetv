@@ -329,7 +329,7 @@ class _DmPageState extends State<DmPage> {
   /// The floating window's header: who it's with, put away (–) and close (×).
   Widget _floatingHeader(PartyProfile p) => Container(
     padding: const EdgeInsets.fromLTRB(12, 8, 4, 8),
-    decoration: const BoxDecoration(
+    decoration: BoxDecoration(
       color: VyseColors.surface,
       border: Border(bottom: BorderSide(color: VyseColors.stroke)),
     ),
@@ -363,7 +363,7 @@ class _DmPageState extends State<DmPage> {
                         valueListenable: Dms.typing,
                         builder: (context, t, _) => t.containsKey(p.id)
                             ? const Text('typing…', style: TextStyle(fontSize: 11.5, color: Color(0xFF3DDC97), fontWeight: FontWeight.w600))
-                            : Text('@${p.username}', maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 11.5, color: VyseColors.textDim)),
+                            : Text('@${p.username}', maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 11.5, color: VyseColors.textDim)),
                       ),
                     ],
                   ),
@@ -376,13 +376,13 @@ class _DmPageState extends State<DmPage> {
           tooltip: 'Put away',
           visualDensity: VisualDensity.compact,
           onPressed: MiniChat.toggle,
-          icon: const Icon(Icons.remove_rounded, size: 20, color: VyseColors.textDim),
+          icon: Icon(Icons.remove_rounded, size: 20, color: VyseColors.textDim),
         ),
         IconButton(
           tooltip: 'Close',
           visualDensity: VisualDensity.compact,
           onPressed: MiniChat.close,
-          icon: const Icon(Icons.close_rounded, size: 20, color: VyseColors.textDim),
+          icon: Icon(Icons.close_rounded, size: 20, color: VyseColors.textDim),
         ),
       ],
     ),
@@ -408,7 +408,7 @@ class _DmPageState extends State<DmPage> {
           else if (page.maxHeight >= 200)
           Container(
             padding: EdgeInsets.fromLTRB(side - 8, Layout.windowChrome(context) + (phone ? 6 : 14), right, 12),
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               border: Border(bottom: BorderSide(color: VyseColors.stroke)),
             ),
             child: Row(
@@ -417,7 +417,7 @@ class _DmPageState extends State<DmPage> {
                   IconButton(
                     tooltip: 'Back',
                     onPressed: () => Navigator.of(context).maybePop(),
-                    icon: const Icon(Icons.arrow_back_rounded, color: VyseColors.textDim),
+                    icon: Icon(Icons.arrow_back_rounded, color: VyseColors.textDim),
                   ),
                 const SizedBox(width: 4),
                 Expanded(
@@ -458,7 +458,7 @@ class _DmPageState extends State<DmPage> {
                                           '@${p.username}',
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(fontSize: 12.5, color: VyseColors.textDim),
+                                          style: TextStyle(fontSize: 12.5, color: VyseColors.textDim),
                                         ),
                                 ),
                               ],
@@ -490,7 +490,7 @@ class _DmPageState extends State<DmPage> {
           // messages
           Expanded(
             child: _loading
-                ? const Center(
+                ? Center(
                     child: SizedBox.square(dimension: 22, child: CircularProgressIndicator(strokeWidth: 2, color: VyseColors.textDim)),
                   )
                 : ListView.builder(
@@ -556,7 +556,7 @@ class _DmPageState extends State<DmPage> {
                           border: InputBorder.none,
                           hintText: 'Message ${p.name}',
                           hintMaxLines: 1,
-                          hintStyle: const TextStyle(color: VyseColors.textFaint),
+                          hintStyle: TextStyle(color: VyseColors.textFaint),
                         ),
                       ),
                     ),
@@ -569,8 +569,8 @@ class _DmPageState extends State<DmPage> {
                         tooltip: 'Send',
                         onPressed: _sending ? null : _send,
                         icon: _sending
-                            ? const SizedBox.square(dimension: 18, child: CircularProgressIndicator(strokeWidth: 2, color: VyseColors.textDim))
-                            : const Icon(Icons.send_rounded, color: VyseColors.accent),
+                            ? SizedBox.square(dimension: 18, child: CircularProgressIndicator(strokeWidth: 2, color: VyseColors.textDim))
+                            : Icon(Icons.send_rounded, color: VyseColors.accent),
                       ),
                     ),
                   ),
@@ -600,12 +600,12 @@ class _Intro extends StatelessWidget {
         PartyAvatar(url: partner.avatarUrl, name: partner.name, size: 72),
         const SizedBox(height: 12),
         Text(partner.name, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: -.5)),
-        Text('@${partner.username}', style: const TextStyle(fontSize: 14, color: VyseColors.textDim)),
+        Text('@${partner.username}', style: TextStyle(fontSize: 14, color: VyseColors.textDim)),
         const SizedBox(height: 12),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
           decoration: BoxDecoration(color: Colors.white.withValues(alpha: .05), borderRadius: BorderRadius.circular(10)),
-          child: const Row(
+          child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(Icons.timer_outlined, size: 16, color: VyseColors.textDim),
@@ -616,7 +616,7 @@ class _Intro extends StatelessWidget {
             ],
           ),
         ),
-        if (empty) ...[const SizedBox(height: 14), Text('Say hi to ${partner.name}.', style: const TextStyle(fontSize: 13.5, color: VyseColors.textFaint))],
+        if (empty) ...[const SizedBox(height: 14), Text('Say hi to ${partner.name}.', style: TextStyle(fontSize: 13.5, color: VyseColors.textFaint))],
       ],
     ),
   );
@@ -634,15 +634,15 @@ class _TimeDivider extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 14),
       child: Row(
         children: [
-          const Expanded(child: Divider(color: VyseColors.stroke)),
+          Expanded(child: Divider(color: VyseColors.stroke)),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Text(
               '${today ? 'Today' : 'Yesterday'} ${_clock(time)}',
-              style: const TextStyle(fontSize: 11.5, color: VyseColors.textFaint, fontWeight: FontWeight.w600),
+              style: TextStyle(fontSize: 11.5, color: VyseColors.textFaint, fontWeight: FontWeight.w600),
             ),
           ),
-          const Expanded(child: Divider(color: VyseColors.stroke)),
+          Expanded(child: Divider(color: VyseColors.stroke)),
         ],
       ),
     );
@@ -686,7 +686,7 @@ class _Bubble extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
                 decoration: BoxDecoration(
                   borderRadius: radius,
-                  gradient: mine ? const LinearGradient(colors: [VyseColors.accent, VyseColors.accentHot]) : null,
+                  gradient: mine ? LinearGradient(colors: [VyseColors.accent, VyseColors.accentHot]) : null,
                   color: mine ? null : VyseColors.surfaceHi,
                 ),
                 child: Text(
@@ -706,7 +706,7 @@ class _Bubble extends StatelessWidget {
               padding: const EdgeInsets.only(top: 4, right: 4),
               child: Text(
                 status!,
-                style: const TextStyle(fontSize: 11, color: VyseColors.textFaint, fontWeight: FontWeight.w600),
+                style: TextStyle(fontSize: 11, color: VyseColors.textFaint, fontWeight: FontWeight.w600),
               ),
             ),
         ],

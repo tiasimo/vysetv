@@ -400,7 +400,7 @@ class _SourcePicker extends StatelessWidget {
   Widget build(BuildContext context) => PopupMenuButton<CatalogSource>(
         tooltip: 'Dove cercare i portali',
         color: VyseColors.surfaceHi,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: const BorderSide(color: VyseColors.stroke)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: VyseColors.stroke)),
         onSelected: iptv.setScrapeSource,
         itemBuilder: (_) => [
           for (final s in CatalogSource.values)
@@ -462,7 +462,7 @@ class _PortalCard extends StatelessWidget {
                       icon: Icons.copy_rounded,
                     );
                   },
-                  icon: const Icon(Icons.copy_rounded, size: 18, color: VyseColors.textFaint),
+                  icon: Icon(Icons.copy_rounded, size: 18, color: VyseColors.textFaint),
                 ),
                 IconButton(
                   tooltip: fav ? 'Togli dai preferiti' : 'Preferito',
@@ -488,7 +488,7 @@ class _PlaylistCard extends StatelessWidget {
         trailing: IconButton(
           tooltip: 'Elimina',
           onPressed: () => iptv.deleteM3uPlaylist(playlist.id),
-          icon: const Icon(Icons.delete_outline_rounded, size: 19, color: VyseColors.textFaint),
+          icon: Icon(Icons.delete_outline_rounded, size: 19, color: VyseColors.textFaint),
         ),
       );
 }

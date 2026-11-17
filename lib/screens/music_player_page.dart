@@ -92,7 +92,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage> {
         GlassIconButton(icon: Icons.keyboard_arrow_down_rounded, label: 'Chiudi (Esc)', size: 40, onTap: _close),
         const Spacer(),
         Column(children: [
-          const Text('IN RIPRODUZIONE', style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w800, letterSpacing: 1.2, color: VyseColors.textDim)),
+          Text('IN RIPRODUZIONE', style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w800, letterSpacing: 1.2, color: VyseColors.textDim)),
           const SizedBox(height: 2),
           Text(t.album, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w600)),
         ]),
@@ -308,7 +308,7 @@ class _SeekState extends State<_Seek> {
           builder: (context, pos, _) {
             final max = total.inMilliseconds.toDouble().clamp(1.0, double.infinity);
             final value = (_drag ?? pos.inMilliseconds.toDouble()).clamp(0.0, max);
-            const style = TextStyle(fontSize: 11.5, color: VyseColors.textDim, fontFeatures: [FontFeature.tabularFigures()]);
+            final style = TextStyle(fontSize: 11.5, color: VyseColors.textDim, fontFeatures: [FontFeature.tabularFigures()]);
             return Column(children: [
               SliderTheme(
                 data: SliderThemeData(
@@ -405,7 +405,7 @@ class _Volume extends StatelessWidget {
             child: Slider(value: player.volume, max: 100, onChanged: player.setVolume),
           ),
         ),
-        const Icon(Icons.volume_up_rounded, size: 18, color: VyseColors.textDim),
+        Icon(Icons.volume_up_rounded, size: 18, color: VyseColors.textDim),
       ]);
 }
 
@@ -554,7 +554,7 @@ class _QueueView extends StatelessWidget {
                 child: Row(children: [
                   ReorderableDragStartListener(
                     index: i,
-                    child: const MouseRegion(
+                    child: MouseRegion(
                       cursor: SystemMouseCursors.grab,
                       child: Padding(padding: EdgeInsets.all(6), child: Icon(Icons.drag_indicator_rounded, size: 18, color: VyseColors.textFaint)),
                     ),
@@ -564,7 +564,7 @@ class _QueueView extends StatelessWidget {
                   Expanded(
                     child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: [
                       Text(t.title, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
-                      Text(t.artist, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 11.5, color: VyseColors.textDim)),
+                      Text(t.artist, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 11.5, color: VyseColors.textDim)),
                     ]),
                   ),
                   // came on its own (autoplay or radio), not added by you
@@ -573,7 +573,7 @@ class _QueueView extends StatelessWidget {
                       margin: const EdgeInsets.only(left: 6),
                       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                       decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Colors.white.withValues(alpha: .08)),
-                      child: const Text('Riproduzione automatica', style: TextStyle(fontSize: 9.5, fontWeight: FontWeight.w800, color: VyseColors.textFaint)),
+                      child: Text('Riproduzione automatica', style: TextStyle(fontSize: 9.5, fontWeight: FontWeight.w800, color: VyseColors.textFaint)),
                     ),
                   IconButton(
                     tooltip: 'Rimuovi',

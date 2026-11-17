@@ -256,7 +256,7 @@ class _Backdrop extends StatelessWidget {
             key: ValueKey(media.id),
             future: HomeFeed.instance.phoneArt(media),
             builder: (context, snap) {
-              if (snap.connectionState != ConnectionState.done) return const ColoredBox(color: VyseColors.bg);
+              if (snap.connectionState != ConnectionState.done) return ColoredBox(color: VyseColors.bg);
               final art = snap.data;
               return art == null
                   ? _Drift(url: media.backdrop('w780'))
@@ -285,7 +285,7 @@ class _Drift extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (url == null) return const ColoredBox(color: VyseColors.surface);
+    if (url == null) return ColoredBox(color: VyseColors.surface);
     return TweenAnimationBuilder<double>(
       tween: Tween(begin: 1.0, end: 1.05),
       duration: const Duration(seconds: 20),
@@ -303,8 +303,8 @@ class _Drift extends StatelessWidget {
           memCacheWidth: screenDecodeWidth(context),
           filterQuality: FilterQuality.low,
           fadeInDuration: const Duration(milliseconds: 400),
-          placeholder: (_, _) => const ColoredBox(color: VyseColors.bg),
-          errorWidget: (_, _, _) => const ColoredBox(color: VyseColors.surface),
+          placeholder: (_, _) => ColoredBox(color: VyseColors.bg),
+          errorWidget: (_, _, _) => ColoredBox(color: VyseColors.surface),
         ),
       ),
     );
@@ -321,7 +321,7 @@ class _Scrims extends StatelessWidget {
     duration: _morph,
     curve: _ease,
     builder: (context, t, _) {
-      const bg = VyseColors.bg;
+      final bg = VyseColors.bg;
       return Stack(
         fit: StackFit.expand,
         children: [
@@ -430,7 +430,7 @@ class _FoldingPoster extends StatelessWidget {
                 ),
                 clipBehavior: Clip.antiAlias,
                 child: media.poster('w500') == null
-                    ? const ColoredBox(color: VyseColors.surface)
+                    ? ColoredBox(color: VyseColors.surface)
                     : CachedNetworkImage(
                         imageUrl: media.poster('w500')!,
                         fit: BoxFit.cover,
@@ -808,7 +808,7 @@ class _KeyHints extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const style = TextStyle(
+    final style = TextStyle(
       fontSize: 11,
       color: VyseColors.textFaint,
       fontWeight: FontWeight.w500,
@@ -843,7 +843,7 @@ class _Key extends StatelessWidget {
     ),
     child: Text(
       glyph,
-      style: const TextStyle(
+      style: TextStyle(
         fontSize: 9.5,
         color: VyseColors.textDim,
         height: 1,

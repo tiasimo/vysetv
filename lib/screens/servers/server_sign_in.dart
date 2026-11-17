@@ -34,7 +34,7 @@ Future<bool> showServerSignIn(BuildContext context, {MediaBackend? backend, Disc
       builder: (context) => Dialog(
         backgroundColor: const Color(0xFF0B0D16),
         insetPadding: const EdgeInsets.all(24),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22), side: const BorderSide(color: VyseColors.stroke)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22), side: BorderSide(color: VyseColors.stroke)),
         clipBehavior: Clip.antiAlias,
         child: ConstrainedBox(constraints: const BoxConstraints(maxWidth: 460), child: SingleChildScrollView(child: body)),
       ),
@@ -308,7 +308,7 @@ class _SignInState extends State<_SignIn> {
       const SizedBox(height: 16),
       Text(title, style: const TextStyle(fontSize: 24, height: 1.15, fontWeight: FontWeight.w900, letterSpacing: -.3)),
       const SizedBox(height: 6),
-      Text(body, style: const TextStyle(fontSize: 13.5, height: 1.45, color: VyseColors.textDim)),
+      Text(body, style: TextStyle(fontSize: 13.5, height: 1.45, color: VyseColors.textDim)),
       const SizedBox(height: 20),
     ],
   );
@@ -536,7 +536,7 @@ class _SignInState extends State<_SignIn> {
         child: AnimatedSwitcher(
           duration: const Duration(milliseconds: 300),
           child: _code == null
-              ? const SizedBox(height: 76, child: Center(child: CircularProgressIndicator(strokeWidth: 2.4, color: VyseColors.accent)))
+              ? SizedBox(height: 76, child: Center(child: CircularProgressIndicator(strokeWidth: 2.4, color: VyseColors.accent)))
               : Row(
                   key: ValueKey(_code),
                   mainAxisSize: MainAxisSize.min,
@@ -551,7 +551,7 @@ class _SignInState extends State<_SignIn> {
                           margin: const EdgeInsets.symmetric(horizontal: 4),
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                            color: Colors.white.withValues(alpha: .06),
+                            color: VyseColors.ink.withValues(alpha: .06),
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(color: VyseColors.accent.withValues(alpha: .35)),
                           ),
@@ -594,7 +594,7 @@ class _SignInState extends State<_SignIn> {
       const SizedBox(height: 20),
       Text(_doneTitle, textAlign: TextAlign.center, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900)),
       const SizedBox(height: 6),
-      Text(_doneBody, textAlign: TextAlign.center, style: const TextStyle(fontSize: 13.5, color: VyseColors.textDim)),
+      Text(_doneBody, textAlign: TextAlign.center, style: TextStyle(fontSize: 13.5, color: VyseColors.textDim)),
     ]),
   );
 }
@@ -620,8 +620,8 @@ class _ProviderRow extends StatelessWidget {
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            color: Colors.white.withValues(alpha: hovered ? .07 : .04),
-            border: Border.all(color: hovered ? c.first.withValues(alpha: .55) : Colors.white.withValues(alpha: .07)),
+            color: VyseColors.ink.withValues(alpha: hovered ? .07 : .04),
+            border: Border.all(color: hovered ? c.first.withValues(alpha: .55) : VyseColors.ink.withValues(alpha: .07)),
             boxShadow: [if (hovered) BoxShadow(color: c.last.withValues(alpha: .18), blurRadius: 24)],
           ),
           child: Row(children: [
@@ -631,7 +631,7 @@ class _ProviderRow extends StatelessWidget {
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text(brandName(backend), style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w900)),
                 const SizedBox(height: 2),
-                Text(blurb, style: const TextStyle(fontSize: 12.5, color: VyseColors.textDim)),
+                Text(blurb, style: TextStyle(fontSize: 12.5, color: VyseColors.textDim)),
               ]),
             ),
             AnimatedSlide(
@@ -665,15 +665,15 @@ class _Nearby extends StatelessWidget {
         padding: const EdgeInsets.only(top: 18),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Row(children: [
-            const Icon(Icons.wifi_tethering_rounded, size: 15, color: VyseColors.textFaint),
+            Icon(Icons.wifi_tethering_rounded, size: 15, color: VyseColors.textFaint),
             const SizedBox(width: 7),
             Text(
               searching ? 'Cerco nella tua rete…' : 'Sulla tua rete',
-              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w800, color: VyseColors.textFaint, letterSpacing: .3),
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w800, color: VyseColors.textFaint, letterSpacing: .3),
             ),
             if (searching) ...[
               const SizedBox(width: 8),
-              const SizedBox.square(dimension: 11, child: CircularProgressIndicator(strokeWidth: 1.6, color: VyseColors.textFaint)),
+              SizedBox.square(dimension: 11, child: CircularProgressIndicator(strokeWidth: 1.6, color: VyseColors.textFaint)),
             ],
           ]),
           const SizedBox(height: 10),
@@ -689,8 +689,8 @@ class _Nearby extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
-                    color: Colors.white.withValues(alpha: hovered ? .07 : .035),
-                    border: Border.all(color: Colors.white.withValues(alpha: hovered ? .14 : .06)),
+                    color: VyseColors.ink.withValues(alpha: hovered ? .07 : .035),
+                    border: Border.all(color: VyseColors.ink.withValues(alpha: hovered ? .14 : .06)),
                   ),
                   child: Row(children: [
                     BrandMark(s.dialect.backend, size: 26),
@@ -698,7 +698,7 @@ class _Nearby extends StatelessWidget {
                     Expanded(
                       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                         Text(s.name, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 13.5, fontWeight: FontWeight.w800)),
-                        Text(s.address, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 11.5, color: VyseColors.textFaint)),
+                        Text(s.address, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 11.5, color: VyseColors.textFaint)),
                       ]),
                     ),
                     Text('Collega', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w800, color: hovered ? VyseColors.accent : VyseColors.textDim)),
@@ -737,8 +737,8 @@ class _WaitingState extends State<_Waiting> with SingleTickerProviderStateMixin 
     padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(14),
-      color: Colors.white.withValues(alpha: .04),
-      border: Border.all(color: Colors.white.withValues(alpha: .06)),
+      color: VyseColors.ink.withValues(alpha: .04),
+      border: Border.all(color: VyseColors.ink.withValues(alpha: .06)),
     ),
     child: Row(children: [
       AnimatedBuilder(
@@ -760,7 +760,7 @@ class _WaitingState extends State<_Waiting> with SingleTickerProviderStateMixin 
         ]),
       ),
       const SizedBox(width: 8),
-      Expanded(child: Text(widget.label, style: const TextStyle(fontSize: 13.5, fontWeight: FontWeight.w700, color: VyseColors.textDim))),
+      Expanded(child: Text(widget.label, style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.w700, color: VyseColors.textDim))),
     ]),
   );
 }
@@ -774,7 +774,7 @@ class _Note extends StatelessWidget {
   Widget build(BuildContext context) => Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
     Icon(icon, size: 14, color: VyseColors.textFaint),
     const SizedBox(width: 7),
-    Expanded(child: Text(text, style: const TextStyle(fontSize: 11.5, height: 1.4, color: VyseColors.textFaint))),
+    Expanded(child: Text(text, style: TextStyle(fontSize: 11.5, height: 1.4, color: VyseColors.textFaint))),
   ]);
 }
 
@@ -806,7 +806,7 @@ class _Field extends StatelessWidget {
     children: [
       Padding(
         padding: const EdgeInsets.only(left: 4, bottom: 6),
-        child: Text(label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: VyseColors.textDim)),
+        child: Text(label, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: VyseColors.textDim)),
       ),
       TextField(
         controller: controller,
@@ -821,15 +821,15 @@ class _Field extends StatelessWidget {
         cursorColor: VyseColors.accent,
         decoration: InputDecoration(
           hintText: hint,
-          hintStyle: const TextStyle(color: VyseColors.textFaint, fontSize: 14),
+          hintStyle: TextStyle(color: VyseColors.textFaint, fontSize: 14),
           prefixIcon: Icon(icon, size: 19, color: VyseColors.textFaint),
           suffixIcon: trailing == null ? null : Padding(padding: const EdgeInsets.only(right: 6), child: Center(widthFactor: 1, child: trailing)),
           filled: true,
-          fillColor: Colors.white.withValues(alpha: .05),
+          fillColor: VyseColors.ink.withValues(alpha: .05),
           contentPadding: const EdgeInsets.symmetric(vertical: 14),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(14),
-            borderSide: BorderSide(color: Colors.white.withValues(alpha: .06)),
+            borderSide: BorderSide(color: VyseColors.ink.withValues(alpha: .06)),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(14),
@@ -860,8 +860,8 @@ class _Submit extends StatelessWidget {
         alignment: Alignment.center,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(14),
-          color: enabled || busy ? (hovered ? Colors.white : Colors.white.withValues(alpha: .93)) : Colors.white.withValues(alpha: .1),
-          boxShadow: [if (enabled && hovered) BoxShadow(color: Colors.white.withValues(alpha: .2), blurRadius: 18)],
+          color: enabled || busy ? (hovered ? Colors.white : VyseColors.ink.withValues(alpha: .93)) : VyseColors.ink.withValues(alpha: .1),
+          boxShadow: [if (enabled && hovered) BoxShadow(color: VyseColors.ink.withValues(alpha: .2), blurRadius: 18)],
         ),
         child: busy
             ? const SizedBox.square(dimension: 20, child: CircularProgressIndicator(strokeWidth: 2.4, color: Colors.black))

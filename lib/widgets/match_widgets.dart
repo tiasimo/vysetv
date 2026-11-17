@@ -71,7 +71,7 @@ class MatchCard extends StatelessWidget {
             if (m.leagueLogo != null) ...[TeamBadge(url: m.leagueLogo, size: 16), const SizedBox(width: 7)],
             Expanded(
               child: Text(m.league.name,
-                  maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 11.5, color: VyseColors.textFaint)),
+                  maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 11.5, color: VyseColors.textFaint)),
             ),
             if (live)
               LivePill(m.status)

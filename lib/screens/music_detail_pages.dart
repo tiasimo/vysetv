@@ -135,7 +135,7 @@ class _MusicCollectionPageState extends State<MusicCollectionPage> {
                               crossAxisAlignment: phone ? CrossAxisAlignment.center : CrossAxisAlignment.start,
                               children: [
                                 Text(widget.kind.toUpperCase(),
-                                    style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w800, letterSpacing: 1.2, color: VyseColors.accent)),
+                                    style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800, letterSpacing: 1.2, color: VyseColors.accent)),
                                 const SizedBox(height: 8),
                                 Text(c?.title ?? widget.title ?? '',
                                     textAlign: phone ? TextAlign.center : TextAlign.start,
@@ -283,7 +283,7 @@ class _MusicArtistPageState extends State<MusicArtistPage> {
                           delay: const Duration(milliseconds: 60),
                           offset: 12,
                           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                            const Text('ARTIST',
+                            Text('ARTIST',
                                 style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800, letterSpacing: 1.2, color: VyseColors.accent)),
                             const SizedBox(height: 6),
                             Text(a?.name ?? widget.name,
@@ -427,7 +427,7 @@ class _BlurredBackdrop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const bg = VyseColors.bg;
+    final bg = VyseColors.bg;
     return IgnorePointer(
       child: Stack(fit: StackFit.expand, children: [
         if (url != null)

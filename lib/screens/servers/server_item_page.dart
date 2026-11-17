@@ -200,7 +200,7 @@ class _ServerItemPageState extends State<ServerItemPage> {
                   builder: (context, s, child) => Transform.scale(scale: s, child: child),
                   child: serverImage(c.backdropOf(title), alignment: Alignment.topCenter),
                 ),
-                const DecoratedBox(
+                DecoratedBox(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
@@ -303,7 +303,7 @@ class _ServerItemPageState extends State<ServerItemPage> {
       ),
       const SizedBox(height: 14),
       Wrap(spacing: 8, runSpacing: 8, crossAxisAlignment: WrapCrossAlignment.center, children: [
-        for (final m in meta) Text(m, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: VyseColors.textDim)),
+        for (final m in meta) Text(m, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: VyseColors.textDim)),
         if (t.contentRating != null && t.contentRating!.isNotEmpty) _Tag(t.contentRating!),
         if (rating != null && rating > 0)
           Row(mainAxisSize: MainAxisSize.min, children: [
@@ -324,18 +324,18 @@ class _ServerItemPageState extends State<ServerItemPage> {
         const SizedBox(height: 14),
         SizedBox(width: 300, child: ClipRRect(borderRadius: BorderRadius.circular(2), child: ThinProgress(p))),
         const SizedBox(height: 4),
-        Text(lengthNote(t) ?? '', style: const TextStyle(fontSize: 12, color: VyseColors.textFaint, fontWeight: FontWeight.w600)),
+        Text(lengthNote(t) ?? '', style: TextStyle(fontSize: 12, color: VyseColors.textFaint, fontWeight: FontWeight.w600)),
       ],
       if (isShow && next != null) ...[
         const SizedBox(height: 10),
         Text(
           'Up next: ${next.title ?? episodeCode(next) ?? ''}',
-          style: const TextStyle(fontSize: 12.5, color: VyseColors.textFaint, fontWeight: FontWeight.w700),
+          style: TextStyle(fontSize: 12.5, color: VyseColors.textFaint, fontWeight: FontWeight.w700),
         ),
       ],
       if ((t.tagline ?? '').isNotEmpty) ...[
         const SizedBox(height: 22),
-        Text(t.tagline!, style: const TextStyle(fontSize: 15, fontStyle: FontStyle.italic, color: VyseColors.text, fontWeight: FontWeight.w600)),
+        Text(t.tagline!, style: TextStyle(fontSize: 15, fontStyle: FontStyle.italic, color: VyseColors.text, fontWeight: FontWeight.w600)),
       ],
       if ((t.summary ?? '').isNotEmpty) ...[
         SizedBox(height: (t.tagline ?? '').isNotEmpty ? 8 : 22),
@@ -365,8 +365,8 @@ class _ServerItemPageState extends State<ServerItemPage> {
         const SizedBox(height: 14),
         Text.rich(
           TextSpan(children: [
-            const TextSpan(text: 'Regia di  ', style: TextStyle(color: VyseColors.textFaint)),
-            TextSpan(text: t.directors!.take(3).join(', '), style: const TextStyle(color: VyseColors.text)),
+            TextSpan(text: 'Regia di  ', style: TextStyle(color: VyseColors.textFaint)),
+            TextSpan(text: t.directors!.take(3).join(', '), style: TextStyle(color: VyseColors.text)),
           ]),
           style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
         ),
@@ -375,8 +375,8 @@ class _ServerItemPageState extends State<ServerItemPage> {
         const SizedBox(height: 4),
         Text.rich(
           TextSpan(children: [
-            TextSpan(text: isShow ? 'Rete  ' : 'Studio  ', style: const TextStyle(color: VyseColors.textFaint)),
-            TextSpan(text: t.studio, style: const TextStyle(color: VyseColors.text)),
+            TextSpan(text: isShow ? 'Rete  ' : 'Studio  ', style: TextStyle(color: VyseColors.textFaint)),
+            TextSpan(text: t.studio, style: TextStyle(color: VyseColors.text)),
           ]),
           style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
         ),
@@ -474,7 +474,7 @@ class _ServerItemPageState extends State<ServerItemPage> {
               );
             }
             if (eps.isEmpty) {
-              return const SliverToBoxAdapter(
+              return SliverToBoxAdapter(
                 child: Padding(
                   padding: EdgeInsets.symmetric(vertical: 30),
                   child: Text('Ancora nessun episodio in questa stagione.', style: TextStyle(color: VyseColors.textFaint)),
@@ -514,8 +514,8 @@ class _Tag extends StatelessWidget {
     padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(7),
-      color: accent ? VyseColors.accent.withValues(alpha: .16) : Colors.white.withValues(alpha: .07),
-      border: Border.all(color: accent ? VyseColors.accent.withValues(alpha: .4) : Colors.white.withValues(alpha: .1)),
+      color: accent ? VyseColors.accent.withValues(alpha: .16) : VyseColors.ink.withValues(alpha: .07),
+      border: Border.all(color: accent ? VyseColors.accent.withValues(alpha: .4) : VyseColors.ink.withValues(alpha: .1)),
     ),
     child: Text(text, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w800, color: accent ? VyseColors.accent : VyseColors.text)),
   );
@@ -541,8 +541,8 @@ class _WatchedButton extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: compact ? 14 : 20),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(compact ? 10 : 12),
-          color: watched ? VyseColors.accent.withValues(alpha: hovered ? .26 : .18) : Colors.white.withValues(alpha: hovered ? .2 : .1),
-          border: Border.all(color: watched ? VyseColors.accent.withValues(alpha: .5) : Colors.white.withValues(alpha: .14)),
+          color: watched ? VyseColors.accent.withValues(alpha: hovered ? .26 : .18) : VyseColors.ink.withValues(alpha: hovered ? .2 : .1),
+          border: Border.all(color: watched ? VyseColors.accent.withValues(alpha: .5) : VyseColors.ink.withValues(alpha: .14)),
         ),
         child: Row(mainAxisSize: MainAxisSize.min, children: [
           AnimatedSwitcher(
@@ -601,7 +601,7 @@ class _EpisodeRow extends StatelessWidget {
           borderRadius: BorderRadius.circular(14),
           color: highlight
               ? VyseColors.accent.withValues(alpha: hovered ? .12 : .07)
-              : Colors.white.withValues(alpha: hovered ? .05 : 0),
+              : VyseColors.ink.withValues(alpha: hovered ? .05 : 0),
           border: Border.all(color: highlight ? VyseColors.accent.withValues(alpha: .3) : Colors.transparent),
         ),
         child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -631,7 +631,7 @@ class _EpisodeRow extends StatelessWidget {
                     right: 6,
                     child: Container(
                       padding: const EdgeInsets.all(3),
-                      decoration: const BoxDecoration(color: VyseColors.accent, shape: BoxShape.circle),
+                      decoration: BoxDecoration(color: VyseColors.accent, shape: BoxShape.circle),
                       child: const Icon(Icons.check_rounded, size: 12, color: Colors.black),
                     ),
                   ),
@@ -671,7 +671,7 @@ class _EpisodeRow extends StatelessWidget {
                 ]),
                 if (sub.isNotEmpty) ...[
                   const SizedBox(height: 3),
-                  Text(sub, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: VyseColors.textFaint)),
+                  Text(sub, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: VyseColors.textFaint)),
                 ],
                 if ((e.summary ?? '').isNotEmpty) ...[
                   const SizedBox(height: 6),
@@ -679,7 +679,7 @@ class _EpisodeRow extends StatelessWidget {
                     e.summary!,
                     maxLines: phone ? 2 : 3,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(fontSize: 13, height: 1.45, color: VyseColors.textDim),
+                    style: TextStyle(fontSize: 13, height: 1.45, color: VyseColors.textDim),
                   ),
                 ],
               ]),

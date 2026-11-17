@@ -112,7 +112,7 @@ class _AudiobookDetailsPageState extends State<AudiobookDetailsPage> {
                               style: TextStyle(fontSize: phone ? 26 : 38, fontWeight: FontWeight.w800, letterSpacing: -1.1, height: 1.08)),
                           if (b.author != null && b.author!.isNotEmpty) ...[
                             const SizedBox(height: 8),
-                            Text(b.author!, style: const TextStyle(color: VyseColors.accent, fontWeight: FontWeight.w600, fontSize: 14)),
+                            Text(b.author!, style: TextStyle(color: VyseColors.accent, fontWeight: FontWeight.w600, fontSize: 14)),
                           ],
                           const SizedBox(height: 20),
                           _actions(),
@@ -155,7 +155,7 @@ class _AudiobookDetailsPageState extends State<AudiobookDetailsPage> {
               if (saved != null && chapters.isNotEmpty)
                 Text(
                   '${saved.chapterTitle ?? 'Chapter ${saved.chapter + 1}'} · ${fmtClock(saved.position)}',
-                  style: const TextStyle(fontSize: 12.5, color: VyseColors.textDim),
+                  style: TextStyle(fontSize: 12.5, color: VyseColors.textDim),
                 ),
             ]);
           },
@@ -225,7 +225,7 @@ class _ChapterTile extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
-              color: Colors.white.withValues(alpha: current ? .08 : (hovered ? .06 : 0)),
+              color: VyseColors.ink.withValues(alpha: current ? .08 : (hovered ? .06 : 0)),
             ),
             child: Row(children: [
               SizedBox(

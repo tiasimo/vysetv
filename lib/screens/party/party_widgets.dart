@@ -94,7 +94,7 @@ class _Watching extends StatelessWidget {
                     if (a['kind'] == 'tv' && a['episode'] != null) 'Season ${a['season'] ?? 1} · Episode ${a['episode']}',
                     mins < 1 ? 'just started' : 'for ${mins < 60 ? '${mins}m' : '${mins ~/ 60}h ${mins % 60}m'}',
                   ].join('  ·  '),
-                  style: const TextStyle(fontSize: 12, color: VyseColors.textDim),
+                  style: TextStyle(fontSize: 12, color: VyseColors.textDim),
                 ),
               ],
             ),
@@ -277,7 +277,7 @@ class PartyProfileCard extends StatelessWidget {
                   const SizedBox(height: 2),
                   Text(
                     '@${p.username}',
-                    style: const TextStyle(fontSize: 13, color: VyseColors.textDim, fontWeight: FontWeight.w600),
+                    style: TextStyle(fontSize: 13, color: VyseColors.textDim, fontWeight: FontWeight.w600),
                   ),
                   const SizedBox(height: 6),
                   Row(
@@ -290,13 +290,13 @@ class PartyProfileCard extends StatelessWidget {
                       const SizedBox(width: 6),
                       Text(
                         p.presence == 'offline' && p.lastSeen != null && !p.isMe ? 'Last seen ${_ago(p.lastSeen!)}' : presenceLabel(p.presence),
-                        style: const TextStyle(fontSize: 12, color: VyseColors.textDim),
+                        style: TextStyle(fontSize: 12, color: VyseColors.textDim),
                       ),
                     ],
                   ),
                   if (!hidden && p.customStatus.isNotEmpty) ...[
                     const SizedBox(height: 10),
-                    Text(p.customStatus, style: const TextStyle(fontSize: 13.5, color: VyseColors.text)),
+                    Text(p.customStatus, style: TextStyle(fontSize: 13.5, color: VyseColors.text)),
                   ],
                   if (!hidden && p.activity != null) ...[const SizedBox(height: 12), _Watching(activity: p.activity!)],
                   const SizedBox(height: 14),
@@ -307,7 +307,7 @@ class PartyProfileCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         if (hidden)
-                          const Row(
+                          Row(
                             children: [
                               Icon(Icons.lock_outline_rounded, size: 16, color: VyseColors.textDim),
                               SizedBox(width: 8),
@@ -320,7 +320,7 @@ class PartyProfileCard extends StatelessWidget {
                             ],
                           )
                         else ...[
-                          const Text(
+                          Text(
                             'ABOUT ME',
                             style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800, letterSpacing: .8, color: VyseColors.textDim),
                           ),
@@ -331,7 +331,7 @@ class PartyProfileCard extends StatelessWidget {
                           ),
                           if (preview && p.private) ...[
                             const SizedBox(height: 10),
-                            const Text(
+                            Text(
                               "Your profile is private: nobody else can add or message you, and only friends see your bio, banner, status line and what you watch.",
                               style: TextStyle(fontSize: 12, color: VyseColors.textFaint),
                             ),
@@ -339,7 +339,7 @@ class PartyProfileCard extends StatelessWidget {
                         ],
                         if (p.joined != null) ...[
                           const SizedBox(height: 12),
-                          const Text(
+                          Text(
                             'MEMBER SINCE',
                             style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800, letterSpacing: .8, color: VyseColors.textDim),
                           ),
@@ -376,7 +376,7 @@ class _Badge extends StatelessWidget {
         const SizedBox(width: 5),
         Text(
           label,
-          style: const TextStyle(fontSize: 11.5, fontWeight: FontWeight.w700, color: VyseColors.textDim),
+          style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.w700, color: VyseColors.textDim),
         ),
       ],
     ),
@@ -476,11 +476,11 @@ class _ProfileLoaderState extends State<_ProfileLoader> {
         backgroundColor: const Color(0xFF101118),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: Text('Remove ${p.name}?', style: const TextStyle(fontWeight: FontWeight.w800)),
-        content: const Text("You'll stop being friends. You can add each other again later.", style: TextStyle(color: VyseColors.textDim, height: 1.4)),
+        content: Text("You'll stop being friends. You can add each other again later.", style: TextStyle(color: VyseColors.textDim, height: 1.4)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Cancel', style: TextStyle(color: VyseColors.text)),
+            child: Text('Cancel', style: TextStyle(color: VyseColors.text)),
           ),
           FilledButton(
             style: FilledButton.styleFrom(backgroundColor: const Color(0xFFFF4D4F), foregroundColor: Colors.white),
@@ -587,8 +587,8 @@ class _ProfileLoaderState extends State<_ProfileLoader> {
           border: Border.all(color: VyseColors.stroke),
         ),
         child: _failed
-            ? const Text("Couldn't load this profile.", style: TextStyle(color: VyseColors.textDim))
-            : const SizedBox.square(dimension: 22, child: CircularProgressIndicator(strokeWidth: 2, color: VyseColors.textDim)),
+            ? Text("Couldn't load this profile.", style: TextStyle(color: VyseColors.textDim))
+            : SizedBox.square(dimension: 22, child: CircularProgressIndicator(strokeWidth: 2, color: VyseColors.textDim)),
       );
     }
     return PartyProfileCard(profile: p, actions: _actions(p));
@@ -603,14 +603,14 @@ Future<bool> confirmBlock(BuildContext context, PartyProfile p) async =>
         backgroundColor: const Color(0xFF101118),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: Text('Block ${p.name}?', style: const TextStyle(fontWeight: FontWeight.w800)),
-        content: const Text(
+        content: Text(
           "They won't be able to add you, message you or see your profile, and you'll stop being friends. They aren't told.",
           style: TextStyle(color: VyseColors.textDim, height: 1.4),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Cancel', style: TextStyle(color: VyseColors.text)),
+            child: Text('Cancel', style: TextStyle(color: VyseColors.text)),
           ),
           FilledButton(
             style: FilledButton.styleFrom(backgroundColor: const Color(0xFFFF4D4F), foregroundColor: Colors.white),
@@ -781,9 +781,9 @@ class _ImageLinkEditorState extends State<ImageLinkEditor> {
         border: Border.all(color: _state == _Check.bad ? const Color(0xFFFF8A8C).withValues(alpha: .5) : VyseColors.stroke),
       ),
       child: switch (_state) {
-        _Check.checking => const SizedBox.square(dimension: 20, child: CircularProgressIndicator(strokeWidth: 2, color: VyseColors.textDim)),
+        _Check.checking => SizedBox.square(dimension: 20, child: CircularProgressIndicator(strokeWidth: 2, color: VyseColors.textDim)),
         _Check.bad => const Icon(Icons.broken_image_outlined, color: Color(0xFFFF8A8C)),
-        _Check.empty => const Icon(Icons.image_outlined, color: VyseColors.textFaint),
+        _Check.empty => Icon(Icons.image_outlined, color: VyseColors.textFaint),
         _Check.ok => const SizedBox.shrink(),
       },
     );
@@ -817,8 +817,8 @@ class _ImageLinkEditorState extends State<ImageLinkEditor> {
           decoration: InputDecoration(
             counterText: '',
             hintText: 'https://i.imgur.com/….png',
-            hintStyle: const TextStyle(color: VyseColors.textFaint),
-            prefixIcon: const Icon(Icons.link_rounded, size: 19, color: VyseColors.textFaint),
+            hintStyle: TextStyle(color: VyseColors.textFaint),
+            prefixIcon: Icon(Icons.link_rounded, size: 19, color: VyseColors.textFaint),
             filled: true,
             fillColor: Colors.white.withValues(alpha: .05),
             contentPadding: const EdgeInsets.symmetric(vertical: 14),
@@ -890,7 +890,7 @@ class _BannerDialogState extends State<_BannerDialog> {
     insetPadding: const EdgeInsets.all(20),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(20),
-      side: const BorderSide(color: VyseColors.stroke),
+      side: BorderSide(color: VyseColors.stroke),
     ),
     child: ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 460),
@@ -902,7 +902,7 @@ class _BannerDialogState extends State<_BannerDialog> {
           children: [
             const Text('Profile banner', style: TextStyle(fontSize: 19, fontWeight: FontWeight.w900)),
             const SizedBox(height: 4),
-            const Text('Shown across the top of your profile. Wide images (5:2) fit best.', style: TextStyle(fontSize: 13, color: VyseColors.textDim)),
+            Text('Shown across the top of your profile. Wide images (5:2) fit best.', style: TextStyle(fontSize: 13, color: VyseColors.textDim)),
             const SizedBox(height: 18),
             ImageLinkEditor(initial: _current, onValid: (v) => setState(() => _valid = v)),
             if (_error != null) ...[
@@ -926,7 +926,7 @@ class _BannerDialogState extends State<_BannerDialog> {
                 const Spacer(),
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: const Text('Cancel', style: TextStyle(color: VyseColors.textDim)),
+                  child: Text('Cancel', style: TextStyle(color: VyseColors.textDim)),
                 ),
                 const SizedBox(width: 6),
                 FilledButton(
@@ -1019,7 +1019,7 @@ class PartyNote extends StatelessWidget {
         Icon(icon, size: 20, color: VyseColors.textFaint),
         const SizedBox(width: 12),
         Expanded(
-          child: Text(text, style: const TextStyle(fontSize: 13.5, color: VyseColors.textDim)),
+          child: Text(text, style: TextStyle(fontSize: 13.5, color: VyseColors.textDim)),
         ),
       ],
     ),
@@ -1065,12 +1065,12 @@ class PartyPersonRow extends StatelessWidget {
                       ),
                       if (p.isMe) ...[
                         const SizedBox(width: 6),
-                        const Text(
+                        Text(
                           'you',
                           style: TextStyle(fontSize: 11.5, color: VyseColors.accent, fontWeight: FontWeight.w800),
                         ),
                       ],
-                      if (p.private) ...[const SizedBox(width: 6), const Icon(Icons.lock_outline_rounded, size: 13, color: VyseColors.textFaint)],
+                      if (p.private) ...[const SizedBox(width: 6), Icon(Icons.lock_outline_rounded, size: 13, color: VyseColors.textFaint)],
                     ],
                   ),
                   const SizedBox(height: 2),
@@ -1082,7 +1082,7 @@ class PartyPersonRow extends StatelessWidget {
                           line,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(fontSize: 12.5, color: VyseColors.textDim),
+                          style: TextStyle(fontSize: 12.5, color: VyseColors.textDim),
                         ),
                       ),
                     ],
@@ -1090,7 +1090,7 @@ class PartyPersonRow extends StatelessWidget {
                 ],
               ),
             ),
-            if (trailing.isEmpty) const Icon(Icons.chevron_right_rounded, color: VyseColors.textFaint) else ...trailing,
+            if (trailing.isEmpty) Icon(Icons.chevron_right_rounded, color: VyseColors.textFaint) else ...trailing,
           ],
         ),
       ),
@@ -1179,7 +1179,7 @@ class _ReportDialogState extends State<_ReportDialog> {
     insetPadding: const EdgeInsets.all(20),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(20),
-      side: const BorderSide(color: VyseColors.stroke),
+      side: BorderSide(color: VyseColors.stroke),
     ),
     child: ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 440),
@@ -1194,7 +1194,7 @@ class _ReportDialogState extends State<_ReportDialog> {
               style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w900),
             ),
             const SizedBox(height: 4),
-            const Text("They won't know who reported them.", style: TextStyle(fontSize: 13, color: VyseColors.textDim)),
+            Text("They won't know who reported them.", style: TextStyle(fontSize: 13, color: VyseColors.textDim)),
             const SizedBox(height: 14),
             for (final (id, label) in _reasons)
               Pressable(
@@ -1235,7 +1235,7 @@ class _ReportDialogState extends State<_ReportDialog> {
               cursorColor: VyseColors.accent,
               decoration: InputDecoration(
                 hintText: 'Anything else we should know? (optional)',
-                hintStyle: const TextStyle(color: VyseColors.textFaint),
+                hintStyle: TextStyle(color: VyseColors.textFaint),
                 filled: true,
                 fillColor: Colors.white.withValues(alpha: .05),
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
@@ -1252,7 +1252,7 @@ class _ReportDialogState extends State<_ReportDialog> {
                 const Spacer(),
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: const Text('Cancel', style: TextStyle(color: VyseColors.textDim)),
+                  child: Text('Cancel', style: TextStyle(color: VyseColors.textDim)),
                 ),
                 const SizedBox(width: 6),
                 FilledButton(
@@ -1288,7 +1288,7 @@ Future<void> showPartyRules(BuildContext context) => showDialog<void>(
     insetPadding: const EdgeInsets.all(20),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(20),
-      side: const BorderSide(color: VyseColors.stroke),
+      side: BorderSide(color: VyseColors.stroke),
     ),
     child: ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 460),
@@ -1314,7 +1314,7 @@ Future<void> showPartyRules(BuildContext context) => showDialog<void>(
                         children: [
                           Text(title, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700)),
                           const SizedBox(height: 2),
-                          Text(body, style: const TextStyle(fontSize: 13, height: 1.35, color: VyseColors.textDim)),
+                          Text(body, style: TextStyle(fontSize: 13, height: 1.35, color: VyseColors.textDim)),
                         ],
                       ),
                     ),

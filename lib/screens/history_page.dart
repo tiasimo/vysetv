@@ -89,12 +89,12 @@ class _HistoryPageState extends State<HistoryPage> {
         backgroundColor: const Color(0xFF101118),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: const Text('Cancellare la cronologia?', style: TextStyle(fontWeight: FontWeight.w800)),
-        content: const Text(
+        content: Text(
           'Rimuove tutto da qui e svuota Continua a guardare. Non si può annullare.',
           style: TextStyle(color: VyseColors.textDim, height: 1.4),
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Annulla', style: TextStyle(color: VyseColors.text))),
+          TextButton(onPressed: () => Navigator.pop(context, false), child: Text('Annulla', style: TextStyle(color: VyseColors.text))),
           FilledButton(
             style: FilledButton.styleFrom(backgroundColor: const Color(0xFFFF4D4F), foregroundColor: Colors.white),
             onPressed: () => Navigator.pop(context, true),
@@ -174,7 +174,7 @@ class _HistoryPageState extends State<HistoryPage> {
             if (all.isEmpty)
               const SliverToBoxAdapter(child: _Empty())
             else if (shown.isEmpty)
-              const SliverToBoxAdapter(
+              SliverToBoxAdapter(
                 child: Padding(
                   padding: EdgeInsets.only(top: 50),
                   child: Column(children: [
@@ -193,9 +193,9 @@ class _HistoryPageState extends State<HistoryPage> {
                       child: ConstrainedBox(
                         constraints: const BoxConstraints(maxWidth: 1080),
                         child: Row(children: [
-                          Text(label, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: VyseColors.textDim, letterSpacing: .2)),
+                          Text(label, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: VyseColors.textDim, letterSpacing: .2)),
                           const SizedBox(width: 10),
-                          Expanded(child: Container(height: 1, color: Colors.white.withValues(alpha: .06))),
+                          Expanded(child: Container(height: 1, color: VyseColors.ink.withValues(alpha: .06))),
                         ]),
                       ),
                     ),
@@ -245,8 +245,8 @@ class _ClearButton extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: compact ? 12 : 18, vertical: compact ? 9 : 12),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(14),
-          color: hovered ? const Color(0xFFFF4D4F).withValues(alpha: .18) : Colors.white.withValues(alpha: .07),
-          border: Border.all(color: hovered ? const Color(0xFFFF4D4F).withValues(alpha: .4) : Colors.white.withValues(alpha: .06)),
+          color: hovered ? const Color(0xFFFF4D4F).withValues(alpha: .18) : VyseColors.ink.withValues(alpha: .07),
+          border: Border.all(color: hovered ? const Color(0xFFFF4D4F).withValues(alpha: .4) : VyseColors.ink.withValues(alpha: .06)),
         ),
         child: Row(mainAxisSize: MainAxisSize.min, children: [
           Icon(Icons.delete_sweep_outlined, size: 18, color: hovered ? const Color(0xFFFF8A8C) : VyseColors.text),
@@ -273,7 +273,7 @@ class _Toolbar extends StatelessWidget {
     // segmented pill like a tab strip
     final segments = Container(
       padding: const EdgeInsets.all(4),
-      decoration: BoxDecoration(color: Colors.white.withValues(alpha: .05), borderRadius: BorderRadius.circular(14)),
+      decoration: BoxDecoration(color: VyseColors.ink.withValues(alpha: .05), borderRadius: BorderRadius.circular(14)),
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(mainAxisSize: MainAxisSize.min, children: [
@@ -286,7 +286,7 @@ class _Toolbar extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: f == filter ? Colors.white.withValues(alpha: .14) : (hovered ? Colors.white.withValues(alpha: .05) : Colors.transparent),
+                    color: f == filter ? VyseColors.ink.withValues(alpha: .14) : (hovered ? VyseColors.ink.withValues(alpha: .05) : Colors.transparent),
                   ),
                   child: Row(mainAxisSize: MainAxisSize.min, children: [
                     Text(
@@ -315,14 +315,14 @@ class _Toolbar extends StatelessWidget {
         decoration: InputDecoration(
           isDense: true,
           hintText: 'Cerca nella cronologia',
-          hintStyle: const TextStyle(fontSize: 13.5, color: VyseColors.textFaint),
-          prefixIcon: const Icon(Icons.search_rounded, size: 19, color: VyseColors.textFaint),
+          hintStyle: TextStyle(fontSize: 13.5, color: VyseColors.textFaint),
+          prefixIcon: Icon(Icons.search_rounded, size: 19, color: VyseColors.textFaint),
           suffixIcon: search.text.isEmpty
               ? null
-              : IconButton(icon: const Icon(Icons.close_rounded, size: 17, color: VyseColors.textDim), onPressed: search.clear),
+              : IconButton(icon: Icon(Icons.close_rounded, size: 17, color: VyseColors.textDim), onPressed: search.clear),
           contentPadding: const EdgeInsets.symmetric(vertical: 12),
           filled: true,
-          fillColor: Colors.white.withValues(alpha: .05),
+          fillColor: VyseColors.ink.withValues(alpha: .05),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide.none),
         ),
       ),
@@ -377,8 +377,8 @@ class _HistoryRow extends StatelessWidget {
           padding: EdgeInsets.all(phone ? 10 : 14),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            color: Colors.white.withValues(alpha: hovered ? .065 : .035),
-            border: Border.all(color: Colors.white.withValues(alpha: hovered ? .12 : .04)),
+            color: VyseColors.ink.withValues(alpha: hovered ? .065 : .035),
+            border: Border.all(color: VyseColors.ink.withValues(alpha: hovered ? .12 : .04)),
           ),
           child: Row(children: [
             ClipRRect(
@@ -387,12 +387,12 @@ class _HistoryRow extends StatelessWidget {
                 width: thumbW,
                 height: thumbW * 1.5,
                 child: m.poster() == null
-                    ? const ColoredBox(color: VyseColors.surface)
+                    ? ColoredBox(color: VyseColors.surface)
                     : CachedNetworkImage(
                         imageUrl: m.poster()!,
                         fit: BoxFit.cover,
                         fadeInDuration: const Duration(milliseconds: 250),
-                        errorWidget: (_, _, _) => const ColoredBox(color: VyseColors.surface),
+                        errorWidget: (_, _, _) => ColoredBox(color: VyseColors.surface),
                       ),
               ),
             ),
@@ -411,12 +411,12 @@ class _HistoryRow extends StatelessWidget {
                   if (e.finished) ...[const SizedBox(width: 8), const _FinishedBadge()],
                 ]),
                 const SizedBox(height: 4),
-                Text(meta, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12, color: VyseColors.textFaint)),
+                Text(meta, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, color: VyseColors.textFaint)),
                 if (m.isTv && watchedEps > 1) ...[
                   const SizedBox(height: 3),
                   Text(
                     '$watchedEps episodes watched${e.episodesFinished > 0 ? ' · ${e.episodesFinished} finished' : ''}',
-                    style: const TextStyle(fontSize: 11.5, color: VyseColors.textDim, fontWeight: FontWeight.w600),
+                    style: TextStyle(fontSize: 11.5, color: VyseColors.textDim, fontWeight: FontWeight.w600),
                   ),
                 ],
                 SizedBox(height: phone ? 8 : 10),
@@ -425,7 +425,7 @@ class _HistoryRow extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(2),
                       child: Stack(children: [
-                        Container(height: 4, color: Colors.white.withValues(alpha: .1)),
+                        Container(height: 4, color: VyseColors.ink.withValues(alpha: .1)),
                         FractionallySizedBox(
                           widthFactor: e.fraction,
                           child: Container(
@@ -526,8 +526,8 @@ class _RowButton extends StatelessWidget {
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: primary
-              ? Colors.white.withValues(alpha: hovered ? 1 : .92)
-              : (danger && hovered ? const Color(0xFFFF4D4F).withValues(alpha: .22) : Colors.white.withValues(alpha: hovered ? .12 : .07)),
+              ? VyseColors.ink.withValues(alpha: hovered ? 1 : .92)
+              : (danger && hovered ? const Color(0xFFFF4D4F).withValues(alpha: .22) : VyseColors.ink.withValues(alpha: hovered ? .12 : .07)),
         ),
         child: Icon(
           icon,
@@ -553,12 +553,12 @@ class _Empty extends StatelessWidget {
           shape: BoxShape.circle,
           gradient: RadialGradient(colors: [VyseColors.accent.withValues(alpha: .25), Colors.transparent]),
         ),
-        child: const Icon(Icons.history_rounded, size: 40, color: VyseColors.accent),
+        child: Icon(Icons.history_rounded, size: 40, color: VyseColors.accent),
       ),
       const SizedBox(height: 18),
       const Text('Ancora niente di visto', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
       const SizedBox(height: 6),
-      const Text(
+      Text(
         'Avvia qualcosa e comparirà qui, con il punto a cui sei arrivato.',
         textAlign: TextAlign.center,
         style: TextStyle(fontSize: 13.5, color: VyseColors.textDim),

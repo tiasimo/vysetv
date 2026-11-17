@@ -80,12 +80,12 @@ class _ImportDialogState extends State<_ImportDialog> {
     dense: true,
     controlAffinity: ListTileControlAffinity.leading,
     title: Text(title, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700)),
-    subtitle: Text(subtitle, style: const TextStyle(color: VyseColors.textDim, fontSize: 12.5)),
+    subtitle: Text(subtitle, style: TextStyle(color: VyseColors.textDim, fontSize: 12.5)),
   );
 
   @override
   Widget build(BuildContext context) {
-    const dim = TextStyle(color: VyseColors.textDim, height: 1.5);
+    final dim = TextStyle(color: VyseColors.textDim, height: 1.5);
     final p = _plan, label = widget.id.label;
     final nothing = p != null && p.isEmpty;
     return AlertDialog(
@@ -101,7 +101,7 @@ class _ImportDialogState extends State<_ImportDialog> {
             if (p == null && _error == null) ...[
               Text('Lettura delle tue liste di $label…', style: dim),
               const SizedBox(height: 16),
-              const SizedBox(height: 3, child: LinearProgressIndicator(color: VyseColors.accent, backgroundColor: Colors.white10)),
+              SizedBox(height: 3, child: LinearProgressIndicator(color: VyseColors.accent, backgroundColor: VyseColors.ink.withValues(alpha: .10))),
             ] else if (nothing)
               Text('Tutto quello che c\'è su $label è già in Lorewatch.', style: dim)
             else if (p != null) ...[
@@ -126,7 +126,7 @@ class _ImportDialogState extends State<_ImportDialog> {
                 ),
               if (_busy) ...[
                 const SizedBox(height: 12),
-                const SizedBox(height: 3, child: LinearProgressIndicator(color: VyseColors.accent, backgroundColor: Colors.white10)),
+                SizedBox(height: 3, child: LinearProgressIndicator(color: VyseColors.accent, backgroundColor: VyseColors.ink.withValues(alpha: .10))),
               ],
             ],
             if (_error != null) ...[

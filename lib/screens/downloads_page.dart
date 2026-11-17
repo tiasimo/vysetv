@@ -86,7 +86,7 @@ class _DownloadsPageState extends State<DownloadsPage> {
         backgroundColor: VyseColors.surface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: const Text('Dov\'è', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
-        content: SizedBox(width: 380, child: SelectableText(path, style: const TextStyle(color: VyseColors.textDim, height: 1.45, fontSize: 13))),
+        content: SizedBox(width: 380, child: SelectableText(path, style: TextStyle(color: VyseColors.textDim, height: 1.45, fontSize: 13))),
         actions: [
           TextButton(
             onPressed: () {
@@ -114,7 +114,7 @@ class _DownloadsPageState extends State<DownloadsPage> {
           width: 380,
           child: Text(
             done ? '${d.title} viene eliminato da questo dispositivo.' : "Quello che è stato scaricato finora di ${d.title} verrà eliminato.",
-            style: const TextStyle(color: VyseColors.textDim, height: 1.45),
+            style: TextStyle(color: VyseColors.textDim, height: 1.45),
           ),
         ),
         actions: [
@@ -286,7 +286,7 @@ class _DownloadCard extends StatelessWidget {
         width: phone ? 52 : 60,
         height: phone ? 78 : 90,
         child: d.poster == null
-            ? const ColoredBox(color: VyseColors.surfaceHi, child: Icon(Icons.movie_outlined, color: VyseColors.textFaint, size: 22))
+            ? ColoredBox(color: VyseColors.surfaceHi, child: Icon(Icons.movie_outlined, color: VyseColors.textFaint, size: 22))
             : NetImage(url: d.poster!),
       ),
     );
@@ -298,7 +298,7 @@ class _DownloadCard extends StatelessWidget {
         Text(d.title, maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: phone ? 14.5 : 16, fontWeight: FontWeight.w800, height: 1.2)),
         if (d.detail.isNotEmpty) ...[
           const SizedBox(height: 3),
-          Text(d.detail, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12.5, color: VyseColors.textDim)),
+          Text(d.detail, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12.5, color: VyseColors.textDim)),
         ],
         const SizedBox(height: 8),
         if (!done) ...[
@@ -308,7 +308,7 @@ class _DownloadCard extends StatelessWidget {
               // null while there's nothing to measure against: the bar runs back and forth
               value: d.state == DownloadState.running && d.progress == null ? null : (d.progress ?? 0),
               minHeight: 5,
-              backgroundColor: Colors.white.withValues(alpha: .08),
+              backgroundColor: VyseColors.ink.withValues(alpha: .08),
               color: failed ? const Color(0xFFFF6B6B) : (d.state == DownloadState.paused ? VyseColors.textFaint : VyseColors.accent),
             ),
           ),
@@ -403,8 +403,8 @@ class _Action extends StatelessWidget {
                 ? (hovered ? Colors.white : const Color(0xFFF1F1F5))
                 : danger && hovered
                 ? const Color(0xFFFF4D4F).withValues(alpha: .16)
-                : Colors.white.withValues(alpha: hovered ? .14 : .07),
-            border: primary ? null : Border.all(color: Colors.white.withValues(alpha: .08)),
+                : VyseColors.ink.withValues(alpha: hovered ? .14 : .07),
+            border: primary ? null : Border.all(color: VyseColors.ink.withValues(alpha: .08)),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,

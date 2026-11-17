@@ -145,7 +145,7 @@ class _MangaDetailsPageState extends State<MangaDetailsPage> {
         Text.rich(
           TextSpan(children: [
             if (m.author != null && m.author!.isNotEmpty)
-              TextSpan(text: m.author, style: const TextStyle(color: VyseColors.text, fontWeight: FontWeight.w600)),
+              TextSpan(text: m.author, style: TextStyle(color: VyseColors.text, fontWeight: FontWeight.w600)),
             for (final (i, x) in meta.indexed) TextSpan(text: i == 0 && (m.author ?? '').isEmpty ? x : '  ·  $x'),
           ]),
           style: const TextStyle(color: Color(0xFFC3C7D4), fontSize: 14),
@@ -302,7 +302,7 @@ class _Backdrop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const bg = VyseColors.bg;
+    final bg = VyseColors.bg;
     return Stack(fit: StackFit.expand, children: [
       if (url != null)
         ClipRect(
@@ -383,7 +383,7 @@ class _ChapterTile extends StatelessWidget {
               ]),
             ),
             if (read)
-              const Padding(padding: EdgeInsets.only(right: 12), child: Icon(Icons.check_rounded, size: 16, color: VyseColors.textFaint)),
+              Padding(padding: EdgeInsets.only(right: 12), child: Icon(Icons.check_rounded, size: 16, color: VyseColors.textFaint)),
           ]),
         ),
       );

@@ -190,13 +190,13 @@ class _LinkCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(magnet ? 'LINK MAGNET' : 'LINK', style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w800, letterSpacing: 1.1, color: VyseColors.accent)),
+        Text(magnet ? 'LINK MAGNET' : 'LINK', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800, letterSpacing: 1.1, color: VyseColors.accent)),
         const SizedBox(height: 6),
         Text(link.what, maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 17, height: 1.25, fontWeight: FontWeight.w800)),
         const SizedBox(height: 5),
         Text(
           magnet ? '${link.how}. Scegli tu il file da riprodurre.' : '${link.how}. Si riproduce nel player così com\'è.',
-          style: const TextStyle(fontSize: 13, height: 1.4, color: VyseColors.textDim),
+          style: TextStyle(fontSize: 13, height: 1.4, color: VyseColors.textDim),
         ),
       ],
     );
@@ -312,9 +312,9 @@ class _SearchBarState extends State<_SearchBar> {
           padding: const EdgeInsets.symmetric(horizontal: 18),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(phone ? 16 : 20),
-            color: Colors.white.withValues(alpha: _focused ? .09 : (_hovered ? .07 : .05)),
+            color: VyseColors.ink.withValues(alpha: _focused ? .09 : (_hovered ? .07 : .05)),
             border: Border.all(
-              color: _focused ? VyseColors.accent.withValues(alpha: .55) : Colors.white.withValues(alpha: _hovered ? .14 : .08),
+              color: _focused ? VyseColors.accent.withValues(alpha: .55) : VyseColors.ink.withValues(alpha: _hovered ? .14 : .08),
               width: _focused ? 1.5 : 1,
             ),
             boxShadow: [
@@ -330,7 +330,7 @@ class _SearchBarState extends State<_SearchBar> {
             AnimatedSwitcher(
               duration: const Duration(milliseconds: 200),
               child: widget.busy
-                  ? const SizedBox.square(
+                  ? SizedBox.square(
                       key: ValueKey('busy'),
                       dimension: 20,
                       child: Padding(
@@ -381,7 +381,7 @@ class _SearchBarState extends State<_SearchBar> {
                   height: 28,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Colors.white.withValues(alpha: hovered ? .2 : .1),
+                    color: VyseColors.ink.withValues(alpha: hovered ? .2 : .1),
                   ),
                   child: const Icon(Icons.close_rounded, size: 16),
                 ),
@@ -494,7 +494,7 @@ class _ChipSection extends StatelessWidget {
         Row(children: [
           Icon(icon, size: 15, color: VyseColors.textFaint),
           const SizedBox(width: 6),
-          Text(title, style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w600, color: VyseColors.textDim)),
+          Text(title, style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w600, color: VyseColors.textDim)),
         ]),
         const SizedBox(height: 10),
         Wrap(spacing: 8, runSpacing: 8, children: children),
@@ -518,8 +518,8 @@ class _SuggestionChip extends StatelessWidget {
             padding: EdgeInsets.fromLTRB(12, 7, onRemove == null ? 12 : 6, 7),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(18),
-              color: Colors.white.withValues(alpha: hovered ? .12 : .05),
-              border: Border.all(color: Colors.white.withValues(alpha: hovered ? .18 : .07)),
+              color: VyseColors.ink.withValues(alpha: hovered ? .12 : .05),
+              border: Border.all(color: VyseColors.ink.withValues(alpha: hovered ? .18 : .07)),
             ),
             child: Row(mainAxisSize: MainAxisSize.min, children: [
               Text(label,
@@ -691,7 +691,7 @@ class _TopResult extends StatelessWidget {
           height: phone ? 210 : 260,
           foregroundDecoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: hovered ? Colors.white.withValues(alpha: .7) : Colors.white.withValues(alpha: .07), width: hovered ? 2 : 1),
+            border: Border.all(color: hovered ? VyseColors.ink.withValues(alpha: .7) : VyseColors.ink.withValues(alpha: .07), width: hovered ? 2 : 1),
           ),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
@@ -709,7 +709,7 @@ class _TopResult extends StatelessWidget {
                 fit: BoxFit.cover,
                 alignment: const Alignment(.5, -.3),
                 fadeInDuration: const Duration(milliseconds: 400),
-                placeholder: (_, _) => const ColoredBox(color: VyseColors.surface),
+                placeholder: (_, _) => ColoredBox(color: VyseColors.surface),
               ),
             ),
             const DecoratedBox(
@@ -833,7 +833,7 @@ class _MiniPill extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
                 color: primary
                     ? (hovered ? const Color(0xFFE6E7EE) : Colors.white)
-                    : Colors.white.withValues(alpha: hovered ? .2 : .1),
+                    : VyseColors.ink.withValues(alpha: hovered ? .2 : .1),
               ),
               child: Row(mainAxisSize: MainAxisSize.min, children: [
                 Icon(icon, size: 17, color: fg),
@@ -860,12 +860,12 @@ class _TitledPoster extends StatelessWidget {
             maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w600)),
         const SizedBox(height: 1),
         Row(children: [
-          Text(media.year ?? '—', style: const TextStyle(fontSize: 11, color: VyseColors.textFaint)),
+          Text(media.year ?? '—', style: TextStyle(fontSize: 11, color: VyseColors.textFaint)),
           const Spacer(),
           if (media.rating > 0) ...[
             const Icon(Icons.star_rounded, size: 11, color: VyseColors.star),
             const SizedBox(width: 2),
-            Text(media.rating.toStringAsFixed(1), style: const TextStyle(fontSize: 11, color: VyseColors.textFaint)),
+            Text(media.rating.toStringAsFixed(1), style: TextStyle(fontSize: 11, color: VyseColors.textFaint)),
           ],
         ]),
       ]);
@@ -894,11 +894,11 @@ class _PersonTile extends StatelessWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: VyseColors.surfaceHi,
-                border: Border.all(color: hovered ? Colors.white : Colors.white.withValues(alpha: .06), width: hovered ? 2 : 1),
+                border: Border.all(color: hovered ? Colors.white : VyseColors.ink.withValues(alpha: .06), width: hovered ? 2 : 1),
               ),
               clipBehavior: Clip.antiAlias,
               child: person.photo == null
-                  ? const Icon(Icons.person_rounded, color: VyseColors.textFaint, size: 36)
+                  ? Icon(Icons.person_rounded, color: VyseColors.textFaint, size: 36)
                   : Hero(
                       tag: _tag,
                       child: CachedNetworkImage(imageUrl: person.photo!, fit: BoxFit.cover, placeholder: (_, _) => const SizedBox()),
@@ -917,7 +917,7 @@ class _PersonTile extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 10.5, color: VyseColors.textFaint),
+            style: TextStyle(fontSize: 10.5, color: VyseColors.textFaint),
           ),
         ]),
       );
@@ -971,13 +971,13 @@ class _Empty extends StatelessWidget {
               Container(
                 width: 64,
                 height: 64,
-                decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white.withValues(alpha: .05)),
+                decoration: BoxDecoration(shape: BoxShape.circle, color: VyseColors.ink.withValues(alpha: .05)),
                 child: Icon(icon, size: 28, color: VyseColors.textDim),
               ),
               const SizedBox(height: 16),
               Text(title, textAlign: TextAlign.center, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w700)),
               const SizedBox(height: 6),
-              Text(body, textAlign: TextAlign.center, style: const TextStyle(color: VyseColors.textDim, fontSize: 13)),
+              Text(body, textAlign: TextAlign.center, style: TextStyle(color: VyseColors.textDim, fontSize: 13)),
               if (action != null) ...[
                 const SizedBox(height: 16),
                 TextButton(onPressed: action!.$2, child: Text(action!.$1)),

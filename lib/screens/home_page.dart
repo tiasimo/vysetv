@@ -243,7 +243,7 @@ class _HomePageState extends State<HomePage> {
                     if (items.isEmpty) {
                       return SizedBox(
                         height: heroH,
-                        child: const Shimmer(
+                        child: Shimmer(
                           child: ColoredBox(
                             color: VyseColors.surface,
                             child: SizedBox.expand(),
@@ -341,13 +341,13 @@ class _HeroError extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(
+          Icon(
             Icons.cloud_off_rounded,
             size: 36,
             color: VyseColors.textFaint,
           ),
           const SizedBox(height: 12),
-          const Text(
+          Text(
             "Impossibile raggiungere TMDB. Controlla la connessione.",
             style: TextStyle(color: VyseColors.textDim),
           ),
@@ -378,7 +378,7 @@ class _Footer extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 14),
-        const Text(
+        Text(
           'Questo prodotto usa le API di TMDB ma non è approvato né certificato da TMDB.',
           style: TextStyle(fontSize: 11, color: VyseColors.textFaint),
         ),
@@ -458,7 +458,7 @@ class _SeedPicker extends StatelessWidget {
             padding: const WidgetStatePropertyAll(EdgeInsets.symmetric(vertical: 8)),
             maximumSize: WidgetStatePropertyAll(Size(phone ? 300 : 340, 440)),
             shape: WidgetStatePropertyAll(
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: BorderSide(color: Colors.white.withValues(alpha: .08))),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: BorderSide(color: VyseColors.ink.withValues(alpha: .08))),
             ),
           ),
           menuChildren: [
@@ -467,7 +467,7 @@ class _SeedPicker extends StatelessWidget {
               for (final m in watching) _SeedItem(media: m, selected: m.key == seed.key, onTap: () => onPick(m)),
             ],
             if (trending.isNotEmpty) ...[
-              if (watching.isNotEmpty) Container(height: 1, margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 6), color: Colors.white.withValues(alpha: .07)),
+              if (watching.isNotEmpty) Container(height: 1, margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 6), color: VyseColors.ink.withValues(alpha: .07)),
               const _MenuLabel('TRENDING'),
               for (final m in trending) _SeedItem(media: m, selected: m.key == seed.key, onTap: () => onPick(m)),
             ],
@@ -487,7 +487,7 @@ class _SeedPicker extends StatelessWidget {
                 AnimatedRotation(
                   turns: controller.isOpen ? .5 : 0,
                   duration: const Duration(milliseconds: 180),
-                  child: const Icon(Icons.keyboard_arrow_down_rounded, size: 20, color: VyseColors.accent),
+                  child: Icon(Icons.keyboard_arrow_down_rounded, size: 20, color: VyseColors.accent),
                 ),
               ]),
             ),
@@ -505,7 +505,7 @@ class _MenuLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Padding(
     padding: const EdgeInsets.fromLTRB(16, 6, 16, 6),
-    child: Text(text, style: const TextStyle(fontSize: 10.5, fontWeight: FontWeight.w800, letterSpacing: 1.2, color: VyseColors.textFaint)),
+    child: Text(text, style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w800, letterSpacing: 1.2, color: VyseColors.textFaint)),
   );
 }
 
@@ -520,7 +520,7 @@ class _SeedItem extends StatelessWidget {
     onPressed: onTap,
     style: ButtonStyle(
       padding: const WidgetStatePropertyAll(EdgeInsets.symmetric(horizontal: 10, vertical: 6)),
-      overlayColor: WidgetStatePropertyAll(Colors.white.withValues(alpha: .06)),
+      overlayColor: WidgetStatePropertyAll(VyseColors.ink.withValues(alpha: .06)),
       minimumSize: const WidgetStatePropertyAll(Size(260, 0)),
     ),
     child: Row(children: [
@@ -530,8 +530,8 @@ class _SeedItem extends StatelessWidget {
           width: 30,
           height: 45,
           child: media.poster() == null
-              ? const ColoredBox(color: VyseColors.surface)
-              : CachedNetworkImage(imageUrl: media.poster()!, fit: BoxFit.cover, errorWidget: (_, _, _) => const ColoredBox(color: VyseColors.surface)),
+              ? ColoredBox(color: VyseColors.surface)
+              : CachedNetworkImage(imageUrl: media.poster()!, fit: BoxFit.cover, errorWidget: (_, _, _) => ColoredBox(color: VyseColors.surface)),
         ),
       ),
       const SizedBox(width: 12),
@@ -546,13 +546,13 @@ class _SeedItem extends StatelessWidget {
           const SizedBox(height: 2),
           Text(
             [media.kind, media.year ?? ''].where((s) => s.isNotEmpty).join('  ·  '),
-            style: const TextStyle(fontSize: 11, color: VyseColors.textFaint),
+            style: TextStyle(fontSize: 11, color: VyseColors.textFaint),
           ),
         ]),
       ),
       if (selected) ...[
         const SizedBox(width: 8),
-        const Icon(Icons.check_rounded, size: 18, color: VyseColors.accent),
+        Icon(Icons.check_rounded, size: 18, color: VyseColors.accent),
       ],
     ]),
   );

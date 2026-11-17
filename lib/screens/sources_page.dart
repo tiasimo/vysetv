@@ -399,7 +399,7 @@ class _SourcesPageState extends State<SourcesPage> {
               fit: StackFit.expand,
               children: [
                 if (!widget.overlay) _Art(url: info.art),
-                const DecoratedBox(
+                DecoratedBox(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
@@ -486,11 +486,11 @@ class _SourcesPageState extends State<SourcesPage> {
                               const Text('Sorgenti', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800, letterSpacing: -.5)),
                               const SizedBox(width: 12),
                               if (_loading)
-                                const SizedBox.square(dimension: 14, child: CircularProgressIndicator(strokeWidth: 1.8, color: VyseColors.textDim))
+                                SizedBox.square(dimension: 14, child: CircularProgressIndicator(strokeWidth: 1.8, color: VyseColors.textDim))
                               else
                                 Text(
                                   '${_everything.length}',
-                                  style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: VyseColors.textFaint),
+                                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: VyseColors.textFaint),
                                 ),
                             ],
                           ),
@@ -628,7 +628,7 @@ class _SourcesPageState extends State<SourcesPage> {
             ],
           ),
         ),
-        const Divider(height: 1, thickness: 1, color: VyseColors.stroke),
+        Divider(height: 1, thickness: 1, color: VyseColors.stroke),
         const SizedBox(height: 14),
         phone
             ? SizedBox(
@@ -702,7 +702,7 @@ class _SourcesPageState extends State<SourcesPage> {
                   child: Center(
                     child: TextButton(
                       onPressed: _builtIn,
-                      child: const Text('Riproduci invece con i server integrati', style: TextStyle(color: VyseColors.textDim, fontSize: 13)),
+                      child: Text('Riproduci invece con i server integrati', style: TextStyle(color: VyseColors.textDim, fontSize: 13)),
                     ),
                   ),
                 )
@@ -745,14 +745,14 @@ class _Art extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => url == null
-      ? const ColoredBox(color: VyseColors.surface)
+      ? ColoredBox(color: VyseColors.surface)
       : CachedNetworkImage(
           imageUrl: url!,
           fit: BoxFit.cover,
           alignment: Alignment.topCenter,
           fadeInDuration: const Duration(milliseconds: 400),
-          placeholder: (_, _) => const ColoredBox(color: VyseColors.bg),
-          errorWidget: (_, _, _) => const ColoredBox(color: VyseColors.bg),
+          placeholder: (_, _) => ColoredBox(color: VyseColors.bg),
+          errorWidget: (_, _, _) => ColoredBox(color: VyseColors.bg),
         );
 }
 
@@ -769,9 +769,9 @@ class _Back extends StatelessWidget {
       height: 38,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: Colors.white.withValues(alpha: hovered ? .14 : .07),
+        color: VyseColors.ink.withValues(alpha: hovered ? .14 : .07),
       ),
-      child: const Icon(Icons.arrow_back_rounded, size: 20, color: VyseColors.text),
+      child: Icon(Icons.arrow_back_rounded, size: 20, color: VyseColors.text),
     ),
   );
 }
@@ -813,7 +813,7 @@ class _Heading extends StatelessWidget {
           SizedBox(height: compact ? 10 : 16),
           Text(
             info.episode!.toUpperCase(),
-            style: const TextStyle(fontSize: 11.5, fontWeight: FontWeight.w800, letterSpacing: 1.3, color: VyseColors.textDim),
+            style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.w800, letterSpacing: 1.3, color: VyseColors.textDim),
           ),
           const SizedBox(height: 3),
           Text(
@@ -827,7 +827,7 @@ class _Heading extends StatelessWidget {
           SizedBox(height: compact ? 6 : 10),
           Text(
             info.meta.join('   ·   '),
-            style: const TextStyle(fontSize: 13, color: VyseColors.textDim, fontWeight: FontWeight.w600),
+            style: TextStyle(fontSize: 13, color: VyseColors.textDim, fontWeight: FontWeight.w600),
           ),
         ],
       ],
@@ -865,7 +865,7 @@ class _Tab extends StatelessWidget {
               ),
               const SizedBox(width: 7),
               if (loading)
-                const SizedBox.square(dimension: 10, child: CircularProgressIndicator(strokeWidth: 1.5, color: VyseColors.textFaint))
+                SizedBox.square(dimension: 10, child: CircularProgressIndicator(strokeWidth: 1.5, color: VyseColors.textFaint))
               else if (failed)
                 const Tooltip(
                   message: "Questo addon non ha risposto",
@@ -874,7 +874,7 @@ class _Tab extends StatelessWidget {
               else
                 Text(
                   '$count',
-                  style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w700, color: VyseColors.textFaint),
+                  style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w700, color: VyseColors.textFaint),
                 ),
             ],
           ),
@@ -920,7 +920,7 @@ class _Dropdown<T> extends StatelessWidget {
       elevation: 12,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
-        side: const BorderSide(color: VyseColors.stroke),
+        side: BorderSide(color: VyseColors.stroke),
       ),
       position: RelativeRect.fromLTRB(at.dx, at.dy, at.dx + 1, at.dy + 1),
       items: [
@@ -939,11 +939,11 @@ class _Dropdown<T> extends StatelessWidget {
       width: 180,
       child: Row(
         children: [
-          SizedBox(width: 22, child: on ? const Icon(Icons.check_rounded, size: 16, color: VyseColors.accent) : null),
+          SizedBox(width: 22, child: on ? Icon(Icons.check_rounded, size: 16, color: VyseColors.accent) : null),
           Expanded(
             child: Text(label, style: TextStyle(fontSize: 13.5, fontWeight: on ? FontWeight.w700 : FontWeight.w500)),
           ),
-          if (count != null) Text('$count', style: const TextStyle(fontSize: 12.5, color: VyseColors.textFaint)),
+          if (count != null) Text('$count', style: TextStyle(fontSize: 12.5, color: VyseColors.textFaint)),
         ],
       ),
     ),
@@ -958,8 +958,8 @@ class _Dropdown<T> extends StatelessWidget {
       padding: EdgeInsets.fromLTRB(icon == null ? 13 : 10, 0, 9, 0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        color: active ? Colors.white.withValues(alpha: hovered ? .18 : .13) : Colors.white.withValues(alpha: hovered ? .08 : .04),
-        border: Border.all(color: active ? Colors.white.withValues(alpha: .22) : VyseColors.stroke),
+        color: active ? VyseColors.ink.withValues(alpha: hovered ? .18 : .13) : VyseColors.ink.withValues(alpha: hovered ? .08 : .04),
+        border: Border.all(color: active ? VyseColors.ink.withValues(alpha: .22) : VyseColors.stroke),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -1012,7 +1012,7 @@ class _SourceRow extends StatelessWidget {
   final VoidCallback onTap;
   final bool playing; // the one on screen now (in the player's overlay)
 
-  static const _now = Text(
+  static final _now = Text(
     'IN RIPRODUZIONE',
     style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w800, letterSpacing: 1.2, color: VyseColors.accent),
   );
@@ -1087,7 +1087,7 @@ class _SourceRow extends StatelessWidget {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               if (s.torrent) ...[_CopyMagnet(stream: s), const SizedBox(width: 6)],
-                              const Padding(
+                              Padding(
                                 padding: EdgeInsets.only(top: 2),
                                 child: Icon(Icons.play_arrow_rounded, size: 22, color: VyseColors.text),
                               ),
@@ -1272,7 +1272,7 @@ class _Secondary extends StatelessWidget {
       alignment: Alignment.center,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: Colors.white.withValues(alpha: hovered ? .16 : .09),
+        color: VyseColors.ink.withValues(alpha: hovered ? .16 : .09),
       ),
       child: Text(label, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700)),
     ),
@@ -1293,7 +1293,7 @@ class _Note extends StatelessWidget {
       children: [
         Text(title, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w800)),
         const SizedBox(height: 6),
-        Text(text, style: const TextStyle(fontSize: 13.5, color: VyseColors.textDim, height: 1.45)),
+        Text(text, style: TextStyle(fontSize: 13.5, color: VyseColors.textDim, height: 1.45)),
         const SizedBox(height: 16),
         Wrap(spacing: 10, runSpacing: 10, children: actions),
       ],
@@ -1328,7 +1328,7 @@ class _SkeletonState extends State<_Skeleton> with SingleTickerProviderStateMixi
         height: h,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
-          color: Colors.white.withValues(alpha: a),
+          color: VyseColors.ink.withValues(alpha: a),
         ),
       );
       return Padding(

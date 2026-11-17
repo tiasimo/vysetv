@@ -167,13 +167,13 @@ Future<T?> _busy<T>(NavigatorState root, String text, Future<T> Function() work,
       child: Center(
         child: Material(
           color: VyseColors.surface,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: const BorderSide(color: VyseColors.stroke)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: BorderSide(color: VyseColors.stroke)),
           child: Padding(
             padding: const EdgeInsets.fromLTRB(20, 16, 10, 16),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2.2, color: VyseColors.accent)),
+                SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2.2, color: VyseColors.accent)),
                 const SizedBox(width: 14),
                 Flexible(child: Text(text, style: const TextStyle(fontSize: 13.5, fontWeight: FontWeight.w600))),
                 const SizedBox(width: 8),

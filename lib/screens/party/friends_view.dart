@@ -166,7 +166,7 @@ class _TabPill extends StatelessWidget {
               const SizedBox(width: 6),
               Text(
                 '$count',
-                style: const TextStyle(fontSize: 12, color: VyseColors.textFaint, fontWeight: FontWeight.w700),
+                style: TextStyle(fontSize: 12, color: VyseColors.textFaint, fontWeight: FontWeight.w700),
               ),
             ],
           ],
@@ -195,7 +195,7 @@ class _List extends StatelessWidget {
       child: Column(
         children: [
           for (var i = 0; i < people.length; i++) ...[
-            if (i > 0) const Divider(height: 1, thickness: 1, color: VyseColors.stroke),
+            if (i > 0) Divider(height: 1, thickness: 1, color: VyseColors.stroke),
             PartyPersonRow(profile: people[i], trailing: trailing(people[i])),
           ],
         ],
@@ -256,7 +256,7 @@ class _Label extends StatelessWidget {
     padding: const EdgeInsets.only(left: 4, bottom: 8),
     child: Text(
       text.toUpperCase(),
-      style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w800, letterSpacing: .7, color: VyseColors.textDim),
+      style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800, letterSpacing: .7, color: VyseColors.textDim),
     ),
   );
 }
@@ -295,7 +295,7 @@ class _RowButton extends StatelessWidget {
     onPressed: onTap,
     child: Text(
       label,
-      style: const TextStyle(fontWeight: FontWeight.w700, color: VyseColors.accent),
+      style: TextStyle(fontWeight: FontWeight.w700, color: VyseColors.accent),
     ),
   );
 }
@@ -310,7 +310,7 @@ class _FriendMenu extends StatelessWidget {
     tooltip: 'More',
     color: VyseColors.surfaceHi,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-    icon: const Icon(Icons.more_horiz_rounded, color: VyseColors.textDim),
+    icon: Icon(Icons.more_horiz_rounded, color: VyseColors.textDim),
     onSelected: (v) async {
       switch (v) {
         case 'profile':
@@ -392,7 +392,7 @@ class _AddByUsernameState extends State<_AddByUsername> {
         ),
         child: Row(
           children: [
-            const Icon(Icons.alternate_email_rounded, size: 19, color: VyseColors.textFaint),
+            Icon(Icons.alternate_email_rounded, size: 19, color: VyseColors.textFaint),
             const SizedBox(width: 10),
             Expanded(
               child: TextField(
@@ -403,7 +403,7 @@ class _AddByUsernameState extends State<_AddByUsername> {
                 onSubmitted: (_) => _send(),
                 style: const TextStyle(fontSize: 14.5),
                 cursorColor: VyseColors.accent,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: 'Add a friend by their username',
                   hintStyle: TextStyle(color: VyseColors.textFaint),
@@ -445,7 +445,7 @@ Future<void> showBlockedDialog(BuildContext context) => showDialog<void>(
     insetPadding: const EdgeInsets.all(20),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(20),
-      side: const BorderSide(color: VyseColors.stroke),
+      side: BorderSide(color: VyseColors.stroke),
     ),
     child: ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 460, maxHeight: 560),
@@ -463,7 +463,7 @@ Future<void> showBlockedDialog(BuildContext context) => showDialog<void>(
                 IconButton(
                   tooltip: 'Close',
                   onPressed: () => Navigator.pop(context),
-                  icon: const Icon(Icons.close_rounded, color: VyseColors.textDim),
+                  icon: Icon(Icons.close_rounded, color: VyseColors.textDim),
                 ),
               ],
             ),
@@ -510,7 +510,7 @@ class _Threads extends StatelessWidget {
       child: Column(
         children: [
           for (var i = 0; i < threads.length; i++) ...[
-            if (i > 0) const Divider(height: 1, thickness: 1, color: VyseColors.stroke),
+            if (i > 0) Divider(height: 1, thickness: 1, color: VyseColors.stroke),
             _ThreadRow(thread: threads[i]),
           ],
         ],
@@ -577,7 +577,7 @@ class _ThreadRow extends StatelessWidget {
               children: [
                 Text(
                   when,
-                  style: const TextStyle(fontSize: 11.5, color: VyseColors.textFaint, fontWeight: FontWeight.w600),
+                  style: TextStyle(fontSize: 11.5, color: VyseColors.textFaint, fontWeight: FontWeight.w600),
                 ),
                 const SizedBox(height: 5),
                 if (t.unread > 0)
@@ -590,7 +590,7 @@ class _ThreadRow extends StatelessWidget {
                     ),
                   )
                 else if (last != null && last.mine && last.readAt != null)
-                  const Text('Seen', style: TextStyle(fontSize: 11, color: VyseColors.textFaint)),
+                  Text('Seen', style: TextStyle(fontSize: 11, color: VyseColors.textFaint)),
               ],
             ),
           ],

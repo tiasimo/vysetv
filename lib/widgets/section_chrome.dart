@@ -62,7 +62,7 @@ class SectionHeader extends StatelessWidget {
             FadeSlideIn(
               delay: const Duration(milliseconds: 60),
               offset: 8,
-              child: Text(subtitle, style: const TextStyle(color: VyseColors.textDim, fontSize: 13)),
+              child: Text(subtitle, style: TextStyle(color: VyseColors.textDim, fontSize: 13)),
             ),
           ]),
         ),
@@ -84,7 +84,7 @@ class BackLink extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(6, 5, 12, 5),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            color: hovered ? Colors.white.withValues(alpha: .1) : Colors.transparent,
+            color: hovered ? VyseColors.ink.withValues(alpha: .1) : Colors.transparent,
           ),
           child: Row(mainAxisSize: MainAxisSize.min, children: [
             Icon(Icons.chevron_left_rounded, size: 20, color: hovered ? VyseColors.text : VyseColors.textDim),
@@ -165,9 +165,9 @@ class _VyseSearchFieldState extends State<VyseSearchField> {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            color: Colors.white.withValues(alpha: _focused ? .09 : (_hovered ? .07 : .05)),
+            color: VyseColors.ink.withValues(alpha: _focused ? .09 : (_hovered ? .07 : .05)),
             border: Border.all(
-              color: _focused ? VyseColors.accent.withValues(alpha: .55) : Colors.white.withValues(alpha: _hovered ? .14 : .08),
+              color: _focused ? VyseColors.accent.withValues(alpha: .55) : VyseColors.ink.withValues(alpha: _hovered ? .14 : .08),
               width: _focused ? 1.5 : 1,
             ),
             boxShadow: [
@@ -182,7 +182,7 @@ class _VyseSearchFieldState extends State<VyseSearchField> {
             AnimatedSwitcher(
               duration: const Duration(milliseconds: 200),
               child: widget.busy
-                  ? const SizedBox.square(
+                  ? SizedBox.square(
                       key: ValueKey('busy'),
                       dimension: 18,
                       child: CircularProgressIndicator(strokeWidth: 2, color: VyseColors.accent),
@@ -204,10 +204,10 @@ class _VyseSearchFieldState extends State<VyseSearchField> {
                   cursorColor: VyseColors.accent,
                   cursorWidth: 2,
                   cursorRadius: const Radius.circular(2),
-                  style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: VyseColors.text),
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: VyseColors.text),
                   decoration: InputDecoration.collapsed(
                     hintText: widget.hint,
-                    hintStyle: const TextStyle(fontSize: 15, color: VyseColors.textFaint),
+                    hintStyle: TextStyle(fontSize: 15, color: VyseColors.textFaint),
                   ),
                 ),
               ),
@@ -223,7 +223,7 @@ class _VyseSearchFieldState extends State<VyseSearchField> {
                   duration: const Duration(milliseconds: 140),
                   width: 26,
                   height: 26,
-                  decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white.withValues(alpha: hovered ? .2 : .1)),
+                  decoration: BoxDecoration(shape: BoxShape.circle, color: VyseColors.ink.withValues(alpha: hovered ? .2 : .1)),
                   child: const Icon(Icons.close_rounded, size: 15),
                 ),
               ),
@@ -257,7 +257,7 @@ class FilterChipPill extends StatelessWidget {
               padding: EdgeInsets.fromLTRB(icon == null ? 14 : 11, 8, 14, 8),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                color: selected ? Colors.white : Colors.white.withValues(alpha: hovered ? .1 : 0),
+                color: selected ? Colors.white : VyseColors.ink.withValues(alpha: hovered ? .1 : 0),
               ),
               child: Row(mainAxisSize: MainAxisSize.min, children: [
                 if (icon != null) ...[Icon(icon, size: 15, color: fg), const SizedBox(width: 6)],
@@ -289,13 +289,13 @@ class EmptyState extends StatelessWidget {
               Container(
                 width: 64,
                 height: 64,
-                decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white.withValues(alpha: .05)),
+                decoration: BoxDecoration(shape: BoxShape.circle, color: VyseColors.ink.withValues(alpha: .05)),
                 child: Icon(icon, size: 28, color: VyseColors.textDim),
               ),
               const SizedBox(height: 16),
               Text(title, textAlign: TextAlign.center, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w700)),
               const SizedBox(height: 6),
-              Text(body, textAlign: TextAlign.center, style: const TextStyle(color: VyseColors.textDim, fontSize: 13)),
+              Text(body, textAlign: TextAlign.center, style: TextStyle(color: VyseColors.textDim, fontSize: 13)),
               if (action != null) ...[
                 const SizedBox(height: 16),
                 TextButton(onPressed: action!.$2, child: Text(action!.$1)),
@@ -324,7 +324,7 @@ class NetImage extends StatelessWidget {
       imageUrl: url!,
       fit: fit,
       fadeInDuration: const Duration(milliseconds: 300),
-      placeholder: (_, _) => const ColoredBox(color: VyseColors.surface),
+      placeholder: (_, _) => ColoredBox(color: VyseColors.surface),
       errorWidget: (_, _, _) => empty,
     );
   }

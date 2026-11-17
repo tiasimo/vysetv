@@ -104,7 +104,7 @@ class _Art extends StatelessWidget {
     height: 84,
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(26),
-      gradient: const LinearGradient(colors: [VyseColors.accent, VyseColors.violet], begin: Alignment.topLeft, end: Alignment.bottomRight),
+      gradient: LinearGradient(colors: [VyseColors.accent, VyseColors.violet], begin: Alignment.topLeft, end: Alignment.bottomRight),
       boxShadow: [BoxShadow(color: VyseColors.violet.withValues(alpha: .4), blurRadius: 40, offset: const Offset(0, 12))],
     ),
     child: Icon(icon, size: 40, color: Colors.white),
@@ -117,7 +117,7 @@ class _Removed extends StatelessWidget {
   const _Removed({super.key});
 
   @override
-  Widget build(BuildContext context) => const _Frame(
+  Widget build(BuildContext context) => _Frame(
     maxWidth: 520,
     center: true,
     child: Column(
@@ -157,7 +157,7 @@ class _Guest extends StatelessWidget {
         const SizedBox(height: 26),
         const Text('Party', style: TextStyle(fontSize: 34, fontWeight: FontWeight.w900, letterSpacing: -1)),
         const SizedBox(height: 10),
-        const Text(
+        Text(
           'Hang out with everyone on Lorewatch. Profiles, friends, rooms, voice chat and watch parties, all in one place.',
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 15, height: 1.5, color: VyseColors.textDim),
@@ -224,7 +224,7 @@ class _RulesState extends State<_Rules> {
           const SizedBox(height: 22),
           const Text('Before you join', style: TextStyle(fontSize: 26, fontWeight: FontWeight.w900, letterSpacing: -.6)),
           const SizedBox(height: 6),
-          const Text('Party is shared by everyone on Lorewatch. A few ground rules:', style: TextStyle(fontSize: 14, color: VyseColors.textDim)),
+          Text('Party is shared by everyone on Lorewatch. A few ground rules:', style: TextStyle(fontSize: 14, color: VyseColors.textDim)),
           const SizedBox(height: 20),
           for (final (icon, title, body) in partyRules)
             Padding(
@@ -245,7 +245,7 @@ class _RulesState extends State<_Rules> {
                       children: [
                         Text(title, style: const TextStyle(fontSize: 14.5, fontWeight: FontWeight.w800)),
                         const SizedBox(height: 2),
-                        Text(body, style: const TextStyle(fontSize: 13, height: 1.35, color: VyseColors.textDim)),
+                        Text(body, style: TextStyle(fontSize: 13, height: 1.35, color: VyseColors.textDim)),
                       ],
                     ),
                   ),
@@ -476,7 +476,7 @@ class _HomeState extends State<_Home> {
         Container(
           width: 270,
           margin: const EdgeInsets.only(left: Layout.railCollapsed),
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             border: Border(right: BorderSide(color: VyseColors.stroke)),
           ),
           child: PartyRoomsPanel(panel: true, topPadding: Layout.windowChrome(context)),
@@ -485,7 +485,7 @@ class _HomeState extends State<_Home> {
         if (members)
           Container(
             width: 290,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               border: Border(left: BorderSide(color: VyseColors.stroke)),
             ),
             child: PartyMemberPanel(topPadding: Layout.windowChrome(context), onCount: (n) => _online.value = n),
@@ -609,7 +609,7 @@ class _FindPeopleState extends State<_FindPeople> {
             child: Column(
               children: [
                 for (var i = 0; i < results.length; i++) ...[
-                  if (i > 0) const Divider(height: 1, thickness: 1, color: VyseColors.stroke),
+                  if (i > 0) Divider(height: 1, thickness: 1, color: VyseColors.stroke),
                   PartyPersonRow(profile: results[i]),
                 ],
               ],

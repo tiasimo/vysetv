@@ -302,7 +302,7 @@ class _RailBubble extends StatelessWidget {
             chapter!,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(fontSize: 11, color: VyseColors.textDim),
+            style: TextStyle(fontSize: 11, color: VyseColors.textDim),
           ),
       ],
     ),
@@ -368,7 +368,7 @@ class _RailPainter extends CustomPainter {
     canvas.drawRect(
       Rect.fromLTRB(0, top, played, bottom),
       Paint()
-        ..shader = const LinearGradient(colors: [VyseColors.accentHot, VyseColors.accent]).createShader(Rect.fromLTRB(0, top, math.max(1, played), bottom)),
+        ..shader = LinearGradient(colors: [VyseColors.accentHot, VyseColors.accent]).createShader(Rect.fromLTRB(0, top, math.max(1, played), bottom)),
     );
     canvas.restore();
     if (t > 0) {
@@ -607,7 +607,7 @@ class _Tool extends StatelessWidget {
               child: Container(
                 width: 4,
                 height: 4,
-                decoration: const BoxDecoration(color: VyseColors.accent, shape: BoxShape.circle),
+                decoration: BoxDecoration(color: VyseColors.accent, shape: BoxShape.circle),
               ),
             ),
         ],

@@ -74,7 +74,7 @@ class _ProfileLibraryPageState extends State<ProfileLibraryPage> {
                             : '@${p.username}  ·  ${lib.titles.length} to watch  ·  ${lib.likes.length} liked songs  ·  ${lib.playlists.length} playlists',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(fontSize: 13, color: VyseColors.textDim),
+                        style: TextStyle(fontSize: 13, color: VyseColors.textDim),
                       ),
                     ]),
                   ),
@@ -261,7 +261,7 @@ class _Poster extends StatelessWidget {
       ),
       const SizedBox(height: 7),
       Text(m.title, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w700)),
-      Text(m.date.length >= 4 ? m.date.substring(0, 4) : '', style: const TextStyle(fontSize: 11, color: VyseColors.textFaint)),
+      Text(m.date.length >= 4 ? m.date.substring(0, 4) : '', style: TextStyle(fontSize: 11, color: VyseColors.textFaint)),
     ]);
   }
 }

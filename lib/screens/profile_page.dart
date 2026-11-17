@@ -93,7 +93,7 @@ class _ProfilePageState extends State<ProfilePage> {
         children: [
           Text(_tab.label, style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w800, letterSpacing: -.8)),
           const SizedBox(height: 6),
-          Text(_tab.blurb, style: const TextStyle(fontSize: 13, color: VyseColors.textDim)),
+          Text(_tab.blurb, style: TextStyle(fontSize: 13, color: VyseColors.textDim)),
           const SizedBox(height: 26),
           switch (_tab) {
             _Tab.account => const _AccountTab(),
@@ -215,7 +215,7 @@ class _Header extends StatelessWidget {
             padding: const EdgeInsets.all(3),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(color: Colors.white.withValues(alpha: hovered ? 1 : .85), width: 2),
+              border: Border.all(color: VyseColors.ink.withValues(alpha: hovered ? 1 : .85), width: 2),
             ),
             child: ProfileAvatar(size: size - 10),
           ),
@@ -249,9 +249,9 @@ class _Header extends StatelessWidget {
               style: TextStyle(fontSize: phone ? 28 : 40, fontWeight: FontWeight.w800, letterSpacing: -1.2, height: 1.05),
             ),
             const SizedBox(height: 8),
-            const Text('Profilo locale', style: TextStyle(fontSize: 14, color: VyseColors.textDim)),
+            Text('Profilo locale', style: TextStyle(fontSize: 14, color: VyseColors.textDim)),
             const SizedBox(height: 3),
-            const Text('Nome, avatar e liste restano su questo dispositivo', style: TextStyle(fontSize: 12.5, color: VyseColors.textFaint)),
+            Text('Nome, avatar e liste restano su questo dispositivo', style: TextStyle(fontSize: 12.5, color: VyseColors.textFaint)),
           ],
         );
       },
@@ -306,7 +306,7 @@ class ProfileAvatar extends StatelessWidget {
     valueListenable: AppSettings.avatarUrl,
     builder: (context, url, _) {
       final fallback = Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           shape: BoxShape.circle,
           gradient: LinearGradient(colors: [VyseColors.violet, VyseColors.accentHot]),
         ),
@@ -357,7 +357,7 @@ class _SmallButton extends StatelessWidget {
                 ? (hovered ? Colors.white : const Color(0xFFF1F1F5))
                 : danger
                 ? _danger.withValues(alpha: hovered ? .2 : .1)
-                : Colors.white.withValues(alpha: hovered ? .14 : .07),
+                : VyseColors.ink.withValues(alpha: hovered ? .14 : .07),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
@@ -394,7 +394,7 @@ class _SideItem extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(12, 11, 12, 11),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: selected ? (danger ? _danger.withValues(alpha: .12) : Colors.white.withValues(alpha: .08)) : Colors.white.withValues(alpha: hovered ? .04 : 0),
+          color: selected ? (danger ? _danger.withValues(alpha: .12) : VyseColors.ink.withValues(alpha: .08)) : VyseColors.ink.withValues(alpha: hovered ? .04 : 0),
         ),
         child: Row(
           children: [
@@ -455,7 +455,7 @@ class _Section extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(title, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w800, letterSpacing: -.4)),
-        if (subtitle != null) ...[const SizedBox(height: 5), Text(subtitle!, style: const TextStyle(fontSize: 13, color: VyseColors.textDim))],
+        if (subtitle != null) ...[const SizedBox(height: 5), Text(subtitle!, style: TextStyle(fontSize: 13, color: VyseColors.textDim))],
         const SizedBox(height: 14),
         Container(
           decoration: BoxDecoration(
@@ -466,7 +466,7 @@ class _Section extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 22),
           child: Column(
             children: [
-              for (var i = 0; i < children.length; i++) ...[if (i > 0) const Divider(height: 1, thickness: 1, color: VyseColors.stroke), children[i]],
+              for (var i = 0; i < children.length; i++) ...[if (i > 0) Divider(height: 1, thickness: 1, color: VyseColors.stroke), children[i]],
             ],
           ),
         ),
@@ -505,7 +505,7 @@ class _Row extends StatelessWidget {
                   Text(title, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700)),
                   if (subtitleWidget != null || subtitle != null) ...[
                     const SizedBox(height: 4),
-                    subtitleWidget ?? Text(subtitle!, style: const TextStyle(fontSize: 13, color: VyseColors.textDim, height: 1.35)),
+                    subtitleWidget ?? Text(subtitle!, style: TextStyle(fontSize: 13, color: VyseColors.textDim, height: 1.35)),
                   ],
                 ],
               ),
@@ -554,7 +554,7 @@ class _Switch extends StatelessWidget {
         alignment: on ? Alignment.centerRight : Alignment.centerLeft,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(14),
-          color: on ? (color ?? VyseColors.accent) : Colors.white.withValues(alpha: hovered ? .2 : .12),
+          color: on ? (color ?? VyseColors.accent) : VyseColors.ink.withValues(alpha: hovered ? .2 : .12),
         ),
         child: Container(
           width: 22,
@@ -590,7 +590,7 @@ class _Choice<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
     padding: const EdgeInsets.all(4),
-    decoration: BoxDecoration(color: Colors.white.withValues(alpha: .05), borderRadius: BorderRadius.circular(10)),
+    decoration: BoxDecoration(color: VyseColors.ink.withValues(alpha: .05), borderRadius: BorderRadius.circular(10)),
     child: Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -602,7 +602,7 @@ class _Choice<T> extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 9),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(7),
-                color: o == value ? Colors.white.withValues(alpha: .16) : Colors.white.withValues(alpha: hovered ? .06 : 0),
+                color: o == value ? VyseColors.ink.withValues(alpha: .16) : VyseColors.ink.withValues(alpha: hovered ? .06 : 0),
               ),
               child: Text(
                 label(o),
@@ -817,7 +817,7 @@ class _PartyTab extends StatelessWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'PREVIEW',
             style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800, letterSpacing: .8, color: VyseColors.textDim),
           ),
@@ -986,6 +986,21 @@ class _AppearanceTab extends StatelessWidget {
   Widget build(BuildContext context) => Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
+      // Lorewatch: day, night or as the system is set
+      _Section(
+        title: 'Modalità',
+        subtitle: 'Giorno, notte, o come è impostato il dispositivo.',
+        children: [
+          _Row(
+            title: 'Aspetto dell\'app',
+            below: _Segmented<String>(
+              setting: AppSettings.themeMode,
+              options: const ['system', 'light', 'dark'],
+              label: (v) => switch (v) { 'system' => 'Sistema', 'light' => 'Giorno', _ => 'Notte' },
+            ),
+          ),
+        ],
+      ),
       Padding(
         padding: const EdgeInsets.only(bottom: 34),
         child: ValueListenableBuilder(
@@ -1113,7 +1128,7 @@ class _NavRow extends StatelessWidget {
     final phone = Layout.isPhone(context);
     final handle = ReorderableDragStartListener(
       index: index,
-      child: const MouseRegion(
+      child: MouseRegion(
         cursor: SystemMouseCursors.grab,
         child: Padding(
           padding: EdgeInsets.only(right: 10),
@@ -1129,7 +1144,7 @@ class _NavRow extends StatelessWidget {
       alignment: Alignment.center,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(9),
-        color: on ? accent.withValues(alpha: .16) : Colors.white.withValues(alpha: .06),
+        color: on ? accent.withValues(alpha: .16) : VyseColors.ink.withValues(alpha: .06),
       ),
       child: item.glyph != null
           ? Text(item.glyph!, style: TextStyle(fontSize: 16, height: 1, fontWeight: FontWeight.w700, color: tint))
@@ -1160,7 +1175,7 @@ class _NavRow extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (index > 0) const Divider(height: 1, thickness: 1, color: VyseColors.stroke),
+        if (index > 0) Divider(height: 1, thickness: 1, color: VyseColors.stroke),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 12),
           child: phone
@@ -1195,7 +1210,7 @@ class _ThemeCard extends StatelessWidget {
         color: _card,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: selected ? theme.color : Colors.white.withValues(alpha: hovered ? .2 : .06),
+          color: selected ? theme.color : VyseColors.ink.withValues(alpha: hovered ? .2 : .06),
           width: selected ? 1.5 : 1,
         ),
         boxShadow: selected ? [BoxShadow(color: theme.color.withValues(alpha: .25), blurRadius: 24, spreadRadius: -6)] : null,
@@ -1208,7 +1223,7 @@ class _ThemeCard extends StatelessWidget {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               gradient: SweepGradient(colors: [theme.color, theme.color.withValues(alpha: .35), VyseColors.bg, theme.color]),
-              border: Border.all(color: Colors.white.withValues(alpha: .15)),
+              border: Border.all(color: VyseColors.ink.withValues(alpha: .15)),
             ),
             child: selected ? const Icon(Icons.check_rounded, size: 20, color: Colors.white) : null,
           ),
@@ -1223,7 +1238,7 @@ class _ThemeCard extends StatelessWidget {
                   theme.blurb,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(fontSize: 12.5, color: VyseColors.textDim),
+                  style: TextStyle(fontSize: 12.5, color: VyseColors.textDim),
                 ),
               ],
             ),
@@ -1380,7 +1395,7 @@ class _StepRow extends StatelessWidget {
     final phone = Layout.isPhone(context);
     final handle = ReorderableDragStartListener(
       index: index,
-      child: const MouseRegion(
+      child: MouseRegion(
         cursor: SystemMouseCursors.grab,
         child: Padding(
           padding: EdgeInsets.only(right: 10),
@@ -1393,7 +1408,7 @@ class _StepRow extends StatelessWidget {
       height: 34,
       alignment: Alignment.center,
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(9), color: VyseColors.accent.withValues(alpha: .16)),
-      child: Text('${index + 1}', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: VyseColors.accent)),
+      child: Text('${index + 1}', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: VyseColors.accent)),
     );
     final picks = Wrap(
       spacing: 8,
@@ -1433,7 +1448,7 @@ class _StepRow extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (index > 0) const Divider(height: 1, thickness: 1, color: VyseColors.stroke),
+        if (index > 0) Divider(height: 1, thickness: 1, color: VyseColors.stroke),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 14),
           child: phone
@@ -1476,7 +1491,7 @@ class _StepPick extends StatelessWidget {
     child: Container(
       padding: const EdgeInsets.fromLTRB(14, 9, 8, 9),
       decoration: BoxDecoration(
-        color: value == null ? Colors.white.withValues(alpha: .06) : VyseColors.accent.withValues(alpha: .16),
+        color: value == null ? VyseColors.ink.withValues(alpha: .06) : VyseColors.accent.withValues(alpha: .16),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
@@ -1487,7 +1502,7 @@ class _StepPick extends StatelessWidget {
             style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: value == null ? VyseColors.textDim : VyseColors.text),
           ),
           const SizedBox(width: 4),
-          const Icon(Icons.expand_more_rounded, size: 18, color: VyseColors.textDim),
+          Icon(Icons.expand_more_rounded, size: 18, color: VyseColors.textDim),
         ],
       ),
     ),
@@ -1519,6 +1534,7 @@ const _animeAudioLanguages = ['', 'English', 'Italian', 'Spanish', 'Portuguese',
 /// Italian names for the languages in the pickers (the stored value stays the English name).
 const _langIt = {
   '': 'Originale',
+  'Off': 'Nessuno',
   'English': 'Inglese',
   'Arabic': 'Arabo',
   'French': 'Francese',
@@ -1557,13 +1573,13 @@ class _LangPicker extends StatelessWidget {
       itemBuilder: (_) => [for (final l in options) PopupMenuItem(value: l, height: 38, child: Text(_langLabel(l)))],
       child: Container(
         padding: const EdgeInsets.fromLTRB(16, 10, 10, 10),
-        decoration: BoxDecoration(color: Colors.white.withValues(alpha: .07), borderRadius: BorderRadius.circular(10)),
+        decoration: BoxDecoration(color: VyseColors.ink.withValues(alpha: .07), borderRadius: BorderRadius.circular(10)),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(_langLabel(lang), style: const TextStyle(fontSize: 13.5, fontWeight: FontWeight.w700)),
             const SizedBox(width: 6),
-            const Icon(Icons.expand_more_rounded, size: 18, color: VyseColors.textDim),
+            Icon(Icons.expand_more_rounded, size: 18, color: VyseColors.textDim),
           ],
         ),
       ),
@@ -1595,8 +1611,8 @@ class _SubtitlesTab extends StatelessWidget {
             ),
             _Row(
               title: 'Lingua dei sottotitoli',
-              subtitle: 'Se un video non li ha in questa lingua, non ne carica nessuno',
-              trailing: _LangPicker(setting: PlaybackPrefs.subtitles(k), options: _languages),
+              subtitle: 'Nessuno = i sottotitoli restano spenti. Se un video non li ha in questa lingua, non ne carica nessuno',
+              trailing: _LangPicker(setting: PlaybackPrefs.subtitles(k), options: [PlaybackPrefs.none, ..._languages]),
             ),
             _Row(
               title: 'Attiva i sottotitoli da soli',
@@ -1791,7 +1807,7 @@ class _Swatches extends StatelessWidget {
                 color: Color(c),
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: c == value ? VyseColors.accent : Colors.white.withValues(alpha: hovered ? .5 : .14),
+                  color: c == value ? VyseColors.accent : VyseColors.ink.withValues(alpha: hovered ? .5 : .14),
                   width: c == value ? 3 : 1.5,
                 ),
               ),
@@ -1915,7 +1931,7 @@ class _FontButton extends StatelessWidget {
         builder: (context, hovered, _) => Container(
           constraints: const BoxConstraints(maxWidth: 240),
           padding: const EdgeInsets.fromLTRB(16, 10, 10, 10),
-          decoration: BoxDecoration(color: Colors.white.withValues(alpha: hovered ? .11 : .07), borderRadius: BorderRadius.circular(10)),
+          decoration: BoxDecoration(color: VyseColors.ink.withValues(alpha: hovered ? .11 : .07), borderRadius: BorderRadius.circular(10)),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -1928,7 +1944,7 @@ class _FontButton extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 6),
-              const Icon(Icons.expand_more_rounded, size: 18, color: VyseColors.textDim),
+              Icon(Icons.expand_more_rounded, size: 18, color: VyseColors.textDim),
             ],
           ),
         ),
@@ -1965,7 +1981,7 @@ class _FontDialogState extends State<_FontDialog> {
     final current = SubtitleStyle.family;
     return Dialog(
       backgroundColor: VyseColors.surfaceHi,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: const BorderSide(color: VyseColors.stroke)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: BorderSide(color: VyseColors.stroke)),
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 460, maxHeight: 560),
         child: Padding(
@@ -1985,7 +2001,7 @@ class _FontDialogState extends State<_FontDialog> {
                   isDense: true,
                   prefixIcon: const Icon(Icons.search_rounded, size: 18),
                   filled: true,
-                  fillColor: Colors.white.withValues(alpha: .06),
+                  fillColor: VyseColors.ink.withValues(alpha: .06),
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
                 ),
               ),
@@ -2007,7 +2023,7 @@ class _FontDialogState extends State<_FontDialog> {
                           builder: (context, hovered, _) => Container(
                             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 11),
                             decoration: BoxDecoration(
-                              color: on ? VyseColors.accent.withValues(alpha: .14) : Colors.white.withValues(alpha: hovered ? .06 : 0),
+                              color: on ? VyseColors.accent.withValues(alpha: .14) : VyseColors.ink.withValues(alpha: hovered ? .06 : 0),
                               borderRadius: BorderRadius.circular(9),
                             ),
                             child: Row(
@@ -2020,7 +2036,7 @@ class _FontDialogState extends State<_FontDialog> {
                                     style: TextStyle(fontFamily: f.preview, fontSize: 15, fontWeight: on ? FontWeight.w700 : FontWeight.w500),
                                   ),
                                 ),
-                                if (on) const Icon(Icons.check_rounded, size: 18, color: VyseColors.accent),
+                                if (on) Icon(Icons.check_rounded, size: 18, color: VyseColors.accent),
                               ],
                             ),
                           ),
@@ -2051,7 +2067,7 @@ class _RoundIcon extends StatelessWidget {
       height: 36,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: Colors.white.withValues(alpha: onTap == null ? .03 : (hovered ? .16 : .08)),
+        color: VyseColors.ink.withValues(alpha: onTap == null ? .03 : (hovered ? .16 : .08)),
       ),
       child: Icon(icon, size: 18, color: onTap == null ? VyseColors.textFaint : VyseColors.text),
     ),
@@ -2076,7 +2092,7 @@ class _AboutTab extends StatelessWidget {
                 title: 'Versione',
                 trailing: Text(
                   up.current.isEmpty ? '…' : up.current,
-                  style: const TextStyle(fontWeight: FontWeight.w700, color: VyseColors.textDim),
+                  style: TextStyle(fontWeight: FontWeight.w700, color: VyseColors.textDim),
                 ),
               ),
               _Row(
@@ -2123,7 +2139,7 @@ class _DangerTab extends StatelessWidget {
           backgroundColor: VyseColors.surface,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           title: Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
-          content: Text(body, style: const TextStyle(color: VyseColors.textDim)),
+          content: Text(body, style: TextStyle(color: VyseColors.textDim)),
           actions: [
             TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Annulla')),
             TextButton(
@@ -2249,7 +2265,7 @@ class _DeleteAccountDialogState extends State<_DeleteAccountDialog> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             "Profilo, amici, messaggi e tutto ciò che è sincronizzato vengono eliminati dal server. Quello salvato su questo dispositivo resta.",
             style: TextStyle(color: VyseColors.textDim, height: 1.35),
           ),
@@ -2264,7 +2280,7 @@ class _DeleteAccountDialogState extends State<_DeleteAccountDialog> {
             cursorColor: VyseColors.accent,
             decoration: InputDecoration(
               hintText: 'La tua password',
-              hintStyle: const TextStyle(color: VyseColors.textFaint, fontSize: 14),
+              hintStyle: TextStyle(color: VyseColors.textFaint, fontSize: 14),
               errorText: _error,
             ),
           ),
@@ -2353,14 +2369,14 @@ class _AddonsTabState extends State<_AddonsTab> {
                         style: const TextStyle(fontSize: 14),
                         decoration: InputDecoration(
                           hintText: 'https://…/manifest.json  or  stremio://…',
-                          hintStyle: const TextStyle(color: VyseColors.textFaint),
+                          hintStyle: TextStyle(color: VyseColors.textFaint),
                           isDense: true,
                           filled: true,
-                          fillColor: Colors.white.withValues(alpha: .05),
+                          fillColor: VyseColors.ink.withValues(alpha: .05),
                           contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
-                          prefixIcon: const Icon(Icons.link_rounded, size: 18, color: VyseColors.textDim),
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: VyseColors.stroke)),
-                          enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: VyseColors.stroke)),
+                          prefixIcon: Icon(Icons.link_rounded, size: 18, color: VyseColors.textDim),
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide(color: VyseColors.stroke)),
+                          enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide(color: VyseColors.stroke)),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide: BorderSide(color: VyseColors.accent.withValues(alpha: .7)),
@@ -2398,7 +2414,7 @@ class _AddonsTabState extends State<_AddonsTab> {
               ? null
               : 'Le sorgenti sono elencate in quest\'ordine. I torrent partono con lo streaming P2P (Riproduzione) o con il tuo servizio debrid (Debrid).',
           children: list.isEmpty
-              ? const [
+              ? [
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 22),
                     child: Text('Ancora nessun addon. Incollane uno qui sopra.', style: TextStyle(fontSize: 13.5, color: VyseColors.textDim)),
@@ -2456,7 +2472,7 @@ class _AddonRow extends StatelessWidget {
           crossAxisAlignment: WrapCrossAlignment.center,
           children: [
             Text(a.name, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: a.enabled ? VyseColors.text : VyseColors.textDim)),
-            if (a.version.isNotEmpty) Text('v${a.version}', style: const TextStyle(fontSize: 12, color: VyseColors.textFaint)),
+            if (a.version.isNotEmpty) Text('v${a.version}', style: TextStyle(fontSize: 12, color: VyseColors.textFaint)),
             if (a.builtIn) const _Kind('Built in', Icons.verified_outlined),
             if (a.streams) const _Kind('Sorgenti', Icons.play_circle_outline_rounded),
             if (a.subtitles) const _Kind('Sottotitoli', Icons.closed_caption_outlined),
@@ -2464,7 +2480,7 @@ class _AddonRow extends StatelessWidget {
         ),
         if (a.description.isNotEmpty) ...[
           const SizedBox(height: 5),
-          Text(a.description, maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12.5, color: VyseColors.textDim, height: 1.35)),
+          Text(a.description, maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12.5, color: VyseColors.textDim, height: 1.35)),
         ],
       ],
     );
@@ -2513,13 +2529,13 @@ class _Kind extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
     padding: const EdgeInsets.fromLTRB(7, 3, 9, 3),
-    decoration: BoxDecoration(color: Colors.white.withValues(alpha: .07), borderRadius: BorderRadius.circular(20)),
+    decoration: BoxDecoration(color: VyseColors.ink.withValues(alpha: .07), borderRadius: BorderRadius.circular(20)),
     child: Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         Icon(icon, size: 12, color: VyseColors.textDim),
         const SizedBox(width: 4),
-        Text(label, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: VyseColors.textDim)),
+        Text(label, style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: VyseColors.textDim)),
       ],
     ),
   );
@@ -2542,7 +2558,7 @@ class _IconAction extends StatelessWidget {
         height: 34,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(9),
-          color: onTap != null && hovered ? (danger ? _danger.withValues(alpha: .14) : Colors.white.withValues(alpha: .08)) : Colors.transparent,
+          color: onTap != null && hovered ? (danger ? _danger.withValues(alpha: .14) : VyseColors.ink.withValues(alpha: .08)) : Colors.transparent,
         ),
         child: Icon(
           icon,
@@ -2650,7 +2666,7 @@ class _SourceRow extends StatelessWidget {
     final phone = Layout.isPhone(context);
     final handle = ReorderableDragStartListener(
       index: index,
-      child: const MouseRegion(
+      child: MouseRegion(
         cursor: SystemMouseCursors.grab,
         child: Padding(
           padding: EdgeInsets.only(right: 10),
@@ -2665,7 +2681,7 @@ class _SourceRow extends StatelessWidget {
       alignment: Alignment.center,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(9),
-        color: on ? VyseColors.accent.withValues(alpha: .16) : Colors.white.withValues(alpha: .06),
+        color: on ? VyseColors.accent.withValues(alpha: .16) : VyseColors.ink.withValues(alpha: .06),
       ),
       child: Text(
         '${index + 1}',
@@ -2688,7 +2704,7 @@ class _SourceRow extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 4),
-        Text(s.note, style: const TextStyle(fontSize: 12.5, color: VyseColors.textDim, height: 1.35)),
+        Text(s.note, style: TextStyle(fontSize: 12.5, color: VyseColors.textDim, height: 1.35)),
       ],
     );
     final controls = Row(
@@ -2706,7 +2722,7 @@ class _SourceRow extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (index > 0) const Divider(height: 1, thickness: 1, color: VyseColors.stroke),
+        if (index > 0) Divider(height: 1, thickness: 1, color: VyseColors.stroke),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 14),
           child: phone
@@ -2838,7 +2854,7 @@ class _DebridTabState extends State<_DebridTab> {
                             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              color: on ? Colors.white.withValues(alpha: .16) : Colors.white.withValues(alpha: hovered ? .08 : .04),
+                              color: on ? VyseColors.ink.withValues(alpha: .16) : VyseColors.ink.withValues(alpha: hovered ? .08 : .04),
                               border: Border.all(color: on ? VyseColors.accent.withValues(alpha: .6) : VyseColors.stroke),
                             ),
                             child: Row(mainAxisSize: MainAxisSize.min, children: [
@@ -2878,12 +2894,12 @@ class _DebridTabState extends State<_DebridTab> {
                               style: const TextStyle(fontSize: 14),
                               decoration: InputDecoration(
                                 hintText: 'Incolla la tua chiave API di ${p.label}',
-                                hintStyle: const TextStyle(color: VyseColors.textFaint),
+                                hintStyle: TextStyle(color: VyseColors.textFaint),
                                 isDense: true,
                                 filled: true,
-                                fillColor: Colors.white.withValues(alpha: .05),
+                                fillColor: VyseColors.ink.withValues(alpha: .05),
                                 contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
-                                prefixIcon: const Icon(Icons.key_rounded, size: 18, color: VyseColors.textDim),
+                                prefixIcon: Icon(Icons.key_rounded, size: 18, color: VyseColors.textDim),
                                 suffixIcon: IconButton(
                                   tooltip: _show ? 'Nascondi' : 'Mostra',
                                   iconSize: 18,
@@ -2891,8 +2907,8 @@ class _DebridTabState extends State<_DebridTab> {
                                   onPressed: () => setState(() => _show = !_show),
                                   icon: Icon(_show ? Icons.visibility_off_rounded : Icons.visibility_rounded),
                                 ),
-                                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: VyseColors.stroke)),
-                                enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: VyseColors.stroke)),
+                                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide(color: VyseColors.stroke)),
+                                enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide(color: VyseColors.stroke)),
                                 focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide(color: VyseColors.accent.withValues(alpha: .7))),
                               ),
                             ),
@@ -2922,7 +2938,7 @@ class _DebridTabState extends State<_DebridTab> {
                           Row(mainAxisSize: MainAxisSize.min, children: [
                             const Icon(Icons.verified_rounded, size: 16, color: Color(0xFF3DDC97)),
                             const SizedBox(width: 6),
-                            Text(_account!, style: const TextStyle(fontSize: 13, color: VyseColors.textDim)),
+                            Text(_account!, style: TextStyle(fontSize: 13, color: VyseColors.textDim)),
                           ]),
                       ]),
                       if (_message != null) ...[

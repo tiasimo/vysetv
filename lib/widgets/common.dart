@@ -52,9 +52,9 @@ void comingSoon(BuildContext context, String what) => showToast(
       Text.rich(
         TextSpan(children: [
           TextSpan(text: what, style: const TextStyle(fontWeight: FontWeight.w700)),
-          const TextSpan(text: '  è in arrivo', style: TextStyle(color: VyseColors.textDim)),
+          TextSpan(text: '  è in arrivo', style: TextStyle(color: VyseColors.textDim)),
         ]),
-        style: const TextStyle(fontSize: 13, color: VyseColors.text),
+        style: TextStyle(fontSize: 13, color: VyseColors.text),
       ),
     );
 
@@ -74,7 +74,7 @@ void showToast(BuildContext context, Widget message, {IconData icon = Icons.auto
   final Widget panel = Glass(
     radius: 14,
     solid: true,
-    borderColor: Colors.white.withValues(alpha: .14),
+    borderColor: VyseColors.ink.withValues(alpha: .14),
     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
     child: Row(children: [
       Icon(icon, size: 18, color: VyseColors.accent),
@@ -86,7 +86,7 @@ void showToast(BuildContext context, Widget message, {IconData icon = Icons.auto
           child: message,
         ),
       ),
-      if (onTap != null) const Icon(Icons.chevron_right_rounded, size: 18, color: VyseColors.textDim),
+      if (onTap != null) Icon(Icons.chevron_right_rounded, size: 18, color: VyseColors.textDim),
     ]),
   );
   messenger.showSnackBar(
@@ -130,7 +130,7 @@ void _toastAbove(OverlayState overlay, Widget message, {required IconData icon, 
   final Widget panel = Glass(
     radius: 14,
     solid: true,
-    borderColor: Colors.white.withValues(alpha: .14),
+    borderColor: VyseColors.ink.withValues(alpha: .14),
     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
     child: Row(mainAxisSize: MainAxisSize.min, children: [
       Icon(icon, size: 18, color: VyseColors.accent),
@@ -141,7 +141,7 @@ void _toastAbove(OverlayState overlay, Widget message, {required IconData icon, 
           child: message,
         ),
       ),
-      if (onTap != null) ...[const SizedBox(width: 6), const Icon(Icons.chevron_right_rounded, size: 18, color: VyseColors.textDim)],
+      if (onTap != null) ...[const SizedBox(width: 6), Icon(Icons.chevron_right_rounded, size: 18, color: VyseColors.textDim)],
     ]),
   );
   final entry = OverlayEntry(
@@ -197,16 +197,17 @@ class Glass extends StatelessWidget {
     this.padding,
     this.opacity = .55,
     this.blur = 22,
-    this.borderColor = VyseColors.stroke,
+    Color? borderColor,
     this.solid = false,
-  });
+  }) : _borderColor = borderColor;
 
   final Widget child;
   final double radius;
   final EdgeInsetsGeometry? padding;
   final double opacity;
   final double blur;
-  final Color borderColor;
+  final Color? _borderColor;
+  Color get borderColor => _borderColor ?? VyseColors.stroke;
 
   /// The no-blur look (as on Android). For panels over the video: Plezy's player draws it on a
   /// native surface behind Flutter, where a BackdropFilter can't see it.
@@ -253,7 +254,7 @@ class VyseWordmark extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Text.rich(
-        TextSpan(children: const [
+        TextSpan(children: [
           TextSpan(text: 'Lore'),
           TextSpan(text: 'watch', style: TextStyle(color: VyseColors.accent)),
         ]),
@@ -337,7 +338,7 @@ class _ShimmerState extends State<Shimmer> with SingleTickerProviderStateMixin {
           shaderCallback: (bounds) {
             final dx = bounds.width * 3 * _c.value - bounds.width;
             return LinearGradient(
-              colors: const [VyseColors.surface, VyseColors.surfaceHi, VyseColors.surface],
+              colors: [VyseColors.surface, VyseColors.surfaceHi, VyseColors.surface],
               stops: const [.35, .5, .65],
               transform: _Slide(dx),
             ).createShader(Rect.fromLTWH(0, 0, bounds.width, bounds.height));
@@ -389,8 +390,8 @@ class GlassIconButton extends StatelessWidget {
             height: size,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Colors.white.withValues(alpha: hovered ? .2 : .1),
-              border: Border.all(color: Colors.white.withValues(alpha: hovered ? .35 : .14)),
+              color: VyseColors.ink.withValues(alpha: hovered ? .2 : .1),
+              border: Border.all(color: VyseColors.ink.withValues(alpha: hovered ? .35 : .14)),
             ),
             child: Icon(icon, size: size * .45, color: VyseColors.text),
           ),
@@ -439,8 +440,8 @@ class PillButton extends StatelessWidget {
                     ? (hovered ? Color.lerp(a, Colors.white, .15) : a)
                     : primary
                     ? (hovered ? Colors.white : const Color(0xFFF1F1F5))
-                    : Colors.white.withValues(alpha: hovered ? .2 : .1),
-                border: primary ? null : Border.all(color: Colors.white.withValues(alpha: .14)),
+                    : VyseColors.ink.withValues(alpha: hovered ? .2 : .1),
+                border: primary ? null : Border.all(color: VyseColors.ink.withValues(alpha: .14)),
                 boxShadow: primary && hovered
                     ? [BoxShadow(color: (a ?? Colors.white).withValues(alpha: a != null ? .45 : .25), blurRadius: 24)]
                     : null,

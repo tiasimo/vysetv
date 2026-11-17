@@ -232,7 +232,7 @@ class _ServerLibraryPageState extends State<ServerLibraryPage> {
                 height: 80,
                 child: Center(
                   child: _loading && _items.isNotEmpty
-                      ? const SizedBox.square(dimension: 22, child: CircularProgressIndicator(strokeWidth: 2.2, color: VyseColors.accent))
+                      ? SizedBox.square(dimension: 22, child: CircularProgressIndicator(strokeWidth: 2.2, color: VyseColors.accent))
                       : (_error != null && _items.isNotEmpty
                           ? PillButton(
                               label: 'Carica altro',

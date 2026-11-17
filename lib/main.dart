@@ -120,7 +120,7 @@ Future<void> main() async {
 
   if (isDesktopNative) {
     await windowManager.ensureInitialized();
-    const options = WindowOptions(
+    final options = WindowOptions(
       title: 'Lorewatch',
       size: Size(1440, 900),
       minimumSize: Size(400, 640),
@@ -140,8 +140,54 @@ Future<void> main() async {
   startPerfLog();
 }
 
-class VyseApp extends StatelessWidget {
+class VyseApp extends StatefulWidget {
   const VyseApp({super.key});
+
+  @override
+  State<VyseApp> createState() => _VyseAppState();
+}
+
+/// Lorewatch: follows Settings → Aspetto → Modalità (Sistema, Giorno, Notte) and, on Sistema,
+/// the device's own light or dark setting. A change repaints every page in place.
+class _VyseAppState extends State<VyseApp> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    AppSettings.themeMode.addListener(_apply);
+    VyseColors.light = _wantLight();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    AppSettings.themeMode.removeListener(_apply);
+    super.dispose();
+  }
+
+  @override
+  void didChangePlatformBrightness() => _apply();
+
+  bool _wantLight() => ThemeModeController.resolveLight(
+        AppSettings.themeMode.value,
+        WidgetsBinding.instance.platformDispatcher.platformBrightness,
+      );
+
+  void _apply() {
+    final light = _wantLight();
+    if (light == VyseColors.light) return;
+    VyseColors.light = light;
+    setState(() {});
+    // the colours are read while pages build, so every page builds again (keeping its place)
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      void dirty(Element e) {
+        e.markNeedsBuild();
+        e.visitChildren(dirty);
+      }
+
+      WidgetsBinding.instance.rootElement?.visitChildren(dirty);
+    });
+  }
 
   @override
   Widget build(BuildContext context) => MaterialApp(

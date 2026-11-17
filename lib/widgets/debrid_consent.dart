@@ -32,7 +32,7 @@ Future<bool> allowDebridInRoom(BuildContext context) async {
           'streaming from several places at once, which some services limit or block.\n\n'
           'This can put your account, and with some services your API key, at risk. Only allow it for people you trust.'
           '${Debrid.provider == DebridProvider.torBox ? '\n\nWith TorBox the link has your API key in it, so someone in the room could take the key.' : ''}',
-          style: const TextStyle(color: VyseColors.textDim, height: 1.5),
+          style: TextStyle(color: VyseColors.textDim, height: 1.5),
         ),
       ),
       actions: [

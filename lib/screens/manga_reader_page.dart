@@ -292,7 +292,7 @@ class _MangaReaderPageState extends State<MangaReaderPage> {
                   );
                 }
                 if (!snap.hasData) {
-                  return const Center(
+                  return Center(
                     child: SizedBox.square(dimension: 28, child: CircularProgressIndicator(strokeWidth: 2.4, color: VyseColors.accent)),
                   );
                 }
@@ -318,7 +318,7 @@ class _MangaReaderPageState extends State<MangaReaderPage> {
                   duration: const Duration(milliseconds: 160),
                   height: 3,
                   width: size.width * progress,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     gradient: LinearGradient(colors: [VyseColors.accentHot, VyseColors.accent]),
                     boxShadow: [BoxShadow(color: Color(0x99FF8A1A), blurRadius: 8)],
                   ),
@@ -394,9 +394,9 @@ class _MangaReaderPageState extends State<MangaReaderPage> {
                         fit: BoxFit.contain,
                         fadeInDuration: const Duration(milliseconds: 150),
                         placeholder: (_, _) => Center(
-                          child: Text('${i + 1}', style: const TextStyle(color: VyseColors.textFaint, fontSize: 28, fontWeight: FontWeight.w800)),
+                          child: Text('${i + 1}', style: TextStyle(color: VyseColors.textFaint, fontSize: 28, fontWeight: FontWeight.w800)),
                         ),
-                        errorWidget: (_, _, _) => const Center(child: Icon(Icons.broken_image_outlined, color: VyseColors.textFaint, size: 32)),
+                        errorWidget: (_, _, _) => Center(child: Icon(Icons.broken_image_outlined, color: VyseColors.textFaint, size: 32)),
                       ),
                     ),
                   ),
@@ -423,7 +423,7 @@ class _MangaReaderPageState extends State<MangaReaderPage> {
                 [_chapter.label, ?_chapter.subtitle, if (_count > 0) '${_page + 1} / $_count'].join('  ·  '),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(fontSize: 11.5, color: VyseColors.textDim),
+                style: TextStyle(fontSize: 11.5, color: VyseColors.textDim),
               ),
             ]),
           ),
@@ -465,7 +465,7 @@ class _MangaReaderPageState extends State<MangaReaderPage> {
               onTap: () => _go(_index + 1),
             )
           else ...[
-            const Text("Sei in pari.", style: TextStyle(color: VyseColors.textDim)),
+            Text("Sei in pari.", style: TextStyle(color: VyseColors.textDim)),
             const SizedBox(height: 16),
             PillButton(icon: Icons.arrow_back_rounded, label: 'Torna alla serie', onTap: _close),
           ],
@@ -496,12 +496,12 @@ class _StripPage extends StatelessWidget {
         placeholder: (_, _) => SizedBox(
           height: width * 1.45,
           child: Center(
-            child: Text('$number', style: const TextStyle(color: VyseColors.textFaint, fontSize: 28, fontWeight: FontWeight.w800)),
+            child: Text('$number', style: TextStyle(color: VyseColors.textFaint, fontSize: 28, fontWeight: FontWeight.w800)),
           ),
         ),
         errorWidget: (_, _, _) => SizedBox(
           height: width * .6,
-          child: const Center(child: Icon(Icons.broken_image_outlined, color: VyseColors.textFaint, size: 32)),
+          child: Center(child: Icon(Icons.broken_image_outlined, color: VyseColors.textFaint, size: 32)),
         ),
       );
 }

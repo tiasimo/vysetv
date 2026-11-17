@@ -94,7 +94,7 @@ class _PersonPageState extends State<PersonPage> {
                         Padding(
                           padding: EdgeInsets.only(left: inset),
                           child: Row(children: [
-                            const Text("Impossibile caricare questa persona.", style: TextStyle(color: VyseColors.textDim)),
+                            Text("Impossibile caricare questa persona.", style: TextStyle(color: VyseColors.textDim)),
                             TextButton(
                               onPressed: () => setState(() => _details = HomeFeed.instance.person(widget.id)),
                               child: const Text('Riprova'),
@@ -156,7 +156,7 @@ class _Backdrop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const bg = VyseColors.bg;
+    final bg = VyseColors.bg;
     return Stack(fit: StackFit.expand, children: [
       AnimatedSwitcher(
         duration: const Duration(milliseconds: 900),
@@ -343,7 +343,7 @@ class _NameBlock extends StatelessWidget {
                 offset: 8,
                 child: Wrap(spacing: 8, runSpacing: 6, children: [
                   for (var i = 0; i < bits.length; i++) ...[
-                    if (i > 0) const Text('·', style: TextStyle(color: VyseColors.textFaint, fontSize: 13)),
+                    if (i > 0) Text('·', style: TextStyle(color: VyseColors.textFaint, fontSize: 13)),
                     Text(bits[i], style: dim),
                   ],
                 ]),
@@ -371,7 +371,7 @@ class _Stat extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(6), color: Colors.white.withValues(alpha: .08)),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(6), color: VyseColors.ink.withValues(alpha: .08)),
         child: Row(mainAxisSize: MainAxisSize.min, children: [
           Icon(icon, size: 13, color: VyseColors.accent),
           const SizedBox(width: 5),
@@ -380,7 +380,7 @@ class _Stat extends StatelessWidget {
             child: Text(label,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(fontSize: 11.5, fontWeight: FontWeight.w600, color: VyseColors.textDim)),
+                style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.w600, color: VyseColors.textDim)),
           ),
         ]),
       );
@@ -506,8 +506,8 @@ class _LinkPill extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 13),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
-              color: Colors.white.withValues(alpha: hovered ? .14 : .06),
-              border: Border.all(color: Colors.white.withValues(alpha: hovered ? .22 : .08)),
+              color: VyseColors.ink.withValues(alpha: hovered ? .14 : .06),
+              border: Border.all(color: VyseColors.ink.withValues(alpha: hovered ? .22 : .08)),
             ),
             child: Row(mainAxisSize: MainAxisSize.min, children: [
               Icon(icon, size: 15, color: VyseColors.text),
@@ -572,7 +572,7 @@ class _Facts extends StatelessWidget {
                         child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
                           SizedBox(
                             width: 96,
-                            child: Text(row.$1, style: const TextStyle(fontSize: 12, color: VyseColors.textFaint)),
+                            child: Text(row.$1, style: TextStyle(fontSize: 12, color: VyseColors.textFaint)),
                           ),
                           Expanded(
                             child: Text(row.$2,
@@ -610,7 +610,7 @@ class _PhotoTile extends StatelessWidget {
             imageUrl: url,
             fit: BoxFit.cover,
             fadeInDuration: const Duration(milliseconds: 300),
-            placeholder: (_, _) => const ColoredBox(color: VyseColors.surface),
+            placeholder: (_, _) => ColoredBox(color: VyseColors.surface),
           ),
         ),
       );
@@ -723,7 +723,7 @@ class _LightboxState extends State<_Lightbox> {
               right: 0,
               child: Center(
                 child: Text('${_index + 1} / ${widget.photos.length}',
-                    style: const TextStyle(color: VyseColors.textDim, fontSize: 12.5, fontWeight: FontWeight.w600)),
+                    style: TextStyle(color: VyseColors.textDim, fontSize: 12.5, fontWeight: FontWeight.w600)),
               ),
             ),
           ]),
@@ -748,7 +748,7 @@ class _RoundButton extends StatelessWidget {
             height: 42,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: hovered ? Colors.white : Colors.white.withValues(alpha: .12),
+              color: hovered ? Colors.white : VyseColors.ink.withValues(alpha: .12),
             ),
             child: Icon(icon, color: hovered ? Colors.black : Colors.white, size: 24),
           ),
@@ -799,7 +799,7 @@ class _FilmographyState extends State<_Filmography> {
                       padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 7),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(18),
-                        color: on ? Colors.white : Colors.white.withValues(alpha: hovered ? .1 : .04),
+                        color: on ? Colors.white : VyseColors.ink.withValues(alpha: hovered ? .1 : .04),
                       ),
                       child: Text.rich(
                         TextSpan(children: [
@@ -831,7 +831,7 @@ class _FilmographyState extends State<_Filmography> {
             key: ValueKey(_dept),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(14),
-              color: Colors.white.withValues(alpha: .025),
+              color: VyseColors.ink.withValues(alpha: .025),
               border: Border.all(color: VyseColors.stroke),
             ),
             padding: const EdgeInsets.symmetric(vertical: 6),
@@ -865,7 +865,7 @@ class _FilmographyState extends State<_Filmography> {
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(18),
-                  color: Colors.white.withValues(alpha: hovered ? .14 : .06),
+                  color: VyseColors.ink.withValues(alpha: hovered ? .14 : .06),
                 ),
                 child: Text(_all ? 'Mostra meno' : 'Mostra tutti i ${list.length}',
                     style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w600)),
@@ -905,7 +905,7 @@ class _CreditRow extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(9),
-            color: hovered ? Colors.white.withValues(alpha: .06) : Colors.transparent,
+            color: hovered ? VyseColors.ink.withValues(alpha: .06) : Colors.transparent,
           ),
           child: Row(children: [
             SizedBox(
@@ -923,7 +923,7 @@ class _CreditRow extends StatelessWidget {
               decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: VyseColors.surfaceHi),
               clipBehavior: Clip.antiAlias,
               child: m.poster('w92') == null
-                  ? const Icon(Icons.movie_outlined, size: 14, color: VyseColors.textFaint)
+                  ? Icon(Icons.movie_outlined, size: 14, color: VyseColors.textFaint)
                   : CachedNetworkImage(imageUrl: m.poster('w92')!, fit: BoxFit.cover, placeholder: (_, _) => const SizedBox()),
             ),
             const SizedBox(width: 14),
@@ -939,7 +939,7 @@ class _CreditRow extends StatelessWidget {
                   Text(role,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(fontSize: 12, color: VyseColors.textFaint)),
+                      style: TextStyle(fontSize: 12, color: VyseColors.textFaint)),
                 ],
               ]),
             ),
@@ -949,9 +949,9 @@ class _CreditRow extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(4),
-                  border: Border.all(color: Colors.white.withValues(alpha: .18)),
+                  border: Border.all(color: VyseColors.ink.withValues(alpha: .18)),
                 ),
-                child: Text(m.kind, style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: VyseColors.textDim)),
+                child: Text(m.kind, style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: VyseColors.textDim)),
               ),
             ],
             const SizedBox(width: 12),
@@ -961,14 +961,14 @@ class _CreditRow extends StatelessWidget {
                   ? Row(mainAxisAlignment: MainAxisAlignment.end, children: [
                       const Icon(Icons.star_rounded, size: 13, color: VyseColors.star),
                       const SizedBox(width: 2),
-                      Text(m.rating.toStringAsFixed(1), style: const TextStyle(fontSize: 12, color: VyseColors.textDim)),
+                      Text(m.rating.toStringAsFixed(1), style: TextStyle(fontSize: 12, color: VyseColors.textDim)),
                     ])
                   : null,
             ),
             AnimatedOpacity(
               opacity: hovered ? 1 : 0,
               duration: const Duration(milliseconds: 150),
-              child: const Padding(
+              child: Padding(
                 padding: EdgeInsets.only(left: 6),
                 child: Icon(Icons.chevron_right_rounded, size: 18, color: VyseColors.textDim),
               ),
@@ -1011,7 +1011,7 @@ class _BackButton extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(6, 6, 12, 6),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            color: hovered ? Colors.white.withValues(alpha: .1) : Colors.transparent,
+            color: hovered ? VyseColors.ink.withValues(alpha: .1) : Colors.transparent,
           ),
           child: Row(mainAxisSize: MainAxisSize.min, children: [
             Icon(Icons.chevron_left_rounded, size: 20, color: hovered ? VyseColors.text : VyseColors.textDim),

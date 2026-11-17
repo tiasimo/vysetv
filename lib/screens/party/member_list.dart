@@ -155,7 +155,7 @@ class _PartyMemberPanelState extends State<PartyMemberPanel> {
           : (_items.isEmpty && _loading)
           ? Padding(
               padding: EdgeInsets.only(top: widget.topPadding),
-              child: const Center(
+              child: Center(
                 child: SizedBox.square(dimension: 20, child: CircularProgressIndicator(strokeWidth: 2, color: VyseColors.textDim)),
               ),
             )
@@ -170,7 +170,7 @@ class _PartyMemberPanelState extends State<PartyMemberPanel> {
                       if (_activity.length > 3)
                         TextButton(
                           onPressed: () => setState(() => _allActivity = !_allActivity),
-                          child: Text(_allActivity ? 'Less' : 'All', style: const TextStyle(fontSize: 12, color: VyseColors.textDim)),
+                          child: Text(_allActivity ? 'Less' : 'All', style: TextStyle(fontSize: 12, color: VyseColors.textDim)),
                         ),
                     ],
                   ),
@@ -179,7 +179,7 @@ class _PartyMemberPanelState extends State<PartyMemberPanel> {
                 ],
                 ...rows,
                 if (_loading && _items.isNotEmpty)
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.all(14),
                     child: Center(
                       child: SizedBox.square(dimension: 16, child: CircularProgressIndicator(strokeWidth: 2, color: VyseColors.textFaint)),
@@ -214,7 +214,7 @@ class _Header extends StatelessWidget {
     padding: const EdgeInsets.fromLTRB(8, 16, 8, 6),
     child: Text(
       text.toUpperCase(),
-      style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w800, letterSpacing: .7, color: VyseColors.textDim),
+      style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800, letterSpacing: .7, color: VyseColors.textDim),
     ),
   );
 }
@@ -262,7 +262,7 @@ class _MemberRow extends StatelessWidget {
                         ),
                         if (p.private) ...[
                           const SizedBox(width: 5),
-                          const Tooltip(
+                          Tooltip(
                             message: 'Private profile',
                             child: Icon(Icons.lock_outline_rounded, size: 12, color: VyseColors.textFaint),
                           ),
@@ -278,7 +278,7 @@ class _MemberRow extends StatelessWidget {
                               line,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(fontSize: 11.5, color: VyseColors.textDim),
+                              style: TextStyle(fontSize: 11.5, color: VyseColors.textDim),
                             ),
                           ),
                         ],
@@ -332,7 +332,7 @@ class _ActivityCard extends StatelessWidget {
                           p.name,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(fontSize: 12, color: VyseColors.textDim, fontWeight: FontWeight.w600),
+                          style: TextStyle(fontSize: 12, color: VyseColors.textDim, fontWeight: FontWeight.w600),
                         ),
                       ),
                     ],
@@ -357,7 +357,7 @@ class _ActivityCard extends StatelessWidget {
                           ].join(' · '),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(fontSize: 11.5, color: VyseColors.textDim),
+                          style: TextStyle(fontSize: 11.5, color: VyseColors.textDim),
                         ),
                       ),
                     ],
@@ -389,9 +389,9 @@ class _Retry extends StatelessWidget {
     padding: EdgeInsets.fromLTRB(20, top + 30, 20, 20),
     child: Column(
       children: [
-        const Icon(Icons.wifi_off_rounded, color: VyseColors.textFaint),
+        Icon(Icons.wifi_off_rounded, color: VyseColors.textFaint),
         const SizedBox(height: 10),
-        const Text(
+        Text(
           "Couldn't load members.",
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 13, color: VyseColors.textDim),

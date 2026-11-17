@@ -35,13 +35,13 @@ class _SeekBarState extends State<SeekBar> {
             final max = total.inMilliseconds.toDouble().clamp(1.0, double.infinity);
             final value = (_drag ?? pos.inMilliseconds.toDouble()).clamp(0.0, max);
             final left = Duration(milliseconds: (max - value).round());
-            const style = TextStyle(fontSize: 11.5, color: VyseColors.textDim, fontFeatures: [FontFeature.tabularFigures()]);
+            final style = TextStyle(fontSize: 11.5, color: VyseColors.textDim, fontFeatures: [FontFeature.tabularFigures()]);
             return Column(children: [
               SliderTheme(
                 data: SliderThemeData(
                   trackHeight: 4,
                   activeTrackColor: VyseColors.accent,
-                  inactiveTrackColor: Colors.white.withValues(alpha: .14),
+                  inactiveTrackColor: VyseColors.ink.withValues(alpha: .14),
                   thumbColor: Colors.white,
                   overlayColor: VyseColors.accent.withValues(alpha: .15),
                   thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 6),
@@ -115,7 +115,7 @@ class BookCard extends StatelessWidget {
                   p != null ? '${p.chapterTitle ?? 'Chapter ${p.chapter + 1}'} · ${fmtClock(p.position)}' : (book.author ?? ''),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(fontSize: 10.5, color: VyseColors.textDim),
+                  style: TextStyle(fontSize: 10.5, color: VyseColors.textDim),
                 ),
               ]),
             ),
@@ -136,7 +136,7 @@ class BookCard extends StatelessWidget {
             ),
           ),
         if (p != null)
-          const Positioned(left: 0, right: 0, bottom: 0, child: SizedBox(height: 3, child: ColoredBox(color: VyseColors.accent))),
+          Positioned(left: 0, right: 0, bottom: 0, child: SizedBox(height: 3, child: ColoredBox(color: VyseColors.accent))),
       ]),
     );
   }
@@ -211,7 +211,7 @@ class _BookMiniBar extends StatelessWidget {
                 ),
                 IconButton(tooltip: 'Indietro 30s', onPressed: () => p.skip(-30), icon: const Icon(Icons.replay_30_rounded), iconSize: 22),
                 p.loading || p.buffering
-                    ? const SizedBox.square(
+                    ? SizedBox.square(
                         dimension: 40,
                         child: Padding(padding: EdgeInsets.all(10), child: CircularProgressIndicator(strokeWidth: 2, color: VyseColors.accent)),
                       )

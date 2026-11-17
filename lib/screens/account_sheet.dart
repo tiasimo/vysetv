@@ -32,7 +32,7 @@ Future<void> showAccountSheet(BuildContext context, {bool register = false, bool
       insetPadding: const EdgeInsets.all(24),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(22),
-        side: const BorderSide(color: VyseColors.stroke),
+        side: BorderSide(color: VyseColors.stroke),
       ),
       clipBehavior: Clip.antiAlias,
       child: ConstrainedBox(
@@ -269,7 +269,7 @@ class _AccountFormState extends State<_AccountForm> {
                 width: 40,
                 height: 4,
                 margin: const EdgeInsets.only(bottom: 18),
-                decoration: BoxDecoration(color: Colors.white.withValues(alpha: .2), borderRadius: BorderRadius.circular(2)),
+                decoration: BoxDecoration(color: VyseColors.ink.withValues(alpha: .2), borderRadius: BorderRadius.circular(2)),
               ),
             ),
           Row(
@@ -303,7 +303,7 @@ class _AccountFormState extends State<_AccountForm> {
                       2 => 'Se l\'account esiste, è in arrivo un codice alla sua email.',
                       _ when _change => 'Gli altri tuoi dispositivi verranno disconnessi.',
                       _ => _register ? 'La tua lista, la cronologia e il profilo su ogni dispositivo.' : 'Accedi per riprendere da dove eri rimasto.',
-                    }, style: const TextStyle(fontSize: 12.5, color: VyseColors.textDim)),
+                    }, style: TextStyle(fontSize: 12.5, color: VyseColors.textDim)),
                   ],
                 ),
               ),
@@ -311,7 +311,7 @@ class _AccountFormState extends State<_AccountForm> {
                 IconButton(
                   tooltip: 'Chiudi',
                   onPressed: () => Navigator.of(context).pop(),
-                  icon: const Icon(Icons.close_rounded, color: VyseColors.textDim),
+                  icon: Icon(Icons.close_rounded, color: VyseColors.textDim),
                 ),
             ],
           ),
@@ -366,7 +366,7 @@ class _AccountFormState extends State<_AccountForm> {
                     onSubmit: _submit,
                     lowercase: true,
                     trailing: _checking
-                        ? const SizedBox.square(dimension: 16, child: CircularProgressIndicator(strokeWidth: 2, color: VyseColors.textDim))
+                        ? SizedBox.square(dimension: 16, child: CircularProgressIndicator(strokeWidth: 2, color: VyseColors.textDim))
                         : (_usernameNote == null
                               ? null
                               : Icon(
@@ -415,7 +415,7 @@ class _AccountFormState extends State<_AccountForm> {
                     ),
                   ),
                   if ((_register || _reset == 2 || _change) && _password.text.isNotEmpty && _password.text.length < 8)
-                    const Padding(
+                    Padding(
                       padding: EdgeInsets.fromLTRB(4, 6, 4, 0),
                       child: Text('Almeno 8 caratteri', style: TextStyle(fontSize: 12, color: VyseColors.textDim)),
                     ),
@@ -426,7 +426,7 @@ class _AccountFormState extends State<_AccountForm> {
                         onPressed: _startReset,
                         child: Text(
                           _change ? 'Hai dimenticato la password attuale?' : 'Password dimenticata?',
-                          style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w700, color: VyseColors.textDim),
+                          style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w700, color: VyseColors.textDim),
                         ),
                       ),
                     ),
@@ -483,13 +483,13 @@ class _AccountFormState extends State<_AccountForm> {
                 children: [
                   Text(
                     _reset > 0 ? 'Te la sei ricordata?' : (_register ? 'Hai già un account?' : 'Nuovo su Lorewatch?'),
-                    style: const TextStyle(fontSize: 13, color: VyseColors.textDim),
+                    style: TextStyle(fontSize: 13, color: VyseColors.textDim),
                   ),
                   TextButton(
                     onPressed: () => _switch(_reset > 0 ? false : !_register),
                     child: Text(
                       _reset > 0 ? (widget.changePassword ? 'Indietro' : 'Torna all\'accesso') : (_register ? 'Accedi' : 'Creane uno'),
-                      style: const TextStyle(fontWeight: FontWeight.w800, color: VyseColors.accent),
+                      style: TextStyle(fontWeight: FontWeight.w800, color: VyseColors.accent),
                     ),
                   ),
                 ],
@@ -511,7 +511,7 @@ class _ModeSwitch extends StatelessWidget {
   Widget build(BuildContext context) => Container(
     height: 44,
     padding: const EdgeInsets.all(4),
-    decoration: BoxDecoration(color: Colors.white.withValues(alpha: .05), borderRadius: BorderRadius.circular(14)),
+    decoration: BoxDecoration(color: VyseColors.ink.withValues(alpha: .05), borderRadius: BorderRadius.circular(14)),
     child: LayoutBuilder(
       builder: (context, c) => Stack(
         children: [
@@ -521,7 +521,7 @@ class _ModeSwitch extends StatelessWidget {
             alignment: register ? Alignment.centerRight : Alignment.centerLeft,
             child: Container(
               width: c.maxWidth / 2,
-              decoration: BoxDecoration(color: Colors.white.withValues(alpha: .14), borderRadius: BorderRadius.circular(10)),
+              decoration: BoxDecoration(color: VyseColors.ink.withValues(alpha: .14), borderRadius: BorderRadius.circular(10)),
             ),
           ),
           Row(
@@ -584,7 +584,7 @@ class _Field extends StatelessWidget {
         padding: const EdgeInsets.only(left: 4, bottom: 6),
         child: Text(
           label,
-          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: VyseColors.textDim),
+          style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: VyseColors.textDim),
         ),
       ),
       TextField(
@@ -612,7 +612,7 @@ class _Field extends StatelessWidget {
         cursorColor: VyseColors.accent,
         decoration: InputDecoration(
           hintText: hint,
-          hintStyle: const TextStyle(color: VyseColors.textFaint, fontSize: 14),
+          hintStyle: TextStyle(color: VyseColors.textFaint, fontSize: 14),
           prefixIcon: Icon(icon, size: 19, color: VyseColors.textFaint),
           suffixIcon: trailing == null
               ? null
@@ -621,11 +621,11 @@ class _Field extends StatelessWidget {
                   child: Center(widthFactor: 1, child: trailing),
                 ),
           filled: true,
-          fillColor: Colors.white.withValues(alpha: .05),
+          fillColor: VyseColors.ink.withValues(alpha: .05),
           contentPadding: const EdgeInsets.symmetric(vertical: 14),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(14),
-            borderSide: BorderSide(color: Colors.white.withValues(alpha: .06)),
+            borderSide: BorderSide(color: VyseColors.ink.withValues(alpha: .06)),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(14),
@@ -656,8 +656,8 @@ class _Submit extends StatelessWidget {
         alignment: Alignment.center,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(14),
-          color: enabled || busy ? (hovered ? Colors.white : Colors.white.withValues(alpha: .93)) : Colors.white.withValues(alpha: .1),
-          boxShadow: [if (enabled && hovered) BoxShadow(color: Colors.white.withValues(alpha: .2), blurRadius: 18)],
+          color: enabled || busy ? (hovered ? Colors.white : VyseColors.ink.withValues(alpha: .93)) : VyseColors.ink.withValues(alpha: .1),
+          boxShadow: [if (enabled && hovered) BoxShadow(color: VyseColors.ink.withValues(alpha: .2), blurRadius: 18)],
         ),
         child: busy
             ? const SizedBox.square(dimension: 20, child: CircularProgressIndicator(strokeWidth: 2.4, color: Colors.black))

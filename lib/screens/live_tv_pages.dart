@@ -111,7 +111,7 @@ class _LiveChannelPageState extends State<LiveChannelPage> {
           SizedBox(
             width: 84,
             child: Text(label.toUpperCase(),
-                style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w700, letterSpacing: 1, color: VyseColors.textFaint)),
+                style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, letterSpacing: 1, color: VyseColors.textFaint)),
           ),
           Expanded(
             child: SizedBox(
@@ -257,18 +257,18 @@ class _MatchGuide extends StatelessWidget {
           if (m.state == MatchState.live)
             LivePill(m.status)
           else
-            Text(hhmm(m.start), style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w700, color: VyseColors.textDim)),
+            Text(hhmm(m.start), style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w700, color: VyseColors.textDim)),
         ]),
         const SizedBox(height: 10),
         Row(children: [
           if (busy && found.isEmpty) ...[
-            const SizedBox.square(dimension: 12, child: CircularProgressIndicator(strokeWidth: 1.6, color: VyseColors.textDim)),
+            SizedBox.square(dimension: 12, child: CircularProgressIndicator(strokeWidth: 1.6, color: VyseColors.textDim)),
             const SizedBox(width: 8),
           ] else if (found.isNotEmpty) ...[
-            const Icon(Icons.check_circle_rounded, size: 14, color: VyseColors.accent),
+            Icon(Icons.check_circle_rounded, size: 14, color: VyseColors.accent),
             const SizedBox(width: 6),
           ],
-          Expanded(child: Text(status, style: const TextStyle(fontSize: 12, color: VyseColors.textDim))),
+          Expanded(child: Text(status, style: TextStyle(fontSize: 12, color: VyseColors.textDim))),
         ]),
         if (found.isNotEmpty) ...[
           const SizedBox(height: 10),
@@ -304,7 +304,7 @@ class _HitRow extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(12, 10, 6, 10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
-            color: Colors.white.withValues(alpha: hovered ? .06 : 0),
+            color: VyseColors.ink.withValues(alpha: hovered ? .06 : 0),
           ),
           child: Row(children: [
             Container(
@@ -320,13 +320,13 @@ class _HitRow extends StatelessWidget {
                 Text(hit.stream.name, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 13.5, fontWeight: FontWeight.w700)),
                 const SizedBox(height: 2),
                 Text(hit.portal.name.isEmpty ? hit.portal.portal.url : hit.portal.name,
-                    maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 11.5, color: VyseColors.textDim)),
+                    maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 11.5, color: VyseColors.textDim)),
                 if (guide != null) ...[
                   const SizedBox(height: 3),
                   Text('In onda  ${guide!.title}  ·  ${hhmm(guide!.start)}',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(fontSize: 11.5, fontWeight: FontWeight.w700, color: VyseColors.accent)),
+                      style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.w700, color: VyseColors.accent)),
                 ],
               ]),
             ),
@@ -432,7 +432,7 @@ class _EpisodeRow extends StatelessWidget {
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
-              color: Colors.white.withValues(alpha: hovered ? .06 : 0),
+              color: VyseColors.ink.withValues(alpha: hovered ? .06 : 0),
             ),
             child: Row(children: [
               ClipRRect(
@@ -453,7 +453,7 @@ class _EpisodeRow extends StatelessWidget {
                       maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 13.5, fontWeight: FontWeight.w700)),
                   if (episode.plot.isNotEmpty) ...[
                     const SizedBox(height: 4),
-                    Text(episode.plot, maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12, color: VyseColors.textDim, height: 1.4)),
+                    Text(episode.plot, maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, color: VyseColors.textDim, height: 1.4)),
                   ],
                 ]),
               ),

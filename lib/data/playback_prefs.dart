@@ -34,6 +34,12 @@ abstract final class PlaybackPrefs {
     PlayKind.anime => AppSettings.animeSubs,
   };
 
+  /// 'Off' = no subtitles for this kind of video (the "Nessuno" choice).
+  static const none = 'Off';
+
+  /// Whether subtitles switch on by themselves for kind [k].
+  static bool autoOn(PlayKind k) => autoSubtitles(k).value && subtitles(k).value != none;
+
   static Setting<bool> autoSubtitles(PlayKind k) => switch (k) {
     PlayKind.movie => AppSettings.movieAutoSubs,
     PlayKind.tv => AppSettings.tvAutoSubs,

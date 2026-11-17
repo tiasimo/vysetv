@@ -161,11 +161,11 @@ class _MusicPageState extends State<MusicPage> {
                           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(99),
-                            color: Colors.white.withValues(alpha: hovered ? .12 : .06),
+                            color: VyseColors.ink.withValues(alpha: hovered ? .12 : .06),
                             border: Border.all(color: VyseColors.stroke),
                           ),
                           child: Row(mainAxisSize: MainAxisSize.min, children: [
-                            const Icon(Icons.north_west_rounded, size: 13, color: VyseColors.textFaint),
+                            Icon(Icons.north_west_rounded, size: 13, color: VyseColors.textFaint),
                             const SizedBox(width: 6),
                             Text(s, style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w600)),
                           ]),
@@ -257,7 +257,7 @@ class _Chip extends StatelessWidget {
       alignment: Alignment.center,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: Colors.white.withValues(alpha: hovered ? .14 : .07),
+        color: VyseColors.ink.withValues(alpha: hovered ? .14 : .07),
         border: Border.all(color: VyseColors.stroke),
       ),
       child: Row(mainAxisSize: MainAxisSize.min, children: [
@@ -425,7 +425,7 @@ class _Arrow extends StatelessWidget {
     builder: (context, hovered, _) => Container(
       width: 36,
       height: 36,
-      decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white.withValues(alpha: hovered ? .16 : .08), border: Border.all(color: VyseColors.stroke)),
+      decoration: BoxDecoration(shape: BoxShape.circle, color: VyseColors.ink.withValues(alpha: hovered ? .16 : .08), border: Border.all(color: VyseColors.stroke)),
       child: Icon(icon, size: 22),
     ),
   );
@@ -543,7 +543,7 @@ class _QuickTiles extends StatelessWidget {
                       padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(14),
-                        color: Colors.white.withValues(alpha: hovered ? .09 : .05),
+                        color: VyseColors.ink.withValues(alpha: hovered ? .09 : .05),
                         border: Border.all(color: hovered ? VyseColors.strokeHi : VyseColors.stroke),
                       ),
                       child: Row(children: [
@@ -558,7 +558,7 @@ class _QuickTiles extends StatelessWidget {
                           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                             Text(title, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w800)),
                             const SizedBox(height: 2),
-                            Text(sub, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12, color: VyseColors.textDim)),
+                            Text(sub, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, color: VyseColors.textDim)),
                           ]),
                         ),
                       ]),
@@ -622,7 +622,7 @@ class _RecentTile extends StatelessWidget {
               duration: const Duration(milliseconds: 140),
               height: 62,
               padding: const EdgeInsets.symmetric(horizontal: 8),
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.white.withValues(alpha: hovered ? .06 : 0)),
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: VyseColors.ink.withValues(alpha: hovered ? .06 : 0)),
               child: Row(children: [
                 Stack(children: [
                   Artwork(url: track.coverUrl, size: 46, radius: 6),
@@ -639,7 +639,7 @@ class _RecentTile extends StatelessWidget {
                   child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: [
                     Text(track.title, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 14.5, fontWeight: FontWeight.w600, color: current ? accentOf(context) : VyseColors.text)),
                     const SizedBox(height: 2),
-                    Text(track.artist, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12.5, color: VyseColors.textDim)),
+                    Text(track.artist, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12.5, color: VyseColors.textDim)),
                   ]),
                 ),
                 AnimatedScale(
@@ -827,7 +827,7 @@ class _TopResult extends StatelessWidget {
         padding: const EdgeInsets.all(18),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(18),
-          color: Colors.white.withValues(alpha: hovered ? .09 : .055),
+          color: VyseColors.ink.withValues(alpha: hovered ? .09 : .055),
           border: Border.all(color: hovered ? VyseColors.strokeHi : VyseColors.stroke),
         ),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -838,7 +838,7 @@ class _TopResult extends StatelessWidget {
           Row(children: [
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(99), color: Colors.white.withValues(alpha: .1)),
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(99), color: VyseColors.ink.withValues(alpha: .1)),
               child: Text(
                 switch (i.kind) {
                   YtKind.artist => 'Artista',
@@ -856,7 +856,7 @@ class _TopResult extends StatelessWidget {
                 i.subtitle.replaceFirst(RegExp(r'^(Artist|Album|Single|EP|Playlist|Song|Video) · '), ''),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(fontSize: 12.5, color: VyseColors.textDim),
+                style: TextStyle(fontSize: 12.5, color: VyseColors.textDim),
               ),
             ),
             if (t != null) LikeButton(track: t, size: 20),

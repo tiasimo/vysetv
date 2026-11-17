@@ -118,7 +118,7 @@ class _SignInState extends State<_SignIn> {
 
   @override
   Widget build(BuildContext context) {
-    const dim = TextStyle(color: VyseColors.textDim, height: 1.5);
+    final dim = TextStyle(color: VyseColors.textDim, height: 1.5);
     return AlertDialog(
       backgroundColor: VyseColors.surface,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -133,7 +133,7 @@ class _SignInState extends State<_SignIn> {
               const Text('Completa l\'accesso nel browser, poi torna in Lorewatch: lo rileva da solo.', style: dim),
               if (_error == null) ...[
                 const SizedBox(height: 16),
-                const SizedBox(height: 3, child: LinearProgressIndicator(color: VyseColors.accent, backgroundColor: Colors.white10)),
+                SizedBox(height: 3, child: LinearProgressIndicator(color: VyseColors.accent, backgroundColor: VyseColors.ink.withValues(alpha: .10))),
               ],
               if (widget.paste) ...[
                 const SizedBox(height: 10),
@@ -238,7 +238,7 @@ class _DeviceCodeDialogState extends State<_DeviceCodeDialog> {
 
   @override
   Widget build(BuildContext context) {
-    const dim = TextStyle(color: VyseColors.textDim, height: 1.5);
+    final dim = TextStyle(color: VyseColors.textDim, height: 1.5);
     final c = _code;
     final left = c == null ? Duration.zero : c.expiresAt.difference(DateTime.now());
     final mins = left.inMinutes, secs = left.inSeconds % 60;
@@ -255,7 +255,7 @@ class _DeviceCodeDialogState extends State<_DeviceCodeDialog> {
             if (_error != null)
               Text(_error!, style: const TextStyle(color: Color(0xFFFF8A8C), fontSize: 13, height: 1.4))
             else if (c == null)
-              const SizedBox(height: 3, child: LinearProgressIndicator(color: VyseColors.accent, backgroundColor: Colors.white10))
+              SizedBox(height: 3, child: LinearProgressIndicator(color: VyseColors.accent, backgroundColor: VyseColors.ink.withValues(alpha: .10)))
             else ...[
               Text('Vai su ${c.site} e inserisci questo codice. Lorewatch si collega appena lo approvi.', style: dim),
               const SizedBox(height: 16),
@@ -269,7 +269,7 @@ class _DeviceCodeDialogState extends State<_DeviceCodeDialog> {
               Center(
                 child: Text(
                   left > Duration.zero ? 'Expires in $mins:${secs.toString().padLeft(2, '0')}' : 'Expired',
-                  style: const TextStyle(color: VyseColors.textDim, fontSize: 12.5),
+                  style: TextStyle(color: VyseColors.textDim, fontSize: 12.5),
                 ),
               ),
               const SizedBox(height: 12),

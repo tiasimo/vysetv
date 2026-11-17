@@ -129,7 +129,7 @@ class TrackRow extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: Colors.white.withValues(alpha: isCurrent ? .07 : (hovered ? .06 : 0)),
+                color: VyseColors.ink.withValues(alpha: isCurrent ? .07 : (hovered ? .06 : 0)),
               ),
               child: Row(
                 children: [
@@ -141,7 +141,7 @@ class TrackRow extends StatelessWidget {
                             ? Equalizer(active: player.playing)
                             : hovered
                             ? const Icon(Icons.play_arrow_rounded, size: 18)
-                            : Text('${track.trackNumber ?? index + 1}', style: const TextStyle(color: VyseColors.textFaint, fontSize: 13)),
+                            : Text('${track.trackNumber ?? index + 1}', style: TextStyle(color: VyseColors.textFaint, fontSize: 13)),
                       ),
                     ),
                   if (showArt) ...[
@@ -198,7 +198,7 @@ class TrackRow extends StatelessWidget {
                                 track.artist,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(fontSize: 12, color: VyseColors.textDim),
+                                style: TextStyle(fontSize: 12, color: VyseColors.textDim),
                               ),
                             ),
                           ],
@@ -212,7 +212,7 @@ class TrackRow extends StatelessWidget {
                         track.album,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(fontSize: 12, color: VyseColors.textFaint),
+                        style: TextStyle(fontSize: 12, color: VyseColors.textFaint),
                       ),
                     ),
                   // liked: always a heart; otherwise one appears on hover
@@ -226,7 +226,7 @@ class TrackRow extends StatelessWidget {
                   if (track.durationSeconds > 0)
                     Text(
                       fmtClock(Duration(seconds: track.durationSeconds)),
-                      style: const TextStyle(fontSize: 12, color: VyseColors.textFaint, fontFeatures: [FontFeature.tabularFigures()]),
+                      style: TextStyle(fontSize: 12, color: VyseColors.textFaint, fontFeatures: [FontFeature.tabularFigures()]),
                     ),
                   const SizedBox(width: 4),
                   Builder(
@@ -259,7 +259,7 @@ Future<void> showTrackMenu(BuildContext context, MusicTrack t, Offset at, {VoidC
     color: VyseColors.surfaceHi,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(12),
-      side: const BorderSide(color: VyseColors.stroke),
+      side: BorderSide(color: VyseColors.stroke),
     ),
     position: RelativeRect.fromLTRB(at.dx, at.dy, at.dx, at.dy),
     items: [
@@ -377,7 +377,7 @@ class TrackCard extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: current ? accentOf(context) : VyseColors.text)),
           const SizedBox(height: 2),
-          Text(track.artist, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 11.5, color: VyseColors.textFaint)),
+          Text(track.artist, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 11.5, color: VyseColors.textFaint)),
         ]);
       },
     );
@@ -441,7 +441,7 @@ class CoverTile extends StatelessWidget {
         subtitle,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
-        style: const TextStyle(fontSize: 11.5, color: VyseColors.textFaint),
+        style: TextStyle(fontSize: 11.5, color: VyseColors.textFaint),
       ),
     ],
   );
@@ -494,7 +494,7 @@ class ArtistTile extends StatelessWidget {
                 duration: const Duration(milliseconds: 180),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  border: Border.all(color: hovered ? Colors.white : Colors.white.withValues(alpha: .06), width: hovered ? 2 : 1),
+                  border: Border.all(color: hovered ? Colors.white : VyseColors.ink.withValues(alpha: .06), width: hovered ? 2 : 1),
                 ),
                 child: Artwork(url: artist.pictureUrl, circle: true),
               ),
@@ -513,7 +513,7 @@ class ArtistTile extends StatelessWidget {
           Text(
             '${fmtCompact(artist.fanCount)} fan',
             textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 10.5, color: VyseColors.textFaint),
+            style: TextStyle(fontSize: 10.5, color: VyseColors.textFaint),
           ),
       ],
     ),

@@ -180,7 +180,7 @@ class _PartyStripState extends State<PartyStrip> {
               onSubmitted: (_) => _send(),
               style: const TextStyle(fontSize: 13.5),
               cursorColor: VyseColors.accent,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 isDense: true,
                 counterText: '',
                 border: InputBorder.none,
@@ -271,7 +271,7 @@ class _MicLeakPromptState extends State<MicLeakPrompt> {
               children: [
                 const Text('On speakers?', style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.w800)),
                 const SizedBox(height: 2),
-                const Text('What you\'re playing can reach your mic and everyone hears it. Headphones stop that, or use push-to-talk.', style: TextStyle(fontSize: 12, height: 1.35, color: VyseColors.textDim)),
+                Text('What you\'re playing can reach your mic and everyone hears it. Headphones stop that, or use push-to-talk.', style: TextStyle(fontSize: 12, height: 1.35, color: VyseColors.textDim)),
                 const SizedBox(height: 9),
                 Wrap(
                   spacing: 6,

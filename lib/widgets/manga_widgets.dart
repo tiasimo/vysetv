@@ -39,7 +39,7 @@ class MangaCard extends StatelessWidget {
               ),
             ),
             if (MangaFavorites.has(manga))
-              const Positioned(
+              Positioned(
                 top: 6,
                 right: 6,
                 child: Icon(Icons.favorite_rounded, size: 16, color: VyseColors.accent, shadows: [Shadow(blurRadius: 8)]),
@@ -98,7 +98,7 @@ class TagPill extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(14),
-            color: Colors.white.withValues(alpha: hovered && onTap != null ? .12 : .05),
+            color: VyseColors.ink.withValues(alpha: hovered && onTap != null ? .12 : .05),
           ),
           child: Text(label, style: const TextStyle(fontSize: 11.5, fontWeight: FontWeight.w600, color: Color(0xFFC3C7D4))),
         ),

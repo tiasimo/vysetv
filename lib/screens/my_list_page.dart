@@ -235,7 +235,7 @@ class _MyListPageState extends State<MyListPage> {
               SliverToBoxAdapter(
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(side, 40, right, 40),
-                  child: const Column(children: [
+                  child: Column(children: [
                     Icon(Icons.filter_alt_off_outlined, size: 34, color: VyseColors.textFaint),
                     SizedBox(height: 12),
                     Text('Niente corrisponde', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700)),
@@ -433,8 +433,8 @@ class _PickButton extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: compact ? 12 : 16, vertical: compact ? 9 : 11),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(24),
-          color: hovered ? Colors.white : Colors.white.withValues(alpha: .92),
-          boxShadow: [if (hovered) BoxShadow(color: Colors.white.withValues(alpha: .25), blurRadius: 18)],
+          color: hovered ? Colors.white : VyseColors.ink.withValues(alpha: .92),
+          boxShadow: [if (hovered) BoxShadow(color: VyseColors.ink.withValues(alpha: .25), blurRadius: 18)],
         ),
         child: Row(mainAxisSize: MainAxisSize.min, children: [
           const Icon(Icons.casino_rounded, size: 18, color: Colors.black),
@@ -492,17 +492,17 @@ class _Toolbar extends StatelessWidget {
         decoration: InputDecoration(
           isDense: true,
           hintText: 'Cerca nella tua lista',
-          hintStyle: const TextStyle(fontSize: 13.5, color: VyseColors.textFaint),
-          prefixIcon: const Icon(Icons.search_rounded, size: 19, color: VyseColors.textFaint),
+          hintStyle: TextStyle(fontSize: 13.5, color: VyseColors.textFaint),
+          prefixIcon: Icon(Icons.search_rounded, size: 19, color: VyseColors.textFaint),
           suffixIcon: search.text.isEmpty
               ? null
               : IconButton(
-                  icon: const Icon(Icons.close_rounded, size: 17, color: VyseColors.textDim),
+                  icon: Icon(Icons.close_rounded, size: 17, color: VyseColors.textDim),
                   onPressed: search.clear,
                 ),
           contentPadding: const EdgeInsets.symmetric(vertical: 11),
           filled: true,
-          fillColor: Colors.white.withValues(alpha: .06),
+          fillColor: VyseColors.ink.withValues(alpha: .06),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: BorderSide.none),
         ),
       ),
@@ -579,7 +579,7 @@ class _Chip extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         gradient: selected ? LinearGradient(colors: [VyseColors.accent.withValues(alpha: .24), VyseColors.accent.withValues(alpha: .08)]) : null,
-        color: selected ? null : Colors.white.withValues(alpha: hovered ? .09 : .05),
+        color: selected ? null : VyseColors.ink.withValues(alpha: hovered ? .09 : .05),
         border: Border.all(color: selected ? VyseColors.accent.withValues(alpha: .45) : Colors.transparent),
       ),
       child: Row(mainAxisSize: MainAxisSize.min, children: [
@@ -607,7 +607,7 @@ class _RoundTool extends StatelessWidget {
       height: 40,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: Colors.white.withValues(alpha: hovered ? .12 : .06),
+        color: VyseColors.ink.withValues(alpha: hovered ? .12 : .06),
       ),
       child: Icon(icon, size: 19, color: VyseColors.text),
     ),
@@ -623,7 +623,7 @@ class _ViewToggle extends StatelessWidget {
   Widget build(BuildContext context) => Container(
     height: 40,
     padding: const EdgeInsets.all(3),
-    decoration: BoxDecoration(color: Colors.white.withValues(alpha: .06), borderRadius: BorderRadius.circular(20)),
+    decoration: BoxDecoration(color: VyseColors.ink.withValues(alpha: .06), borderRadius: BorderRadius.circular(20)),
     child: Row(mainAxisSize: MainAxisSize.min, children: [
       for (final (g, icon, tip) in const [(true, Icons.grid_view_rounded, 'Locandine'), (false, Icons.view_agenda_outlined, 'Righe')])
         Pressable(
@@ -634,7 +634,7 @@ class _ViewToggle extends StatelessWidget {
             width: 36,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(17),
-              color: grid == g ? Colors.white.withValues(alpha: .16) : Colors.transparent,
+              color: grid == g ? VyseColors.ink.withValues(alpha: .16) : Colors.transparent,
             ),
             child: Icon(icon, size: 17, color: grid == g ? Colors.white : VyseColors.textDim),
           ),
@@ -657,7 +657,7 @@ class _SortMenu extends StatelessWidget {
       surfaceTintColor: const WidgetStatePropertyAll(Colors.transparent),
       padding: const WidgetStatePropertyAll(EdgeInsets.symmetric(vertical: 6)),
       shape: WidgetStatePropertyAll(
-        RoundedRectangleBorder(borderRadius: BorderRadius.circular(14), side: BorderSide(color: Colors.white.withValues(alpha: .08))),
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(14), side: BorderSide(color: VyseColors.ink.withValues(alpha: .08))),
       ),
     ),
     menuChildren: [
@@ -665,7 +665,7 @@ class _SortMenu extends StatelessWidget {
         MenuItemButton(
           onPressed: () => onSort(s),
           leadingIcon: Icon(s.icon, size: 17, color: s == sort ? VyseColors.accent : VyseColors.textDim),
-          trailingIcon: s == sort ? const Icon(Icons.check_rounded, size: 17, color: VyseColors.accent) : null,
+          trailingIcon: s == sort ? Icon(Icons.check_rounded, size: 17, color: VyseColors.accent) : null,
           style: const ButtonStyle(minimumSize: WidgetStatePropertyAll(Size(210, 42))),
           child: Text(s.label, style: TextStyle(fontSize: 13.5, fontWeight: s == sort ? FontWeight.w800 : FontWeight.w500)),
         ),
@@ -677,14 +677,14 @@ class _SortMenu extends StatelessWidget {
         duration: const Duration(milliseconds: 150),
         height: 40,
         padding: EdgeInsets.symmetric(horizontal: compact ? 11 : 14),
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: Colors.white.withValues(alpha: hovered ? .12 : .06)),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: VyseColors.ink.withValues(alpha: hovered ? .12 : .06)),
         child: Row(mainAxisSize: MainAxisSize.min, children: [
           Icon(sort.icon, size: 17),
           if (!compact) ...[
             const SizedBox(width: 7),
             Text(sort.label, style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w700)),
             const SizedBox(width: 2),
-            const Icon(Icons.keyboard_arrow_down_rounded, size: 18, color: VyseColors.textDim),
+            Icon(Icons.keyboard_arrow_down_rounded, size: 18, color: VyseColors.textDim),
           ],
         ]),
       ),
@@ -723,7 +723,7 @@ class _SelectBar extends StatelessWidget {
       if (count < total)
         TextButton(
           onPressed: onAll,
-          child: const Text('Seleziona tutto', style: TextStyle(color: VyseColors.text, fontWeight: FontWeight.w700)),
+          child: Text('Seleziona tutto', style: TextStyle(color: VyseColors.text, fontWeight: FontWeight.w700)),
         ),
       const SizedBox(width: 4),
       Builder(
@@ -761,13 +761,13 @@ class _SelectBar extends StatelessWidget {
 // ───────────────────────── Tiles ─────────────────────────
 
 Widget _img(String? url) => url == null
-    ? const ColoredBox(color: VyseColors.surface, child: Center(child: Icon(Icons.movie_outlined, color: VyseColors.textFaint)))
+    ? ColoredBox(color: VyseColors.surface, child: Center(child: Icon(Icons.movie_outlined, color: VyseColors.textFaint)))
     : CachedNetworkImage(
         imageUrl: url,
         fit: BoxFit.cover,
         fadeInDuration: const Duration(milliseconds: 250),
-        placeholder: (_, _) => const ColoredBox(color: VyseColors.surface),
-        errorWidget: (_, _, _) => const ColoredBox(color: VyseColors.surface),
+        placeholder: (_, _) => ColoredBox(color: VyseColors.surface),
+        errorWidget: (_, _, _) => ColoredBox(color: VyseColors.surface),
       );
 
 class _Check extends StatelessWidget {
@@ -782,7 +782,7 @@ class _Check extends StatelessWidget {
     decoration: BoxDecoration(
       shape: BoxShape.circle,
       color: on ? VyseColors.accent : Colors.black.withValues(alpha: .5),
-      border: Border.all(color: on ? VyseColors.accent : Colors.white.withValues(alpha: .7), width: 1.5),
+      border: Border.all(color: on ? VyseColors.accent : VyseColors.ink.withValues(alpha: .7), width: 1.5),
     ),
     child: on ? const Icon(Icons.check_rounded, size: 16, color: Colors.black) : null,
   );
@@ -794,7 +794,7 @@ class _ProgressLine extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Stack(children: [
-    Container(height: 3, color: Colors.white.withValues(alpha: .18)),
+    Container(height: 3, color: VyseColors.ink.withValues(alpha: .18)),
     FractionallySizedBox(
       widthFactor: fraction,
       child: Container(
@@ -842,7 +842,7 @@ class _PosterTile extends StatelessWidget {
             foregroundDecoration: BoxDecoration(
               borderRadius: BorderRadius.circular(9),
               border: Border.all(
-                color: selected ? VyseColors.accent : (hovered ? Colors.white : Colors.white.withValues(alpha: .05)),
+                color: selected ? VyseColors.accent : (hovered ? Colors.white : VyseColors.ink.withValues(alpha: .05)),
                 width: selected || hovered ? 2 : 1,
               ),
             ),
@@ -921,7 +921,7 @@ class _TileAction extends StatelessWidget {
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: primary ? Colors.white : Colors.black.withValues(alpha: .6),
-          border: primary ? null : Border.all(color: Colors.white.withValues(alpha: .3)),
+          border: primary ? null : Border.all(color: VyseColors.ink.withValues(alpha: .3)),
         ),
         child: Icon(icon, size: primary ? 22 : 17, color: primary ? Colors.black : Colors.white),
       ),
@@ -969,8 +969,8 @@ class _RowTile extends StatelessWidget {
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(14),
-              color: selected ? VyseColors.accent.withValues(alpha: .1) : Colors.white.withValues(alpha: hovered ? .07 : .035),
-              border: Border.all(color: selected ? VyseColors.accent.withValues(alpha: .6) : Colors.white.withValues(alpha: hovered ? .14 : .05)),
+              color: selected ? VyseColors.accent.withValues(alpha: .1) : VyseColors.ink.withValues(alpha: hovered ? .07 : .035),
+              border: Border.all(color: selected ? VyseColors.accent.withValues(alpha: .6) : VyseColors.ink.withValues(alpha: hovered ? .14 : .05)),
             ),
             child: Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
               // backdrop thumb with progress
@@ -995,16 +995,16 @@ class _RowTile extends StatelessWidget {
                     style: TextStyle(fontSize: phone ? 14.5 : 16, fontWeight: FontWeight.w800, letterSpacing: -.2),
                   ),
                   const SizedBox(height: 3),
-                  Text(meta, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 11.5, color: VyseColors.textFaint)),
+                  Text(meta, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 11.5, color: VyseColors.textFaint)),
                   if (p != null) ...[
                     const SizedBox(height: 6),
                     Text(
                       [if (p.season != null && p.episode != null) episodeLabel(p.season, p.episode ?? 0), _left(p.left)].join('  ·  '),
-                      style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: VyseColors.accent),
+                      style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: VyseColors.accent),
                     ),
                   ] else if (!phone && m.overview.isNotEmpty) ...[
                     const SizedBox(height: 6),
-                    Text(m.overview, maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12.5, height: 1.35, color: VyseColors.textDim)),
+                    Text(m.overview, maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12.5, height: 1.35, color: VyseColors.textDim)),
                   ],
                 ]),
               ),
@@ -1072,7 +1072,7 @@ class _Empty extends StatelessWidget {
                           end: Alignment.bottomCenter,
                           colors: [Color(0xFF1A1D29), Color(0xFF12141D)],
                         ),
-                        border: Border.all(color: Colors.white.withValues(alpha: .07)),
+                        border: Border.all(color: VyseColors.ink.withValues(alpha: .07)),
                         boxShadow: const [BoxShadow(color: Color(0x99000000), blurRadius: 14, offset: Offset(0, 6))],
                       ),
                     ),
@@ -1091,14 +1091,14 @@ class _Empty extends StatelessWidget {
                   border: Border.all(color: VyseColors.accent.withValues(alpha: .35)),
                   boxShadow: const [BoxShadow(color: Color(0xB3000000), blurRadius: 20, offset: Offset(0, 10))],
                 ),
-                child: const Icon(Icons.bookmark_add_rounded, color: VyseColors.accent, size: 32),
+                child: Icon(Icons.bookmark_add_rounded, color: VyseColors.accent, size: 32),
               ),
             ]),
           ),
           const SizedBox(height: 22),
           const Text('La tua lista è vuota', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
           const SizedBox(height: 6),
-          const Text(
+          Text(
             'Tocca + o Salva su qualsiasi film o serie e finisce qui, pronto per dopo.',
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 13.5, height: 1.4, color: VyseColors.textDim),
@@ -1176,13 +1176,13 @@ class _PickForMeState extends State<_PickForMe> {
           decoration: BoxDecoration(
             color: const Color(0xF7101118),
             borderRadius: BorderRadius.circular(24),
-            border: Border.all(color: Colors.white.withValues(alpha: .08)),
+            border: Border.all(color: VyseColors.ink.withValues(alpha: .08)),
             boxShadow: [BoxShadow(color: VyseColors.accent.withValues(alpha: _spinning ? .1 : .25), blurRadius: 40)],
           ),
           child: Column(mainAxisSize: MainAxisSize.min, children: [
             Text(
               _spinning ? 'Scelgo…' : 'Stasera guarda',
-              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w800, letterSpacing: 1.4, color: VyseColors.accent),
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w800, letterSpacing: 1.4, color: VyseColors.accent),
             ),
             const SizedBox(height: 16),
             SizedBox(
@@ -1210,7 +1210,7 @@ class _PickForMeState extends State<_PickForMe> {
                 const SizedBox(height: 4),
                 Text(
                   [m.kind, if (m.year != null) m.year!, if (m.rating > 0) '★ ${m.rating.toStringAsFixed(1)}', if (p != null) _left(p.left)].join('  ·  '),
-                  style: const TextStyle(fontSize: 12.5, color: VyseColors.textDim),
+                  style: TextStyle(fontSize: 12.5, color: VyseColors.textDim),
                 ),
               ]),
             ),
@@ -1261,7 +1261,7 @@ class _DialogButton extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(22),
-          color: primary ? (hovered ? Colors.white : Colors.white.withValues(alpha: .92)) : Colors.white.withValues(alpha: hovered ? .14 : .08),
+          color: primary ? (hovered ? Colors.white : VyseColors.ink.withValues(alpha: .92)) : VyseColors.ink.withValues(alpha: hovered ? .14 : .08),
         ),
         child: Row(mainAxisSize: MainAxisSize.min, children: [
           Icon(icon, size: 18, color: primary ? Colors.black : Colors.white),

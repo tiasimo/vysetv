@@ -344,7 +344,7 @@ class _BrowserLivePlayerState extends State<BrowserLivePlayer> {
               children: [
                 Text(item.title, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w800)),
                 if (item.subtitle != null)
-                  Text(item.subtitle!, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12, color: VyseColors.textDim)),
+                  Text(item.subtitle!, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, color: VyseColors.textDim)),
               ],
             ),
           ),
@@ -445,7 +445,7 @@ class _BrowserLivePlayerState extends State<BrowserLivePlayer> {
               const SizedBox(height: 8),
               const Text("Questo stream non parte", style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700)),
               const SizedBox(height: 3),
-              const Text('La sorgente potrebbe essere offline o occupata.', style: TextStyle(fontSize: 12.5, color: VyseColors.textDim)),
+              Text('La sorgente potrebbe essere offline o occupata.', style: TextStyle(fontSize: 12.5, color: VyseColors.textDim)),
               const SizedBox(height: 8),
               Row(
                 mainAxisSize: MainAxisSize.min,

@@ -214,7 +214,7 @@ class _AvatarPickerState extends State<_AvatarPicker> {
       insetPadding: EdgeInsets.all(phone ? 12 : 40),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(18),
-        side: const BorderSide(color: VyseColors.stroke),
+        side: BorderSide(color: VyseColors.stroke),
       ),
       clipBehavior: Clip.antiAlias,
       child: SizedBox(
@@ -237,8 +237,8 @@ class _AvatarPickerState extends State<_AvatarPicker> {
                       AppSettings.avatarUrl.set(null);
                       AppSettings.avatarLabel.set(null);
                     },
-                    icon: const Icon(Icons.restart_alt_rounded, size: 18, color: VyseColors.textDim),
-                    label: const Text(
+                    icon: Icon(Icons.restart_alt_rounded, size: 18, color: VyseColors.textDim),
+                    label: Text(
                       'Ripristina',
                       style: TextStyle(color: VyseColors.textDim, fontWeight: FontWeight.w700),
                     ),
@@ -246,7 +246,7 @@ class _AvatarPickerState extends State<_AvatarPicker> {
                   IconButton(
                     tooltip: 'Chiudi',
                     onPressed: () => Navigator.pop(context),
-                    icon: const Icon(Icons.close_rounded, color: VyseColors.textDim),
+                    icon: Icon(Icons.close_rounded, color: VyseColors.textDim),
                   ),
                 ],
               ),
@@ -272,7 +272,7 @@ class _AvatarPickerState extends State<_AvatarPicker> {
                     future: _netflixAll,
                     builder: (context, snap) {
                       final all = snap.data;
-                      if (all == null) return const Center(child: CircularProgressIndicator(strokeWidth: 2, color: VyseColors.textDim));
+                      if (all == null) return Center(child: CircularProgressIndicator(strokeWidth: 2, color: VyseColors.textDim));
                       final sets = _filterNetflix(all);
                       if (sets.isEmpty) {
                         return EmptyState(icon: Icons.search_off_rounded, title: 'Nessun risultato', body: 'Nessun avatar Netflix per "$_query".');
@@ -300,7 +300,7 @@ class _AvatarPickerState extends State<_AvatarPicker> {
                         return const EmptyState(icon: Icons.wifi_off_rounded, title: "Impossibile caricare le serie", body: 'Controlla la connessione e riprova.');
                       }
                       final shows = snap.data;
-                      if (shows == null) return const Center(child: CircularProgressIndicator(strokeWidth: 2, color: VyseColors.textDim));
+                      if (shows == null) return Center(child: CircularProgressIndicator(strokeWidth: 2, color: VyseColors.textDim));
                       if (shows.isEmpty) {
                         return EmptyState(icon: Icons.search_off_rounded, title: 'Nessun risultato', body: 'Nessuna serie per "$_query".');
                       }
@@ -346,7 +346,7 @@ class _ShowCast extends StatelessWidget {
             children: [
               Text(
                 show.title,
-                style: const TextStyle(fontSize: 14.5, fontWeight: FontWeight.w800, color: VyseColors.textDim),
+                style: TextStyle(fontSize: 14.5, fontWeight: FontWeight.w800, color: VyseColors.textDim),
               ),
               const SizedBox(height: 12),
               Wrap(
@@ -381,7 +381,7 @@ class _ShowCast extends StatelessWidget {
                               fit: BoxFit.cover,
                               alignment: Alignment.topCenter,
                               fadeInDuration: const Duration(milliseconds: 200),
-                              errorWidget: (_, _, _) => const Icon(Icons.person_rounded, color: VyseColors.textFaint),
+                              errorWidget: (_, _, _) => Icon(Icons.person_rounded, color: VyseColors.textFaint),
                             ),
                           ),
                         ),
@@ -407,11 +407,11 @@ class _SourceSwitch extends StatelessWidget {
     scrollDirection: Axis.horizontal,
     child: Container(
       padding: const EdgeInsets.all(4),
-      decoration: BoxDecoration(color: Colors.white.withValues(alpha: .05), borderRadius: BorderRadius.circular(14)),
+      decoration: BoxDecoration(color: VyseColors.ink.withValues(alpha: .05), borderRadius: BorderRadius.circular(14)),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          for (final (v, label, sub, dot) in const [
+          for (final (v, label, sub, dot) in [
             (0, 'Netflix', 'Icone del profilo', Color(0xFFE50914)),
             (1, 'TMDB', 'Foto del cast', Color(0xFF01B4E4)),
             (2, 'Link', 'Qualsiasi indirizzo di immagine', VyseColors.accent),
@@ -423,7 +423,7 @@ class _SourceSwitch extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: source == v ? Colors.white.withValues(alpha: .14) : (hovered ? Colors.white.withValues(alpha: .05) : Colors.transparent),
+                  color: source == v ? VyseColors.ink.withValues(alpha: .14) : (hovered ? VyseColors.ink.withValues(alpha: .05) : Colors.transparent),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -444,7 +444,7 @@ class _SourceSwitch extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Text(sub, style: const TextStyle(fontSize: 10.5, color: VyseColors.textFaint)),
+                    Text(sub, style: TextStyle(fontSize: 10.5, color: VyseColors.textFaint)),
                   ],
                 ),
               ),
@@ -473,7 +473,7 @@ class _AvatarGroup extends StatelessWidget {
         children: [
           Text(
             title,
-            style: const TextStyle(fontSize: 14.5, fontWeight: FontWeight.w800, color: VyseColors.textDim),
+            style: TextStyle(fontSize: 14.5, fontWeight: FontWeight.w800, color: VyseColors.textDim),
           ),
           const SizedBox(height: 12),
           Wrap(
@@ -502,7 +502,7 @@ class _AvatarGroup extends StatelessWidget {
                         fit: BoxFit.cover,
                         memCacheWidth: 220,
                         fadeInDuration: const Duration(milliseconds: 200),
-                        errorWidget: (_, _, _) => const Icon(Icons.person_rounded, color: VyseColors.textFaint),
+                        errorWidget: (_, _, _) => Icon(Icons.person_rounded, color: VyseColors.textFaint),
                       ),
                     ),
                   ),

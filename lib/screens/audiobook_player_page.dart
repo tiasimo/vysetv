@@ -140,7 +140,7 @@ class _AudiobookPlayerPageState extends State<AudiobookPlayerPage> {
                       Row(children: [
                         GlassIconButton(icon: Icons.keyboard_arrow_down_rounded, label: 'Chiudi (Esc)', size: 40, onTap: _close),
                         const Spacer(),
-                        const Text('AUDIOBOOK',
+                        Text('AUDIOBOOK',
                             style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w800, letterSpacing: 1.2, color: VyseColors.textDim)),
                         const Spacer(),
                         const SizedBox(width: 40),
@@ -211,7 +211,7 @@ class _AudiobookPlayerPageState extends State<AudiobookPlayerPage> {
                 height: 66,
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white.withValues(alpha: .1)),
-                child: const CircularProgressIndicator(strokeWidth: 2.4, color: VyseColors.accent),
+                child: CircularProgressIndicator(strokeWidth: 2.4, color: VyseColors.accent),
               )
             : PlayBubble(onTap: _p.toggle, size: 66, playing: _p.playing),
         const SizedBox(width: 10),
@@ -229,7 +229,7 @@ class _AudiobookPlayerPageState extends State<AudiobookPlayerPage> {
   Widget _speedChip() => PopupMenuButton<double>(
         tooltip: 'Velocità di riproduzione',
         color: VyseColors.surfaceHi,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: const BorderSide(color: VyseColors.stroke)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: VyseColors.stroke)),
         onSelected: _p.setSpeed,
         itemBuilder: (_) => [
           for (final s in _speeds)
@@ -257,7 +257,7 @@ class _AudiobookPlayerPageState extends State<AudiobookPlayerPage> {
     return PopupMenuButton<int>(
       tooltip: 'Timer di spegnimento',
       color: VyseColors.surfaceHi,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: const BorderSide(color: VyseColors.stroke)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: VyseColors.stroke)),
       onSelected: (m) => switch (m) {
         0 => _p.setSleep(null),
         -1 => _p.setSleep(null, endOfChapter: true),
@@ -266,7 +266,7 @@ class _AudiobookPlayerPageState extends State<AudiobookPlayerPage> {
       itemBuilder: (_) => [
         for (final m in const [15, 30, 45, 60]) PopupMenuItem(value: m, height: 38, child: Text('$m minuti')),
         const PopupMenuItem(value: -1, height: 38, child: Text('Fine del capitolo')),
-        if (_p.sleeping) const PopupMenuItem(value: 0, height: 38, child: Text('Disattiva', style: TextStyle(color: VyseColors.accentHot))),
+        if (_p.sleeping) PopupMenuItem(value: 0, height: 38, child: Text('Disattiva', style: TextStyle(color: VyseColors.accentHot))),
       ],
       child: IgnorePointer(
         child: FilterChipPill(label: label(), icon: Icons.bedtime_outlined, selected: _p.sleeping, onTap: () {}),
@@ -318,7 +318,7 @@ class _ChaptersState extends State<_Chapters> {
                 width: 30,
                 child: current
                     ? Equalizer(active: p.playing)
-                    : Text('${i + 1}', style: const TextStyle(fontSize: 12, color: VyseColors.textFaint)),
+                    : Text('${i + 1}', style: TextStyle(fontSize: 12, color: VyseColors.textFaint)),
               ),
               Expanded(
                 child: Text(p.chapters[i].title,

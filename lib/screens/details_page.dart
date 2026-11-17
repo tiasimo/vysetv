@@ -227,7 +227,7 @@ class _DetailsPageState extends State<DetailsPage> {
       Padding(
         padding: EdgeInsets.fromLTRB(inset, 0, right, 0),
         child: Container(
-          decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.white.withValues(alpha: .08)))),
+          decoration: BoxDecoration(border: Border(bottom: BorderSide(color: VyseColors.ink.withValues(alpha: .08)))),
           child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(children: [
@@ -320,7 +320,7 @@ class _Backdrop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const bg = VyseColors.bg;
+    final bg = VyseColors.bg;
     final url = media.backdrop(Layout.isPhone(context) ? 'w780' : 'original');
     return Stack(
       fit: StackFit.expand,
@@ -438,7 +438,7 @@ class _Poster extends StatelessWidget {
       ),
       clipBehavior: Clip.antiAlias,
       child: media.poster('w500') == null
-          ? const Icon(Icons.movie_outlined, color: VyseColors.textFaint)
+          ? Icon(Icons.movie_outlined, color: VyseColors.textFaint)
           : CachedNetworkImage(
               imageUrl: media.poster('w500')!,
               fit: BoxFit.cover,
@@ -548,7 +548,7 @@ class _MetaLine extends StatelessWidget {
       runSpacing: 6,
       children: [
         for (var i = 0; i < parts.length; i++) ...[
-          if (i > 0) const Text('·', style: TextStyle(color: VyseColors.textFaint, fontSize: 13)),
+          if (i > 0) Text('·', style: TextStyle(color: VyseColors.textFaint, fontSize: 13)),
           parts[i],
         ],
         const SizedBox(width: 2),
@@ -563,7 +563,7 @@ class _MetaLine extends StatelessWidget {
             ),
             if (d != null && d.voteCount > 0) ...[
               const SizedBox(width: 4),
-              Text('(${fmtCompact(d.voteCount)})', style: const TextStyle(color: VyseColors.textFaint, fontSize: 12)),
+              Text('(${fmtCompact(d.voteCount)})', style: TextStyle(color: VyseColors.textFaint, fontSize: 12)),
             ],
           ],
         ),
@@ -572,7 +572,7 @@ class _MetaLine extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(4),
-              border: Border.all(color: Colors.white.withValues(alpha: .3)),
+              border: Border.all(color: VyseColors.ink.withValues(alpha: .3)),
             ),
             child: Text(
               d!.certification!,
@@ -608,7 +608,7 @@ class _GenreChip extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(6),
-        color: Colors.white.withValues(alpha: hovered ? .16 : .08),
+        color: VyseColors.ink.withValues(alpha: hovered ? .16 : .08),
       ),
       child: Text(
         label,
@@ -638,7 +638,7 @@ class _Body extends StatelessWidget {
             child: Text(
               '"$tagline"',
               textAlign: align,
-              style: const TextStyle(color: VyseColors.textDim, fontSize: 13.5, fontStyle: FontStyle.italic),
+              style: TextStyle(color: VyseColors.textDim, fontSize: 13.5, fontStyle: FontStyle.italic),
             ),
           ),
           const SizedBox(height: 10),
@@ -729,8 +729,8 @@ class _RoundAction extends StatelessWidget {
         height: 38,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: hovered ? Colors.white : Colors.white.withValues(alpha: .06),
-          border: Border.all(color: Colors.white.withValues(alpha: hovered ? 0 : .08)),
+          color: hovered ? Colors.white : VyseColors.ink.withValues(alpha: .06),
+          border: Border.all(color: VyseColors.ink.withValues(alpha: hovered ? 0 : .08)),
         ),
         child: Icon(icon, size: 17, color: hovered ? Colors.black : VyseColors.text),
       ),
@@ -759,8 +759,8 @@ class _Pill extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: primary ? 22 : 14),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            color: primary ? (hovered ? const Color(0xFFE6E7EE) : Colors.white) : Colors.white.withValues(alpha: hovered ? .14 : .06),
-            border: primary ? null : Border.all(color: Colors.white.withValues(alpha: hovered ? .22 : .08)),
+            color: primary ? (hovered ? const Color(0xFFE6E7EE) : Colors.white) : VyseColors.ink.withValues(alpha: hovered ? .14 : .06),
+            border: primary ? null : Border.all(color: VyseColors.ink.withValues(alpha: hovered ? .22 : .08)),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
@@ -800,8 +800,8 @@ class _SaveButton extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 14),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
-              color: on ? VyseColors.accent.withValues(alpha: hovered ? .26 : .18) : Colors.white.withValues(alpha: hovered ? .14 : .06),
-              border: Border.all(color: on ? VyseColors.accent.withValues(alpha: .5) : Colors.white.withValues(alpha: hovered ? .22 : .08)),
+              color: on ? VyseColors.accent.withValues(alpha: hovered ? .26 : .18) : VyseColors.ink.withValues(alpha: hovered ? .14 : .06),
+              border: Border.all(color: on ? VyseColors.accent.withValues(alpha: .5) : VyseColors.ink.withValues(alpha: hovered ? .22 : .08)),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -822,7 +822,7 @@ class _SaveButton extends StatelessWidget {
                 const SizedBox(width: 7),
                 Text(
                   on ? 'Salvato' : 'Salva',
-                  style: const TextStyle(color: VyseColors.text, fontWeight: FontWeight.w600, fontSize: 13),
+                  style: TextStyle(color: VyseColors.text, fontWeight: FontWeight.w600, fontSize: 13),
                 ),
               ],
             ),
@@ -846,7 +846,7 @@ class _BackButton extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(6, 6, 12, 6),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        color: hovered ? Colors.white.withValues(alpha: .1) : Colors.transparent,
+        color: hovered ? VyseColors.ink.withValues(alpha: .1) : Colors.transparent,
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -922,13 +922,13 @@ class _FactsPanel extends StatelessWidget {
           width: cellW,
           padding: const EdgeInsets.fromLTRB(0, 13, 18, 13),
           decoration: BoxDecoration(
-            border: Border(top: BorderSide(color: Colors.white.withValues(alpha: .08))),
+            border: Border(top: BorderSide(color: VyseColors.ink.withValues(alpha: .08))),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(label, style: const TextStyle(fontSize: 12, color: VyseColors.textFaint)),
+              Text(label, style: TextStyle(fontSize: 12, color: VyseColors.textFaint)),
               const SizedBox(height: 4),
               value,
             ],
@@ -1004,11 +1004,11 @@ class _CastTile extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(14),
               color: VyseColors.surfaceHi,
-              border: Border.all(color: Colors.white.withValues(alpha: hovered ? .4 : .06)),
+              border: Border.all(color: VyseColors.ink.withValues(alpha: hovered ? .4 : .06)),
             ),
             clipBehavior: Clip.antiAlias,
             child: member.photo == null
-                ? const Icon(Icons.person_rounded, color: VyseColors.textFaint, size: 32)
+                ? Icon(Icons.person_rounded, color: VyseColors.textFaint, size: 32)
                 : Hero(
                     tag: heroTag,
                     child: CachedNetworkImage(
@@ -1035,7 +1035,7 @@ class _CastTile extends StatelessWidget {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.left,
-          style: const TextStyle(fontSize: 10.5, color: VyseColors.textFaint),
+          style: TextStyle(fontSize: 10.5, color: VyseColors.textFaint),
         ),
       ],
     ),
@@ -1056,7 +1056,7 @@ class _VideoCard extends StatelessWidget {
         duration: const Duration(milliseconds: 180),
         foregroundDecoration: BoxDecoration(
           borderRadius: BorderRadius.circular(7),
-          border: Border.all(color: hovered ? Colors.white : Colors.white.withValues(alpha: .05), width: hovered ? 2 : 1),
+          border: Border.all(color: hovered ? Colors.white : VyseColors.ink.withValues(alpha: .05), width: hovered ? 2 : 1),
         ),
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(7), color: VyseColors.surface),
         clipBehavior: Clip.antiAlias,
@@ -1084,7 +1084,7 @@ class _VideoCard extends StatelessWidget {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: hovered ? Colors.white : Colors.black.withValues(alpha: .5),
-                    border: Border.all(color: Colors.white.withValues(alpha: .6)),
+                    border: Border.all(color: VyseColors.ink.withValues(alpha: .6)),
                   ),
                   child: Icon(Icons.play_arrow_rounded, color: hovered ? Colors.black : Colors.white, size: 26),
                 ),
@@ -1104,7 +1104,7 @@ class _VideoCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w700),
                   ),
-                  Text(video.type, style: const TextStyle(fontSize: 10.5, color: VyseColors.textDim)),
+                  Text(video.type, style: TextStyle(fontSize: 10.5, color: VyseColors.textDim)),
                 ],
               ),
             ),
@@ -1133,7 +1133,7 @@ class _CastSkeleton extends StatelessWidget {
                 Container(
                   width: 76,
                   height: 76,
-                  decoration: const BoxDecoration(shape: BoxShape.circle, color: VyseColors.surface),
+                  decoration: BoxDecoration(shape: BoxShape.circle, color: VyseColors.surface),
                 ),
                 const SizedBox(width: 24),
               ],
@@ -1154,9 +1154,9 @@ class _LoadError extends StatelessWidget {
     padding: EdgeInsets.only(left: Layout.inset(context)),
     child: Row(
       children: [
-        const Icon(Icons.wifi_off_rounded, size: 18, color: VyseColors.textFaint),
+        Icon(Icons.wifi_off_rounded, size: 18, color: VyseColors.textFaint),
         const SizedBox(width: 10),
-        const Text("Impossibile caricare tutti i dettagli.", style: TextStyle(color: VyseColors.textDim, fontSize: 13)),
+        Text("Impossibile caricare tutti i dettagli.", style: TextStyle(color: VyseColors.textDim, fontSize: 13)),
         const SizedBox(width: 8),
         TextButton(onPressed: onRetry, child: const Text('Riprova')),
       ],

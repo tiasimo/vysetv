@@ -111,14 +111,14 @@ class _MemberMenuState extends State<_MemberMenu> {
                   children: [
                     Text(m.name, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 16.5, fontWeight: FontWeight.w800)),
                     const SizedBox(height: 2),
-                    Text(status, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12.5, color: VyseColors.textDim)),
+                    Text(status, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12.5, color: VyseColors.textDim)),
                   ],
                 ),
               ),
               IconButton(
                 tooltip: 'Profile',
                 onPressed: () => _then(() => showPartyProfile(context, m.id)),
-                icon: const Icon(Icons.person_outline_rounded, size: 21, color: VyseColors.textDim),
+                icon: Icon(Icons.person_outline_rounded, size: 21, color: VyseColors.textDim),
               ),
             ],
           ),
@@ -188,7 +188,7 @@ class _MemberMenuState extends State<_MemberMenu> {
                 ? _Action(icon: Icons.smart_display_outlined, label: 'Take back play/pause', onTap: () => _then(() => widget.onControl(false)))
                 : _Action(icon: Icons.smart_display_rounded, label: 'Let them play/pause', onTap: () => _then(() => widget.onControl(true))),
             _Action(icon: Icons.workspace_premium_rounded, label: 'Make owner', onTap: () => _then(widget.onOwner)),
-            const Padding(padding: EdgeInsets.symmetric(vertical: 6), child: Divider(height: 1, color: VyseColors.stroke)),
+            Padding(padding: EdgeInsets.symmetric(vertical: 6), child: Divider(height: 1, color: VyseColors.stroke)),
             _Action(icon: Icons.person_remove_rounded, label: 'Remove from room', danger: true, onTap: () => _then(widget.onKick)),
           ],
           _Action(
