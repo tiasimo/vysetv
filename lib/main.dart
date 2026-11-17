@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'core/accent.dart';
+import 'data/list_status.dart';
 import 'data/account.dart';
 import 'data/account_sync.dart';
 import 'data/addons.dart' show Addons;
@@ -56,6 +57,7 @@ Future<void> main() async {
   await WatchProgress.initialize();
   await MyList.initialize();
   await MusicLibrary.initialize();
+  ListStatusSync.start(); // Lorewatch: My List's lists follow what you watch
   await Debrid.initialize();
   await Account.initialize();
   // Lorewatch: the Party (friends, rooms, voice, watch together) is switched off.

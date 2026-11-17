@@ -73,6 +73,14 @@ class AniListTracker {
     }
   }
 
+  /// Lorewatch: puts AniList anime [mediaId] on list [status] (PLANNING, CURRENT, COMPLETED,
+  /// DROPPED), as chosen in My List.
+  static Future<void> setListStatus(TrackerToken t, int mediaId, String status) => _gql(
+        t.access,
+        r'mutation ($mediaId: Int, $status: MediaListStatus) { SaveMediaListEntry(mediaId: $mediaId, status: $status) { id status } }',
+        {'mediaId': mediaId, 'status': status},
+      );
+
   static Future<Map<String, dynamic>> _gql(String token, String query, [Map<String, dynamic> variables = const {}]) =>
       aniListGate.run(() async {
         final r = await netClient
@@ -146,6 +154,7 @@ class AniListTracker {
             season: film ? null : 0,
             episode: film ? null : progress,
             episodes: film ? const {} : animeEpisodes(progress),
+            listStatus: e['status'] as String?,
           );
           listed.add(entry);
           if (e['status'] == 'PLANNING') {

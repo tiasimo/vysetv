@@ -39,7 +39,7 @@ const _card = Color(0xFF0D0F18);
 const _danger = Color(0xFFF26B6B);
 
 enum _Tab {
-  account('Account', 'Il tuo profilo, l\'accesso e la sincronizzazione.', Icons.person_outline_rounded),
+  account('Profilo', 'Il tuo nome, l\'avatar e AniList.', Icons.person_outline_rounded),
   party('Profilo Party', 'Come ti vedono tutti nel Party.', Icons.public_rounded),
   appearance('Aspetto', 'La luce d\'ambiente dietro ogni pagina, e cosa mostra la barra di navigazione.', Icons.palette_outlined),
   addons('Addon', 'Addon Stremio per sorgenti e sottotitoli. Sincronizzati con il tuo account.', Icons.extension_outlined),
@@ -249,9 +249,9 @@ class _Header extends StatelessWidget {
               style: TextStyle(fontSize: phone ? 28 : 40, fontWeight: FontWeight.w800, letterSpacing: -1.2, height: 1.05),
             ),
             const SizedBox(height: 8),
-            Text(u == null ? 'Profilo locale  ·  accesso non eseguito' : '@${u.username}', style: const TextStyle(fontSize: 14, color: VyseColors.textDim)),
+            const Text('Profilo locale', style: TextStyle(fontSize: 14, color: VyseColors.textDim)),
             const SizedBox(height: 3),
-            Text(u == null ? 'Accedi per usare il tuo profilo su ogni dispositivo' : u.email, style: const TextStyle(fontSize: 12.5, color: VyseColors.textFaint)),
+            const Text('Nome, avatar e liste restano su questo dispositivo', style: TextStyle(fontSize: 12.5, color: VyseColors.textFaint)),
           ],
         );
       },
@@ -263,11 +263,8 @@ class _Header extends StatelessWidget {
         spacing: 8,
         runSpacing: 8,
         children: [
-          if (u == null) ...[
-            _SmallButton(label: 'Crea account', onTap: () => showAccountSheet(context, register: true)),
-            _SmallButton(label: 'Accedi', onTap: () => showAccountSheet(context), primary: true),
-          ] else
-            _SmallButton(label: 'Esci', icon: Icons.logout_rounded, onTap: Account.signOut),
+          _SmallButton(label: 'Cambia avatar', onTap: () => showAvatarPicker(context)),
+          _SmallButton(label: 'Rinomina', primary: true, onTap: () => _AccountTab._rename(context)),
         ],
       ),
     );
@@ -623,7 +620,7 @@ class _Choice<T> extends StatelessWidget {
 class _AccountTab extends StatelessWidget {
   const _AccountTab();
 
-  Future<void> _rename(BuildContext context) async {
+  static Future<void> _rename(BuildContext context) async {
     final c = TextEditingController(text: AppSettings.displayName.value);
     final name = await showDialog<String>(
       context: context,
@@ -682,56 +679,7 @@ class _AccountTab extends StatelessWidget {
           ),
         ],
       ),
-      ValueListenableBuilder<AccountUser?>(
-        valueListenable: Account.user,
-        builder: (context, u, _) => _Section(
-          title: 'Account',
-          subtitle: u == null
-              ? 'Accedi per avere La mia lista, la cronologia e i progressi di lettura su tutti i tuoi dispositivi.'
-              : 'Il tuo profilo segue questo account su ogni dispositivo.',
-          children: [
-            if (u == null)
-              _Row(
-                title: 'Accesso non eseguito',
-                subtitle: 'Per ora tutto è salvato su questo dispositivo.',
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    _SmallButton(label: 'Crea account', onTap: () => showAccountSheet(context, register: true)),
-                    const SizedBox(width: 8),
-                    _SmallButton(label: 'Accedi', primary: true, onTap: () => showAccountSheet(context)),
-                  ],
-                ),
-              )
-            else
-              _Row(
-                title: '@${u.username}',
-                subtitleWidget: ValueListenableBuilder<String>(
-                  valueListenable: AccountSync.status,
-                  builder: (context, s, _) =>
-                      Text(s.isEmpty ? u.email : '${u.email}  ·  $s', style: const TextStyle(fontSize: 12.5, color: VyseColors.textDim)),
-                ),
-                subtitle: u.email,
-                trailing: _SmallButton(label: 'Esci', icon: Icons.logout_rounded, onTap: Account.signOut),
-              ),
-          ],
-        ),
-      ),
-      ValueListenableBuilder<AccountUser?>(
-        valueListenable: Account.user,
-        builder: (context, u, _) => _Section(
-          title: 'Password',
-          children: [
-            _Row(
-              title: 'Cambia password',
-              subtitle: u == null ? 'Accedi per cambiare la password.' : 'Gli altri tuoi dispositivi verranno disconnessi quando la cambi.',
-              trailing: u == null
-                  ? _SmallButton(label: 'Accedi', onTap: () => showAccountSheet(context))
-                  : _SmallButton(label: 'Cambia', onTap: () => showAccountSheet(context, changePassword: true)),
-            ),
-          ],
-        ),
-      ),
+      // Lorewatch: no accounts (there's no server for them): name and avatar stay on this device.
       const _ConnectedServices(),
     ],
   );
@@ -753,7 +701,7 @@ class _ConnectedServices extends StatelessWidget {
   static String _status(TrackerState s) {
     if (!s.configured) return 'Non ancora configurato';
     if (!s.connected) return 'Non collegato';
-    if (s.reconnect) return 'Sign in again to keep it updated${s.pending > 0 ? ' · ${s.pending} waiting' : ''}';
+    if (s.reconnect) return 'Accedi di nuovo per tenerlo aggiornato${s.pending > 0 ? ' · ${s.pending} in attesa' : ''}';
     return [
       s.userName.isEmpty ? 'Collegato' : 'Collegato come ${s.userName}',
       if (s.expiresSoon) 'l\'accesso scade presto',

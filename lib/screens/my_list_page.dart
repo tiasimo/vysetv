@@ -9,6 +9,7 @@ import '../core/layout.dart';
 import '../core/nav.dart';
 import '../core/theme.dart';
 import '../data/app_settings.dart';
+import '../data/list_status.dart';
 import '../data/tmdb.dart';
 import '../data/watch_progress.dart';
 import '../widgets/common.dart';
@@ -20,9 +21,7 @@ enum _Filter {
   all('Tutti'),
   films('Film'),
   series('Serie'),
-  anime('Anime'),
-  watching('In corso'),
-  fresh('Non iniziati');
+  anime('Anime');
 
   const _Filter(this.label);
   final String label;
@@ -78,6 +77,7 @@ class _MyListPageState extends State<MyListPage> {
   final _scroll = ScrollController();
   final _search = TextEditingController();
   _Filter _filter = _Filter.all;
+  WatchStatus? _status; // Lorewatch: one of the lists, or null for every list
   bool _selecting = false;
   final _selected = <String>{};
 
@@ -107,9 +107,7 @@ class _MyListPageState extends State<MyListPage> {
         _Filter.films => !m.isTv && !m.anime,
         _Filter.series => m.isTv && !m.anime,
         _Filter.anime => m.anime,
-        _Filter.watching => progress.containsKey(m.key),
-        _Filter.fresh => !progress.containsKey(m.key),
-      };
+      } && (_status == null || s.status == _status);
     }).toList();
     switch (_sort) {
       case _Sort.added:
@@ -194,6 +192,15 @@ class _MyListPageState extends State<MyListPage> {
                                     _endSelect();
                                   },
                             onCancel: _endSelect,
+                            onStatus: _selected.isEmpty
+                                ? null
+                                : (anchor) async {
+                                    final picked = [for (final s in all) if (_selected.contains(s.media.key)) s.media];
+                                    final st = await pickWatchStatus(context, anchor, null);
+                                    if (st == null) return;
+                                    await ListStatusSync.set(picked, st);
+                                    _endSelect();
+                                  },
                           )
                         : _Toolbar(
                             key: const ValueKey('tools'),
@@ -209,10 +216,11 @@ class _MyListPageState extends State<MyListPage> {
                                   _Filter.films => all.where((s) => !s.media.isTv && !s.media.anime).length,
                                   _Filter.series => all.where((s) => s.media.isTv && !s.media.anime).length,
                                   _Filter.anime => all.where((s) => s.media.anime).length,
-                                  _Filter.watching => all.where((s) => progress.containsKey(s.media.key)).length,
-                                  _Filter.fresh => all.where((s) => !progress.containsKey(s.media.key)).length,
                                 },
                             },
+                            status: _status,
+                            statusCounts: {for (final st in WatchStatus.values) st: all.where((s) => s.status == st).length},
+                            onStatus: (st) => setState(() => _status = st),
                             onFilter: (f) => setState(() => _filter = f),
                             onSort: (s) => AppSettings.myListSort.set(s.index),
                             onGrid: (g) => AppSettings.myListGrid.set(g),
@@ -455,7 +463,13 @@ class _Toolbar extends StatelessWidget {
     required this.onSort,
     required this.onGrid,
     required this.onSelect,
+    required this.status,
+    required this.statusCounts,
+    required this.onStatus,
   });
+  final WatchStatus? status;
+  final Map<WatchStatus, int> statusCounts;
+  final ValueChanged<WatchStatus?> onStatus;
   final TextEditingController search;
   final _Filter filter;
   final _Sort sort;
@@ -511,19 +525,40 @@ class _Toolbar extends StatelessWidget {
             ),
       ]),
     );
+    // Lorewatch: the lists, like AniList's
+    final lists = SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(children: [
+        Padding(
+          padding: const EdgeInsets.only(right: 8),
+          child: _Chip(label: 'Tutti gli stati', count: statusCounts.values.fold(0, (a, b) => a + b), selected: status == null, onTap: () => onStatus(null)),
+        ),
+        for (final st in WatchStatus.values)
+          Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: _Chip(label: st.label, count: statusCounts[st] ?? 0, selected: st == status, onTap: () => onStatus(st)),
+          ),
+      ]),
+    );
     if (phone) {
       return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         Row(children: [Expanded(child: searchBox), const SizedBox(width: 8), tools]),
         const SizedBox(height: 10),
+        lists,
+        const SizedBox(height: 8),
         chips,
       ]);
     }
-    return Row(children: [
-      SizedBox(width: 260, child: searchBox),
-      const SizedBox(width: 14),
-      Expanded(child: chips),
-      const SizedBox(width: 10),
-      tools,
+    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+      Row(children: [
+        SizedBox(width: 260, child: searchBox),
+        const SizedBox(width: 14),
+        Expanded(child: chips),
+        const SizedBox(width: 10),
+        tools,
+      ]),
+      const SizedBox(height: 10),
+      lists,
     ]);
   }
 }
@@ -658,7 +693,8 @@ class _SortMenu extends StatelessWidget {
 }
 
 class _SelectBar extends StatelessWidget {
-  const _SelectBar({super.key, required this.count, required this.total, required this.onAll, required this.onRemove, required this.onCancel});
+  const _SelectBar({super.key, required this.count, required this.total, required this.onAll, required this.onRemove, required this.onCancel, this.onStatus});
+  final void Function(Offset anchor)? onStatus;
   final int count;
   final int total;
   final VoidCallback onAll;
@@ -690,6 +726,14 @@ class _SelectBar extends StatelessWidget {
           child: const Text('Seleziona tutto', style: TextStyle(color: VyseColors.text, fontWeight: FontWeight.w700)),
         ),
       const SizedBox(width: 4),
+      Builder(
+        builder: (context) => _RoundTool(
+          icon: Icons.playlist_add_check_rounded,
+          tooltip: 'Sposta in un altro stato',
+          onTap: onStatus == null ? () {} : () => onStatus!(_anchorOf(context)),
+        ),
+      ),
+      const SizedBox(width: 6),
       Pressable(
         onTap: onRemove,
         builder: (context, hovered, _) => AnimatedOpacity(
@@ -827,6 +871,8 @@ class _PosterTile extends StatelessWidget {
                       child: Row(children: [
                         _TileAction(icon: Icons.play_arrow_rounded, tooltip: p == null ? 'Riproduci' : 'Riprendi', primary: true, onTap: () => _play(context, m, p)),
                         const Spacer(),
+                        _StatusAction(item: item),
+                        const SizedBox(width: 6),
                         _TileAction(icon: Icons.bookmark_remove_outlined, tooltip: 'Rimuovi da La mia lista', onTap: () => TrackerHub.myListRemove({m.key})),
                       ]),
                     ),
@@ -966,6 +1012,8 @@ class _RowTile extends StatelessWidget {
                 const SizedBox(width: 10),
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
                   _TileAction(icon: Icons.play_arrow_rounded, tooltip: p == null ? 'Riproduci' : 'Riprendi', primary: true, onTap: () => _play(context, m, p)),
+                  const SizedBox(height: 8),
+                  _StatusAction(item: item),
                   if (!phone) ...[
                     const SizedBox(height: 8),
                     _TileAction(icon: Icons.bookmark_remove_outlined, tooltip: 'Rimuovi da La mia lista', onTap: () => TrackerHub.myListRemove({m.key})),
@@ -1221,6 +1269,58 @@ class _DialogButton extends StatelessWidget {
           Text(label, style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.w800, color: primary ? Colors.black : Colors.white)),
         ]),
       ),
+    ),
+  );
+}
+
+
+// ───────────────────────── Lists (Lorewatch) ─────────────────────────
+
+Offset _anchorOf(BuildContext context) {
+  final box = context.findRenderObject() as RenderBox?;
+  return box == null ? Offset.zero : box.localToGlobal(box.size.bottomLeft(Offset.zero));
+}
+
+IconData statusIcon(WatchStatus s) => switch (s) {
+  WatchStatus.planning => Icons.bookmark_outline_rounded,
+  WatchStatus.watching => Icons.play_circle_outline_rounded,
+  WatchStatus.completed => Icons.check_circle_outline_rounded,
+  WatchStatus.dropped => Icons.cancel_outlined,
+};
+
+/// A menu of the lists at [at]; the one a title is on now ([current]) is ticked.
+Future<WatchStatus?> pickWatchStatus(BuildContext context, Offset at, WatchStatus? current) => showMenu<WatchStatus>(
+  context: context,
+  color: VyseColors.surfaceHi,
+  position: RelativeRect.fromLTRB(at.dx, at.dy, at.dx + 1, at.dy + 1),
+  items: [
+    for (final st in WatchStatus.values)
+      PopupMenuItem(
+        value: st,
+        height: 40,
+        child: Row(children: [
+          Icon(statusIcon(st), size: 18, color: st == current ? VyseColors.accent : VyseColors.textDim),
+          const SizedBox(width: 10),
+          Text(st.label, style: TextStyle(fontWeight: st == current ? FontWeight.w800 : FontWeight.w500)),
+        ]),
+      ),
+  ],
+);
+
+/// The list a title is on, as a button that moves it to another.
+class _StatusAction extends StatelessWidget {
+  const _StatusAction({required this.item});
+  final SavedTitle item;
+
+  @override
+  Widget build(BuildContext context) => Builder(
+    builder: (context) => _TileAction(
+      icon: statusIcon(item.status),
+      tooltip: 'Stato: ${item.status.label}',
+      onTap: () async {
+        final st = await pickWatchStatus(context, _anchorOf(context), item.status);
+        if (st != null && st != item.status) await ListStatusSync.set([item.media], st);
+      },
     ),
   );
 }

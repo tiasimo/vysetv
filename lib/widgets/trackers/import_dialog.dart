@@ -19,7 +19,7 @@ Future<void> importFromTracker(BuildContext context, TrackerId id) async {
 String _watchlist(TrackerId id) => switch (id) {
   TrackerId.trakt => 'watchlist',
   TrackerId.simkl => 'plan to watch',
-  TrackerId.anilist => 'Lista Planning',
+  TrackerId.anilist => 'lista AniList, ognuno nel suo stato (Da vedere, In corso, Completati, Abbandonati)',
 };
 
 class _ImportDialog extends StatefulWidget {
@@ -105,7 +105,7 @@ class _ImportDialogState extends State<_ImportDialog> {
             ] else if (nothing)
               Text('Tutto quello che c\'è su $label è già in Lorewatch.', style: dim)
             else if (p != null) ...[
-              Text('Trovati ${p.found} titoli su $label. Non cambia niente.', style: dim),
+              Text('Trovati ${p.found} titoli su $label. Su $label non cambia niente.', style: dim),
               const SizedBox(height: 8),
               if (p.list.isNotEmpty)
                 _choice(
@@ -118,7 +118,7 @@ class _ImportDialogState extends State<_ImportDialog> {
                 _choice(
                   'Cronologia e Continua a guardare',
                   [
-                    if (p.history.isNotEmpty) '${p.history.length} watched${p.history.length == LibraryImport.historyCap ? ' (the newest)' : ''}',
+                    if (p.history.isNotEmpty) '${p.history.length} visti${p.history.length == LibraryImport.historyCap ? ' (i più recenti)' : ''}',
                     if (p.resume.isNotEmpty) '${p.resume.length} da riprendere da dove eri rimasto',
                   ].join(', '),
                   _watched,

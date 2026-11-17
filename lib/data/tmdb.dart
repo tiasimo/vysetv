@@ -529,10 +529,38 @@ class MediaDetails {
   }
 }
 
+/// Lorewatch: where a title in My List stands, like AniList's lists. Films and series have one
+/// too, not just anime.
+enum WatchStatus {
+  planning('Da vedere', 'PLANNING'),
+  watching('In corso', 'CURRENT'),
+  completed('Completati', 'COMPLETED'),
+  dropped('Abbandonati', 'DROPPED');
+
+  const WatchStatus(this.label, this.anilist);
+  final String label;
+
+  /// AniList's name for the list.
+  final String anilist;
+
+  /// AniList's list names as Lorewatch's (Paused and Rewatching count as watching).
+  static WatchStatus fromAniList(String? s) => switch (s) {
+    'PLANNING' => planning,
+    'COMPLETED' => completed,
+    'DROPPED' => dropped,
+    _ => watching,
+  };
+
+  static WatchStatus byName(String? s) => values.firstWhere((v) => v.name == s, orElse: () => planning);
+}
+
 class SavedTitle {
-  const SavedTitle(this.media, this.added);
+  const SavedTitle(this.media, this.added, [this.status = WatchStatus.planning]);
   final Media media;
   final DateTime added;
+  final WatchStatus status;
+
+  SavedTitle withStatus(WatchStatus s) => SavedTitle(media, added, s);
 }
 
 /// "My List", kept on this device. [saved] holds the keys for the + / Save buttons; [items] the
@@ -568,6 +596,7 @@ class MyList {
       if (s.media.anime) 'anime': true,
     },
     'a': s.added.millisecondsSinceEpoch,
+    if (s.status != WatchStatus.planning) 's': s.status.name,
   };
 
   static SavedTitle? _fromJson(Map<String, dynamic> j) {
@@ -578,6 +607,7 @@ class MyList {
       return SavedTitle(
         Media.fromJson({...m, tv ? 'first_air_date' : 'release_date': date}, tv: tv),
         DateTime.fromMillisecondsSinceEpoch((j['a'] as num).toInt()),
+        WatchStatus.byName(j['s'] as String?),
       );
     } catch (_) {
       return null;
@@ -600,6 +630,40 @@ class MyList {
 
   static bool has(Media m) => saved.value.contains(m.key);
 
+  /// The list [m] is on, or null when it isn't in My List.
+  static WatchStatus? statusOf(Media m) {
+    for (final s in items.value) {
+      if (s.media.key == m.key) return s.status;
+    }
+    return null;
+  }
+
+  /// Puts [m] on list [status], adding it to My List when it isn't there yet.
+  static void setStatus(Media m, WatchStatus status) => setStatuses({m.key: status}, add: [m]);
+
+  /// Moves the titles in [byKey] to their lists. Titles in [add] that aren't saved yet come in.
+  static void setStatuses(Map<String, WatchStatus> byKey, {Iterable<Media> add = const []}) {
+    var changed = false;
+    final list = <SavedTitle>[];
+    for (final s in items.value) {
+      final st = byKey[s.media.key];
+      if (st != null && st != s.status) {
+        changed = true;
+        list.add(s.withStatus(st));
+      } else {
+        list.add(s);
+      }
+    }
+    final have = {for (final s in list) s.media.key};
+    for (final m in add) {
+      final st = byKey[m.key];
+      if (st == null || !have.add(m.key)) continue;
+      list.insert(0, SavedTitle(m, DateTime.now(), st));
+      changed = true;
+    }
+    if (changed) _set(list);
+  }
+
   static void toggle(Media m) {
     if (has(m)) {
       removeAll({m.key});
@@ -612,7 +676,8 @@ class MyList {
 
   /// Titles brought in from another service, each dated when it was listed there. Ones already
   /// saved stay as they are.
-  static void addAll(Iterable<SavedTitle> titles) {
+  static void addAll(Iterable<SavedTitle> titles, {bool updateStatus = false}) {
+    if (updateStatus) setStatuses({for (final s in titles) if (saved.value.contains(s.media.key)) s.media.key: s.status});
     final keys = {...saved.value};
     final add = [for (final s in titles) if (keys.add(s.media.key)) s];
     if (add.isEmpty) return;

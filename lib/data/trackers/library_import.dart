@@ -17,7 +17,10 @@ import 'trakt_tracker.dart';
 
 /// What an import would bring in, worked out before anything changes.
 class ImportPlan {
-  ImportPlan(this.id, {required this.list, required this.history, required this.resume, required this.baseline, required this.found, this.cursor});
+  ImportPlan(this.id, {required this.list, required this.history, required this.resume, required this.baseline, required this.found, this.cursor, this.statuses = const {}});
+
+  /// Lorewatch: AniList's list for every title found there, to put My List's on the same one.
+  final Map<String, WatchStatus> statuses;
 
   final TrackerId id;
 
@@ -65,8 +68,11 @@ class LibraryImport {
     final everything = [...lib.watchlist, ...lib.history, ...lib.resume, ...lib.listed];
     await _resolveIds(everything);
     final saved = MyList.saved.value, seen = <String>{};
+    // Lorewatch: from AniList every anime on a list comes in, on the same list (Da vedere,
+    // In corso, Completati, Abbandonati), not just Planning
+    final anilist = id == TrackerId.anilist;
     final list = [
-      for (final t in lib.watchlist)
+      for (final t in anilist ? lib.listed : lib.watchlist)
         if (t.key case final k? when !saved.contains(k) && seen.add(k)) t,
     ]..sort((a, b) => b.at.compareTo(a.at));
 
@@ -89,6 +95,7 @@ class LibraryImport {
       baseline: {for (final t in lib.watchlist) ?t.key},
       found: {for (final t in everything) ?t.key}.length,
       cursor: lib.cursor,
+      statuses: anilist ? {for (final t in lib.listed) if (t.key != null) t.key!: WatchStatus.fromAniList(t.listStatus)} : const {},
     );
   }
 
@@ -98,9 +105,10 @@ class LibraryImport {
     final media = await _media([if (list) ...p.list, if (watched) ...p.history, if (watched) ...p.resume]);
     var n = 0;
     if (list) {
+      MyList.setStatuses(p.statuses);
       final add = [
         for (final t in p.list)
-          if (media[t.key] case final m?) SavedTitle(m.media, t.at),
+          if (media[t.key] case final m?) SavedTitle(m.media, t.at, p.statuses[t.key] ?? WatchStatus.planning),
       ];
       MyList.addAll(add);
       n += add.length;
@@ -204,11 +212,14 @@ class LibraryImport {
     } else {
       final lib = await _pull(id, watchlistOnly: true);
       final complete = await _resolveIds([...lib.watchlist, ...lib.listed]);
-      after = {for (final t in lib.watchlist) ?t.key};
+      final anilist = id == TrackerId.anilist;
+      after = {for (final t in anilist ? lib.listed : lib.watchlist) ?t.key};
       added = [
-        for (final t in lib.watchlist)
+        for (final t in anilist ? lib.listed : lib.watchlist)
           if (t.key case final k? when !before.contains(k)) t,
       ];
+      // Lorewatch: titles moved to another list on AniList move here too
+      if (anilist) MyList.setStatuses({for (final t in lib.listed) if (t.key != null) t.key!: WatchStatus.fromAniList(t.listStatus)});
       // on AniList only a title off the list altogether was removed; one that
       // moved on to Watching stays
       final onList = id == TrackerId.trakt ? after : {for (final t in lib.listed) ?t.key};
@@ -218,7 +229,7 @@ class LibraryImport {
       final media = await _media(added);
       MyList.addAll([
         for (final t in added)
-          if (media[t.key] case final m?) SavedTitle(m.media, t.at),
+          if (media[t.key] case final m?) SavedTitle(m.media, t.at, t.listStatus == null ? WatchStatus.planning : WatchStatus.fromAniList(t.listStatus)),
       ]);
     }
     // a title started here stays (Trakt drops watched ones from the watchlist by itself), and a

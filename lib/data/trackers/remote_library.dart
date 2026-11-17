@@ -17,6 +17,7 @@ class RemoteTitle {
     this.progress,
     this.runtime,
     this.episodes = const {},
+    this.listStatus,
   });
 
   final MediaKind kind;
@@ -43,6 +44,9 @@ class RemoteTitle {
 
   /// Episodes watched, keyed the way History keeps them ("S1E2").
   final Set<String> episodes;
+
+  /// Lorewatch: AniList's list for it (PLANNING, CURRENT, COMPLETED, DROPPED, PAUSED, REPEATING).
+  final String? listStatus;
 
   /// Lorewatch's key for it (`movie/1`, `tv/2`, `anime/3`), once its id is known.
   String? get key => switch (kind) {
