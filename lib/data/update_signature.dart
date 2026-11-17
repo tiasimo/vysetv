@@ -15,7 +15,7 @@ import 'package:pointycastle/export.dart' as pc;
 
 /// The public half of the release key: an uncompressed P-256 point, in hex.
 const updatePublicKey =
-    '040e137dd4731029da56b8963caab9dcf29ff2f40b4a96702f20c1c8fa4656515359f133bca28dcc3887df9f8258240857dd543499f999c5548ad4653bd12cfd88';
+    '04ea66a2cf0a7582b663070e0c50d591d104e0f2272253b21bd9abc45c6ad7e19ed36d4afe5a01a923e54b7b3462e06bd362c13374214895dd483e2472f379a01d'; // Lorewatch's own release key (.github/release-keys)
 
 Uint8List _hex(String s) => Uint8List.fromList([for (var i = 0; i + 1 < s.length; i += 2) int.parse(s.substring(i, i + 2), radix: 16)]);
 

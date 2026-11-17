@@ -265,13 +265,13 @@ class Updater extends ChangeNotifier {
       stage = newer != null ? UpdateStage.available : UpdateStage.upToDate;
     } on _Untrusted {
       stage = UpdateStage.failed;
-      error = "The update information couldn't be verified, so it was ignored.";
+      error = "Non è stato possibile verificare le informazioni sull'aggiornamento, quindi sono state ignorate.";
     } on FormatException {
       stage = UpdateStage.failed;
-      error = "The update information couldn't be read.";
+      error = "Impossibile leggere le informazioni sull'aggiornamento.";
     } catch (_) {
       stage = UpdateStage.failed;
-      error = "Couldn't check for updates. Check your connection and try again.";
+      error = "Impossibile controllare gli aggiornamenti. Controlla la connessione e riprova.";
     }
     notifyListeners();
     return newer;
@@ -330,7 +330,7 @@ class Updater extends ChangeNotifier {
       notifyListeners();
     } catch (_) {
       stage = UpdateStage.failed;
-      error = "The update couldn't be installed. Try again.";
+      error = "Impossibile installare l'aggiornamento. Riprova.";
       notifyListeners();
     }
   }

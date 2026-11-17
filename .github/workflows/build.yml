@@ -336,6 +336,8 @@ jobs:
   android:
     name: Android
     needs: plan
+    permissions:
+      contents: write # the release with the update
     if: ${{ needs.plan.outputs.android == 'true' }}
     runs-on: ubuntu-24.04
     steps:
@@ -359,17 +361,51 @@ jobs:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: stable
           cache: true
-      # The real server addresses are not in the repository. A build made here gets the
-      # example file: no account server, no update check.
-      - name: Use the example server settings
-        run: cp lib/data/server_config.example.dart lib/data/server_config.dart
+      # Lorewatch: no account server; updates come from this repository's GitHub releases.
+      - name: Server settings (updates from GitHub releases)
+        run: |
+          cat > lib/data/server_config.dart <<'DART'
+          const accountServer = '';
+          const updateListAddresses = <String>['https://github.com/${{ github.repository }}/releases/latest/download/latest.json'];
+          DART
       - run: flutter pub get
-      - run: flutter build apk --release --split-per-abi
+      # every build gets the next version (1.0.<run>), so the app can tell a newer one apart
+      - run: flutter build apk --release --split-per-abi --build-name=1.0.${{ github.run_number }} --build-number=${{ github.run_number }}
       - uses: actions/upload-artifact@v4
         with:
           name: lorewatch-android
           path: build/app/outputs/flutter-apk/*.apk
           retention-days: 2 # a private repository has 500 MB for these
+      # Lorewatch: a GitHub release with the APKs and the signed latest.json the in-app updater
+      # reads (Impostazioni > Informazioni > Aggiornamenti). Needs the repository to be public.
+      - name: Publish the update
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN: ${{ github.run_number }}
+          REPO: ${{ github.repository }}
+          MSG: ${{ github.event.head_commit.message }}
+        run: |
+          set -e
+          cd build/app/outputs/flutter-apk
+          for abi in arm64-v8a armeabi-v7a x86_64; do cp "app-$abi-release.apk" "Lorewatch-$abi.apk"; done
+          python3 - <<'PY'
+          import hashlib, json, os, datetime
+          run = os.environ['RUN']; repo = os.environ['REPO']
+          base = f'https://github.com/{repo}/releases/download/build-{run}'
+          files = {}
+          for abi in ['arm64-v8a', 'armeabi-v7a', 'x86_64']:
+              name = f'Lorewatch-{abi}.apk'
+              data = open(name, 'rb').read()
+              files[f'android-{abi}'] = {'urls': [f'{base}/{name}'], 'sha256': hashlib.sha256(data).hexdigest(), 'size': len(data)}
+          notes = (os.environ.get('MSG') or '').split('\n')[0].replace('[android]', '').strip()
+          manifest = {'version': f'1.0.{run}', 'date': datetime.date.today().isoformat(), 'notes': notes, 'files': files,
+                      'page': f'https://github.com/{repo}/releases/tag/build-{run}'}
+          open('latest.json', 'wb').write((json.dumps(manifest, indent=2, ensure_ascii=False) + '\n').encode())
+          PY
+          openssl dgst -sha256 -sign "$GITHUB_WORKSPACE/.github/release-keys/update-signing-key.pem" -out latest.sig.bin latest.json
+          base64 -w0 latest.sig.bin > latest.json.sig
+          gh release create "build-$RUN" -R "$REPO" --latest --title "Lorewatch 1.0.$RUN" --notes "$MSG" \
+            Lorewatch-arm64-v8a.apk Lorewatch-armeabi-v7a.apk Lorewatch-x86_64.apk latest.json latest.json.sig
 
   windows:
     name: Windows (x64)

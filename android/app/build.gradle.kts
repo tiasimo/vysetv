@@ -349,11 +349,20 @@ android {
         }
     }
 
+    // Lorewatch: one fixed key, so every build installs over the one before (and the in-app
+    // updater can replace it). The debug key would be a new one on every CI run.
+    signingConfigs {
+        create("lorewatch") {
+            storeFile = file("lorewatch-release.jks")
+            storePassword = "lorewatch"
+            keyAlias = "lorewatch"
+            keyPassword = "lorewatch"
+        }
+    }
+
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName("lorewatch")
         }
     }
 }

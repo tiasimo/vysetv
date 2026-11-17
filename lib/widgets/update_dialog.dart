@@ -49,7 +49,7 @@ class _UpdateDialog extends StatelessWidget {
         final List<Widget> actions;
         switch (stage) {
           case UpdateStage.downloading || UpdateStage.verifying:
-            title = stage == UpdateStage.verifying ? 'Controllo il download' : 'Downloading Lorewatch ${u?.version ?? ''}';
+            title = stage == UpdateStage.verifying ? 'Controllo il download' : 'Scarico Lorewatch ${u?.version ?? ''}';
             final total = up.file?.size ?? 0;
             body = [
               ClipRRect(
