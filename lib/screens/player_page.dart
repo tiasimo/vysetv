@@ -3294,8 +3294,20 @@ class _PlayerPageState extends State<_PlayerView> {
                 if (_veil) const Positioned.fill(child: ColoredBox(color: Colors.black)),
                 if (!_started)
                   Positioned.fill(child: RepaintBoundary(child: _Backdrop(media: widget.media))),
+                // Lorewatch: before the first frame, the title's own logo breathing on its backdrop
+                if (!_started && !_veil)
+                  Center(
+                    child: RepaintBoundary(
+                      child: _LoadingTitle(
+                        logo: _logo,
+                        title: widget.media.title,
+                        phone: phone,
+                        note: _error ?? _note ?? _loadNote ?? (_torrent != null ? _torrentNote : _searchNote),
+                      ),
+                    ),
+                  )
                 // on a phone the middle button turns into the spinner while the controls are up
-                if (_loadingSources || (_buffering && (!phone || !_chromeUp)))
+                else if (_loadingSources || (_buffering && (!phone || !_chromeUp)))
                   Center(child: RepaintBoundary(child: _Spinner(note: _error ?? _note ?? _loadNote ?? (_torrent != null ? _torrentNote : _searchNote)))),
                 // Shade behind the controls, so they read over any picture.
                 _fade(
@@ -3980,11 +3992,109 @@ class _Spinner extends StatelessWidget {
             ? const SizedBox(width: 0)
             : Padding(
                 padding: const EdgeInsets.only(top: 16),
-                child: Text(note!, style: TextStyle(fontSize: 13, color: VyseColors.textDim)),
+                child: Text(note!, style: const TextStyle(fontSize: 13, color: Color(0xB3FFFFFF))),
               ),
       ),
     ]),
   );
+}
+
+/// Lorewatch: the loading screen, like Stremio's: the title's logo (its own lettering), gently
+/// breathing, with a thin bar and what's happening under it. The name when there's no logo.
+class _LoadingTitle extends StatefulWidget {
+  const _LoadingTitle({required this.logo, required this.title, required this.phone, this.note});
+  final Future<String?> logo;
+  final String title;
+  final bool phone;
+  final String? note;
+
+  @override
+  State<_LoadingTitle> createState() => _LoadingTitleState();
+}
+
+class _LoadingTitleState extends State<_LoadingTitle> with SingleTickerProviderStateMixin {
+  late final AnimationController _pulse = AnimationController(vsync: this, duration: const Duration(milliseconds: 1600))
+    ..repeat(reverse: true);
+  late final Animation<double> _fade = Tween(begin: .45, end: 1.0).animate(CurvedAnimation(parent: _pulse, curve: Curves.easeInOut));
+
+  @override
+  void dispose() {
+    _pulse.dispose();
+    super.dispose();
+  }
+
+  Widget _name() => Text(
+    widget.title,
+    textAlign: TextAlign.center,
+    maxLines: 3,
+    overflow: TextOverflow.ellipsis,
+    style: TextStyle(
+      fontSize: widget.phone ? 30 : 46,
+      fontWeight: FontWeight.w900,
+      letterSpacing: -1,
+      height: 1.05,
+      color: Colors.white,
+      shadows: const [Shadow(color: Color(0x99000000), blurRadius: 24)],
+    ),
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    final w = MediaQuery.sizeOf(context).width;
+    final maxW = math.min(w * (widget.phone ? .72 : .42), 560.0);
+    return IgnorePointer(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            FadeTransition(
+              opacity: _fade,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: maxW, maxHeight: widget.phone ? 120 : 190),
+                child: FutureBuilder<String?>(
+                  future: widget.logo,
+                  builder: (context, snap) {
+                    if (snap.connectionState != ConnectionState.done) return const SizedBox(height: 80);
+                    final url = snap.data;
+                    if (url == null || url.isEmpty) return _name();
+                    return CachedNetworkImage(
+                      imageUrl: url,
+                      fit: BoxFit.contain,
+                      fadeInDuration: const Duration(milliseconds: 250),
+                      placeholder: (_, _) => const SizedBox(height: 80),
+                      errorWidget: (_, _, _) => _name(),
+                    );
+                  },
+                ),
+              ),
+            ),
+            const SizedBox(height: 28),
+            SizedBox(
+              width: math.min(maxW * .55, 200.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(2),
+                child: const LinearProgressIndicator(minHeight: 3, color: Colors.white, backgroundColor: Color(0x33FFFFFF)),
+              ),
+            ),
+            AnimatedSize(
+              duration: const Duration(milliseconds: 200),
+              child: widget.note == null
+                  ? const SizedBox(width: 0)
+                  : Padding(
+                      padding: const EdgeInsets.only(top: 14),
+                      child: Text(
+                        widget.note!,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(fontSize: 13, color: Color(0xB3FFFFFF)),
+                      ),
+                    ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 class _PhoneTransport extends StatelessWidget {
