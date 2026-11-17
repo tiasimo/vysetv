@@ -930,6 +930,10 @@ class _PosterTile extends StatelessWidget {
                         if (p != null && p.episode != null) chip(Text(_epOf(m, p), style: style)),
                         if (next != null)
                           chip(Row(mainAxisSize: MainAxisSize.min, children: [
+                            Text(
+                              '${next.season != null && next.season != p?.season ? 'S${next.season} ' : ''}Ep. ${next.episode} esce ',
+                              style: style,
+                            ),
                             const Icon(Icons.schedule_rounded, size: 10, color: Colors.white),
                             const SizedBox(width: 3),
                             Text(countdownLabel(next.at), style: style),
