@@ -163,7 +163,8 @@ abstract final class EpisodeTotals {
 
   static Map<String, Map<String, int>> _totals = {};
   static Map<String, int> _fetched = {};
-  static Map<String, List<int>> _next = {}; // key -> [airs at (ms), episode, season]
+  static Map<String, List<int>> _next = {};
+  static Map<String, String> _status = {}; // manga: AniList's FINISHED, RELEASING, HIATUS… // key -> [airs at (ms), episode, season]
   static final _queue = <String, Media>{};
   static final _asked = <String>{};
   static Timer? _timer;
@@ -178,6 +179,7 @@ abstract final class EpisodeTotals {
           '${e.key}': {for (final s in (e.value as Map).entries) '${s.key}': (s.value as num).toInt()},
       };
       _fetched = {for (final e in ((raw['f'] as Map?) ?? const {}).entries) '${e.key}': (e.value as num).toInt()};
+      _status = {for (final e in ((raw['s'] as Map?) ?? const {}).entries) '${e.key}': '${e.value}'};
       _next = {
         for (final e in ((raw['n'] as Map?) ?? const {}).entries) '${e.key}': [for (final v in e.value as List) (v as num).toInt()],
       };
@@ -186,23 +188,32 @@ abstract final class EpisodeTotals {
 
   static Future<void> _save() async {
     final p = await SharedPreferences.getInstance();
-    await p.setString(_key, json.encode({'t': _totals, 'f': _fetched, 'n': _next}));
+    await p.setString(_key, json.encode({'t': _totals, 'f': _fetched, 'n': _next, 's': _status}));
   }
 
   /// Episodes in [m] (that [season], for TMDB shows), or null while unknown (it's then looked up).
   static int? of(Media m, int? season) {
-    if (!m.isTv && !m.anime) return null;
+    if (!m.isTv && !m.anime && !m.manga) return null;
     final t = _totals[m.key];
     final f = _fetched[m.key];
     if (f == null || DateTime.now().millisecondsSinceEpoch - f > _stale.inMilliseconds) _want(m);
     if (t == null) return null;
-    final n = m.anime ? t['0'] : t['${season ?? 1}'];
+    final n = m.anime || m.manga ? t['0'] : t['${season ?? 1}'];
     return n == null || n <= 0 ? null : n;
   }
 
   /// The next episode of [m] still to come out: when, and which. Null when none is known.
+  /// A manga's publishing status on AniList (FINISHED, RELEASING, HIATUS, CANCELLED,
+  /// NOT_YET_RELEASED), or null while unknown.
+  static String? mangaStatus(Media m) {
+    if (!m.manga) return null;
+    final f = _fetched[m.key];
+    if (f == null || DateTime.now().millisecondsSinceEpoch - f > _stale.inMilliseconds) _want(m);
+    return _status[m.key];
+  }
+
   static ({DateTime at, int episode, int? season})? next(Media m) {
-    if (!m.isTv && !m.anime) return null;
+    if (m.manga || (!m.isTv && !m.anime)) return null;
     final f = _fetched[m.key];
     final n = _next[m.key];
     final now = DateTime.now().millisecondsSinceEpoch;
@@ -253,7 +264,32 @@ abstract final class EpisodeTotals {
           revision.value++;
         }
         // TMDB shows: a few at a time
-        final shows = batch.where((m) => !m.anime).toList();
+        // manga: status and chapters, 50 at a time
+        final manga = batch.where((m) => m.manga).toList();
+        for (var i = 0; i < manga.length; i += 50) {
+          final ids = manga.skip(i).take(50).map((m) => m.id).toList();
+          try {
+            final d = await AniList.query(
+              r'query($ids:[Int]){Page(perPage:50){media(id_in:$ids,type:MANGA){id status chapters}}}',
+              {'ids': ids},
+            );
+            for (final x in ((d['Page'] as Map)['media'] as List).cast<Map<String, dynamic>>()) {
+              final key = 'manga/${x['id']}';
+              final n = (x['chapters'] as num?)?.toInt();
+              if (n != null) {
+                _totals[key] = {'0': n};
+              } else {
+                _totals.remove(key);
+              }
+              if (x['status'] is String) _status[key] = x['status'] as String;
+              _fetched[key] = now;
+            }
+          } catch (e) {
+            debugPrint('[EpisodeTotals] AniList manga: $e');
+          }
+          revision.value++;
+        }
+        final shows = batch.where((m) => !m.anime && !m.manga && m.isTv).toList();
         for (var i = 0; i < shows.length; i += 4) {
           await Future.wait([
             for (final m in shows.skip(i).take(4))

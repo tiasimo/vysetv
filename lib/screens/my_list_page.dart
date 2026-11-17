@@ -32,7 +32,8 @@ enum _Sort {
   added('Aggiunti di recente', Icons.schedule_rounded),
   title('Titolo A–Z', Icons.sort_by_alpha_rounded),
   year('Anno di uscita', Icons.calendar_today_rounded),
-  rating('Rating', Icons.star_rounded);
+  rating('Rating', Icons.star_rounded),
+  watched('Ultimo visto', Icons.history_rounded);
 
   const _Sort(this.label, this.icon);
   final String label;
@@ -56,6 +57,16 @@ String _left(Duration d) {
   final r = m % 60;
   return r == 0 ? '${m ~/ 60} h rimanenti' : '${m ~/ 60} h $r min rimanenti';
 }
+
+/// Lorewatch: a manga's publishing status as a colour (border) and a word.
+Color? mangaStatusColor(String? status) => switch (status) {
+  'FINISHED' => const Color(0xFF34C759),
+  'RELEASING' => const Color(0xFF0A84FF),
+  'HIATUS' => const Color(0xFFFFB020),
+  'CANCELLED' => const Color(0xFFFF453A),
+  'NOT_YET_RELEASED' => const Color(0xFF8E8E93),
+  _ => null,
+};
 
 /// Lorewatch: "E16/24", or "S2:E5/12" for a season of a show; just "E16" while the total is unknown.
 String _epOf(Media m, WatchEntry p) {
@@ -132,6 +143,13 @@ class _MyListPageState extends State<MyListPage> {
         list.sort((a, b) => (b.media.year ?? '').compareTo(a.media.year ?? ''));
       case _Sort.rating:
         list.sort((a, b) => b.media.rating.compareTo(a.media.rating));
+      case _Sort.watched:
+        // the most recently watched first; never watched after, newest added first
+        int seen(SavedTitle s) => progress[s.media.key]?.updated.millisecondsSinceEpoch ?? 0;
+        list.sort((a, b) {
+          final c = seen(b).compareTo(seen(a));
+          return c != 0 ? c : b.added.compareTo(a.added);
+        });
     }
     return list;
   }
@@ -568,6 +586,7 @@ class _Toolbar extends StatelessWidget {
         chips,
         const SizedBox(height: 8),
         lists,
+        if (filter == _Filter.manga) ...[const SizedBox(height: 10), const _MangaLegend()],
       ]);
     }
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
@@ -580,6 +599,7 @@ class _Toolbar extends StatelessWidget {
       ]),
       const SizedBox(height: 10),
       lists,
+      if (filter == _Filter.manga) ...[const SizedBox(height: 10), const _MangaLegend()],
     ]);
   }
 }
@@ -907,7 +927,17 @@ class _PosterTile extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
                     decoration: BoxDecoration(color: Colors.black.withValues(alpha: .7), borderRadius: BorderRadius.circular(6)),
-                    child: Text('Cap. ${MangaChapters.read.value[m.id]}', style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w800, color: Colors.white)),
+                    child: ValueListenableBuilder(
+                      valueListenable: EpisodeTotals.revision,
+                      builder: (context, _, _) {
+                        final read = MangaChapters.read.value[m.id] ?? 0;
+                        final total = EpisodeTotals.of(m, null);
+                        return Text(
+                          'Cap. $read${total != null && total >= read ? '/$total' : ''}',
+                          style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w800, color: Colors.white),
+                        );
+                      },
+                    ),
                   ),
                 ),
               // where you are, out of how many, and when the next one comes out
@@ -945,6 +975,25 @@ class _PosterTile extends StatelessWidget {
               if (p != null) ...[
                 Positioned(left: 0, right: 0, bottom: 0, child: _ProgressLine(fraction: p.fraction)),
               ],
+              // Lorewatch: a manga's border says whether it's finished, still coming out, on hiatus…
+              if (m.manga && !selected && !hovered)
+                Positioned.fill(
+                  child: IgnorePointer(
+                    child: ValueListenableBuilder(
+                      valueListenable: EpisodeTotals.revision,
+                      builder: (context, _, _) {
+                        final c = mangaStatusColor(EpisodeTotals.mangaStatus(m));
+                        if (c == null) return const SizedBox.shrink();
+                        return DecoratedBox(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(9),
+                            border: Border.all(color: c, width: 2.5),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
               if (selecting) Positioned(top: 7, right: 7, child: _Check(on: selected)),
             ]),
           ),
@@ -1375,5 +1424,35 @@ class _StatusAction extends StatelessWidget {
         if (st != null && st != item.status) await ListStatusSync.set([item.media], st);
       },
     ),
+  );
+}
+
+
+/// Lorewatch: what the manga border colours mean.
+class _MangaLegend extends StatelessWidget {
+  const _MangaLegend();
+
+  @override
+  Widget build(BuildContext context) => Wrap(
+    spacing: 14,
+    runSpacing: 6,
+    children: [
+      for (final (status, label) in const [
+        ('FINISHED', 'Concluso'),
+        ('RELEASING', 'In corso'),
+        ('HIATUS', 'In pausa'),
+        ('CANCELLED', 'Cancellato'),
+        ('NOT_YET_RELEASED', 'Non ancora uscito'),
+      ])
+        Row(mainAxisSize: MainAxisSize.min, children: [
+          Container(
+            width: 10,
+            height: 10,
+            decoration: BoxDecoration(shape: BoxShape.circle, color: mangaStatusColor(status)),
+          ),
+          const SizedBox(width: 5),
+          Text(label, style: TextStyle(fontSize: 12, color: VyseColors.textDim)),
+        ]),
+    ],
   );
 }
