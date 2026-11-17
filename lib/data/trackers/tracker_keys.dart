@@ -20,15 +20,15 @@ class TrackerKeys {
   /// Simkl: simkl.com/settings/developer → new app under AUTH V2, client type
   /// "Mobile, desktop & browser apps" (no secret). It asks for a redirect URI even though
   /// Lorewatch signs in with a code instead: http://127.0.0.1/auth/simkl
-  static const simklClientId = 'dd879ec360556ef209462ba66f18703747bbedb8160f371c4131e9449249398a';
+  static const simklClientId = ''; // Lorewatch: Simkl switched off
 
   /// Trakt: the verified (Production) app, so anyone can connect. No secret: Lorewatch signs in
   /// with a code. The redirect is never visited, but it must match the app's setting because
   /// Trakt checks it when a sign-in is renewed.
-  static const traktClientId = '80854d1799a6a7e160a458857982867b119230ff49c502e0241e283897b1c0f6';
+  static const traktClientId = ''; // Lorewatch: Trakt switched off
   static const traktRedirectUri = 'urn:ietf:wg:oauth:2.0:oob';
 
   /// Sent with every Simkl request (Simkl requires the app's name and version).
-  static const appName = 'vysetv';
+  static const appName = 'lorewatch';
   static const appVersion = '1.0.0'; // keep in step with pubspec.yaml
 }

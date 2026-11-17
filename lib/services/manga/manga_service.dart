@@ -8,6 +8,7 @@ import '../../models/manga/manga.dart';
 import '../../models/manga/manga_chapter.dart';
 import '../../data/app_settings.dart';
 import 'mangadex_source.dart';
+import 'mangaworld_source.dart';
 
 const String _baseUrl = 'https://weebcentral.com';
 const String _coverCdn = 'https://temp.compsci88.com/cover';
@@ -20,6 +21,7 @@ class MangaLibraryChoice {
   final String label;
 
   static const all = [
+    MangaLibraryChoice('mangaworld', 'MangaWorld · Italiano'),
     MangaLibraryChoice('mangadex:it', 'MangaDex · Italiano'),
     MangaLibraryChoice('mangadex:en', 'MangaDex · Inglese'),
     MangaLibraryChoice('weebcentral', 'WeebCentral · Inglese'),
@@ -33,6 +35,9 @@ class MangaLibraryChoice {
 
 class MangaService {
   final MangaDexSource _dex = MangaDexSource();
+  final MangaWorldSource _world = MangaWorldSource();
+
+  static bool get _worldPicked => MangaLibraryChoice.current.id == 'mangaworld';
 
   /// The language of the MangaDex library picked, or null for WeebCentral.
   static String? get _dexLang {
@@ -76,6 +81,7 @@ class MangaService {
   }
 
   Future<List<Manga>> getManga({int page = 1, String? tag, bool allowAdult = false}) async {
+    if (_worldPicked) return _world.browse(page: page, tag: tag);
     final lang = _dexLang;
     if (lang != null) return _dex.browse(lang, page: page, tag: tag, allowAdult: allowAdult);
     try {
@@ -96,6 +102,7 @@ class MangaService {
   }
 
   Future<List<Manga>> searchManga(String query, {int page = 1, bool allowAdult = false}) async {
+    if (_worldPicked) return _world.search(query, page: page);
     final lang = _dexLang;
     if (lang != null) return _dex.search(lang, query, page: page, allowAdult: allowAdult);
     try {
@@ -358,6 +365,7 @@ class MangaService {
 
   Future<List<MangaChapter>> getChapters(String seriesId) async {
     if (MangaDexSource.owns(seriesId)) return _dex.chapters(seriesId);
+    if (MangaWorldSource.owns(seriesId)) return _world.chapters(seriesId);
     try {
       final html =
           await _fetchHtml('$_baseUrl/series/$seriesId/full-chapter-list');
@@ -397,6 +405,7 @@ class MangaService {
 
   Future<List<String>> getChapterImages(String chapterId) async {
     if (MangaDexSource.owns(chapterId)) return _dex.pages(chapterId);
+    if (MangaWorldSource.owns(chapterId)) return _world.pages(chapterId);
     try {
       final url =
           '$_baseUrl/chapters/$chapterId/images?is_prev=False&current_page=1&reading_style=long_strip';

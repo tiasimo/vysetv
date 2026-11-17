@@ -378,7 +378,7 @@ class _MangaReaderPageState extends State<MangaReaderPage> {
               _setPage(math.min(i, _count - 1));
               // Warm the next couple of pages so flipping never waits.
               for (final j in [i + 1, i + 2]) {
-                if (j < pages.length) precacheImage(CachedNetworkImageProvider(pages[j]), context).catchError((Object _) {});
+                if (j < pages.length) precacheImage(CachedNetworkImageProvider(pages[j], headers: mangaImageHeaders(pages[j])), context).catchError((Object _) {});
               }
             },
             itemBuilder: (context, i) => i == pages.length
@@ -390,6 +390,7 @@ class _MangaReaderPageState extends State<MangaReaderPage> {
                       padding: EdgeInsets.only(top: top + 8, bottom: 8),
                       child: CachedNetworkImage(
                         imageUrl: pages[i],
+                        httpHeaders: mangaImageHeaders(pages[i]),
                         fit: BoxFit.contain,
                         fadeInDuration: const Duration(milliseconds: 150),
                         placeholder: (_, _) => Center(
@@ -484,6 +485,7 @@ class _StripPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => CachedNetworkImage(
         imageUrl: url,
+        httpHeaders: mangaImageHeaders(url),
         width: width,
         fit: BoxFit.fitWidth,
         fadeInDuration: const Duration(milliseconds: 200),
@@ -503,3 +505,12 @@ class _StripPage extends StatelessWidget {
         ),
       );
 }
+
+
+/// Lorewatch: MangaWorld's image servers want a browser's User-Agent and the site as Referer.
+Map<String, String>? mangaImageHeaders(String url) => url.contains('mangaworld')
+    ? const {
+        'User-Agent': 'Mozilla/5.0 (Linux; Android 13) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Mobile Safari/537.36',
+        'Referer': 'https://www.mangaworld.mx/',
+      }
+    : null;

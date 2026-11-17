@@ -772,7 +772,7 @@ class _ConnectedServices extends StatelessWidget {
         title: 'Servizi collegati',
         subtitle: 'Quello che guardi in Lorewatch tiene aggiornate le tue liste. L\'accesso resta su questo dispositivo.',
         children: [
-          for (final id in TrackerId.values) ...[
+          for (final id in const [TrackerId.anilist]) ...[ // Lorewatch: only AniList (Simkl and Trakt are switched off)
             if (states[id] case final s?) ...[
               _Row(
                 leading: ServiceLogo(switch (id) {

@@ -97,7 +97,7 @@ class AppSettings {
   static final tvAutoSubs = Setting<bool>('lw.tv.autoSubs', true);
   static final animeAutoSubs = Setting<bool>('lw.anime.autoSubs', true);
   // Lorewatch: the manga library the Manga page browses (MangaLibraryChoice)
-  static final mangaLibrary = Setting<String>('lw.manga.library', 'mangadex:it');
+  static final mangaLibrary = Setting<String>('lw.manga.library', 'mangaworld');
   static final seekSeconds = Setting<int>('play.seek', 10);
   // P2P (torrent) sources: off until you allow them, since peers can see your IP address
   static final p2pStreaming = Setting<bool>('play.p2p', false);
