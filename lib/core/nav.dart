@@ -174,4 +174,3 @@ class _MangaSourceSheet extends StatelessWidget {
     ),
   );
 }
-}
