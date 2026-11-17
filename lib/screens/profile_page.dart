@@ -19,6 +19,7 @@ import '../core/layout.dart';
 import '../core/nav_sections.dart';
 import '../core/theme.dart';
 import '../data/app_settings.dart';
+import '../data/playback_prefs.dart';
 import '../data/updater.dart';
 import '../widgets/update_dialog.dart';
 import '../data/debrid/debrid.dart';
@@ -1312,7 +1313,6 @@ class _PlaybackTab extends StatelessWidget {
             trailing: _Toggle(AppSettings.p2pStreaming),
           ),
           _Row(title: 'Auto next episode', subtitle: 'Play the next episode when one ends', trailing: _Toggle(AppSettings.autoNext)),
-          _Row(title: 'Auto-enable subtitles', subtitle: 'Turn on captions in your language when a video starts', trailing: _Toggle(AppSettings.autoSubtitles)),
           ValueListenableBuilder(
             valueListenable: AppSettings.seekSeconds,
             builder: (context, s, _) => _Row(
@@ -1565,6 +1565,64 @@ const _languages = [
   'Polish',
   'Swedish',
 ];
+/// Anime audio: the original, or a dub the anime servers offer.
+const _animeAudioLanguages = ['', 'English', 'Italian', 'Spanish', 'Portuguese', 'French', 'German', 'Hindi'];
+
+/// Italian names for the languages in the pickers (the stored value stays the English name).
+const _langIt = {
+  '': 'Originale',
+  'English': 'Inglese',
+  'Arabic': 'Arabo',
+  'French': 'Francese',
+  'Spanish': 'Spagnolo',
+  'German': 'Tedesco',
+  'Italian': 'Italiano',
+  'Portuguese': 'Portoghese',
+  'Turkish': 'Turco',
+  'Dutch': 'Olandese',
+  'Russian': 'Russo',
+  'Japanese': 'Giapponese',
+  'Korean': 'Coreano',
+  'Chinese': 'Cinese',
+  'Hindi': 'Hindi',
+  'Indonesian': 'Indonesiano',
+  'Polish': 'Polacco',
+  'Swedish': 'Svedese',
+};
+
+String _langLabel(String v) => _langIt[v] ?? v;
+
+/// A language menu bound to one setting (Settings → Subtitles, per kind of video).
+class _LangPicker extends StatelessWidget {
+  const _LangPicker({required this.setting, required this.options});
+  final Setting<String> setting;
+  final List<String> options;
+
+  @override
+  Widget build(BuildContext context) => ValueListenableBuilder(
+    valueListenable: setting,
+    builder: (context, lang, _) => PopupMenuButton<String>(
+      tooltip: '',
+      color: VyseColors.surfaceHi,
+      initialValue: lang,
+      onSelected: setting.set,
+      itemBuilder: (_) => [for (final l in options) PopupMenuItem(value: l, height: 38, child: Text(_langLabel(l)))],
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(16, 10, 10, 10),
+        decoration: BoxDecoration(color: Colors.white.withValues(alpha: .07), borderRadius: BorderRadius.circular(10)),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(_langLabel(lang), style: const TextStyle(fontSize: 13.5, fontWeight: FontWeight.w700)),
+            const SizedBox(width: 6),
+            const Icon(Icons.expand_more_rounded, size: 18, color: VyseColors.textDim),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
 const _captionColors = captionColors;
 
 class _SubtitlesTab extends StatelessWidget {
@@ -1573,37 +1631,32 @@ class _SubtitlesTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Column(
     children: [
-      _Section(
-        title: 'Language',
-        children: [
-          _Row(
-            title: 'Default language',
-            subtitle: "If a video doesn't have it, no subtitles are loaded.",
-            trailing: ValueListenableBuilder(
-              valueListenable: AppSettings.subtitleLanguage,
-              builder: (context, lang, _) => PopupMenuButton<String>(
-                tooltip: '',
-                color: VyseColors.surfaceHi,
-                initialValue: lang,
-                onSelected: AppSettings.subtitleLanguage.set,
-                itemBuilder: (_) => [for (final l in _languages) PopupMenuItem(value: l, height: 38, child: Text(l))],
-                child: Container(
-                  padding: const EdgeInsets.fromLTRB(16, 10, 10, 10),
-                  decoration: BoxDecoration(color: Colors.white.withValues(alpha: .07), borderRadius: BorderRadius.circular(10)),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(lang, style: const TextStyle(fontSize: 13.5, fontWeight: FontWeight.w700)),
-                      const SizedBox(width: 6),
-                      const Icon(Icons.expand_more_rounded, size: 18, color: VyseColors.textDim),
-                    ],
-                  ),
-                ),
-              ),
+      for (final k in PlayKind.values)
+        _Section(
+          title: 'Lingue: ${k.label}',
+          subtitle: k == PlayKind.anime
+              ? "Valgono solo per gli anime. L'audio sceglie tra originale (sottotitolato) e doppiato quando un server li offre."
+              : 'Valgono solo per ${k == PlayKind.movie ? 'i film' : 'le serie TV'}, senza toccare le altre impostazioni.',
+          children: [
+            _Row(
+              title: 'Lingua audio',
+              subtitle: k == PlayKind.anime
+                  ? 'Originale = giapponese con sottotitoli'
+                  : 'Se il video ha più tracce audio, parte con questa',
+              trailing: _LangPicker(setting: PlaybackPrefs.audio(k), options: k == PlayKind.anime ? _animeAudioLanguages : ['', ..._languages]),
             ),
-          ),
-        ],
-      ),
+            _Row(
+              title: 'Lingua dei sottotitoli',
+              subtitle: 'Se un video non li ha in questa lingua, non ne carica nessuno',
+              trailing: _LangPicker(setting: PlaybackPrefs.subtitles(k), options: _languages),
+            ),
+            _Row(
+              title: 'Attiva i sottotitoli da soli',
+              subtitle: 'Accende i sottotitoli nella lingua scelta quando parte un video',
+              trailing: _Toggle(PlaybackPrefs.autoSubtitles(k)),
+            ),
+          ],
+        ),
       _Section(
         title: 'Caption style',
         subtitle: "Drawn by the player's subtitle engine (libass), so the preview is close but not exact.",
@@ -2107,16 +2160,6 @@ class _AboutTab extends StatelessWidget {
             ],
           );
         },
-      ),
-      _Section(
-        title: 'Community',
-        children: [
-          _Row(
-            title: 'Discord',
-            subtitle: 'News, help and a place to say what you want next.',
-            trailing: _SmallButton(label: 'Join', icon: Icons.open_in_new_rounded, onTap: () => openDiscord(context)),
-          ),
-        ],
       ),
     ],
   );

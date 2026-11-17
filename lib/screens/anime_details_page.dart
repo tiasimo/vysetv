@@ -592,7 +592,6 @@ class _AnimeBody extends StatelessWidget {
               if (!a.isAdult) const _AudioToggle(),
               _SaveButton(media: a.media),
               _RoundAction(icon: Icons.open_in_new_rounded, tooltip: 'Open on AniList', onTap: () => _open(context, link)),
-              _RoundAction(icon: Icons.groups_outlined, tooltip: 'Watch party', onTap: () => startWatchParty(context, a.media)),
             ],
           ),
         ),

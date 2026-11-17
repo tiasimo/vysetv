@@ -7,15 +7,6 @@ import 'data/addons.dart' show Addons;
 import 'data/badges.dart' show Badges;
 import 'data/audiobook_player.dart' show AudiobookPlayer;
 import 'data/manga_library.dart' show MangaFavorites, MangaHistory;
-import 'data/party/alerts.dart' show PartyAlerts;
-import 'data/party/dms.dart' show Dms;
-import 'data/party/friends.dart' show Friends;
-import 'data/party/party.dart' show PartyPresence;
-import 'data/party/party_live.dart' show PartyLive;
-import 'data/party/party_music.dart' show PartyMusic;
-import 'data/party/rooms.dart' show Rooms;
-import 'data/party/voice.dart' show Voice;
-import 'data/party/watch_party.dart' show WatchParty;
 import 'data/app_settings.dart';
 import 'data/tmdb.dart' show MyList;
 import 'data/downloads.dart';
@@ -67,15 +58,7 @@ Future<void> main() async {
   await MusicLibrary.initialize();
   await Debrid.initialize();
   await Account.initialize();
-  PartyPresence.start();
-  Friends.start();
-  Dms.start();
-  Rooms.start();
-  Voice.start();
-  WatchParty.start();
-  PartyMusic.start();
-  PartyLive.start();
-  unawaited(PartyAlerts.start());
+  // Lorewatch: the Party (friends, rooms, voice, watch together) is switched off.
   await AccountSync.initialize([
     SyncSource(
       kind: 'progress',

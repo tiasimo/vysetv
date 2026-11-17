@@ -3,7 +3,6 @@ import 'dart:ui';
 
 import 'package:flutter/foundation.dart' show defaultTargetPlatform, kIsWeb;
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../core/theme.dart';
@@ -48,16 +47,6 @@ class _PressableState extends State<Pressable> {
 }
 
 /// Every placeholder button lands here until the real screen exists.
-/// Lorewatch's Discord, opened in the browser (About in Settings, and the foot of Home).
-const discordInvite = 'https://discord.gg/dUJTGnUhz2';
-
-Future<void> openDiscord(BuildContext context) async {
-  final ok = await launchUrl(Uri.parse(discordInvite), mode: LaunchMode.externalApplication).catchError((Object _) => false);
-  if (!ok && context.mounted) {
-    showToast(context, const Text("Couldn't open Discord. The invite is discord.gg/dUJTGnUhz2", style: TextStyle(fontSize: 13)), icon: Icons.error_outline);
-  }
-}
-
 void comingSoon(BuildContext context, String what) => showToast(
       context,
       Text.rich(

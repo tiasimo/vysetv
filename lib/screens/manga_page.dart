@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import '../data/app_settings.dart';
 import '../core/layout.dart';
 import '../core/nav.dart';
 import '../core/theme.dart';
@@ -173,6 +174,37 @@ class _MangaPageState extends State<MangaPage> {
                         busy: _loading && !browsing && _items.isEmpty,
                         onSubmit: _search,
                       ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            // Lorewatch: which library to browse (MangaDex in Italian, English…, or WeebCentral)
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: SizedBox(
+                  height: 34,
+                  child: ValueListenableBuilder(
+                    valueListenable: AppSettings.mangaLibrary,
+                    builder: (context, _, _) => ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      padding: EdgeInsets.only(left: inset, right: right),
+                      itemCount: MangaLibraryChoice.all.length,
+                      separatorBuilder: (_, _) => const SizedBox(width: 8),
+                      itemBuilder: (_, i) {
+                        final c = MangaLibraryChoice.all[i];
+                        return FilterChipPill(
+                          label: c.label,
+                          selected: MangaLibraryChoice.current.id == c.id,
+                          onTap: () {
+                            if (MangaLibraryChoice.current.id == c.id) return;
+                            AppSettings.mangaLibrary.set(c.id);
+                            _tag = null;
+                            _restart();
+                          },
+                        );
+                      },
                     ),
                   ),
                 ),

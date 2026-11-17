@@ -86,6 +86,18 @@ class AppSettings {
   static final autoplayOrder = Setting<String>('play.autoplayOrder', '');
   static final autoplayRest = Setting<bool>('play.autoplayRest', true);
   static final autoSubtitles = Setting<bool>('play.autoSubs', true);
+  // Lorewatch: audio and subtitle languages kept apart for films, TV series and anime, so one
+  // never changes the others (PlaybackPrefs). Audio '' = the original; anime audio is animeAudio.
+  static final movieAudio = Setting<String>('lw.movie.audio', '');
+  static final tvAudio = Setting<String>('lw.tv.audio', '');
+  static final movieSubs = Setting<String>('lw.movie.subs', 'Italian');
+  static final tvSubs = Setting<String>('lw.tv.subs', 'Italian');
+  static final animeSubs = Setting<String>('lw.anime.subs', 'Italian');
+  static final movieAutoSubs = Setting<bool>('lw.movie.autoSubs', true);
+  static final tvAutoSubs = Setting<bool>('lw.tv.autoSubs', true);
+  static final animeAutoSubs = Setting<bool>('lw.anime.autoSubs', true);
+  // Lorewatch: the manga library the Manga page browses (MangaLibraryChoice)
+  static final mangaLibrary = Setting<String>('lw.manga.library', 'mangadex:it');
   static final seekSeconds = Setting<int>('play.seek', 10);
   // P2P (torrent) sources: off until you allow them, since peers can see your IP address
   static final p2pStreaming = Setting<bool>('play.p2p', false);
@@ -165,6 +177,7 @@ class AppSettings {
         subtitleShadow, subtitleShadowColor, subtitleBlur, subtitleSpacing, subtitleTop, subtitleLift, subtitleOnPicture, subtitleAss,
         audioDelayMs, audioPassthrough, audioChannels, hdrOutput, matchRefreshRate, volumeLevelling,
         upscaler, ambientLight, partyLibrary, musicAutoplay, debridProvider, debridOn, updateAuto, updateSkipped, myListGrid, myListSort, partyMembers, partySounds, partyMuted, animeAdult, animeAudio,
+        movieAudio, tvAudio, movieSubs, tvSubs, animeSubs, movieAutoSubs, tvAutoSubs, animeAutoSubs, mangaLibrary,
       ];
 
   static Future<void> initialize() async {

@@ -1,3 +1,4 @@
+import 'playback_prefs.dart';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
@@ -37,8 +38,9 @@ class SubtitleTrack {
   bool get hearingImpaired => RegExp(r'\b(sdh|hi|cc|hearing)\b', caseSensitive: false).hasMatch(release);
 }
 
-/// The subtitle language picked in Settings, as a code ("en", "es"…).
-String preferredLang() => exactLanguage(AppSettings.subtitleLanguage.value) ?? 'en';
+/// The subtitle language picked in Settings for what is playing (films, TV series and anime each
+/// have their own, see [PlaybackPrefs]), as a code ("en", "es"…).
+String preferredLang() => exactLanguage(PlaybackPrefs.subtitles(PlaybackPrefs.current).value) ?? 'it';
 
 /// [tracks] in [lang], exact matches first ("pt" also takes "pt-br").
 List<SubtitleTrack> inLanguage(Iterable<SubtitleTrack> tracks, String lang) {

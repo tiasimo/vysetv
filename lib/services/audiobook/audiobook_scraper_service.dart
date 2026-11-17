@@ -18,6 +18,7 @@ class AudiobookScraperService {
     _searchAudioAZ,
     _searchAudiobooks4Soul,
     _searchAudionest,
+    _searchArchiveItalian,
   ];
 
   Future<List<Audiobook>> search(String query) async {
@@ -61,6 +62,8 @@ class AudiobookScraperService {
           return await _getAudiobooks4SoulChapters(book.pageUrl);
         case 'audionest':
           return await _getAudionestChapters(book.audioBookId);
+        case 'archive':
+          return await _getArchiveChapters(book.audioBookId);
         default:
           return [];
       }
@@ -68,6 +71,70 @@ class AudiobookScraperService {
       debugPrint('Failed to fetch chapters for ${book.title}: $e');
       return [];
     }
+  }
+
+  /// Lorewatch: audiobooks in Italian from the Internet Archive (LibriVox's volunteer
+  /// recordings and other free audiobooks whose language is Italian). With an empty [query],
+  /// the most listened ones.
+  Future<List<Audiobook>> searchItalian(String query) => _searchArchiveItalian(query, rows: 48);
+
+  static Future<List<Audiobook>> _searchArchiveItalian(String query, {int rows = 24}) async {
+    try {
+      final words = query.replaceAll(RegExp(r'[^\p{L}\p{N} ]', unicode: true), ' ').trim().split(RegExp(r'\s+')).where((w) => w.isNotEmpty).join(' ');
+      var q = '(collection:librivoxaudio OR collection:audio_bookspoetry OR collection:audiobooks_italiani) '
+          'AND mediatype:audio AND language:(Italian OR ita OR italiano)';
+      if (words.isNotEmpty) q += ' AND (title:($words) OR creator:($words))';
+      final url = Uri.https('archive.org', '/advancedsearch.php', {
+        'q': q,
+        'fl[]': ['identifier', 'title', 'creator'],
+        'sort[]': 'downloads desc',
+        'rows': '$rows',
+        'page': '1',
+        'output': 'json',
+      });
+      final res = await http.get(url).timeout(const Duration(seconds: 10));
+      if (res.statusCode != 200) return [];
+      final docs = (json.decode(res.body) as Map)['response']?['docs'] as List? ?? const [];
+      return [
+        for (final d in docs.whereType<Map>())
+          if (d['identifier'] != null)
+            Audiobook(
+              uuid: 'ia_${d['identifier']}',
+              audioBookId: '${d['identifier']}',
+              dynamicSlugId: '${d['identifier']}',
+              title: _iaText(d['title']),
+              author: _iaText(d['creator']).isEmpty ? null : _iaText(d['creator']),
+              coverImage: 'https://archive.org/services/img/${d['identifier']}',
+              source: 'archive',
+              pageUrl: 'https://archive.org/details/${d['identifier']}',
+            ),
+      ];
+    } catch (e) {
+      debugPrint('Archive.org (Italian) search error: $e');
+      return [];
+    }
+  }
+
+  static String _iaText(Object? v) => v is List ? v.map((e) => '$e').join(', ') : (v == null ? '' : '$v');
+
+  /// The MP3 files of an Internet Archive item, in order: LibriVox's 64 kbps copies when it has
+  /// them, otherwise the original MP3s.
+  Future<List<AudiobookChapter>> _getArchiveChapters(String id) async {
+    final res = await http.get(Uri.https('archive.org', '/metadata/$id')).timeout(const Duration(seconds: 15));
+    if (res.statusCode != 200) return [];
+    final files = ((json.decode(res.body) as Map)['files'] as List? ?? const []).whereType<Map>().toList();
+    final mp3 = files.where((f) => '${f['name']}'.toLowerCase().endsWith('.mp3')).toList();
+    final small = mp3.where((f) => '${f['name']}'.toLowerCase().endsWith('_64kb.mp3')).toList();
+    final pick = small.isNotEmpty ? small : mp3.where((f) => f['source'] == 'original').toList();
+    final list = pick.isNotEmpty ? pick : mp3;
+    list.sort((a, b) => '${a['name']}'.compareTo('${b['name']}'));
+    return [
+      for (final (i, f) in list.indexed)
+        AudiobookChapter(
+          title: (f['title'] is String && (f['title'] as String).trim().isNotEmpty) ? (f['title'] as String).trim() : 'Capitolo ${i + 1}',
+          url: 'https://archive.org/download/$id/${'${f['name']}'.split('/').map(Uri.encodeComponent).join('/')}',
+        ),
+    ];
   }
 
   static Future<http.Response> _fetch(String url) {

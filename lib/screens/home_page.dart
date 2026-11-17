@@ -377,21 +377,7 @@ class _Footer extends StatelessWidget {
             VyseWordmark(fontSize: 15),
           ],
         ),
-        const SizedBox(height: 10),
-        Pressable(
-          onTap: () => openDiscord(context),
-          builder: (context, hovered, _) => Padding(
-            padding: const EdgeInsets.fromLTRB(0, 6, 16, 6),
-            child: Text(
-              'Discord',
-              style: TextStyle(
-                fontSize: 12,
-                color: hovered ? VyseColors.text : VyseColors.textFaint,
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 14),
         const Text(
           'This product uses the TMDB API but is not endorsed or certified by TMDB.',
           style: TextStyle(fontSize: 11, color: VyseColors.textFaint),

@@ -29,6 +29,8 @@ class _AudiobooksPageState extends State<AudiobooksPage> {
   /// Shelves on the landing page, each filled by a search. Cached for the session so the tab
   /// opens instantly the second time.
   static const _shelves = [
+    // Lorewatch: free Italian audiobooks (Internet Archive / LibriVox) come first
+    ('Audiolibri in italiano', 'it:'),
     ('Popular right now', 'bestseller'),
     ('Fantasy', 'fantasy'),
     ('Mystery & thriller', 'mystery thriller'),
@@ -40,7 +42,7 @@ class _AudiobooksPageState extends State<AudiobooksPage> {
   static final _shelfCache = <String, Future<List<Audiobook>>>{};
 
   static Future<List<Audiobook>> _shelf(String q) =>
-      _shelfCache[q] ??= audiobookService.search(q).catchError((Object e) {
+      _shelfCache[q] ??= (q.startsWith('it:') ? audiobookService.searchItalian(q.substring(3)) : audiobookService.search(q)).catchError((Object e) {
         _shelfCache.remove(q);
         throw e;
       });

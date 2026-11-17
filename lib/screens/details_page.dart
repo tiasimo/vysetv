@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'anime_page.dart';
-import 'party/watch_start.dart';
 import 'player_page.dart';
 
 import '../core/format.dart';
@@ -699,11 +698,6 @@ class _Actions extends StatelessWidget {
         ),
         _SaveButton(media: media),
         _RoundAction(icon: Icons.thumb_up_alt_outlined, tooltip: 'Rate', onTap: () => comingSoon(context, 'Ratings')),
-        _RoundAction(
-          icon: Icons.groups_outlined,
-          tooltip: 'Watch party',
-          onTap: () => startWatchParty(context, media, firstSeason: details?.seasons.where((s) => s.number > 0 && s.episodes > 0).firstOrNull?.number),
-        ),
       ],
     );
   }

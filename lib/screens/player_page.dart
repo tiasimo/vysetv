@@ -15,6 +15,7 @@ import '../core/nav.dart' show rootNavigatorKey;
 import '../core/sub_log.dart';
 import '../core/theme.dart';
 import '../data/app_settings.dart';
+import '../data/playback_prefs.dart';
 import '../data/audio_focus.dart';
 import '../data/anilist.dart' show Anime, AniList;
 import '../data/addons.dart';
@@ -473,7 +474,11 @@ class _PlayerPageState extends State<_PlayerView> {
   List<pz.AudioTrack> _audioTracks = const [];
   pz.AudioTrack? _audioNow;
   List<SyncCue> _cues = const []; // lines of the subtitle in use, for the sync panel
-  String _subtitle = AppSettings.autoSubtitles.value ? AppSettings.subtitleLanguage.value : 'Off';
+  /// Films, TV series and anime keep their own audio and subtitle languages (Settings → Languages).
+  late final PlayKind _kind = PlaybackPrefs.of(widget.media, anime: widget.anime != null);
+  late String _subtitle = PlaybackPrefs.autoSubtitles(_kind).value ? PlaybackPrefs.subtitles(_kind).value : 'Off';
+  int _audioPrefLoad = -1; // the load the preferred audio language was last looked for in
+  bool _audioByHand = false; // picked in the player's menu: the Settings language no longer applies
   double _speed = 1;
   double _volume = 80;
 
@@ -497,6 +502,7 @@ class _PlayerPageState extends State<_PlayerView> {
   @override
   void initState() {
     super.initState();
+    PlaybackPrefs.current = _kind; // subtitle searches while this plays use this kind's language
     SubLog.line('==== player opened: ${widget.media.title}${widget.media.isTv ? ' (show)' : ''}');
     if (SubLog.enabled) unawaited(_player.setLogLevel('info').catchError((Object _) {}));
     _poke();
@@ -572,6 +578,7 @@ class _PlayerPageState extends State<_PlayerView> {
       ..add(_player.streams.tracks.listen((t) {
         final audio = t.audio.where((a) => a.id != 'auto' && a.id != 'no').toList();
         if (mounted) setState(() => _audioTracks = audio);
+        _pickPreferredAudio(audio);
         _scanTimer?.cancel();
         _scanTimer = Timer(const Duration(milliseconds: 300), _scanEmbedded);
         // after every load (a reopen for a seek, a quality or server switch), make sure the
@@ -847,6 +854,27 @@ class _PlayerPageState extends State<_PlayerView> {
 
   int _openSeq = 0; // the newest load; an older one that finishes late is ignored
   String? _subPath; // the subtitle in use, as a file mpv loads with every open
+
+  /// Lorewatch: switches to the audio language picked in Settings for this kind of video (films,
+  /// TV series, anime), once per load, when the file has more than one audio track and one of
+  /// them is in that language. A track you pick by hand afterwards stays.
+  void _pickPreferredAudio(List<pz.AudioTrack> audio) {
+    if (_audioByHand || _audioPrefLoad == _loadId || audio.length < 2 || _follower) return;
+    _audioPrefLoad = _loadId;
+    final want = PlaybackPrefs.audio(_kind).value;
+    if (want.isEmpty) return; // the original: whatever the file starts on
+    final code = sub.exactLanguage(want);
+    if (code == null) return;
+    final base = code.split('-').first;
+    String? baseOf(String? l) {
+      if (l == null || l.trim().isEmpty) return null;
+      return (sub.exactLanguage(l) ?? l.toLowerCase()).split('-').first;
+    }
+
+    final hit = audio.where((a) => baseOf(a.language) == base).firstOrNull;
+    if (hit == null || hit.id == _audioNow?.id) return;
+    unawaited(_player.selectAudioTrack(hit).catchError((Object _) {}));
+  }
 
   /// Hands mpv the subtitle file and its timing before a load, so the right line is up from
   /// the first frame instead of being added once the stream is already playing.
@@ -1198,7 +1226,7 @@ class _PlayerPageState extends State<_PlayerView> {
           headers: src.headers,
           exactHeaders: widget.server is DirectPlayback,
           audioLanguage: _audioNow?.language,
-          subtitleLanguage: AppSettings.subtitleLanguage.value,
+          subtitleLanguage: PlaybackPrefs.subtitles(_kind).value,
         );
       }
       await Downloads.instance.add(r);
@@ -1635,7 +1663,7 @@ class _PlayerPageState extends State<_PlayerView> {
       }
       return; // the one you had comes first; nothing is picked for you meanwhile
     }
-    if (!AppSettings.autoSubtitles.value || _subsChosen || _follower || id != _loadId) return;
+    if (!PlaybackPrefs.autoSubtitles(_kind).value || _subsChosen || _follower || id != _loadId) return;
     if (_activeSubTrack?.provider == 'Built in') return;
     final mine = sub.inLanguage(_builtIn, sub.preferredLang());
     final pick = mine.where((t) => !t.release.contains('Forced')).firstOrNull ?? mine.firstOrNull;
@@ -2172,7 +2200,7 @@ class _PlayerPageState extends State<_PlayerView> {
         _partyFollow(); // the host's subtitle, not ours
       } else if (_restoreSub != null && !_subsChosen) {
         _resumeSubtitle(id);
-      } else if (AppSettings.autoSubtitles.value && !_subsChosen && _subsPicked != id && _activeSubTrack?.provider != 'Built in') {
+      } else if (PlaybackPrefs.autoSubtitles(_kind).value && !_subsChosen && _subsPicked != id && _activeSubTrack?.provider != 'Built in') {
         // once per episode: later refreshes (anime servers adding their tracks) keep what's on,
         // or off
         final mine = sub.inLanguage(_subtitleTracks, sub.preferredLang());
@@ -3737,6 +3765,7 @@ class _PlayerPageState extends State<_PlayerView> {
             onTap: () {
               if (t.id == _audioNow?.id) return;
               _switch('Switching to ${_audioName(t)}', () {});
+              _audioByHand = true;
               _player.selectAudioTrack(t);
             },
           ),

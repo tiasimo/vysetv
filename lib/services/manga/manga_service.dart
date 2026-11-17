@@ -6,11 +6,40 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/manga/manga.dart';
 import '../../models/manga/manga_chapter.dart';
+import '../../data/app_settings.dart';
+import 'mangadex_source.dart';
 
 const String _baseUrl = 'https://weebcentral.com';
 const String _coverCdn = 'https://temp.compsci88.com/cover';
 
+/// Lorewatch: the manga libraries to choose from on the Manga page. 'weebcentral' is the
+/// original one (English); 'mangadex:<language>' is MangaDex with chapters in that language.
+class MangaLibraryChoice {
+  const MangaLibraryChoice(this.id, this.label);
+  final String id;
+  final String label;
+
+  static const all = [
+    MangaLibraryChoice('mangadex:it', 'MangaDex · Italiano'),
+    MangaLibraryChoice('mangadex:en', 'MangaDex · Inglese'),
+    MangaLibraryChoice('weebcentral', 'WeebCentral · Inglese'),
+    MangaLibraryChoice('mangadex:es', 'MangaDex · Spagnolo'),
+    MangaLibraryChoice('mangadex:fr', 'MangaDex · Francese'),
+  ];
+
+  static MangaLibraryChoice get current =>
+      all.firstWhere((c) => c.id == AppSettings.mangaLibrary.value, orElse: () => all.first);
+}
+
 class MangaService {
+  final MangaDexSource _dex = MangaDexSource();
+
+  /// The language of the MangaDex library picked, or null for WeebCentral.
+  static String? get _dexLang {
+    final id = MangaLibraryChoice.current.id;
+    return id.startsWith('mangadex:') ? id.substring(9) : null;
+  }
+
   static const String _likedKey = 'liked_manga';
   static const String _historyKey = 'manga_reading_history';
   static const int _pageSize = 32;
@@ -47,6 +76,8 @@ class MangaService {
   }
 
   Future<List<Manga>> getManga({int page = 1, String? tag, bool allowAdult = false}) async {
+    final lang = _dexLang;
+    if (lang != null) return _dex.browse(lang, page: page, tag: tag, allowAdult: allowAdult);
     try {
       final offset = (page - 1) * _pageSize;
       final adult = allowAdult ? 'Any' : 'False';
@@ -65,6 +96,8 @@ class MangaService {
   }
 
   Future<List<Manga>> searchManga(String query, {int page = 1, bool allowAdult = false}) async {
+    final lang = _dexLang;
+    if (lang != null) return _dex.search(lang, query, page: page, allowAdult: allowAdult);
     try {
       final offset = (page - 1) * _pageSize;
       final adult = allowAdult ? 'Any' : 'False';
@@ -324,6 +357,7 @@ class MangaService {
   }
 
   Future<List<MangaChapter>> getChapters(String seriesId) async {
+    if (MangaDexSource.owns(seriesId)) return _dex.chapters(seriesId);
     try {
       final html =
           await _fetchHtml('$_baseUrl/series/$seriesId/full-chapter-list');
@@ -362,6 +396,7 @@ class MangaService {
   }
 
   Future<List<String>> getChapterImages(String chapterId) async {
+    if (MangaDexSource.owns(chapterId)) return _dex.pages(chapterId);
     try {
       final url =
           '$_baseUrl/chapters/$chapterId/images?is_prev=False&current_page=1&reading_style=long_strip';

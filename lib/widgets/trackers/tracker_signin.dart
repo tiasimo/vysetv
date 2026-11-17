@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -14,13 +13,15 @@ import '../common.dart';
 import '../service_logos.dart';
 import 'import_dialog.dart';
 
-bool get _desktop => !kIsWeb && (Platform.isWindows || Platform.isMacOS || Platform.isLinux);
+/// Lorewatch: the browser sign-in works on phones and tablets too (the browser comes back to a
+/// tiny server inside the app on this same device), so every platform but the web uses it.
+bool get _native => !kIsWeb;
 
-/// Connects AniList. On a computer it signs in through the browser and comes back
-/// by itself; AniList can also take a pasted token (the only way on phones for now).
+/// Connects AniList. It signs in through the browser and comes back by itself, on a computer,
+/// a phone or a tablet; AniList can also take a pasted token.
 Future<void> connectTracker(BuildContext context, TrackerId id) async {
   if (id == TrackerId.simkl || id == TrackerId.trakt) return _connectByCode(context, id);
-  final browser = _desktop && TrackerKeys.anilistClientId.isNotEmpty;
+  final browser = _native && TrackerKeys.anilistClientId.isNotEmpty;
   final paste = id == TrackerId.anilist && TrackerKeys.anilistPinClientId.isNotEmpty;
   if (!browser && !paste) {
     showToast(

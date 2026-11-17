@@ -26,7 +26,6 @@ const navItems = [
   NavItem('tv', 'TV Shows', Icons.tv_outlined, Icons.tv_rounded),
   NavItem('anime', 'Anime', Icons.circle, Icons.circle, glyph: 'ヴ'),
   NavItem('top', 'Top Rated', Icons.star_border_rounded, Icons.star_rounded),
-  NavItem('party', 'Party', Icons.celebration_outlined, Icons.celebration_rounded),
   NavItem('list', 'My List', Icons.bookmark_border_rounded, Icons.bookmark_rounded),
   NavItem('downloads', 'Downloads', Icons.download_outlined, Icons.download_rounded),
   NavItem('history', 'History', Icons.history_rounded, Icons.history_rounded),
