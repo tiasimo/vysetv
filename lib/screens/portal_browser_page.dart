@@ -602,7 +602,7 @@ class _PortalBrowserPageState extends State<PortalBrowserPage> {
       );
     }
     return Stack(children: [
-      const Positioned(top: -220, right: -160, child: PageGlow()),
+      Positioned(top: -220, right: -160, child: PageGlow()),
       Positioned.fill(child: Padding(padding: extra, child: body)),
     ]);
   }
@@ -716,7 +716,7 @@ class _PortalBrowserPageState extends State<PortalBrowserPage> {
             padding: const EdgeInsets.fromLTRB(14, 4, 14, 0),
             child: Shimmer(
               child: Column(children: [
-                for (var i = 0; i < 9; i++) const Padding(padding: EdgeInsets.only(bottom: 10), child: SkeletonBox(width: double.infinity, height: 28, radius: 9)),
+                for (var i = 0; i < 9; i++) Padding(padding: EdgeInsets.only(bottom: 10), child: SkeletonBox(width: double.infinity, height: 28, radius: 9)),
               ]),
             ),
           ),
@@ -724,7 +724,7 @@ class _PortalBrowserPageState extends State<PortalBrowserPage> {
       ];
     }
     if (cats.isEmpty) {
-      return const [
+      return [
         SliverFillRemaining(
           hasScrollBody: false,
           child: _PaneNote(icon: Icons.search_off_rounded, title: 'Nessuna categoria corrisponde', body: 'Prova un nome più corto.'),
@@ -915,7 +915,7 @@ class _PortalBrowserPageState extends State<PortalBrowserPage> {
                 aspect: 1.5,
                 caption: 0,
                 itemCount: 18,
-                itemBuilder: (_, i) => const Shimmer(child: SkeletonBox(width: double.infinity, height: double.infinity, radius: 7)),
+                itemBuilder: (_, i) => Shimmer(child: SkeletonBox(width: double.infinity, height: double.infinity, radius: 7)),
               )
             : captionedGrid(
                 maxWidth: maxW,
@@ -1504,7 +1504,7 @@ class _RowSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => SizedBox(
         height: height,
-        child: const Padding(
+        child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 18),
           child: Row(children: [
             SkeletonBox(width: 44, height: 44, radius: 11),
@@ -1666,9 +1666,9 @@ class _GuideLines extends StatelessWidget {
     if (list == null) {
       // waiting for its turn: two faint bars where the lines will be
       return Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
-        const Text(' ', style: _title),
+        Text(' ', style: _title),
         const SizedBox(height: 4),
-        SizedBox(height: _time.fontSize! * 1.25, child: const Align(alignment: Alignment.centerLeft, child: _Progress(0))),
+        SizedBox(height: _time.fontSize! * 1.25, child: Align(alignment: Alignment.centerLeft, child: _Progress(0))),
       ]);
     }
     final t = DateTime.now();
@@ -1683,7 +1683,7 @@ class _GuideLines extends StatelessWidget {
           style: _title.copyWith(color: next == null ? VyseColors.textFaint : VyseColors.textDim),
         ),
         const SizedBox(height: 4),
-        const Text(' ', style: _time),
+        Text(' ', style: _time),
       ]);
     }
     return Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
@@ -1840,14 +1840,14 @@ class _ChannelDetailsState extends State<_ChannelDetails> {
 
   Widget _schedule(BuildContext context, List<EpgEntry>? guide) {
     final quiet = TextStyle(fontSize: 13, color: VyseColors.textFaint);
-    if (guide == null) return const Text('Caricamento della guida', style: quiet);
+    if (guide == null) return Text('Caricamento della guida', style: quiet);
     final t = DateTime.now();
     final now = NowNext.of(guide, t).now;
     final later = [
       for (final e in guide)
         if (e.start.isAfter(t)) e,
     ].take(6).toList();
-    if (now == null && later.isEmpty) return const Text('Nessuna guida per questo canale', style: quiet);
+    if (now == null && later.isEmpty) return Text('Nessuna guida per questo canale', style: quiet);
     final label = TextStyle(fontSize: 11, fontWeight: FontWeight.w800, letterSpacing: 1, color: VyseColors.textFaint);
     final time = TextStyle(fontSize: 12.5, color: VyseColors.textDim, fontFeatures: [FontFeature.tabularFigures()]);
     return Column(
@@ -1869,7 +1869,7 @@ class _ChannelDetailsState extends State<_ChannelDetails> {
           const SizedBox(height: 22),
         ],
         if (later.isNotEmpty) ...[
-          const Text('A SEGUIRE', style: label),
+          Text('A SEGUIRE', style: label),
           const SizedBox(height: 8),
           for (final e in later)
             Padding(

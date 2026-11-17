@@ -799,7 +799,7 @@ class _NavIcon extends StatelessWidget {
                   ),
                   child: Text(n > 99 ? '99+' : '$n',
                       textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 10, height: 1.2, fontWeight: FontWeight.w800, color: Colors.white)),
+                      style: TextStyle(fontSize: 10, height: 1.2, fontWeight: FontWeight.w800, color: Colors.white)),
                 ),
               ),
             ]),

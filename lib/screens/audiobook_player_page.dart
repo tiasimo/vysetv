@@ -161,7 +161,7 @@ class _AudiobookPlayerPageState extends State<AudiobookPlayerPage> {
                                           onTap: () => setState(() => _showChapters = false),
                                         ),
                                       ])
-                                    : KeyedSubtree(key: const ValueKey('player'), child: player),
+                                    : KeyedSubtree(key: ValueKey('player'), child: player),
                               )
                             : Row(children: [
                                 Expanded(flex: 5, child: Center(child: ConstrainedBox(constraints: const BoxConstraints(maxWidth: 520), child: player))),

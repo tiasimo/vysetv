@@ -702,7 +702,7 @@ class _Header extends StatelessWidget {
                       : const PopupMenuItem(value: 'private', child: Text('Make private')),
                   if (room.private) const PopupMenuItem(value: 'code', child: Text('New invite code')),
                   // rooms from before per-person control: anyone could play/pause
-                  if (room.everyoneControls) const PopupMenuItem(value: 'controls-owner', child: Text("Stop letting everyone play/pause")),
+                  if (room.everyoneControls) PopupMenuItem(value: 'controls-owner', child: Text("Stop letting everyone play/pause")),
                 ],
               ),
           ],

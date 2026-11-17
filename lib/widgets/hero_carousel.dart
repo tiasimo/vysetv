@@ -711,7 +711,7 @@ class _PlayButton extends StatelessWidget {
             ),
           ],
         ),
-        child: const Row(
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.play_arrow_rounded, color: Colors.black, size: 20),
@@ -813,7 +813,7 @@ class _KeyHints extends StatelessWidget {
       color: VyseColors.textFaint,
       fontWeight: FontWeight.w500,
     );
-    return const Row(
+    return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         _Key('←'),

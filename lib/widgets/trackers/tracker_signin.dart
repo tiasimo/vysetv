@@ -130,7 +130,7 @@ class _SignInState extends State<_SignIn> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (!_pasting) ...[
-              const Text('Completa l\'accesso nel browser, poi torna in Lorewatch: lo rileva da solo.', style: dim),
+              Text('Completa l\'accesso nel browser, poi torna in Lorewatch: lo rileva da solo.', style: dim),
               if (_error == null) ...[
                 const SizedBox(height: 16),
                 SizedBox(height: 3, child: LinearProgressIndicator(color: VyseColors.accent, backgroundColor: VyseColors.ink.withValues(alpha: .10))),
@@ -140,7 +140,7 @@ class _SignInState extends State<_SignIn> {
                 TextButton(onPressed: _switchToPaste, child: const Text('Incolla invece un token')),
               ],
             ] else ...[
-              const Text('Apri AniList, approva Lorewatch, poi copia il token che mostra e incollalo qui.', style: dim),
+              Text('Apri AniList, approva Lorewatch, poi copia il token che mostra e incollalo qui.', style: dim),
               const SizedBox(height: 10),
               Align(
                 alignment: Alignment.centerLeft,

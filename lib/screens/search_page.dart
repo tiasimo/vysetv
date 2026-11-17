@@ -339,7 +339,7 @@ class _SearchBarState extends State<_SearchBar> {
                       ),
                     )
                   : Icon(Icons.search_rounded,
-                      key: const ValueKey('icon'),
+                      key: ValueKey('icon'),
                       size: 22,
                       color: _focused ? VyseColors.accent : VyseColors.textDim),
             ),

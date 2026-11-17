@@ -312,8 +312,8 @@ class _AnimeBackdrop extends StatelessWidget {
                 memCacheWidth: screenDecodeWidth(context),
                 filterQuality: FilterQuality.low,
                 fadeInDuration: const Duration(milliseconds: 500),
-                placeholder: (_, _) => const ColoredBox(color: bg),
-                errorWidget: (_, _, _) => const ColoredBox(color: bg),
+                placeholder: (_, _) => ColoredBox(color: bg),
+                errorWidget: (_, _, _) => ColoredBox(color: bg),
               ),
             );
           },

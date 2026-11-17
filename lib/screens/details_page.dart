@@ -340,9 +340,9 @@ class _Backdrop extends StatelessWidget {
               fadeInDuration: const Duration(milliseconds: 500),
               // The home hero already cached the w1280 copy: show it while the big one loads.
               placeholder: (_, _) => media.backdrop() == null
-                  ? const ColoredBox(color: bg)
+                  ? ColoredBox(color: bg)
                   : Image(image: CachedNetworkImageProvider(media.backdrop()!), fit: BoxFit.cover),
-              errorWidget: (_, _, _) => const ColoredBox(color: bg),
+              errorWidget: (_, _, _) => ColoredBox(color: bg),
             ),
           ),
         // Even dim, then a heavier left side behind the text and a melt into the page at the bottom.

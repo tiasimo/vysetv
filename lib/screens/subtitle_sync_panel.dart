@@ -529,7 +529,7 @@ class _CueRow extends StatelessWidget {
                 decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16)),
                 child: Text(
                   'Sincronia  ${_signed(delta)}',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 11.5,
                     fontWeight: FontWeight.w800,
                     color: Colors.black,
