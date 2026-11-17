@@ -945,7 +945,7 @@ class _PosterTile extends StatelessWidget {
                 Positioned(
                   top: 7,
                   left: 7,
-                  right: 28,
+                  right: 7,
                   child: AnimatedBuilder(
                     animation: Listenable.merge([EpisodeTotals.revision, EpisodeTotals.minute]),
                     builder: (context, _) {
@@ -956,10 +956,13 @@ class _PosterTile extends StatelessWidget {
                         child: child,
                       );
                       const style = TextStyle(fontSize: 10, fontWeight: FontWeight.w800, color: Colors.white);
-                      return Wrap(spacing: 4, runSpacing: 4, children: [
-                        if (p != null && p.episode != null) chip(Text(_epOf(m, p), style: style)),
+                      // a chip shrinks to fit the poster rather than spill over it
+                      Widget fit(Widget c) => FittedBox(fit: BoxFit.scaleDown, alignment: Alignment.centerLeft, child: c);
+                      return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                        if (p != null && p.episode != null) fit(chip(Text(_epOf(m, p), style: style))),
+                        if (p != null && p.episode != null && next != null) const SizedBox(height: 4),
                         if (next != null)
-                          chip(Row(mainAxisSize: MainAxisSize.min, children: [
+                          fit(chip(Row(mainAxisSize: MainAxisSize.min, children: [
                             Text(
                               '${next.season != null && next.season != p?.season ? 'S${next.season} ' : ''}Ep. ${next.episode} esce ',
                               style: style,
@@ -967,7 +970,7 @@ class _PosterTile extends StatelessWidget {
                             const Icon(Icons.schedule_rounded, size: 10, color: Colors.white),
                             const SizedBox(width: 3),
                             Text(countdownLabel(next.at), style: style),
-                          ])),
+                          ]))),
                       ]);
                     },
                   ),

@@ -103,6 +103,24 @@ class MangaService {
     }
   }
 
+  /// Lorewatch: search one library ([MangaLibraryChoice.id]), whichever is picked on the Manga page.
+  Future<List<Manga>> searchIn(String library, String query) async {
+    switch (library) {
+      case 'mangaworld':
+        return _world.search(query);
+      case 'mangaread':
+        return _read.search(query);
+    }
+    try {
+      final url =
+          '$_baseUrl/search/data?text=${Uri.encodeComponent(query)}&display_mode=Full+Display&sort=Best+Match&order=Descending&official=Any&adult=False&offset=0';
+      return _parseSearchResults(await _fetchHtml(url));
+    } catch (e) {
+      debugPrint('[MangaService] searchIn $library: $e');
+      return [];
+    }
+  }
+
   Future<List<Manga>> searchManga(String query, {int page = 1, bool allowAdult = false}) async {
     if (_worldPicked) return _world.search(query, page: page);
     if (_readPicked) return _read.search(query, page: page);

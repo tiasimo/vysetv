@@ -17,6 +17,9 @@ import '../widgets/page_scrollbar.dart';
 import '../widgets/section_chrome.dart';
 import 'manga_page.dart';
 import 'manga_reader_page.dart';
+import 'my_list_page.dart' show pickWatchStatus;
+import '../data/list_status.dart';
+import '../data/tmdb.dart' show MyList, SavedTitle, WatchStatus, Media;
 
 /// A series, built like the movie Details page: the cover blown up and blurred as a full-screen
 /// backdrop, cover + facts + actions over it, then every chapter as a grid of flat tiles.
@@ -200,6 +203,7 @@ class _MangaDetailsPageState extends State<MangaDetailsPage> {
                         : 'Inizia a leggere',
                 onTap: order.isEmpty ? () {} : () => resume ? _read(order, p.chapterIndex, page: p.page) : _read(order, 0),
               ),
+              _MyListButton(manga: m),
               ValueListenableBuilder<List<Manga>>(
                 valueListenable: MangaFavorites.items,
                 builder: (context, _, _) {
@@ -387,4 +391,62 @@ class _ChapterTile extends StatelessWidget {
           ]),
         ),
       );
+}
+
+
+/// Lorewatch: puts this manga in My List (and on AniList), as the AniList manga matching it.
+class _MyListButton extends StatefulWidget {
+  const _MyListButton({required this.manga});
+  final Manga manga;
+
+  @override
+  State<_MyListButton> createState() => _MyListButtonState();
+}
+
+class _MyListButtonState extends State<_MyListButton> {
+  bool _busy = false;
+
+  SavedTitle? _entry() {
+    final id = MangaChapters.anilistOf(widget.manga.id);
+    if (id == null) return null;
+    return MyList.items.value.where((s) => s.media.key == 'manga/$id').firstOrNull;
+  }
+
+  Future<void> _tap() async {
+    final box = context.findRenderObject() as RenderBox?;
+    final at = box == null ? Offset.zero : box.localToGlobal(box.size.bottomLeft(Offset.zero));
+    final messenger = ScaffoldMessenger.maybeOf(context);
+    var entry = _entry();
+    Media? media = entry?.media;
+    if (media == null) {
+      setState(() => _busy = true);
+      try {
+        media = await MangaChapters.findOnAniList(widget.manga.title);
+      } catch (_) {}
+      if (!mounted) return;
+      setState(() => _busy = false);
+      if (media == null) {
+        messenger?.showSnackBar(const SnackBar(content: Text('Non trovo questo manga su AniList.')));
+        return;
+      }
+    }
+    final st = await pickWatchStatus(context, at, entry?.status);
+    if (st == null || !mounted) return;
+    await MangaChapters.link(widget.manga.id, media.id);
+    await ListStatusSync.set([media], st);
+    messenger?.showSnackBar(SnackBar(content: Text('In La mia lista · ${st.label}')));
+  }
+
+  @override
+  Widget build(BuildContext context) => ValueListenableBuilder(
+    valueListenable: MyList.items,
+    builder: (context, _, _) {
+      final e = _entry();
+      return PillButton(
+        icon: e == null ? Icons.bookmark_add_outlined : Icons.bookmark_rounded,
+        label: _busy ? 'Cerco su AniList…' : (e == null ? 'La mia lista' : e.status.label),
+        onTap: _busy ? () {} : _tap,
+      );
+    },
+  );
 }

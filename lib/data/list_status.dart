@@ -117,6 +117,36 @@ abstract final class MangaChapters {
     await _save();
   }
 
+  /// The AniList manga a library manga was linked to, if any.
+  static int? anilistOf(String libraryId) => _links[libraryId];
+
+  /// The AniList manga best matching [title], as a My List title.
+  static Future<Media?> findOnAniList(String title) async {
+    final d = await AniList.query(
+      r'query($q:String){Page(perPage:1){media(search:$q,type:MANGA){id title{english userPreferred romaji} '
+      r'coverImage{extraLarge large} bannerImage description(asHtml:false) averageScore popularity startDate{year}}}}',
+      {'q': title},
+    );
+    final list = (d['Page'] as Map?)?['media'] as List?;
+    if (list == null || list.isEmpty) return null;
+    final m = list.first as Map;
+    final t = m['title'] is Map ? m['title'] as Map : const {};
+    final cover = m['coverImage'] is Map ? m['coverImage'] as Map : const {};
+    final year = (m['startDate'] is Map ? (m['startDate'] as Map)['year'] : null) as int?;
+    return Media(
+      id: m['id'] as int,
+      title: '${t['english'] ?? t['userPreferred'] ?? t['romaji'] ?? title}',
+      isTv: false,
+      manga: true,
+      overview: '${m['description'] ?? ''}'.replaceAll(RegExp(r'<[^>]+>'), ''),
+      posterPath: (cover['extraLarge'] ?? cover['large']) as String?,
+      backdropPath: m['bannerImage'] as String?,
+      rating: ((m['averageScore'] as num?) ?? 0) / 10,
+      year: year?.toString(),
+      popularity: ((m['popularity'] as num?) ?? 0).toDouble(),
+    );
+  }
+
   /// Remembers that library manga [libraryId] is AniList manga [anilistId].
   static Future<void> link(String libraryId, int anilistId) async {
     if (_links[libraryId] == anilistId) return;
