@@ -101,18 +101,20 @@ class _MyListPageState extends State<MyListPage> {
     super.dispose();
   }
 
-  List<SavedTitle> _visible(List<SavedTitle> all, Map<String, WatchEntry> progress) {
-    final q = _search.text.trim().toLowerCase();
-    final list = all.where((s) {
-      final m = s.media;
-      if (q.isNotEmpty && !m.title.toLowerCase().contains(q)) return false;
-      return switch (_filter) {
+  bool _matchesFilter(Media m) => switch (_filter) {
         _Filter.all => true,
         _Filter.films => !m.isTv && !m.anime && !m.manga,
         _Filter.series => m.isTv && !m.anime,
         _Filter.anime => m.anime,
         _Filter.manga => m.manga,
-      } && (_status == null || s.status == _status);
+      };
+
+  List<SavedTitle> _visible(List<SavedTitle> all, Map<String, WatchEntry> progress) {
+    final q = _search.text.trim().toLowerCase();
+    final list = all.where((s) {
+      final m = s.media;
+      if (q.isNotEmpty && !m.title.toLowerCase().contains(q)) return false;
+      return _matchesFilter(m) && (_status == null || s.status == _status);
     }).toList();
     switch (_sort) {
       case _Sort.added:
@@ -226,7 +228,10 @@ class _MyListPageState extends State<MyListPage> {
                                 },
                             },
                             status: _status,
-                            statusCounts: {for (final st in WatchStatus.values) st: all.where((s) => s.status == st).length},
+                            statusCounts: {
+                              for (final st in WatchStatus.values)
+                                st: all.where((s) => s.status == st && _matchesFilter(s.media)).length,
+                            },
                             onStatus: (st) => setState(() => _status = st),
                             onFilter: (f) => setState(() => _filter = f),
                             onSort: (s) => AppSettings.myListSort.set(s.index),
@@ -553,9 +558,9 @@ class _Toolbar extends StatelessWidget {
       return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         Row(children: [Expanded(child: searchBox), const SizedBox(width: 8), tools]),
         const SizedBox(height: 10),
-        lists,
-        const SizedBox(height: 8),
         chips,
+        const SizedBox(height: 8),
+        lists,
       ]);
     }
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
