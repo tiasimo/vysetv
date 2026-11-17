@@ -207,8 +207,17 @@ class AppSettings {
 
   // ── account sync (name and avatar travel on the account itself) ──
 
-  static List<Setting<Object?>> get synced =>
-      _all.where((s) => !s.key.startsWith('profile.') && !s.key.startsWith('device.')).toList();
+  // Lorewatch: the look (theme, day/night, menu, My List view) stays each device's own.
+  static List<Setting<Object?>> get synced => _all
+      .where(
+        (s) =>
+            !s.key.startsWith('profile.') &&
+            !s.key.startsWith('device.') &&
+            !s.key.startsWith('look.') &&
+            !s.key.startsWith('list.') &&
+            s.key != 'lw.theme.mode',
+      )
+      .toList();
   static final Listenable anySynced = Listenable.merge(synced);
 
   static Future<Map<String, Map<String, dynamic>>> syncSnapshot() async => {for (final s in synced) s.key: {'v': s.value}};
