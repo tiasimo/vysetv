@@ -27,7 +27,15 @@ class Media {
     this.voteCount = 0,
     this.date = '',
     this.anime = false,
+    this.originalLanguage = '',
   });
+
+  /// TMDB's original language ("ja", "en"…), when it was sent.
+  final String originalLanguage;
+
+  /// Lorewatch: a Japanese animated series on TMDB, i.e. an anime. Anime have their own section
+  /// (from AniList), so they're kept out of TV series.
+  bool get tmdbAnime => !anime && genreIds.contains(16) && originalLanguage == 'ja';
 
   /// [id] is TMDB's, or AniList's when [anime] is set.
   final int id;
@@ -66,6 +74,7 @@ class Media {
       voteCount: (j['vote_count'] as num?)?.toInt() ?? 0,
       date: date,
       anime: j['anime'] == true,
+      originalLanguage: (j['original_language'] as String?) ?? '',
     );
   }
 
@@ -115,7 +124,7 @@ class Tmdb {
   }
 
   static Future<List<Media>> search(String q, {required bool tv}) =>
-      list('/search/${tv ? 'tv' : 'movie'}', tv: tv, query: {'query': q, 'include_adult': 'false'});
+      list('/search/${tv ? 'tv' : 'movie'}', tv: tv, keepAnime: true, query: {'query': q, 'include_adult': 'false'});
 
   static Future<PersonDetails> person(int id) async {
     final json = await _get('/person/$id', {'append_to_response': 'combined_credits,images,external_ids'});
@@ -140,12 +149,14 @@ class Tmdb {
   /// Raw JSON for endpoints that need paging metadata (e.g. /discover).
   static Future<Map<String, dynamic>> get(String path, [Map<String, String> query = const {}]) => _get(path, query);
 
-  static Future<List<Media>> list(String path, {Map<String, String> query = const {}, bool? tv}) async {
+  /// Lorewatch: series lists leave anime out ([Media.tmdbAnime]) unless [keepAnime].
+  static Future<List<Media>> list(String path, {Map<String, String> query = const {}, bool? tv, bool keepAnime = false}) async {
     final json = await _get(path, query);
     return (json['results'] as List)
         .cast<Map<String, dynamic>>()
         .where((m) => m['media_type'] != 'person')
         .map((m) => Media.fromJson(m, tv: tv))
+        .where((m) => keepAnime || !(m.isTv && m.tmdbAnime))
         .toList();
   }
 
@@ -249,7 +260,7 @@ class HomeFeed {
   Future<List<Media>> popularTv() => _memo('popularTv', () => Tmdb.list('/tv/popular', tv: true));
   Future<List<Media>> nowPlaying() => _memo('nowPlaying', () => Tmdb.list('/movie/now_playing', tv: false));
   Future<List<Media>> topTvToday() => _memo('topTv', () => Tmdb.list('/trending/tv/day', tv: true));
-  Future<List<Media>> anime() => _memo('anime', () => Tmdb.list('/discover/tv', tv: true, query: {
+  Future<List<Media>> anime() => _memo('anime', () => Tmdb.list('/discover/tv', tv: true, keepAnime: true, query: {
         'with_genres': '16',
         'with_original_language': 'ja',
         'sort_by': 'popularity.desc',

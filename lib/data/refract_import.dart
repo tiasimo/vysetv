@@ -106,7 +106,9 @@ class RefractImport {
           final runtime = t.tv
               ? ((j['episode_run_time'] as List?) ?? const []).whereType<num>().firstOrNull?.toInt()
               : (j['runtime'] as num?)?.toInt();
-          media[t.key] = (media: Media.fromJson({...j, 'genre_ids': genres}, tv: t.tv), runtime: runtime);
+          final m = Media.fromJson({...j, 'genre_ids': genres}, tv: t.tv);
+          // anime come from AniList: Refract's TMDB copies of them stay out
+          if (!m.tmdbAnime) media[t.key] = (media: m, runtime: runtime);
         } catch (_) {
           // gone from TMDB, or a hiccup: that one's left out
         }

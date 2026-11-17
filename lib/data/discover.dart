@@ -220,6 +220,8 @@ class DiscoverQuery {
       if (providers.isNotEmpty) ...{'with_watch_providers': providers.join('|'), 'watch_region': 'US'},
       if (companies.isNotEmpty) 'with_companies': companies.join('|'),
       if (networks.isNotEmpty) 'with_networks': networks.join('|'),
+      // Lorewatch: no anime among TV series (TMDB's "anime" keyword); they have their own section
+      if (tv && language != 'ja') 'without_keywords': '210024',
     };
   }
 
@@ -279,7 +281,8 @@ Future<DiscoverResult> fetchDiscover(DiscoverQuery q, int page) async {
   for (final r in responses) {
     items.addAll(((r.json['results'] as List?) ?? const [])
         .cast<Map<String, dynamic>>()
-        .map((m) => Media.fromJson(m, tv: r.tv)));
+        .map((m) => Media.fromJson(m, tv: r.tv))
+        .where((m) => q.language == 'ja' || !(m.isTv && m.tmdbAnime)));
     total += (r.json['total_results'] as num?)?.toInt() ?? 0;
     pages = math.max(pages, (r.json['total_pages'] as num?)?.toInt() ?? 0);
   }
